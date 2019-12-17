@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>DX_产品QA</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <link rel="stylesheet" href="/assets/plugins/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="/static/css/OrderMessage.css" type="text/css" />
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+    {load href="/assets/plugins/kindeditor/kindeditor.js" /}
+    {load href="/assets/plugins/kindeditor/lang/zh_CN.js" /}
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="only-body-page-content">
+
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <div class="page-content pt0">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt25">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap bborder-no">
+                                        <form id="navbar" class="navbar-left ExportForm" action="/ProductQa/index" method="post">
+                                            <ul class="c-h-ul search-ul query-ul">
+                                                <li class="ml20 pb6">
+                                                    <label class="c-h-ul-li-title w60">店铺：</label>
+                                                    <select name="seller_id" class="form-control input-small inline seller_id">
+                                                        <option value="">全选</option>
+                                                        {volist name="seller_data" id="sel"}
+                                                        <option {if condition="input('seller_id') eq $sel['id']"} selected = "selected"{/if} value="{$sel['id']}">{$sel['true_name']}</option>
+                                                        {/volist}
+                                                    </select>
+                                                </li>
+                                                <li >
+                                                    <label class="c-h-ul-li-title w100">SKU：</label>
+                                                    <input name="sku_id" class="form-control input-small sku_id" type="text" value="{:input('sku_id')}" />
+                                                </li>
+                                                <li class="w400">
+                                                    <label class="c-h-ul-li-title w150">客户ID/客户名称：</label>
+                                                    <input name="name" class="form-control input-small name" type="text" value="{:input('name')}" />
+                                                </li>
+                                                <li class="pb6">
+                                                    <label class="c-h-ul-li-title">分配人员：</label>
+                                                    <select name="admin_user" class="form-control input-small inline admin_user">
+                                                        <option value="">全部</option>
+                                                        {volist name="admin_user" id="user"}
+                                                        <option {if condition="input('admin_user') eq $user['id']"} selected = "selected"{/if} value="{$user['id']}">{$user['username']}</option>
+                                                        {/volist}
+                                                    </select>
+                                                </li>
+                                                <li class="pb6">
+                                                    <label class="c-h-ul-li-title">分配状态：</label>
+                                                    <select name="distribution_status" class="form-control input-small inline distribution_status">
+                                                        <option value="">全部</option>
+                                                        <option  value="2" {if condition="input('distribution_status') eq 2"}selected = "selected"{/if}>未分配</option>
+                                                        <option  value="1" {if condition="input('distribution_status') eq 1"}selected = "selected"{/if}>已分配</option>
+                                                    </select>
+                                                </li>
+                                                <li class="pb6">
+                                                    <label class="c-h-ul-li-title w60">留言状态：</label>
+                                                    <select name="is_answer" class="form-control input-small inline is_answer">
+                                                        <option value="">全部</option>
+                                                        <option  value="0" {if condition="input('is_answer') === 0"}selected = "selected"{/if}>未回复</option>
+                                                        <option  value="1" {if condition="input('is_answer') eq 1"}selected = "selected"{/if}>已回复</option>
+                                                        <option  value="2" {if condition="input('is_answer') eq 2"}selected = "selected"{/if}>已解决</option>
+                                                    </select>
+                                                </li>
+                                                <li class="w440">
+                                                    <label class="c-h-ul-li-title">提交时间：</label>
+                                                    <input type="text" name="startTime" id="startTime" class="form-control input-small startTime" value="{:input('startTime')}" autocomplete="off" />
+                                                    <span class="time-text">至</span>
+                                                    <input type="text" name="endTime" id="endTime" class="form-control input-small endTime"  value="{:input('endTime')}" autocomplete="off"/>
+                                                </li>
+                                                <li  class="w200">
+                                                    <a onclick="javascript:document:navbar.submit();" class="btn btn-gray relative" href="javascript:;">查 询</a>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <a class="btn btn-gray relative export-excel-btn" url-data="{:url('WholesaleInquiry/export')}" href="javascript:void (0)">导 出</a>
+                                                </li>
+                                            </ul>
+                                        </form>
+                                    </div>
+                                    <div class="row mr0 ml0">
+                                        <!--<div class="col-md-12">-->
+                                        <table class="table-basic table-padding table-hover">
+                                            <colgroup>
+                                                <col width="3%">
+                                                <col width="8%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="5%">
+                                                <col width="6%">
+                                                <col width="5%">
+                                                <col width="30%">
+                                                <col width="8%">
+                                                <col width="6%">
+                                                <col width="6%">
+                                                <col width="6%">
+                                                <col width="5%">
+                                            </colgroup>
+                                            <thead>
+                                            <tr>
+                                                <th><input type="checkbox" class="selectAll"/></th>
+                                                <th>客户ID/名称</th>
+                                                <th>店铺</th>
+                                                <th>SKU</th>
+                                                <th>订货量</th>
+                                                <th>国家</th>
+                                                <th>物流方式</th>
+                                                <th>咨询内容</th>
+                                                <th>提交时间</th>
+                                                <th>分配状态</th>
+                                                <th>操作人</th>
+                                                <th>状态</th>
+                                                <th >操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {volist name="data['data']" id="vo"}
+                                            <tr>
+                                                <td><input type="checkbox" class="single-checkbox" name="single-checkbox" value="{$vo.id}"/></td>
+                                                <td><a href="{:url('MemberManagement/edit',['id'=>$vo.customer_id])}" target="_blank">{$vo.customer_id}-{$vo.customer_name}</a></td>
+                                                <td>{$vo.seller_name}</td>
+                                                <td><a href="{:config('mall_url')}p/{$vo.product_id}" target="_blank" title="{$vo.product_name}">{$vo.sku_id}</a></td>
+                                                <td>{$vo.order_quantity}</td>
+                                                <td>{$vo.country}</td>
+                                                <td>{$paymentMethodDict[$vo['shipping_method']]}</td>
+                                                <td><div class="w400 exceed">{$vo.details}</div></td>
+                                                <td>{$vo['addtime']|date="Y-m-d H:i:s",###}</td>
+                                                {if condition="$vo['is_crash'] eq 1 && $vo['is_answer'] eq 0"}
+                                                <td class="red">{empty name="vo['distribution_admin']"}未分配{else/}已分配({$vo['distribution_admin']}){/empty}(紧急)</td>
+                                                {else/}
+                                                <td>{empty name="vo['distribution_admin']"}未分配{else/}已分配({$vo['distribution_admin']}){/empty}</td>
+                                                {/if}
+
+                                                <td>{$vo['operator_admin']}</td>
+                                                <td>{if condition="$vo['is_answer'] eq 0"}未回复{elseif condition="$vo['is_answer'] eq 1"/}已回复{else/}已解决{/if}</td>
+                                                <td>
+                                                    <a  onclick="reply_message('{:url('WholesaleInquiry/reply_message',array('inquiry_id'=>$vo['id']))}','700px','600px',{$vo['id']})" href="javascript:;">回复</a>
+                                                </td>
+                                            </tr>
+                                            {/volist}
+                                            {if condition="$group_id eq 12 || $group_id eq 7 || $group_id eq 0"}
+                                            <tr>
+                                                <td colspan="2">
+                                                    <select name="distribution_admin_user" class="form-control input-small inline distribution_admin_user">
+                                                        {volist name="admin_user" id="user"}
+                                                        <option {if condition="input('admin_user') eq $user['id']"} selected = "selected"{/if} value="{$user['id']}">{$user['username']}</option>
+                                                        {/volist}
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <a onclick="javascript:distribution(this)" class="btn btn-gray relative" href="javascript:;" post-url="{:url('WholesaleInquiry/distribution_order_message')}">分配</a>
+                                                </td>
+                                                <td colspan="10" align="left">
+                                                    <a onclick="javascript:crash(this);" class="btn btn-gray relative" href="javascript:;" post-url="{:url('WholesaleInquiry/crash_message')}">紧急处理</a>
+                                                </td>
+                                            </tr>
+                                            {/if}
+                                            </tbody>
+                                        </table>
+                                        <!--</div>-->
+                                    </div>
+                                    <!-- end base table -->
+                                    <div class="row row16 pd15 mt10">
+                                        <div class="dataTables_paginate paging_bootstrap fr">
+                                            {$data['Page']}
+                                        </div>
+                                    </div>
+                                    <!-- 订单内容 end -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.navbar-collapse -->
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="show-copy-pop hide"></div>
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <script src="/assets/plugins/layui/layui.js" charset="utf-8"></script>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/static/js/public.js"></script>
+    <script type="text/javascript" src="/static/js/wholesaleInquiry.js"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+
+    <script>
+        /*实例化编辑器*/
+        KindEditor.ready(function(K) {
+
+        });
+        $(function() {
+            var Timeout;
+            $(".exceed").on({
+                mouseenter: function(event) {
+                    clearTimeout(Timeout);
+                    var _this = $(this),
+                        txt = _this.text(),
+                        x = _this.offset().left,
+                        y = _this.offset().top - $(document).scrollTop() + 30;
+                    e = event || window.event;
+                    // __xx = e.pageX || e.clientX + $(document).scrollLeft();
+                    // __yy = e.pageY || e.clientY + $(document).scrollTop();
+                    // console.log($(document).scrollTop())
+                    $(".show-copy-pop").html(txt).css({"left":x, "top":y, "margin-left":"100px"}).removeClass("hide");
+                },
+                mouseout: function(event) {
+                    Timeout = setTimeout(function(){
+                        $(".show-copy-pop").addClass('hide')
+                    },300);
+                }
+            });
+            //导出订单excel数据
+            $('.export-excel-btn').click(function (obj) {
+                var ajax_url = $(this).attr("url-data");
+                var param = $('#navbar').serialize();
+                window.location.href = ajax_url+'?'+param;
+            });
+        })
+        //开始时间
+        function startingTime(obj) {
+            WdatePicker({
+                readOnly:true,
+                maxDate:$(obj).siblings('.endCreateOn').val() || '%y-%M-%d %H:%m:%s',
+                dateFmt:'yyyy-MM-dd HH:mm:ss'
+            })
+        }
+        //结束时间
+        function endingTime(obj) {
+            WdatePicker({
+                readOnly:true,
+                minDate:$(obj).siblings('.startCreateOn').val(),
+                //maxDate:'%y-%M-%d %H:%m:%s',
+                dateFmt:'yyyy-MM-dd HH:mm:ss'
+            })
+        }
+
+        $(".startCreateOn").click(function(){
+            var _this = $(this);
+            startingTime(_this);
+        })
+
+        $(".endCreateOn").click(function(){
+            var _this = $(this);
+            endingTime(_this);
+        })
+
+
+        //开始时间
+        function startingTime(obj,endTime) {
+            WdatePicker({
+                readOnly:true,
+                maxDate:$(obj).siblings(endTime).val() || '%y-%M-%d %H:%m:%s',
+                dateFmt:'yyyy-MM-dd HH:mm:ss'
+            })
+        }
+        //结束时间
+        function endingTime(obj,startTime) {
+            WdatePicker({
+                readOnly:true,
+                minDate:$(obj).siblings(startTime).val(),
+                //maxDate:'%y-%M-%d %H:%m:%s',
+                dateFmt:'yyyy-MM-dd HH:mm:ss'
+            })
+        }
+
+        $(".startCreateOn").click(function(){
+            var _this = $(this);
+            startingTime(_this,'.endCreateOn');
+        })
+
+        $(".endCreateOn").click(function(){
+            var _this = $(this);
+            endingTime(_this,'.startCreateOn');
+        })
+
+
+        $(".startTime").click(function(){
+            var _this = $(this);
+            startingTime(_this,'.endTime');
+        })
+
+        $(".endTime").click(function(){
+            var _this = $(this);
+            endingTime(_this,'.startTime');
+        })
+        Common.AllSelect($('.selectAll'),$('.single-checkbox'));
+    </script>
+    <!-- END JAVASCRIPTS -->
+
+</body>
+</html>

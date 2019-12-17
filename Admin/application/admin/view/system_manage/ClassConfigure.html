@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>分类设置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <!--#include file="layout/c_global_style.shtml"-->
+    {include file="layout/c_global_style" /}
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+     <!-- <script type="text/javascript" src="/js/custom.js"></script> -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+           <div class="page-content pt0 pl0 ml20">
+                <!--start  按钮功能区 -->
+                <div class="bg-color-gray0 area_btn0 ml0 mr0 border-gray">
+                    {$menu_logo}
+                </div>
+                <!--end  按钮功能区 -->
+                <!-- 订单内容 begin -->
+                <div class="row mt10">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+
+                                        <div class="search-btn-wrap bborder-no">
+                                            <form id="navbar" class="navbar-left" action="attribute?Navigation={$Navigation}" method="post" role="search">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">分类名称：</label>
+                                                            <input name="className" class="form-control input-small" type="text" value="{$className}" />
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">语种：</label>
+                                                        <select ="powerset" name="language" class="input-xlarge w100 h29 bborder" placeholder="数据类型" >
+                                                            <option value="">请选择</option>
+                                                            {volist name="language" id="vo"}
+                                                                <option {if condition="$vo.Code eq $languageSelected"} selected = "selected"{/if} value="{$vo.Code}">{$vo.Name}</option>
+                                                            {/volist}
+                                                        </select>
+                                                    </li>
+                                                    <li class="w260">
+                                                        <label class="c-h-ul-li-title w60"></label>
+                                                        <a onclick="javascript:document:navbar.submit();" class="btn btn-gray" href="javascript:;">查 询</a>
+                                                        <a class="btn btn-gray classadd" href="/SystemManage/add_Configure.html">新增</a>
+                                                        <!-- <a class="btn btn-gray classadd" onclick="edit_public({:url('ProductManagement/add_Configure')})" href="javascript:;">新增</a> -->
+                                                        <!-- <a class="btn btn-gray classadd" onclick="edit_public('{:url("ProductManagement/add_Configure")}')" href="javascript:;">新增</a> -->
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-padding">
+                                                    <colgroup>
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                    </colgroup>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>语种</th>
+                                                        <th>分类名称</th>
+                                                        <th>分类id</th>
+                                                        <th>是否启用</th>
+                                                        <th>序号</th>
+                                                        <th>添加时间</th>
+                                                        <th>修改人时间</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {volist name="list" id="vo"}
+                                                        <tr>
+                                                            <td>{$vo.language}</td>
+                                                            <td>{$vo.className}</td>
+                                                            <!-- <td>{eq name="$vo.type" value="1"}单选类型{else/}多选类型{/eq}</td> -->
+                                                            <td>{$vo.classId}</td>
+                                                            <td>{eq name="$vo.status" value="1"}已启用{else/}已关闭{/eq}</td>
+                                                            <td>{$vo.sort}</td>
+                                                            <td><?php echo date("Y-m-d H:i:s",$vo['add_time']) ?></td>
+                                                            <td><?php echo $vo['edit_time']?date("Y-m-d H:i:s",$vo['edit_time']):'';?></td>
+                                                            <td>
+                                                               <a href="/SystemManage/edit_Configure.html?_id={$vo._id}" class="Qing">修改</a>|
+                                                               <a href="javascript:void(0);" onclick="public_delete('{$vo._id}','/SystemManage/delete_Configure')" class-id="{$vo.catalog_id}" del-id = "{$vo.id}" class="red Qing  del_attribute  attribute{$vo.id}">删除</a>
+                                                            </td>
+                                                        </tr>
+                                                        {/volist}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row16 pd15 mt10">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                            {$page}
+                                            </div>
+                                        </div>
+                                        <!-- 订单内容 end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+<script type="text/javascript">
+
+
+</script>
+
+
+    <!-- 日期插件 -->
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!--<script type="text/javascript" src="/assets/plugins/bootstrap-daterangepicker/daterangepicker-zh-cn.js"></script>-->
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+
+    <!-- <script src="/public/dxHtml/static/js/dx_cs_order.js"></script> -->
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <!-- <script>
+    $(function() {
+        App.init();
+    })
+    </script> -->
+    <!-- END JAVASCRIPTS -->
+
+
+</html>

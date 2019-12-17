@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>活动列表页</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/edm_system.css" type="text/css" />
+</head>
+
+<body>
+    <div class="row ml10 mr10 mt20 pd10">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="search-btn-wrap bborder-no">
+                    <form id="navbar" class="navbar-left" action="index" method="post">
+                        <ul class="c-h-ul search-ul query-ul">
+                            <li>
+                                <label class="c-h-ul-li-title">日志模块：</label>
+                                <select name="table" class="form-control input-small inline status">
+                                    <option value="">请选择</option>
+                                    {foreach name="log_table" item="vo"}
+                                    <option value="{$vo}" {if condition="$params.table == $vo"}selected="selected"{/if}>{$vo}</option>
+                                    {/foreach}
+                                </select>
+                            </li>
+                            <li>
+                                <label class="c-h-ul-li-title">level：</label>
+                                <select name="level" class="form-control input-small inline status">
+                                    <option value="">请选择</option>
+                                    {foreach name="log_type" item="vo"}
+                                    <option value="{$vo}" {if condition="$params.level eq $vo"}selected="selected"{/if}>{$vo}</option>
+                                    {/foreach}
+                                </select>
+                            </li>
+                            <li>
+                                <label class="c-h-ul-li-title">functionName：</label>
+                                <input name="functionName" value="{$params.functionName}" class="form-control input-small" type="text" />
+                            </li>
+                            <li class="w440">
+                                <label class="c-h-ul-li-title" for="orderstarttime">UTC时间：</label>
+                                <input type="text" name="startTime" id="orderstarttime" class="form-control input-small startTime" value="{$params.startTime}"  placeholder="{$params.startTime|default=''}"  autocomplete="off" />
+                                <span class="time-text">至</span>
+                                <input type="text" name="endTime" id="orderendtime" class="form-control input-small endTime"  value="{$params.endTime}" placeholder="{$params.endTime|default=''}" autocomplete="off"/><span class="time-text"></span>
+                            </li>
+                            <li class="w260">
+                                <label class="c-h-ul-li-title w60"></label>
+                                <a onclick="javascript:document:navbar.submit();"
+                                   class="btn btn-gray" href="javascript:;">查 询</a>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table-basic table-padding table-hover edm-list">
+                    <thead>
+                        <tr>
+                            <th class="w80">level</th>
+                            <th class="w150">functionName</th>
+                            <th class="w150">method</th>
+                            <th class="w200">url地址</th>
+                            <th class="w200">请求参数</th>
+                            <th class="w200">结果</th>
+                            <th class="w120">UTC时间</th>
+                            <th class="w120">北京时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="list" id="val"}
+                        <tr>
+                            <td>{$val.level}</td>
+                            <td class="tleft break-all">{$val.functionName|default='-'}</td>
+                            <td class="tleft break-all">{$val.method|default='-'}</td>
+                            <td class="tleft break-all">{$val.url|default='-'}</td>
+                            <td class="tleft break-all">{$val.params|default='-'}</td>
+                            <td class="tleft break-all">{$val.result|default='-'}</td>
+                            <td>{$val.timestamp|default='-'}</td>
+                            <td>{$val.timestamp_prc|default='-'}</td>
+                        </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row row-no-mlr mt20 clearfix mb20">
+            <div class="dataTables_paginate paging_bootstrap fr">
+                {$list->render()}
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+<script src="/static/js/order.js" type="text/javascript"></script>
+<script>
+    $(function(){
+        Order.Index();
+    });
+</script>
+</html>

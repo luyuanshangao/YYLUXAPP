@@ -1,0 +1,162 @@
+{layout name="layout/main"/}
+{load href="/static/js/plugin/webuploader/webuploader.css" /}
+{load href="/static/css/allOrder.css" /}
+{load href="/static/js/plugin/layer/layui.css" /}
+{load href="/static/js/plugin/webuploader/webuploader.js" /}
+<div class="main-box fl logisticsdetail-page">
+    <div class="box-white mt0">
+		<h1 class="main-cont-title order-title">订单物流详情</h1>
+		<!--物流状态 暂时不做-->
+		<!--<div class="search-bar box-white" style="overflow: hidden;">
+			<h3 class="main-cont-title order-title border-bottom-0">包裹信息</h3>
+			<div class="process-min mt10">
+				<div class="ui-step ui-step-normal">
+					<ol class="col4">
+						<li class="current"><span class="">卖家申明发货</span></li>
+						<li class=""><span class="state">离开发货国</span></li>
+						<li class=""><span class="state">到达目的国</span></li>
+						<li class="last"><span class="state">妥投签收</span></li>
+					</ol>
+				</div>
+			</div>
+		</div>-->
+
+		<div class="box-white mt10">
+			<!--物流状态 暂时不做-->
+			<!--<div class="main-cont-title order-title border-bottom-0">您的包裹状态：<span class="blue">妥投</span></div>-->
+			<div class="detail-box clearfix">
+				<div class="db-left">
+					<div class="db-left-logistic js-logistic-tabs curr">
+						{notempty name='order_info.shipping_data.country'}
+							{$order_info.shipping_data.country}
+						{else/}
+							-
+						{/notempty}
+						<span>目的国</span>
+					</div>
+					<div class="db-left-logistic js-logistic-tabs">
+						China
+						<span>发件国</span>
+					</div>
+				</div>
+
+				<div class="db-right">
+					<ul class="layui-timeline">
+					    {if condition="isset($package_trace_list['track'])"}
+							{volist name='package_trace_list.track.z2' id='val'}
+								<li class="layui-timeline-item">
+									<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+									<div class="layui-timeline-content layui-text">
+										<h3 class="layui-timeline-title">{$val["a"]}</h3>
+										<p>
+											{$val['z']}
+										</p>
+									</div>
+								</li>
+							{/volist}
+						{/if}
+
+					</ul>
+					<ul class="layui-timeline hide">
+					 {if condition="isset($package_trace_list['track'])"}
+						{volist name='package_trace_list.track.z1' id='val'}
+							<li class="layui-timeline-item">
+								<i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+								<div class="layui-timeline-content layui-text">
+									<h3 class="layui-timeline-title">{$val["a"]}</h3>
+									<p>
+										{$val['z']}
+									</p>
+								</div>
+							</li>
+						{/volist}
+					 {/if}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="box-white mt10">
+		<table class="main-base-table mt5">
+			<tr>
+				<td></td>
+				<td>
+					<dl class="dl-layout">
+						<dt class="w120 tright">
+							物流服务：
+						</dt>
+						<dd>
+							{$order_info.item_data.0.shipping_model|default=''}
+						</dd>
+					</dl>
+					<!--<dl class="dl-layout">
+						<dt class="w120 tright">
+							物流编号：
+						</dt>
+						<dd>
+							//TODO
+						</dd>
+					</dl>
+					<dl class="dl-layout">
+						<dt class="w120 tright">
+							物流公司：
+						</dt>
+						<dd>
+							//TODO
+						</dd>
+					</dl>-->
+					<dl class="dl-layout">
+						<dt class="w120 tright">
+							发货时间：
+						</dt>
+						<dd>
+							{notempty name='order_info.shipments_time'}
+							{:date('Y-m-d H:i:s', $order_info['shipments_time'])}
+							{else/}
+							-
+							{/notempty}
+						</dd>
+					</dl>
+				</td>
+			</tr>
+			<tr>
+				<td><div class="main-cont-title order-title border-bottom-0">订单信息</div></td>
+				<td>
+					<dl class="dl-layout">
+						<dt class="w120 tright">
+							订单编号：
+						</dt>
+						<dd>
+						{if condition="isset($order_info.order_number)"}
+							{$order_info.order_number}
+					    {/if}
+						</dd>
+					</dl>
+					<!--<dl class="dl-layout">
+						<dt class="w120 tright">
+							卖家店铺名：
+						</dt>
+						<dd>
+							{isset($order_info.store_name)?$order_info.store_name:''}
+						</dd>
+					</dl>-->
+					<dl class="dl-layout">
+						<dt class="w120 tright">
+							收货地址：
+						</dt>
+						<dd>
+							{$order_info.shipping_address|default=''}
+						</dd>
+					</dl>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+{load href="/static/js/module/allOrder.js" /}
+<script>
+	$(function(){
+		dxseller.order.logisticsdetailPage();
+	});
+</script>

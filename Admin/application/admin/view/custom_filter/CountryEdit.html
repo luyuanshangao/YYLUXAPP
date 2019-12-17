@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>国家管理新增编辑</title>
+    {include file="layout/c_style" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/customFilter.css" type="text/css" />
+
+</head>
+
+<body>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+    <!-- BEGIN SIDEBAR -->
+    <!--#include file="layout/sidebar.html"-->
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content pt0 pl0 ml20">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                    <div>
+                        <div class="tab-content mt25">
+                            <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                <!-- start base table -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form method="post" action="/CustomFilter/CountryEdit" id="form1">
+                                            <table id="mainTable" border="0" cellpadding="2" cellspacing="5" class="add-edit-country">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="w120 tright">
+                                                            中文名称：
+                                                        </td>
+                                                        <td>
+                                                            <input name="txtChineseName" type="text" id="txtChineseName" class="w250" maxlength="50">
+                                                            <span class="error red">*</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="w120 tright">
+                                                            英文名称：
+                                                        </td>
+                                                        <td>
+                                                            <input name="txtEnglishName" type="text" id="txtEnglishName" class="w250" maxlength="50">
+                                                            <span class="error red">*</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="w120 tright">
+                                                            国家编码：
+                                                        </td>
+                                                        <td>
+                                                            <input name="txtCode" type="text" id="txtCode" class="w250" maxlength="8">
+                                                            <span class="error red">*</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="w120 tright">
+                                                            语言：
+                                                        </td>
+                                                        <td>
+                                                            <input name="txtLanguage" type="text" id="txtLanguage" class="w250" maxlength="50">
+                                                            <span class="error red">*</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="w120 tright">
+                                                            区域号：
+                                                        </td>
+                                                        <td>
+                                                            <input name="txtZoneCode" type="text" id="txtZoneCode" class="w250" maxlength="8">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="w120 tright">
+                                                            GMT：
+                                                        </td>
+                                                        <td>
+                                                            <input name="txtGMT" type="text" id="txtGMT" class="w250">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2" align="center">
+                                                            <a class="btn btn-gray add-attr-color mr20 ml50 mt20" data-id="0">提交</a>
+                                                            <a class="btn btn-gray add-attr-color mr20 mt20" href="CountryList.html">取消</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+</body>
+
+</html>

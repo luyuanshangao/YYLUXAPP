@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>用户角色分配</title>
+    {include file="layout/c_style" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/customFilter.css" type="text/css" />
+
+</head>
+
+<body>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+    <!-- BEGIN SIDEBAR -->
+    <!--#include file="layout/sidebar.html"-->
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content pt0 pl0 ml20">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                    <div>
+                        <div class="tab-content mt25">
+                            <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                <!-- start base table -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table width="800">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        用户名：<input id="txtUserName" type="text">&nbsp;&nbsp;&nbsp;
+                                                        <a href="" class="btn btn-gray">显示当前用户角色</a>
+                                                        <span id="msg_invaild" class="red fbold"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="fb">
+                                                        <b>角色</b>&nbsp;&nbsp;&nbsp; <span id="spCurUserNname"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div data-height="180" class="c_list">
+                                                            <span class="oCB sub_cb">
+                                                                <input id="ck_country_1" type="checkbox" value="1">
+                                                                <label for="ck_country_1">
+                                                                    Administrator       
+                                                                </label>
+                                                            </span>
+                                                                                            <span class="oCB sub_cb">
+                                                                <input id="ck_country_3" type="checkbox" value="3">
+                                                                <label for="ck_country_3">
+                                                                    F3                  
+                                                                </label>
+                                                            </span>
+                                                                                            <span class="oCB sub_cb">
+                                                                <input id="ck_country_4" type="checkbox" value="4">
+                                                                <label for="ck_country_4">
+                                                                    F4                  
+                                                                </label>
+                                                            </span>
+                                                                                            <span class="oCB sub_cb">
+                                                                <input id="ck_country_5" type="checkbox" value="5">
+                                                                <label for="ck_country_5">
+                                                                    xulj                
+                                                                </label>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tcenter">
+                                                        <a href="javascript:;" id="btnSave" class="btn btn-gray mt20 mr20">保 存</a>
+                                                        <a href="RoleManager.html" class="btn btn-gray mt20">取 消</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/static/js/RoleUser.js"></script>
+</body>
+</html>

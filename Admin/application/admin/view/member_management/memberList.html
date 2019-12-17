@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>DX_会员管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <!--#include file="layout/c_global_style.html"-->
+    {include file="layout/c_style" /}
+    {load href="/static/css/memberList.css" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="only-body-page-content">
+
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <div class="page-content pt0">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt25">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap bborder-no">
+                                            <form id="navbar" class="navbar-left" action="/MemberManagement/index" method="post" role="search">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li >
+                                                        <label class="c-h-ul-li-title w66">用户ID：</label>
+                                                        <!-- <input name="UserName" class="form-control input-small" type="text" value="{:input('UserName')}" /> -->
+                                                        <textarea class="form-control fr" placeholder="输入框只允许以&quot;,&quot;,&quot;;&quot;或换行隔开" name="ID" rows="3" cols="50">{:input('ID')}</textarea>
+                                                    </li>
+                                                    <li >
+                                                        <label class="c-h-ul-li-title w66">用户名：</label>
+                                                        <!-- <input name="UserName" class="form-control input-small" type="text" value="{:input('UserName')}" /> -->
+                                                        <textarea class="form-control fr" placeholder="输入框只允许以&quot;,&quot;,&quot;;&quot;或换行隔开" name="UserName" rows="3" cols="50">{:input('UserName')}</textarea>
+                                                    </li>
+                                                    <li >
+                                                        <label class="c-h-ul-li-title w66">邮箱：</label>
+                                                        <input name="Email" class="form-control input-small" type="text" value="{:input('Email')}" />
+                                                    </li>
+                                                    <li class="pb6">
+                                                        <label class="c-h-ul-li-title w36">状态：</label>
+                                                         <select name="Status" class="form-control input-small inline">
+                                                          <option value="">请选择</option>
+                                                          <option {if condition="input('Status') eq 1"} selected = "selected"{/if} value="1">已激活</option>
+                                                          <option {if condition="input('Status') eq '0'"} selected = "selected"{/if} value="0">未激活</option>
+                                                          <option {if condition="input('Status') eq 20"} selected = "selected"{/if} value="20">未激活已禁用</option>
+                                                          <option {if condition="input('Status') eq 21"} selected = "selected"{/if} value="21">激活已禁用</option>
+
+
+                                                       </select>
+                                                    </li>
+                                                   <li>
+                                                      <label class="c-h-ul-li-title w66">国家简码：</label>
+                                                      <input name="CountryCode" class="form-control input-small" type="text" value="{:input('CountryCode')}" />
+                                                    </li>
+                                                    <li class="w440">
+                                                        <label class="c-h-ul-li-title w66" for="reservationtime">生日：</label>
+                                                        <input type="text" name="BirthdayStart" id="reservationtime" class="form-control input-small startTime" value="{:input('BirthdayStart')}" />
+                                                        <span class="time-text w20">至</span>
+                                                        <input type="text" name="BirthdayEnd" id="canceltime" class="form-control input-small endTime"  value="{:input('BirthdayEnd')}"/>
+                                                    </li>
+                                                     <li class="w440">
+                                                        <label class="c-h-ul-li-title w66" for="reservationtime">注册时间：</label>
+                                                        <input type="text" name="RegisterStart" id="reservationtime" class="form-control input-small startTime" value="{:input('RegisterStart')}" />
+                                                        <span class="time-text w20">至</span>
+                                                        <input type="text" name="RegisterEnd" id="canceltime" class="form-control input-small endTime"  value="{:input('RegisterEnd')}"/>
+                                                    </li>
+                                                    <li class="w85">
+                                                        <label class="c-h-ul-li-title w60"></label>
+                                                        <a onclick="javascript:document:navbar.submit();" class="btn btn-gray inquire relative" href="javascript:;">查 询</a>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-padding table-hover">
+                                                    <colgroup>
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                    </colgroup>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>用户ID</th>
+                                                        <th>用户名</th>
+                                                        <th>来源</th>
+                                                        <th>邮箱</th>
+                                                        <th>名</th>
+                                                        <th>姓</th>
+                                                        <th>性别</th>
+                                                        <th>国家简码</th>
+                                                        <th>生日</th>
+                                                        <th>电话</th>
+                                                        <th>订单量</th>
+                                                        <th>状态</th>
+                                                        <th>注册时间</th>
+                                                        <th>最后登录时间</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {volist name="list" id="vo"}
+                                                        <tr>
+                                                            <td>{$vo.ID}</td>
+                                                            <td><a href="{:url('MemberManagement/edit',array('id'=>$vo.ID))}" target='_blank' class="Qing">{$vo.UserName}</a></td>
+                                                            <td>{if condition="$vo.ClientSource eq 1"}PC端{elseif condition="$vo.ClientSource eq 2"}APP端{elseif condition="$vo.ClientSource eq 3"}移动端{/if}</td>
+                                                            <td>{$vo.email}</td>
+                                                            <td>{$vo.FirstName}</td>
+                                                            <td>{$vo.LastName}</td>
+                                                            <td>{if condition="$vo['Gender'] eq 1"}男{elseif condition="$vo['Gender'] eq 2"/}女{else/}未知{/if}</td>
+                                                            <td>{$vo.CountryCode}</td>
+                                                            <td>{empty name="vo.Birthday"}{else/}{$vo['Birthday']|date="Y-m-d",###}{/empty}</td>
+                                                            <td>{$vo.Telephone}</td>
+                                                            <td>{$vo.OrderCount}</td>
+                                                            <td class="statu-td">
+                                                                {if condition="$vo.Status == 1 "}
+                                                                <a href="javascript:;" data-status="1" data-id="{$vo.ID}">
+                                                                    已激活
+                                                                </a>
+                                                                {elseif condition="($vo.Status eq 20) OR ($vo.Status eq 21)"/}
+                                                                <a href="javascript:;" data-status="20" data-id="{$vo.ID}">
+                                                                    禁用
+                                                                </a>
+                                                                {elseif condition="$vo.Status eq 0"/}
+                                                                <a href="javascript:;" data-status="0" data-id="{$vo.ID}">
+                                                                    未激活
+                                                                </a>
+                                                                {else /}
+                                                                <a href="javascript:;" class="Qing">
+                                                                    状态显示有误
+                                                                </a>
+                                                                {/if}
+                                                            </td>
+                                                            <td><?php if(!empty($vo['RegisterOn'])){echo date("Y-m-d H:i:s",$vo['RegisterOn']);} ?></td>
+                                                            <td><?php if(!empty($vo['LastLoginDate'])){echo date("Y-m-d H:i:s",$vo['LastLoginDate']);} ?></td>
+                                                            <td class="w150"><a href="{:url('MemberManagement/edit',array('id'=>$vo.ID))}" target='_blank' class="Qing">
+                                                                <i class="glyphicon glyphicon-edit f16" title="查看详情"></i>
+                                                            </a>
+
+                                                           <!--  -1 匿名账户不允许激活 0激活未激活账户 1已激活  -3账户不存在  10 未指定 20未激活禁用 21已激活禁用 -->
+                                                            {if condition = "($vo.Status eq 0)"}
+                                                                <button type="button" class="btn btn-success btn-sm update-status" data-status="1" data-from-status="{$vo.Status}" data-id="{$vo.ID}">激活</button>
+                                                                <button type="button" class="btn btn-danger btn-sm update-status" data-status="20" data-from-status="{$vo.Status}" data-id="{$vo.ID}">禁用</button>
+                                                            {elseif condition="$vo.Status eq 1"}
+                                                                <button type="button" class="btn btn-warning btn-sm" data-status="0" data-from-status="{$vo.Status}" data-id="{$vo.ID}">已激活</button>
+                                                                <button type="button" class="btn btn-danger btn-sm update-status" data-status="21" data-from-status="{$vo.Status}" data-id="{$vo.ID}">禁用</button>
+                                                            {elseif condition="$vo.Status eq 20"}
+                                                                <button type="button" class="btn btn-warning btn-sm update-status" data-status="0" data-from-status="{$vo.Status}" data-id="{$vo.ID}">开启</button>
+                                                                <button type="button" class="btn btn-danger btn-sm" data-status="21" data-from-status="{$vo.Status}" data-id="{$vo.ID}">已禁用</button>
+                                                            {elseif condition="$vo.Status eq 21"}
+                                                                <button type="button" class="btn btn-warning btn-sm update-status" data-status="1" data-from-status="{$vo.Status}" data-id="{$vo.ID}">开启</button>
+                                                                <button type="button" class="btn btn-danger btn-sm" data-status="20" data-from-status="{$vo.Status}" data-id="{$vo.ID}">已禁用</button>
+                                                            {/if}
+                                                            </td>
+                                                        </tr>
+                                                        {/volist}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row16 pd15 mt10">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                            {$page}
+                                            </div>
+                                        </div>
+                                        <!-- 订单内容 end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!--<script type="text/javascript" src="/assets/plugins/bootstrap-daterangepicker/daterangepicker-zh-cn.js"></script>-->
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script src="/static/js/member.js" type="text/javascript"></script>
+    <script>
+        $(function(){
+            Member.memberManage();
+        });
+    </script>
+    <!-- END JAVASCRIPTS -->
+
+</body>
+</html>

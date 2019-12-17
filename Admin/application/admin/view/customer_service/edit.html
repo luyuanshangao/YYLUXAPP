@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>编辑关税赔保</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    {include file="layout/c_global_style" /}
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+
+<body id="Order_List" class="page-header-fixed  page-sidebar-fixed">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="month6">
+                                        <div class="info-pb10 c-h-dl-label100 mt10">
+                                            <form id="addUserForm" class="f12_i form-horizontal" action="#" novalidate="novalidate">
+                                                <input id="exchange_rate" type="hidden" name="exchange_rate" value="{$CustomsInsurance.exchange_rate}">
+                                                <div class="form-body info-pb10 ml20">
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>订单号：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                {if condition="$list.id neq ''"}
+                                                                 <input type="hidden" name="id" value="{$list.id}">
+                                                                 <input  type="hidden" name="order_id" value="{$CustomsInsurance['order_id']}">
+                                                                <input  type="hidden" name="order_number" value="{$CustomsInsurance['order_number']}">
+                                                                <input  type="hidden" name="captured_amount" id="captured_amount" value="{$CustomsInsurance['captured_amount']}">
+                                                                 <label class="form-control input-medium" >{$list.order_number}</label>
+                                                                {else /}
+                                                                 <input value="{$list.order_number}" id="order_number_for_tariff"  name="order_number" class="form-control input-medium" type="text">
+                                                                 <input class="TxnID" type="hidden" name="TxnID" value="">
+                                                                {/if}
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <!--  <script type="text/javascript">
+
+                                                     </script> -->
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>付款时间：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                              {if condition="$list.id neq ''"}
+                                                               <label id="pay_time" class="form-control input-medium" ><?php echo  isset($CustomsInsurance['pay_time'])?date("Y-m-d H:i:s",$CustomsInsurance['pay_time']):''; ?></label>
+                                                              {else /}
+                                                                <!-- (付款数据由接口获取) -->
+                                                                <label  id="pay_time" class="form-control input-medium" ></label>
+                                                              <!--   <input type="text" name="startTime" id="reservationtime" class="form-control input-medium" value="{$data.startTime}" autocomplete="off"/> -->
+                                                              {/if}
+
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                     </dl>
+
+                                                     <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>币种：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                               <!-- <input value="{$list.currency_code}" id="input-color" name="currency_code" class="form-control input-medium" type="text"> -->
+                                                               <input readonly value="{$list.currency_code}" id="input-color" name="currency_code" class="form-control input-medium" type="text">
+                                                               <input type="hidden" id="input-from" name="from" class="form-control input-medium" type="text" value="{$list.from|default=0}">
+                                                               <!--  <select  class="form-control input-medium" data-val-required="币种不能为空" id="CurrencyCode" name="currency_code">
+                                                                  <option value="">请选择</option>
+                                                                  {if condition="$list.id neq ''"}
+                                                                      {volist name="riskConfig" id="vo"}
+                                                                         {if condition="$list.currency_code neq ''"}
+                                                                             <option {if condition="$vo.Name  eq $list.currency_code"}selected="selected"{/if} value="{$vo.Name}">{$vo.Name}</option>
+                                                                         {else /}
+                                                                             <option {if condition="$vo.Name  eq $CustomsInsurance.currency_code"}selected="selected"{/if} value="{$vo.Name}">{$vo.Name}</option>
+                                                                         {/if}
+
+                                                                      {/volist}
+                                                                   {else /}
+                                                                      {volist name="riskConfig" id="vo"}
+                                                                         <option name="{$vo.Name}"  value="{$vo.Name}">{$vo.Name}</option>
+                                                                      {/volist}
+                                                                  {/if}
+                                                                </select> -->
+                                                            </div>
+                                                        </dd><!--(暂不支持该币种)-->
+                                                        <dt></dt>
+                                                     </dl>
+                                                     <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>退款方式：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                               <!-- <input value="{$list.refund_type}" id="input-color" name="refund_type" class="form-control input-medium" type="text"> -->
+                                                               <select  class="form-control input-medium"  id="refund_type" name="refund_type">
+                                                                      <option value="">请选择</option>
+                                                                       {volist name="CustomsInsuranceType" id="ve"}
+                                                                            {if condition='$list["from"] eq 1'}
+                                                                               {if condition="strtolower($ve[1])  eq strtolower('Backtrack')"}
+                                                                                    <option selected="selected" value="{$ve[1]}">{$ve[1]}</option>
+                                                                               {/if}
+                                                                            {else if condition='$list["from"] eq 2' /}
+                                                                                {if condition="strtolower($ve[1])  eq strtolower('OverdueRefund')"}
+                                                                                    <option selected="selected" value="{$ve[1]}">{$ve[1]}</option>
+                                                                                {/if}
+                                                                            {/if}
+                                                                       {/volist}
+                                                                  <!--{volist name="CustomsInsuranceType" id="ve"}
+                                                                      <option {if condition="strtolower($ve[1])  eq strtolower($list.refund_type)"}selected="selected"{/if} value="{$ve[1]}">{$ve[1]}</option>
+                                                                  {/volist}-->
+                                                                  <!--  {volist name="PaymentMethod" id="ve"}
+                                                                      <option {if condition="strtolower($ve[1])  eq strtolower($list.refund_type)"}selected="selected"{/if} value="{$ve[1]}">{$ve[1]}</option>
+                                                                  {/volist} -->
+                                                               </select>
+                                                            </div>
+                                                        </dd>(当前只支持 {if condition='$list["from"] eq 1'}Backtrack 原路返回 {else /} OverdueRefund 退款方式 {/if})
+                                                        <dt></dt>
+                                                     </dl>
+                                                      <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label> TxnId：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                              <!--  <input value="{$list.TxnID}" id="input-color" name="TxnID" class="form-control input-medium" type="text"> -->
+                                                               <label name="TxnID"  id="TxnID" class="form-control input-medium" >{$list.TxnID}</label>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                     </dl>
+                                                     <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>金额：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                               <input value="{$list.amount}" id="input-amount" name="amount" class="form-control input-medium" type="text">
+                                                            </div>
+                                                        </dd>折成美元是：
+                                                         <span id="ConvertedPrice">${$CustomsInsurance['ConvertedPrice']|default=0}，最大支持
+                                                            <b>$40
+                                                            （{$list['currency_code']|default='USD'} {php}echo sprintf("%.2f",$CustomsInsurance['exchange_rate'] * 40){/php}）
+                                                            </b>
+                                                         </span>
+                                                        <dt></dt>
+                                                     </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix  paypal {if condition='$list.from == 1'}hide{/if}">
+
+
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>PayPal：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <input value="{$list.PayPal}" id="input-paypal" name="paypal" class="form-control input-medium" type="text">
+                                                            </div>
+                                                        <dt class="paypal-error"></dt>
+                                                    </dl>
+                                                     <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>关税证明：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                {foreach name="list['enclosure']" item="vol"}
+                                                                    <a target="_blank" href="{:DX_FTP_ACCESS_URL}{$vol}"><img src="{:DX_FTP_ACCESS_URL}{$vol}" width="50" height="50"></a>
+                                                                {/foreach}
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                     </dl>
+                                                     <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>退款原因：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                              <textarea name="reason" rows="4" cols="37">{$list.reason}</textarea>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                     </dl>
+                                                     <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>赔保状态：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                              <input {if condition="($list.report_status eq 1) OR ($list.id == '')"}checked="checked"{/if}  type="radio" value="1" name="report_status">待赔保</input>
+                                                              {if condition="$list.id neq '' and $list.from neq 2"}
+                                                                <input {if condition="$list.report_status eq 3"}checked="checked"{/if} type="radio" value="3" name="report_status">赔保完成</input>
+                                                                <input {if condition="$list.report_status eq 4"}checked="checked"{/if} type="radio" value="4" name="report_status">拒绝赔保</input>
+                                                              {/if}
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                     </dl>
+                                                     <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>录入人：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                               <label class="form-control input-medium" >{$list.username}</label>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                     </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix mt20">
+                                                        <dd class="layui-layer-btn ml80">
+                                                           <input type="hidden" id="url"  value="{:url('SystemManage/add_Configure')}">
+                                                            {if condition="($list.report_status eq 3) OR ($list.report_status eq 4)"}
+
+                                                            {else /}
+                                                              {if condition="$list neq ''"}
+                                                                  <a data-id="{$id}" class="btn btn-qing submit-btn" href="javascript:;">提交</a>
+                                                              {else /}
+                                                                  <a class="btn btn-qing submit-btn" href="javascript:;">提交</a>
+                                                              {/if}
+                                                            {/if}
+
+
+                                                            <a id="addressCancel" class="btn layui-layer-btn1" href="/CustomerService/CustomsInsurance/id/99">取消</a></dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                </div>
+                                            </form>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <!-- <script src="/static/js/system.js" type="text/javascript"></script> -->
+    <script src="/static/js/customer_service.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    $(function(){
+        App.init();
+        customer_service.CustomerService();
+    });
+    </script>
+    <!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+
+</html>

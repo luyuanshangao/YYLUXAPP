@@ -1,0 +1,211 @@
+@import '../base/variable.scss';
+.main{
+    background: $gray-1;
+}
+.search-wrap{
+    width: 100%;
+    padding: 10px;
+    position: relative;
+    background: $white;
+    .search-icon{
+        position: absolute;
+        top: 15px;
+        left:20px;
+        font-size:$f18 !important;
+    }
+    .search-text{
+        display: block;
+        width: 90%;
+        height:35px;
+        box-sizing: border-box;
+        padding: 0 10px 0 35px;
+        border-radius:4px;
+        -webkit-border-radius:4px;
+        -moz-border-radius:4px;
+        -ms-border-radius:4px;
+        -o-border-radius:4px;
+        box-shadow: 1px 1px 10px $gray-1;
+    }   
+    .new-icon{
+        display: inline-block;
+        position:absolute;
+        top:15px;
+        right:10px;
+        font-size:$f22 !important;
+    }
+}
+.banner-list{
+    background: $white;
+    position: relative;
+    img{
+        border-radius:8px;
+        -webkit-border-radius:8px;
+        -moz-border-radius:8px;
+        -ms-border-radius:8px;
+        -o-border-radius:8px;
+    }
+    .banner-swiper-pagination{
+        position: absolute;
+        z-index: 9999;
+        bottom: 20px;
+        @include tcenter();
+
+    }
+}
+.promise-list{
+    background: $white;
+    padding: 10px 0;
+    @include clearfix();
+    display:flex;
+    justify-content: space-between;
+    li{
+        display:flex;
+        box-sizing: border-box;
+        font-size: $f12;
+        color: $font-gray;
+        padding: 0 7px;
+        line-height:15px;
+        align-items:center;
+        img{
+            width: 20px;
+            margin-right:5px;
+        }
+    }
+}
+.category-list{
+    background: $white;
+    @include clearfix();
+    li{
+        box-sizing: border-box;
+        padding: 5px 10px;
+        width: 25%;
+        @include floatleft();
+        @include tcenter();
+        .img-box{
+            width: 50px;
+            height:50px;
+            border-radius:50px;
+            -webkit-border-radius:50px;
+            -moz-border-radius:50px;
+            -ms-border-radius:50px;
+            -o-border-radius:50px;
+            background: $gray-1;
+            margin: 0 auto;
+            margin-bottom:5px;
+            img{
+                display:inline-block;
+                width: 100%;
+                margin: auto;
+            }
+        }
+        a{
+            font-size: $f14;
+            color: $black-4;
+        }
+    }
+}
+.brand-box{
+    margin-top: 20px;
+    background: $white;
+    padding: 10px;
+    .brand-list{
+        > li{
+            margin-top: 10px;
+            position: relative;
+            width:100%;
+            
+            .brand-bg{
+                width:100%;
+                min-height:80px;
+                border-radius: 6px;
+                -webkit-border-radius: 6px;
+                -moz-border-radius: 6px;
+                -ms-border-radius: 6px;
+                -o-border-radius: 6px;
+                img{
+                    width: 100%;
+                }
+            }
+            .brand-item{
+                width: 50%;
+            }
+        }
+    }
+    .brand-product-list{
+        width: 50%;
+        height:100%;
+        display: flex;
+        position: absolute;
+        top: 0;
+        left:50%;
+        align-self:center;
+        z-index:2;
+        align-items:center;
+        li{
+           display: inline-block;
+           width:30%;
+           padding:10px;
+           background: $white;
+           margin-right: 10px;
+           border-radius: 4px;
+           -webkit-border-radius: 4px;
+           -moz-border-radius: 4px;
+           -ms-border-radius: 4px;
+           -o-border-radius: 4px;
+           img{
+                width:100%;
+            }
+        }
+        
+    }
+}
+.home-product-box{
+    background: $white;
+    padding: 10px;
+}
+.product-area{
+    .title{
+        display: flex;
+        justify-content:space-between;
+        font-size: $f14;
+        span{
+            font-weight: bold;
+        }
+    }
+    .hot-list{
+        margin-top: 10px;
+        .li{
+            margin-right:10px;
+            .img-box{
+               background: $gray-1;
+               padding: 10px;
+               box-sizing: border-box;
+               border-radius: 6px;
+               -webkit-border-radius: 6px;
+               -moz-border-radius: 6px;
+               -ms-border-radius: 6px;
+               -o-border-radius: 6px;
+               img{
+                   width: 100%;
+                }
+            }
+            .title{
+                margin-top: 5px;
+                white-space: nowrap;
+                text-overflow:ellipsis;
+                overflow: hidden;
+            }
+        }
+    }
+}
+.ad-banner{
+    margin-top: 20px;
+   img{
+    width:100%;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+}

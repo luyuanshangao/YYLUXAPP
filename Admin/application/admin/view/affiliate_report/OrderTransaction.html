@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>订单交易情况</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <!--#include file="layout/c_global_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="only-body-page-content">
+
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <div class="page-content pt0">
+                <!--end  按钮功能区 -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt25">
+                                    <div class="tab-pane active d-element-bind btns-link">
+                                        <div class="search-btn-wrap">
+                                            <form class="navbar-left" id="navbar" action="" method="post" role="search">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li class="w100">
+                                                        <label class="c-h-ul-li-title">Affiliate ID：</label>
+                                                    </li>
+                                                    <li class="w350">
+                                                        <textarea name="affiliate_id" id="affiliate_id"  rows="8" cols="40">{$data['affiliate_id']?$data['affiliate_id']:''}</textarea>
+                                                        <span>可输入多个，请用","或者";"分割</span>
+                                                    </li>
+                                                    <li class="w440">
+                                                        <label class="c-h-ul-li-title">交易时间(UTC)：</label>
+                                                        <input type="text" name="startTime" id="startTime" value="{$data['startTime']?$data['startTime']:''}" class="form-control input-small startTime">
+                                                        <span class="time-text w20">至</span>
+                                                        <input type="text" name="endTime" id="endTime"  value="{$data['endTime']?$data['endTime']:''}" class="form-control input-small endTime">
+                                                        (最早只能统计到昨天,而且时间间隔为30天)
+                                                    </li>
+                                                    <li class="w400">
+                                                        <label class="c-h-ul-li-title">操作：</label>
+                                                        <a class="btn btn-gray order-transaction" href="javascript:;">查询</a>
+                                                        <a class="btn btn-gray OrderTransaction" data-url="/AffiliateReport/Export_OrderTransaction" href="javascript:;">导出</a>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <!-- start base table -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-hover table-padding">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>日期</th>
+                                                            <th>订单总数</th>
+                                                            <th>订单原始总金额（$）</th>
+                                                            <th>订单当前总金额（$）</th>
+                                                            <th>取消订单总数</th>
+                                                            <th>取消订单总金额（$）</th>
+                                                            <th>新增Affiliate用户总数</th>
+                                                            <th>当前Affiliate用户总数</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {volist name="$list" id="vo"}
+                                                        <tr>
+                                                            <td>{$vo.date?$vo.date:''}</td>
+                                                            <td><a style="color: #35b9f7;" href="/AffiliateReport/ReportStatistics/startTime/{$vo.startTime}/endTime/{$vo.endTime}/affiliate_id/{$data['affiliate_id']?$data['affiliate_id']:''}">{$vo.order_num?$vo.order_num:'0'}</a></td>
+                                                            <!-- <td><a style="color: #35b9f7;" href="/AffiliateReport/ListOfDetails/startTime/{$vo.startTime}/endTime/{$vo.endTime}">{$vo.order_num}</a></td> -->
+                                                            <td>{$vo.price?$vo.price:'0.00'}</td>
+                                                            <td>{$vo.captured_amount_usd?$vo.captured_amount_usd:'0.00'}</td>
+                                                            <td>{$vo.order_cancel?$vo.order_cancel:'0'}</td>
+                                                            <td>{$vo.captured_amount_usd_cancel?$vo.captured_amount_usd_cancel:'0'}</td>
+                                                            <td>{$vo.sum?$vo.sum:'0'}</td>
+                                                            <td>{$vo.total?$vo.total:'0'}</td>
+                                                        </tr>
+                                                    {/volist}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row16 pd15">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/static/js/affiliate.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            affiliate.affiliate_order_statistics();
+        })
+    </script>
+</body>
+</html>

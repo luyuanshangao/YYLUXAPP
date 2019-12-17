@@ -1,0 +1,128 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/productMan.js" /}
+{load href="/static/js/module/activity.js" /}
+<style>
+    .main-base-table tr{border: 0 solid #e8e8e8;border-bottom: 0 solid #e8e8e8 !important;}
+    .main-base-table{border-top: 1px solid #e8e8e8 !important;}
+    .main-base-table tr td {padding: 0 !important;padding-top: 5px !important;}
+    .pull-right{float: right;}
+    .btn-product-release{padding: 3px 10px;}
+     /** 分页 **/
+    .pagination  li {display: inline;padding: 0 2px;float: left;}
+    .pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+    .pagination .active span{color: red;}
+    /** 产品描述 **/
+    .activity-desc{ /*padding: 5px;*/width: 806px;cursor: pointer;overflow : hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;}
+    .activity-desc:hover{background: #f8f8f8;}
+    .activity-desc-more{overflow: visible;white-space: normal;-webkit-line-clamp: 999999999;}
+    .activity-desc span{margin: 0 20px 6px 0;float: left;}
+</style>
+
+<div class="main-box fl product-management">
+    <ul class="main-cont-tabs">
+        <li {if condition='$tab_type == 1' }class="curr" {/if}>
+            <a href="{:url('MarketingPromotion/signUpActivity', ['tab_type'=>1])}">平台活动报名</a>
+        </li>
+        <li {if condition='$tab_type == 2' }class="curr" {/if}>
+            <a href="{:url('MarketingPromotion/signUpActivity', ['tab_type'=>2])}">待确认</a>
+        </li>
+        <li {if condition='$tab_type == 3' }class="curr" {/if}>
+            <a href="{:url('MarketingPromotion/signUpActivity', ['tab_type'=>3])}">参与中</a>
+        </li>
+        <li {if condition='$tab_type == 4' }class="curr" {/if}>
+            <a href="{:url('MarketingPromotion/signUpActivity', ['tab_type'=>4])}">已结束</a>
+        </li>
+    </ul>
+    <div class="box-white">
+        <form action="{:url('MarketingPromotion/signUpActivity')}" method="get" class="pb10 mt10" id="product-form">
+            <input type="hidden" name="tab_type" value="{$tab_type}">
+            <ul class="search-ul-layout">
+                <li>
+                    <label class="search-label-title">活动类型:</label>
+                    <select name="activity_type" style="width: auto;">
+                        <option value="">请选择</option>
+                        {volist name='activity_data_type' id='a_info'}
+                            <option value="{$a_info.id}" {if condition='$activity_type == $a_info["id"]'}selected="selected"{/if}>{$a_info.name}</option>
+                        {/volist}
+                    </select>
+                </li>
+                <li>
+                    <label class="search-label-title">活动名称:</label>
+                    <input type="text" name="activity_title" placeholder="活动名称" value="{:input('activity_title')}">
+                </li>
+                {if condition='$tab_type == 1'}
+                <li>
+                    <label class="search-label-title">活动状态:</label>
+                    <select name="activity_status">
+                        <option value="">请选择</option>
+                        <option value="1" {if condition='$activity_status == 1'}selected="selected"{/if}>可参加活动</option>
+                        <option value="2" {if condition='$activity_status == 2'}selected="selected"{/if}>全部</option>
+                    </select>
+                </li>
+                {/if}
+                <li class="search-li">
+                    <a href="javascript:$('#product-form').submit();" class="search-btn">搜索</a>
+                </li>
+            </ul>
+
+        </form>
+
+        {volist name='activity_data' id='val'}
+        <table class="main-base-table mt10">
+            <tr>
+                <td colspan="2">
+                    <a href="{:url('MarketingPromotion/activityDetail', ['activity_id'=>$val['id']])}" class="orange">{$val['activity_title']}</a>
+                    <div class="pull-right">
+                        {if condition="$val['activity_status'] == 1 && $val['is_join_activity'] == 1 "}
+                            <a href="{:url('MarketingPromotion/selectPro', ['tab_type'=>1, 'activity_id'=>$val['id']])}" class="btn-product-release btn-orange add-activity-pro-btn" data-id="{$val.id}">管理产品</a>
+                            <div class="btn-product-release btn-orange out-activity-btn" data-id="{$val.id}">退出报名</div>
+                        {elseif condition="$val['activity_status'] == 1 " /}
+                            <div class="btn-product-release btn-orange enroll-btn" data-id="{$val.id}">我要报名</div>
+                        {/if}
+                        <a href="{:url('MarketingPromotion/activityDetail', ['activity_id'=>$val['id']])}" class="btn-product-release btn-orange" data-id="{$val.id}">查看</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="w100">活动描述：</td>
+                <td class="w500"><div class="activity-desc" title="点击显示更多活动描述">{$val['description']}</div></td>
+            </tr>
+            <tr>
+                <td>活动报名时间：</td>
+                <td>{:date('Y-m-d H:i:s', $val['registration_start_time'])} - {:date('Y-m-d H:i:s', $val['registration_end_time'])}</td>
+            </tr>
+            <tr>
+                <td>活动进行时间：</td>
+                <td>{:date('Y-m-d H:i:s', $val['activity_start_time'])} - {:date('Y-m-d H:i:s', $val['activity_end_time'])}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><a href="{:url('MarketingPromotion/selectPro', ['tab_type'=>2, 'activity_id'=>$val['id']])}">查看报名产品</a></td>
+            </tr>
+        </table>
+        {/volist}
+        {empty name="activity_data"}
+        <table class="main-base-table mt10">
+            <tr>
+                <td colspan="2" align="center" height="50" style="line-height: 50px;"><strong class="f16">无相关数据</strong></td>
+            </tr>
+        </table>
+        {/empty}
+        <table class="main-base-table mt10">
+            <tr>
+                <td colspan="2" align="right">
+                    <div class="fr mt5">
+                    {$page}
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+    var ajax_url = {$url|default=''};
+    $('.activity-desc').click(function () {
+        $(this).toggleClass('activity-desc-more');
+    });
+</script>

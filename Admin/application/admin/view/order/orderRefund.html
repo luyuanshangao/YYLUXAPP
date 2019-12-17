@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>商城管理--订单管理--退换货管理</title>
+    {include file="layout/c_style" /}
+    {load href="/static/css/order-details.css" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+    <!-- BEGIN SIDEBAR -->
+    <!--#include file="layout/sidebar.html"-->
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content pt0 ml20 pl0">
+        <!-- 订单内容 begin -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                    <div>
+                        <div class="tab-content mt25">
+                            <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                <div class="search-btn-wrap bborder-no">
+                                    <form id="navbar" class="navbar-left" action="orderRefund" method="post">
+                                        <ul class="c-h-ul search-ul query-ul">
+                                            <li>
+                                                <label class="c-h-ul-li-title">售后编码：</label>
+                                                    <input name="after_sale_number" value="{:input('after_sale_number')}" class="form-control input-small" type="text" />
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">订单编号：</label>
+                                                <input name="order_number" value="{:input('order_number')}" class="form-control input-small" type="text" />
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">用户名称：</label>
+                                                <input name="customer_name" value="{:input('customer_name')}" class="form-control input-small" type="text" />
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">商家名称：</label>
+                                                <input name="store_name" value="{:input('store_name')}" class="form-control input-small" type="text" />
+                                            </li>
+                                            <li class="pb6">
+                                                <label class="c-h-ul-li-title">售后状态：</label>
+                                                <select name="after_sale_status" class="form-control input-small inline">
+                                                    <option value="">请选择</option>
+                                                    {volist name="apiConfig.after_sale_status" id="vo"}
+                                                        <option {if condition="$where.after_sale_status eq $vo.code"}selected = "selected"{/if} value="{$vo.code}">{$vo.name}</option>
+                                                    {/volist}
+                                                </select>
+                                            </li>
+                                            <li class="pb6">
+                                                <label class="c-h-ul-li-title">售后类型：</label>
+                                                <select name="type" class="form-control input-small inline">
+                                                    <option value="">请选择</option>
+                                                    {volist name="apiConfig.after_sale_type" id="vo"}
+                                                        <option {if condition="input('type') eq $vo.code"}selected = "selected"{/if} value="{$vo.code}">{$vo.name}</option>
+                                                    {/volist}
+                                                </select>
+                                            </li>
+                                            <li class="w440">
+                                                <label class="c-h-ul-li-title">投诉时间：</label>
+                                                <input type="text" name="startTime" class="form-control input-small data-time startTime" value="{:input('startTime')}" autocomplete="off"/>
+                                                <span class="time-text w20">至</span>
+                                                <input type="text" name="endTime" id="canceltime" class="form-control input-small data-time endTime"  value="{:input('endTime')}" autocomplete="off"/>
+                                            </li>
+                                            <li class="w500 ml10">
+                                                <label class="c-h-ul-li-title w120">某段时间下单投诉量：</label>
+                                                <input type="text" name="PlaceAnOrderStartTime" class="form-control input-small data-time startTime" value="{:input('PlaceAnOrderStartTime')}" />
+                                                <span class="time-text w20">至</span>
+                                                <input type="text" name="PlaceAnOrderEndTime" class="form-control input-small data-time endTime"  value="{:input('PlaceAnOrderEndTime')}"/>
+                                            </li>
+                                            <li class="w240">
+                                                <label class="c-h-ul-li-title w60"></label>
+                                                <a onclick="javascript:document:navbar.submit();"
+                                                class="btn btn-gray" href="javascript:;">查 询</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <a href="javascript:;" class="btn btn-gray search-btn export-excel-btn" style=" width: auto;">导出订单</a>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                </div>
+                                <!-- start base table -->
+                                <div class="row">
+                                    <div class="col-md-12 pb10">
+                                        <table class="table-basic table-hover table-padding">
+                                            <thead>
+                                            <tr>
+                                                <th>售后编码</th>
+                                                <th>订单编号</th>
+                                                <th class="w160">用户ID/用户名</th>
+                                                <th>卖家ID/卖家名称</th>
+                                                <th>付款标识</th>
+                                                <th>售后类型</th>
+                                                <th>退款类型</th>
+                                                <th>原因</th>
+                                                <th>退款金额</th>
+                                                <th>实际退款金额</th>
+                                                <th>图片</th>
+                                                <th>描述</th>
+                                                <th class="w100">提交时间</th>
+                                                <th class="w60">操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                {volist name="list" id="vo"}
+                                                    <tr>
+                                                        <td><a href="{:url('order/afterSaleDetails',array('after_sale_number'=>$vo.after_sale_number))}">{$vo.after_sale_number}</a></td>
+                                                        <td>{$vo.order_number}</td>
+                                                        <td>{$vo.customer_id}-{$vo.customer_name}</td>
+                                                        <td>{$vo.store_id}-{$vo.store_name}</td>
+                                                        <td>{$vo.payment_txn_id}</td>
+                                                        <td>{$vo.type_str}</td>
+                                                        <td>{$vo.refunded_type_str}</td>
+                                                        <td>{$vo.after_sale_reason}</td>
+                                                        <td>{$vo.refunded_fee}</td>
+                                                        <td>{$vo.captured_refunded_fee}</td>
+                                                        <td>
+                                                            {volist name='vo.imgs' id='img'}
+                                                            <img src="{$cdn_base_url}{$img}" width="50" height="50">
+                                                            {/volist}
+                                                        </td>
+                                                        <td class="w500" title="{$vo.remarks}">
+                                                            <div class="w500 exceed">{$vo.remarks}</div>
+                                                        </td>
+                                                        <td>{$vo.add_time |date="Y-m-d H:i:s",###}</td>
+                                                        <td>
+                                                            <a href="{:url('order/afterSaleDetails',array('after_sale_number'=>$vo.after_sale_number))}" class="Qing">售后详情</a>
+                                                        </td>
+                                                    </tr>
+                                                {/volist}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- end base table -->
+                                <div class="row row16 pd15">
+                                    <div class="dataTables_paginate paging_bootstrap fr">
+                                        {$page}
+                                    </div>
+                                </div>
+                                <!-- 订单内容 end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <!-- END JAVASCRIPTS -->
+<script>
+var ajax_url = {$url|default='""'};
+//导出订单excel数据
+$('.export-excel-btn').click(function () {
+var param = $('#navbar').serialize();
+window.location.href = ajax_url.Orders+'?'+param;
+});
+</script>
+</body>
+</html>

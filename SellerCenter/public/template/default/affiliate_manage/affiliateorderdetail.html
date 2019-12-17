@@ -1,0 +1,96 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/productMan.js" /}
+{load href="/static/js/module/activity.js" /}
+<style>
+    .main-base-table tr{border: 0 solid #e8e8e8;border-bottom: 0 solid #e8e8e8 !important;}
+    .main-base-table{border-top: 1px solid #e8e8e8 !important;}
+    .main-base-table tr td {padding: 0 !important;padding-top: 5px !important;}
+    .pull-right{float: right;}
+    .btn-product-release{padding: 3px 10px;}
+    .main-base-table tr td {padding: 10px !important;}
+    .product-management .main-base-table tr {border-bottom: 1px solid #e8e8e8 !important;}
+    .main-base-table tr {border: 1px solid #e8e8e8;}
+</style>
+
+<div class="main-box fl product-management">
+    <div class="box-white box-white-m0">
+        <h1 class="main-cont-title">{$data.order_number|default="-"}订单详情</h1>
+        <div class="panel">
+            <div class="content mt20 js-chose-table">
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                        订单编号：
+                    </dt>
+                    <dd>
+                        {$data.order_number|default="-"}
+                        <div class="err-tip mt10"></div>
+                    </dd>
+                </dl>
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                        订单状态：
+                    </dt>
+                    <dd>
+                        {$data.order_status_str|default="-"}
+                        <div class="err-tip mt10"></div>
+                    </dd>
+                </dl>
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                        结算状态：
+                    </dt>
+                    <dd>
+                        {$data.settlement_status_str|default="-"}
+                        <div class="err-tip mt10"></div>
+                    </dd>
+                </dl>
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                        提交时间：
+                    </dt>
+                    <dd>
+                        {notempty name='$data["add_time"]'}{:date('Y-m-d H:i:s', $data['add_time'])}{else /}-{/notempty}
+                        <div class="err-tip mt10"></div>
+                    </dd>
+                </dl>
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                        产品列表：
+                    </dt>
+                    <dd>
+                    </dd>
+                </dl>
+            </div>
+            <table class="main-base-table mt20">
+                <tr class="tr-border">
+                    <th>商品编号</th>
+                    <th>商品单价</th>
+                    <th>商品数量</th>
+                    <th>产品金额</th>
+                    <th>佣金比例(%)</th>
+                    <th>佣金金额</th>
+                    <th>结算金额</th>
+                </tr>
+                {volist name='data.item_data' id='val'}
+                <tr class="j-mouse-hover colorfbf">
+                    <td>{$val.sku_id}</td>
+                    <td>{$val.price}</td>
+                    <td>{$val.sku_count}</td>
+                    <td>{$val.total_amount}</td>
+                    <td>{$val.commission_rate}</td>
+                    <td>{$val.commission_price}</td>
+                    <td>{$val.settlement_price}</td>
+                </tr>
+                {/volist}
+            </table>
+            <dl class="dl-layout">
+                <dt class="w120 tright">
+                </dt>
+                <dd>
+                    <div class="mt10"><a href="{:url('index/AffiliateManage/affiliateOrderList')}" class="btn-product-release btn-orange">返回</a></div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>

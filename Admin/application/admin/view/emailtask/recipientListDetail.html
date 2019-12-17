@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>收件人列表详情页</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+
+</head>
+<body>
+    <div class="page-content pt0 ml20 pl0">
+        <div class="bg-color-gray0 area_btn0 border-gray ml0 mr0">
+            <a href="/Emailtask/recipientListIndex/id/207" class="btn btn-qing">返回</a>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mt20 f14 pb10">收件人信息：</div>
+                <div class="border-gray pd10">
+                    <ul class="ul-base-col-3 clearfix">
+                        <li>收件人列表标题:{$ScreeningList.title}</li>
+                        <li>筛选任务标题:{$ScreeningList.ScreeningText}</li>
+                        <li>收件人数:{$ScreeningList.RecordCount}</li>
+
+                        <li>是否拆分:{$ScreeningList.IsSplit==1?"是":"否"}</li>
+                        <li>邮件服务商:{$ScreeningList.EmailService}</li>
+                        <li>是否已使用:{$ScreeningList.IsUsed==1?"已使用":"未使用"}</li>
+
+                        <li>状态:{$ScreeningList.statustext}</li>
+                        <li>创建时间:{$ScreeningList.createtime}</li>
+                        <li>备注信息:{$ScreeningList.Remark}</li>
+                        <li>邮件语言:{$ScreeningList.langage}</li>
+                    </ul>
+                </div>
+                <div class="mt20 f14 pb10">收件人列表详情：</div>
+                <table class="table-basic table-padding table-hover">
+                    <thead>
+                        <tr>
+                            <th class="tcenter">编号</th>
+                            <th class="tcenter">国家</th>
+                            <th class="tcenter">语种</th>
+                            <th class="tcenter">总记录数</th>
+                            <th class="tcenter">本地路径</th>
+                            <th class="tcenter">状态</th>
+                            <th class="tcenter">时间</th>
+                            <th class="tcenter">备注</th>
+                            <th class="tcenter" >服务信息</th>
+                            <th class="tcenter">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {if condition="count($ScreeningLineList) >0"}
+                              {volist name="ScreeningLineList" id="val"} 
+                            <tr>
+                                <td>{$val.id}</td>
+                                <td>{$val.Country}</td>
+                                <td>{$val.langage}</td>
+                                <td>{$val.RecordCount}</td>
+                                <td>
+                                    <a href="/emailtask/download?path={$val.CsvFilePath}" class="blue">{$val.CsvFilePath}</a>
+                                </td>
+                                <td>{$val.StatusText}</td>
+                                <td>{$val.CreatTime}</td>
+                                <td>{$val.Remark}</td>
+                                <td >{$val.ServiceInfo}</td>
+                                <td>
+                                    {if condition="$val.status ==99"}
+                                    <a href="javascript:void(0)" onclick="EdmSystem.RetryUploadSenderInfo({$val.id})">重试</a>
+                                    {/if}
+                                </td>
+                            </tr>
+                             {/volist}
+                            {else /}
+                            <tr>
+                                <td colspan="9" class="tcenter" >暂无数据</td>
+                            </tr>
+                            {/if}
+                        
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/edmSystem.js?v=2019"></script>
+</body>
+</html>

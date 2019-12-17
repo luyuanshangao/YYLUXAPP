@@ -1,0 +1,88 @@
+
+.mmPaginator .totalCountLabel{
+  padding: 10px 0 0 0;
+}
+
+.mmPaginator .pageList li{
+  padding: 0;
+  margin: 0;
+  background-color: @c_white;
+  border: 1px solid @page_gray_border;
+  border-left-width: 0;
+}
+.mmPaginator .pageList li:hover{
+  background-color:@page_gray_bg;
+}
+
+.mmPaginator .pageList li.active{
+  padding-top: 0;
+  border: 1px solid @page_gray_border;
+  border-left-width: 0;
+  background-color: #efefef;
+}
+
+.mmPaginator .pageList li.active a{
+  color: #999999;
+  cursor: default;
+}
+
+.mmPaginator .pageList li.disable a{
+  color: #999999;
+}
+
+.mmPaginator .pageList li.disable{
+  background: @page_gray_bg;
+}
+
+.mmPaginator .pageList li.disable a{
+  color: #999999;
+}
+
+.mmPaginator .pageList li {
+  a, span {
+    display: inline-block;
+    padding: 9px 14px;
+    color: @c_black_1;
+    text-decoration: none;
+  }
+  span{
+    padding:7px 14px 11px 14px;
+  }
+}
+
+.mmPaginator .pageList li.prev{
+  border-left-width: 1px;
+  -webkit-border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  -webkit-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  -moz-border-radius-topleft: 4px;
+}
+
+
+.mmPaginator .pageList li.next{
+  -webkit-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  -moz-border-radius-topright: 4px;
+  -moz-border-radius-bottomright: 4px;
+}
+
+
+.mmPaginator .limit{
+  padding: 1px 0 0 0;
+  line-height: 1.5;
+  vertical-align: top;
+}
+.mmPaginator .limit select{
+  color: #555;
+  border:1px solid @page_gray_border;
+  padding:8px 5px;
+  width: 90px;
+}
+.mmPaginator .limit select:focus{
+  border-color:@c_qing_1;
+  outline: none;
+}

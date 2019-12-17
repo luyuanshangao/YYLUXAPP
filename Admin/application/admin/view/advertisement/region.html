@@ -1,0 +1,160 @@
+{include file="layout/c_global_style" /}
+{include file="layout/c_style" /}
+{load href="/static/css/advertisement.css" /}
+{include file="layout/c_corejs" /}
+{load href="/static/js/dx_cs_ad.js" /}
+
+<div class="page-container pd20">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                <div>
+                    <div class="tab-content">
+                        <div class="tab-pane active d-element-bind btns-link" id="month6">
+                            <div class="search-btn-wrap">
+                                <form id="navbar" class="navbar-left" action="attribute" method="post" role="search">
+                                    <ul class="c-h-ul search-ul query-ul">
+                                        <li class="w260">
+                                            <label class="c-h-ul-li-title w20"></label>
+                                            <a class="btn btn-gray add-region" href="javascript:;">添 加</a>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered mt15 table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>标识ID</th>
+                                            <th>站点</th>
+                                            <th>页面名称</th>
+                                            <th>区域</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {volist name="list" id="val"}
+                                        <tr>
+                                            <td>{$val._id}</td>
+                                            <td>{$val.SiteName}</td>
+                                            <td>{$val.PageName}</td>
+                                            <td>{$val.AreaName}</td>
+                                            <td>
+                                                <a href="javascript:;" data-id="{$val._id}" class="Qing region-editor">
+                                                    <i class="glyphicon glyphicon-edit f16"></i>
+                                                </a>
+                                                <!-- 编辑区域BOX start -->
+                                                <div id="editor_region_box_{$val._id}" class="none default-padding page-box">
+                                                    <form class="editor-region-form" id="editor_region_form_{$val._id}">
+                                                        <table class="table mt10">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td class="text-align-reverse">站点：</td>
+                                                                <td>
+                                                                    <input type="hidden" value="{$val._id}" name="_id">
+                                                                    <input type="hidden" value="DX" name="SiteName">
+                                                                    <select name="SiteID"  class="form-control w200">
+                                                                        <option value="1" selected="selected">DX</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-align-reverse">页面名称：</td>
+                                                                <td>
+                                                                    <select name="PageID" class="form-control w200">
+                                                                        {volist name="page_data" id="page"}
+                                                                            {if condition="$page['_id'] == $val['PageID'] "}
+                                                                                <option value="{$page._id}" selected="selected">{$page.PageName}</option>
+                                                                            {else/}
+                                                                                <option value="{$page._id}">{$page.PageName}</option>
+                                                                            {/if}
+                                                                        {/volist}
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-align-reverse">区域名称：</td>
+                                                                <td>
+                                                                    <input type="text" name="AreaName" id="" value="{$val.AreaName}" class="form-control w200" placeholder="请输入区域名称">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-align-reverse"></td>
+                                                                <td>
+                                                                    <span class="btn btn-qing editor-region-confirm" data-id="{$val._id}">确认保存</span>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </form>
+                                                </div>
+                                                <!-- 编辑区域BOX end -->
+                                            </td>
+                                        </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                            <div class="row row16 pd15">
+                                <div class="col-md-16">
+                                    <div class="dataTables_paginate paging_bootstrap fr">
+                                        {$list->render()}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加区域BOX start -->
+<div id="add_region_box" class="none default-padding page-box">
+    <form id="add_region_form">
+        <table class="table mt10">
+            <tbody>
+            <tr>
+                <td class="text-align-reverse">站点：</td>
+                <td>
+                    <input type="hidden" value="DX" name="SiteName">
+                    <select name="SiteID" id="SiteID" class="form-control w200">
+                        <option value="1" selected="selected">DX</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-align-reverse">页面名称：</td>
+                <td>
+                    <select name="PageID" class="form-control w200">
+                        {volist name="page_data" id="page"}
+                            <option value="{$page._id}" selected="selected">{$page.PageName}</option>
+                        {/volist}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-align-reverse">区域名称：</td>
+                <td>
+                    <input type="text" name="AreaName" value="" id="" class="form-control w200" placeholder="请输入区域名称">
+                </td>
+            </tr>
+            <tr>
+                <td class="text-align-reverse"></td>
+                <td>
+                    <span class="btn btn-qing add-region-confirm">确认保存</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<!-- 添加区域BOX end -->
+
+<script>
+    var url = {$url|default=''};
+</script>

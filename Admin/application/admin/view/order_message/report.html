@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>DX_订单留言统计报表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="only-body-page-content">
+
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <div class="page-content pt0">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt25">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap">
+                                            <form id="navbar" class="navbar-left ExportForm" action="{:url('OrderMessage/report')}" method="post" role="search">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li class="ml20 pb6 w300">
+                                                         <label class="c-h-ul-li-title w140">任务完成数量报表 粒度：</label>
+                                                         <select name="status" class="form-control input-small inline status" id="granularity" data-url="{:url('OrderMessage/getQueryTime')}">
+                                                             <option value="">请选择</option>
+                                                             <option {if condition="$param_data.status eq 1"} selected = "selected"{/if} value="1">天</option>
+                                                             <option {if condition="$param_data.status eq 2"} selected = "selected"{/if} value="2">周</option>
+                                                             <option {if condition="$param_data.status eq 3"} selected = "selected"{/if} value="3">月</option>
+                                                         </select>
+                                                    </li>
+                                                    <li class="w440">
+                                                        <label class="c-h-ul-li-title" for="reservationtime">时间：</label>
+                                                        <input type="text" name="startTime" id="reservationtime" class="form-control input-small start_add_time" value="{$param_data['startTime']|default=''}" autocomplete="off" />
+                                                        <span class="time-text">至</span>
+                                                        <input type="text" name="endTime" id="canceltime" class="form-control input-small end_add_time"  value="{$param_data['endTime']|default=''}" autocomplete="off"/>
+                                                    </li>
+                                                    <!--<li class="ml20 pb6 w300">
+                                                        <label class="c-h-ul-li-title w80">店铺：</label>
+                                                        <select name="seller_id" class="form-control input-small inline seller_id">
+                                                            <option value="">全部</option>
+                                                            {foreach name="seller_data" item="vo"}
+                                                            <option {if condition="input('seller_id') eq $vo['id']"} selected = "selected"{/if} value="{$vo['id']}">{$vo['true_name']}</option>
+                                                            {/foreach}
+                                                        </select>
+                                                    </li>-->
+                                                    <li  class="w80">
+                                                        <a onclick="javascript:document:navbar.submit();" class="btn btn-gray relative" href="javascript:;">查 询</a>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-padding table-hover">
+                                                    <colgroup>
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                    </colgroup>
+                                                    <thead>
+                                                    <tr>
+                                                    <!-- {volist name="CustomerServiceReport[0]" id="vo"}
+                                                        <th>{$vo}</th>
+                                                    {/volist} -->
+                                                    <th>负责人</th>
+                                                    <th>留言订单数量</th>
+                                                    <th>新进留言订单数量</th>
+                                                    <th>分配订单数量</th>
+                                                    <th>回复订单数量</th>
+                                                    <th>解决订单数量</th>
+                                                    <th>回复时效</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {volist name="admin_user" id="vo"}
+                                                    <tr>
+                                                        <td>{$vo['username']}</td>
+                                                        <td>-</td>
+                                                        <td>-</td>
+                                                        <td><a href="javascript:void (0)" class="jump-distribution-order-message" data-url="{:url('OrderMessage/index')}" data-admin-user="{$vo['id']}">{$order_message_total[$vo['id']]['distribution_order_count']}</a></td>
+                                                        <td><a href="javascript:void (0)" class="jump-reply-order-message" data-reply-type="2" data-url="{:url('OrderMessage/index')}" data-admin-user="{$vo['id']}">{$order_message_total[$vo['id']]['reply_order_count']}</a></td>
+                                                        <td><a href="javascript:void (0)" class="jump-reply-order-message" data-reply-type="3" data-url="{:url('OrderMessage/index')}" data-admin-user="{$vo['id']}">{$order_message_total[$vo['id']]['solve_order_count']}</a></td>
+                                                        <td>{$order_message_total[$vo['id']]['order_aging_avg']} {notempty name="order_message_total[$vo['id']]['order_aging_avg']"}<B>h</B>{/notempty}</td>
+                                                    </tr>
+                                                    {/volist}
+                                                    <tr>
+                                                        <td>合计</td>
+                                                        <td>{$order_message_total[0]['order_count']}</td>
+                                                        <td>{$order_message_total[0]['new_order_count']}</td>
+                                                        <td>{$order_message_total[0]['distribution_order_count']}</td>
+                                                        <td>{$order_message_total[0]['reply_order_count']}</td>
+                                                        <td>{$order_message_total[0]['solve_order_count']}</td>
+                                                        <td>{$order_message_total[0]['order_aging_avg']} {notempty name="order_message_total[$vo['id']]['order_aging_avg']"}<B>h</B>{/notempty}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                         <div class="search-btn-wrap">
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-padding table-hover">
+                                                    <colgroup>
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                    </colgroup>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>负责人</th>
+                                                        <th>支付状态</th>
+                                                        <th>发货状态</th>
+                                                        <th>未收到货</th>
+                                                        <th>售后状态</th>
+                                                        <th>其他状态</th>
+                                                        <th>合计</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {volist name="admin_user" id="vo"}
+                                                    <tr>
+                                                        <td>{$vo['username']}</td>
+                                                        <td>{$order_message_total[$vo['id']]['new_order_pending_count']|default=0}</td>
+                                                        <td>{$order_message_total[$vo['id']]['new_order_shipment_count']|default=0}</td>
+                                                        <td>{$order_message_total[$vo['id']]['new_order_awaiting_count']|default=0}</td>
+                                                        <td>{$order_message_total[$vo['id']]['new_order_aftersales_count']|default=0}</td>
+                                                        <td>{$order_message_total[$vo['id']]['new_order_other_count']|default=0}</td>
+                                                        <td>{$order_message_total[$vo['id']]['new_order_pending_count']+$order_message_total[$vo['id']]['new_order_shipment_count']+$order_message_total[$vo['id']]['new_order_awaiting_count']+$order_message_total[$vo['id']]['new_order_aftersales_count']+$order_message_total[$vo['id']]['new_order_other_count']}</td>
+                                                    </tr>
+                                                    {/volist}
+                                                    <tr>
+                                                        <td>未分配</td>
+                                                        <td>{$no_distribution_order_message_total['new_order_pending_count']|default=0}</td>
+                                                        <td>{$no_distribution_order_message_total['new_order_shipment_count']|default=0}</td>
+                                                        <td>{$no_distribution_order_message_total['new_order_awaiting_count']|default=0}</td>
+                                                        <td>{$no_distribution_order_message_total['new_order_aftersales_count']|default=0}</td>
+                                                        <td>{$no_distribution_order_message_total['new_order_other_count']|default=0}</td>
+                                                        {php}
+                                                        $no_distribution_order_message_total_count = $no_distribution_order_message_total['new_order_pending_count']+$no_distribution_order_message_total['new_order_shipment_count']+$no_distribution_order_message_total['new_order_awaiting_count']+$no_distribution_order_message_total['new_order_aftersales_count']+$no_distribution_order_message_total['new_order_other_count'];
+                                                        {/php}
+                                                        <td>{$no_distribution_order_message_total_count|default=0}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>合计</td>
+                                                        <td>{$order_message_total[0]['new_order_pending_count']|default=0}</td>
+                                                        <td>{$order_message_total[0]['new_order_shipment_count']|default=0}</td>
+                                                        <td>{$order_message_total[0]['new_order_awaiting_count']|default=0}</td>
+                                                        <td>{$order_message_total[0]['new_order_aftersales_count']|default=0}</td>
+                                                        <td>{$order_message_total[0]['new_order_other_count']|default=0}</td>
+                                                        <td>{$order_message_total[0]['new_order_pending_count']+$order_message_total[0]['new_order_shipment_count']+$order_message_total[0]['new_order_awaiting_count']+$order_message_total[0]['new_order_aftersales_count']+$no_distribution_order_message_total_count+$order_message_total[0]['new_order_other_count']}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row16 pd15 mt10">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                            {$page?$page:''}
+                                            </div>
+                                        </div>
+                                        <!-- 订单内容 end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!--<script type="text/javascript" src="/assets/plugins/bootstrap-daterangepicker/daterangepicker-zh-cn.js"></script>-->
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/static/js/public.js"></script>
+    <script type="text/javascript" src="/static/js/orderMessageReport.js"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+
+
+    </script>
+    <!-- END JAVASCRIPTS -->
+
+</body>
+</html>

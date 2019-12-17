@@ -1,0 +1,369 @@
+@import "../base/bases.less";
+@import "../tool/tools.less";
+body {
+  min-width: 1280px;
+}
+
+i, em {
+  font-style: normal;
+}
+
+h1 {
+  font-size: @h1_size;
+}
+
+h2 {
+  font-size: @h2_size;
+}
+
+/*
+.form-control {
+    border-color: @c_gray_1;
+    &:focus {
+        border-color: @c_qing_1;
+    }
+}
+*/
+.page-container {
+  .page-header-fixed &{
+    margin-top: 55px;
+  }
+  .only-body-page-content &{
+    margin-top: 0;
+  }
+}
+
+.header {
+  &.navbar {
+    .navbar-brand {
+      width: @sidebar-width;
+    }
+    .hor-menu {
+      ul.nav {
+        li > a {
+          //font-size: @body_font_size;
+        }
+      }
+    }
+    .navbar-nav > li {
+      &.dropdown {
+        .dropdown-toggle {
+          padding: 20px 20px 14px;
+          color: @c_white;
+          .badge {
+            top: 2px;
+            right: 0;
+          }
+        }
+        &.user {
+          .dropdown-toggle {
+            padding: 13px 0px 13px 6px;
+            .username {
+              color: @c_white;
+            }
+            &:hover {
+              background-color: @c_qing_4;
+            }
+          }
+          .dropdown-menu {
+            > li {
+              > a:hover {
+                background-color: @c_qing_3;
+                color: @c_white;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.dropdown.open {
+  .dropdown-toggle {
+    background-color: @c_qing_4;
+  }
+}
+
+@media (min-width: 992px) {
+  .page-sidebar-fixed{
+    .page-sidebar{
+      top:57px;
+    }
+  }
+  .page-content {
+    margin-left: @sidebar-width;
+    padding-top: 15px;
+    .only-body-page-content &{
+      margin-left: 0;
+    }
+    &.pt0{
+      padding-top: 0;
+    }
+    //重定义16列布局
+    .row16 {
+      & > .col-md-1.col-width1 {
+        width: 8.25%;
+      }
+      & > .col-md-1.col-width1-4 {
+        width: 4.25%;
+      }
+      & > .col-md-1.col-width1-5 {
+        width: 5.25%;
+      }
+      & > .col-md-1.col-width1-7 {
+        width: 7.25%;
+      }
+      & > .col-md-2.col-width2 {
+        width: 10.5%;
+      }
+    }
+  }
+
+  .page-sidebar {
+    width: @sidebar-width;
+  }
+}
+
+.page-title {
+  font-size: @f14;
+  color: @c_black;
+  letter-spacing: 0;
+  small {
+    font-size: @f12;
+    margin-left: 30px;
+  }
+  &.mainTitle {
+    font-size: @f24;
+    font-family: @font-family-base;
+  }
+}
+
+.c_list, .index_list {
+  list-style: none;
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  -webkit-margin-start: 0;
+  -webkit-margin-end: 0;
+  -webkit-padding-start: 0;
+  -webkit-padding-end: 0;
+  li {
+    float: left;
+  }
+}
+
+.feeds.feeds_n {
+  & li {
+    background: none;
+  }
+  & .col2 {
+    & .date {
+      font-style: normal;
+    }
+  }
+}
+
+.index_list {
+  li {
+    padding: 20px;
+    //width: 140px;
+    overflow: hidden;
+    margin-left: -1px;
+    border: 1px solid @c_gray_1;
+  }
+}
+
+.feeds .col2 {
+  width: 100px;
+  margin-left: -100px;
+}
+
+.page-sidebar-menu {
+  & > li {
+    & > a {
+      font-size: @body_font_size;
+    }
+    &.active > a {
+      font-size: @body_font_size;
+    }
+    &.open > a {
+      font-size: @body_font_size;
+    }
+    & > ul {
+      &.sub-menu {
+        & > li > a {
+          font-size: @body_font_size;
+        }
+      }
+    }
+  }
+}
+
+div[lang="zh-cn"] {
+  iframe[src="about:blank"] {
+    display: block;
+  }
+}
+
+.page-sidebar {
+  .sidebar-toggler {
+    margin-left: 148px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+//搜索图标，放大镜重定义
+.input-icon {
+  &.right {
+    i {
+      margin-top: 8px;
+    }
+  }
+}
+
+//短信发送页面，执行成功颜色
+#toast-container {
+  > div {
+    color: @c_black;
+  }
+}
+
+.toast-success {
+  background: @success;
+}
+
+.toast {
+  .toast-close-button {
+    background-image: url("../../img/portlet-remove-icon.png") !important;
+  }
+}
+
+#toast-container {
+  > .toast-success {
+    background-image: url("../../img/draw-collapse-icon.png") !important;
+  }
+}
+
+.form-horizontal {
+  .radio {
+    > span {
+      margin-top: 0;
+    }
+  }
+}
+
+//表单验证信息框颜色重置
+.alert-danger{
+  background: @danger;
+  color: @c_black;
+}
+.alert-success{
+  background: @success;
+  color:@c_black;
+}
+
+//layer弹窗重定义row样式
+.layui-layer-content {
+  .modal-body {
+    .row {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+}
+
+/*select多选下拉框样式重定义开始*/
+.query-ul{
+  &.search-ul{
+    &.c-h-ul{
+      .dropdown-menu{
+        li{
+          width:100%;
+          padding-bottom: 0;
+        }
+      }
+    }
+  }
+}
+.bootstrap-select{
+  &.btn-group{
+   &.show-tick{
+     margin-bottom: 0;
+     .btn:focus{
+       outline: none !important;
+     }
+     &.open{
+       .dropdown-toggle{
+         &.btn-default{
+           border-color:@c_qing_2;
+         }
+       }
+     }
+   }
+    .dropdown-menu{
+      width:auto;
+      li>a{
+        padding: 6px 18px;
+      }
+    }
+  }
+}
+.bootstrap-select{
+  &.btn-group{
+    height:29px;
+    line-height: 29px;
+  }
+}
+/*select2重定义样式结束*/
+
+/*select2自动补全下拉框样式重定义开始*/
+.select2-container{
+  &.select2-container-active{
+    .select2-choice{
+      border-color: @c_qing_2 !important;
+    }
+  }
+  &.select2-dropdown-open{
+    &.select2-drop-above{
+      .select2-choice{
+        border-color: @c_qing_2 !important;
+      }
+    }
+  }
+  .select2-choice{
+    border-color: @c_gray_1 !important;
+    background-image: none !important;
+    height: 29px;
+    .select2-arrow{
+      border-left: none !important;
+      b{
+        background-position: 0 -2px !important;
+      }
+    }
+  }
+}
+.select2-with-searchbox{
+  &.select2-drop{
+    &.select2-drop-above{
+      &.select2-drop-active{
+        border-color: @c_qing_2 !important;
+      }
+    }
+  }
+}
+
+.select2-with-searchbox{
+  &.select2-drop-active{
+    border-color: @c_qing_2 !important;
+  }
+}
+
+.bs-actionsbox{
+  .clearfix();
+}
+
+/*select2自动补全下拉框样式重定义结束*/
+
+
+

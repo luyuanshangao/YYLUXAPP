@@ -1,0 +1,60 @@
+.login-register-box{
+    padding:0 10px;
+}
+.form-box{
+    margin-top: 10px;
+    position: relative;
+    input{
+        padding:5px;
+        box-sizing: border-box;
+        width: 100%;
+        height:40px;
+        line-height:40px;
+        border:none;
+        border-bottom: 1px solid $border-color;
+    }
+    .code-span-box{
+        position: absolute;
+        right:10px;
+        display: inline-block;
+    }
+    .code-span{
+        display: inline-block;
+        padding:0 10px;
+        line-height:28px;
+        height:28px;
+        border: 1px solid $border-color;
+        &.gray-bg{
+            background: $gray;
+            color: $white;
+        }
+    }
+}
+.login-type-box{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items:center;
+}
+.user-agree{
+    height:40px;
+    @include tcenter();
+    line-height:20px;
+    padding-bottom: 10px;
+    a{
+        text-decoration: underline;
+    }
+}
+.login-type-list{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content:space-around;
+    position: fixed;
+    bottom:20px;
+    width: 100%;
+    align-items: center;
+    font-size: $f14;
+}

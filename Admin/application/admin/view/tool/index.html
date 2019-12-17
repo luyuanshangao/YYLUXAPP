@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+	<title>jQuery treeview</title>
+	<!-- <link rel="stylesheet" href="/public/tree/css/jquery.treeview.css" />
+	<link href="/public/dxHtml/assets/css/style-bby.css" rel="stylesheet" type="text/css" /> -->
+
+	{include file="layout/c_style" /}
+	<!-- <link rel="stylesheet" href="/public/tree/css/screen.css" /> -->
+	{include file="layout/c_corejs" /}
+	<!-- <script src="/public/dxHtml/assets/plugins/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/public/js/custom.js"></script>
+	<script src="/public/tree/js/jquery.cookie.js"></script>
+	<script src="/public/tree/js/jquery.treeview.js"></script>
+	<script type="text/javascript" src="/public/tree/js/demo.js"></script>
+    <script type="text/javascript" src="/public/layer/layer/layer.js"></script> -->
+	</head>
+	<body>
+	<div id="main" class="bd-color">
+		<div class="qing-bg pd10 white f14 mb20">历史数据同步</div>
+			<table>
+				<tr>
+					<td><a class="btn btn-gray ml20 mb10" href="{:url('tool/index',array('isView'=>1))}">同步类别数据--使用PDC数据初始化</a></td>
+					<td><a class="btn btn-gray ml20 mb10" href="{:url('tool/index',array('isView'=>2))}">同步类别数据--导入后台与ERP类别ID关系数据</a></td>
+					<td><a class="btn btn-gray ml20 mb10" href="{:url('tool/getERPDataAndInsert')}">同步类别数据--调用ERP接口获取类别数据</a></td>
+					<td><a class="btn btn-gray ml20 mb10" href="{:url('tool/updateToMongo')}">同步类别数据--将类别数据更新到Mongo</a></td>
+					<td><a class="btn btn-gray ml20 mb10" href="{:url('tool/asyncAttr',array('class_id'=>0))}">同步筛选属性(销售属性)数据</a></td>
+				</tr>
+				<tr>
+					<td><a class="btn btn-gray ml20 mb10" href="{:url('tool/export_PDC_class')}">类别数据导出--PDC类别数据</a></td>
+					<td><a class="btn btn-gray ml20 mb10" href="{:url('tool/export_ERP_class')}">类别数据导出--ERP类别数据</a></td>
+				</tr>
+				<tr>
+					<td><a class="btn btn-gray ml20 mb10" href="{:url('tool/asyncPDCBrandToERPBrand')}">同步PDC类别的品牌数据到ERP类别</a></td>
+					<td><a class="btn btn-gray ml20 mb10" href="{:url('tool/redadEexcel')}">读取EXCEL文件到产品类别表</a></td>
+					<td><a class="btn btn-gray ml20 mb10" href="{:url('tool/History')}">历史记录生成</a></td>
+
+					<td><a class="btn btn-gray ml20 mb10" href="{:url('tool/hk_inventory_set_zero')}">916数据设置库存为0</a></td>
+				</tr>
+			</table>
+	<div class="success_data"></div>
+</div>
+<script type="text/javascript">
+  function update(url){
+       $.ajax({
+            type:"POST",
+            url:url,
+            // data:{ID:e,Status:Status},
+            dataType:"json",
+            cache:false,
+            success:function(msg){
+              if(msg.code == 200){
+                 layer.msg(msg.result, {icon: 1});
+                  setTimeout(function(){
+                    window.location.reload()
+                },1500);
+              }else{
+                 layer.msg(msg.result, {icon: 2});
+              }
+            },
+            error:function(error){layer.msg('提交出错', {icon: 1});}
+        });
+  }
+
+</script>
+</body></html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+	<title>jQuery treeview</title>
+	<link rel="stylesheet" href="/tree/css/jquery.treeview.css" />
+	<link href="/assets/css/style-bby.css" rel="stylesheet" type="text/css" />
+	{include file="layout/c_style" /}
+	{include file="layout/c_corejs" /}
+	<link rel="stylesheet" href="/tree/css/screen.css" />
+  {load href="/static/css/productManagementIndex.css" /}
+    <script type="text/javascript" src="/js/custom.js"></script>
+	<script src="/tree/js/jquery.cookie.js"></script>
+	<script src="/tree/js/jquery.treeview.js"></script>
+	<script type="text/javascript" src="/tree/js/demo.js"></script>
+    <script type="text/javascript" src="/layer/layer/layer.js"></script>
+	</head>
+	<body class="only-body-page-content">
+	<div id="main" class="bd-color">
+		<div class="qing-bg pd10 white f14 mb20">分类维护</div>
+
+	<!-- <a href="demo.js">Pagecode</a> -->
+
+<script type="text/javascript">
+
+  function classid(e){
+  	  var id = e;
+      var hitee = $(".hit"+id).attr("data-id");
+      var val = $(".class"+id).find("li").length;
+      if(val && !hitee){
+	         var b =	$(".hitarea"+id).hasClass('expandable-hitarea');
+	         if(b){
+		             $(".hitarea"+id).removeClass('expandable-hitarea');
+		             $(".hitarea"+id).addClass('collapsable-hitarea');
+
+		             $(".class"+id).toggle();
+	             // console.log(11111);
+
+	         }else{
+		         	 $(".hitarea"+id).addClass('expandable-hitarea');
+		             $(".hitarea"+id).removeClass('collapsable-hitarea');
+
+		             if(".class"+id == ".class1"){
+		               $(".class1").addClass('shuoge');
+		             }else{
+		             	$(".class"+id).hide();
+		             }
+	         }
+	      	 return;
+      }else{
+      	    $(".hitarea"+id).removeClass('expandable-hitarea');
+      }
+      // $('body').on('click','#academyAddEdit',function(){});
+  	  $.ajax({
+            type:"POST",
+            url:"{:url('ProductManagement/class_name')}",
+            data:{id:id},
+            dataType:"json",
+            cache:false,
+            success:function(msg){
+              // $('.class'+e).attr('title', alt).after('<h4>' + alt + '</h4>');
+              $('.class'+e).prepend(msg.html);
+
+
+            },
+            error:function(error){}
+        });
+
+  }
+
+  //添加子级分类弹框
+  function add_class(e){
+      var level= 0
+      if(e == 0){
+          var id        = 0;
+      }else{
+          var id        = $(".classid"+e).attr("data-id");
+          level        = $(".classid"+e).attr("data-level");
+      }
+      layer.open({
+          title: '添加分类信息',
+          type: 1,
+          skin: 'layui-layer-rim', //加上边框
+          area: ['450px', '520px'], //宽高
+          content: '<div class="pl30">' +
+          '<input type="hidden" class="classification" value="'+id+'"> ' +
+          '<input type="hidden" class="level" value="'+level+'"> ' +
+          '<div class="mt20">' +
+          '<label class="w120 tright">父级ID：</label>' +
+          '<input type="text"  size="25"   value="'+id+'" disabled="disabled" class="parent_id" datatype="require" >' +
+          '</div>' +
+          '<div class="mt20">' +
+          '<label class="w120 tright">分类ID：</label>' +
+          '<input type="text" size="25" class = "class_id" value=""  placeholder="请输入类ID"  datatype="require" >' +
+          '</div>' +
+          '<div class="mt20">' +
+          '<label class="w120 tright">中文名：</label>' +
+          '<input type="text" placeholder="请输入类中文名" name="title" size="25" class="title_cn" datatype="require" >' +
+          '</div>' +
+          '<div class="mt20">' +
+          '<label class="w120 tright">英文名：</label>' +
+          '<input type="text" value="" name="title" size="25" class="title_en" datatype="require"  placeholder="请输入类英文名">' +
+          '</div>' +
+          '<div class="mt20">' +
+          '<label class="w120 tright">是否禁用：</label>' +
+          '<input class="mt0" type="radio" value="1" name="status" checked="checked"> 启用 ' +
+          '<input class="mt0" type="radio" value="2" name="status"> 禁用' +
+          '</div>' +
+          '<div class="mt20">' +
+          '<label class="w120 tright">是否为末级：</label>' +
+          '<input class="mt0" type="radio" value="1" name="isleaf" checked="checked"> 是 ' +
+          '<input class="mt0" type="radio" value="0" name="isleaf"> 不是' +
+          '</div>' +
+          '<div class="mt20">' +
+          '<label class="w120 tright">排序&nbsp;&nbsp;&nbsp;：</label>' +
+          '<input type="text" value="" name="title" size="25" class="sort_add" datatype="require" placeholder="排序" >' +
+          '</div>' +
+		  '<div class="mt20">' +
+          '<label class="w120 tright">海关编码：</label>' +
+          '<input type="text" value="" name="HSCode" size="25" class="HSCodeEdit" datatype="require" placeholder="海关编码" >' +
+          '</div>' +
+          '<div class="mt20">' +
+          '<label class="w120 tright">英文海关品名：</label>' +
+          '<input type="text" value="" name="declare_en" size="25" class="declare_en" datatype="require" placeholder="英文海关品名" >' +
+          '</div>' +
+          '<div class="mt20">' +
+          '<label class="w120 tright">类别图标：</label>' +
+          '<input type="text" value="" name="icon" size="25" class="icon" placeholder="类别图标" >' +
+          '</div>' +
+          '<div class="mt20">' +
+          '<label class="w120 tright">类别图片：</label>' +
+          '<input type="text" value="" name="classimg" size="25" class="classimg" placeholder="类别图片" >' +
+          '</div>' +
+          '<div class="mt30 tcenter">' +
+          '<a href="#" onclick = "add_submit()" class = "submit btn-qing f18">提交</a>' +
+          '</div>' +
+          '</div>'
+      });
+  }
+
+  //提交添加分类
+  function add_submit(){
+      var parent_id     = $(".parent_id").val();
+      var title_cn      = $(".title_cn").val();
+      var title_en      = $(".title_en").val();
+      var class_id      = $(".class_id").val();
+      // var isleaf          = $("input[name='isleaf']:checked").val();
+      var status        = $("input[name='status']:checked").val();
+      var isleaf        = $("input[name='isleaf']:checked").val();
+      var sort          = $(".sort_add").val();
+      var HSCode        = $(".HSCodeEdit").val();
+      var declare_en        = $(".declare_en").val();
+      var id            = $(".classification").val();
+      var level            = $(".level").val();
+      var icon            = $(".icon").val();
+      var classimg            = $(".classimg").val();
+      //判断父级ID是否存在
+      if(parent_id == undefined || parent_id == '' || parent_id == null ){
+          $(".parentID").remove();
+          if(!$(".parentID").hasClass('parentID')){
+              $(".parent_id").after('<span class ="parentID red"> 父级ID失败</span>');
+          }
+      }else if(isNaN(parent_id)){
+          $(".parentID").remove();
+          if(!$(".parentID").hasClass('parentID')){
+              $(".parent_id").after('<span class ="parentID red"> 父级ID必须为数字</span>');
+          }
+      } else{
+          $(".parentID").remove();
+      }
+      //判断分类中文名称是否存在
+      if(title_cn == undefined || title_cn == '' || title_cn == null ){
+          //$(".titleCN").remove();
+          if(!$(".titleCN").hasClass('titleCN')){
+              $(".title_cn").after('<span class ="titleCN  red"> 中文名不能为空</span>');
+          }
+      }else {
+          $(".titleCN").remove();
+      }
+
+      //判断分类英文名称是否存在
+      if(title_en == undefined || title_en == '' || title_en == null ){
+          $(".titleEN").remove();
+          if(!$(".titleEN").hasClass('titleEN')){
+              $(".title_en").after('<span class ="titleEN red"> 英文名不能为空</span>');
+          }
+      }else {
+          $(".titleEN").remove();
+      }
+
+      //判断新增分类ID
+      if(class_id == undefined || class_id == '' || class_id == null ){
+          $(".classID").remove();
+          if(!$(".classID").hasClass('class_id')){
+              $(".class_id").after('<span class ="classID red"> 分类ID不能为空</span>');
+          }
+      }else if(isNaN(class_id)){
+          $(".classID").remove();
+          if(!$(".classID").hasClass('classID')){
+              $(".class_id").after('<span class ="classID red">分类ID必须为数子</span>');
+          }
+      }else {
+          $(".classID").remove();
+      }
+      //判断排序是否存在
+      if(sort == undefined || sort == '' || sort == null ){
+          $(".sortPX").remove();
+          if(!$(".sortPX").hasClass('sortPX')){
+              $(".sort").after('<span class ="sortPX red"> 排序不能为空</span>');
+          }
+      }else if(isNaN(sort)){
+          $(".sortPX").remove();
+          if(!$(".sortPX").hasClass('sortPX')){
+              $(".sort").after('<span class ="sortPX red"> 排序必须为数字</span>');
+          }
+      }else {
+          $(".sortPX").remove();
+      }
+      //判断海关编码是否存在
+      // if(HSCode == undefined || HSCode == '' || HSCode == null ){
+      //     $(".HSCodePX").remove();
+      //     if(!$(".HSCodePX").hasClass('HSCodePX')){
+      //         $(".HSCode").after('<span class ="HSCodePX red"> 海关编码不能为空</span>');
+      //     }
+      // }else if(isNaN(HSCode)){
+      //     $(".HSCodePX").remove();
+      //     if(!$(".HSCodePX").hasClass('HSCodePX')){
+      //         $(".HSCode").after('<span class ="HSCodePX red"> 海关编码必须为数字</span>');
+      //     }
+      // }else {
+      //     $(".HSCodePX").remove();
+      // }
+	  //判断英文海关品名是否存在
+      // if(declare_en == undefined || declare_en == '' || declare_en == null ){
+      //     $(".declareEN").remove();
+      //     if(!$(".declareEN").hasClass('declareEN')){
+      //         $(".declare_en").after('<span class ="declareEN red"> 英文海关品名不能为空</span>');
+      //     }
+      // }else {
+      //     $(".declareEN").remove();
+      // }
+      //在没有问题的情况下提交
+      if(!$(".parentID").hasClass('parentID') && !$(".titleCN").hasClass('titleCN')
+		  && !$(".titleEN").hasClass('titleEN') && !$(".sortPX").hasClass('sortPX')
+		  && !$(".declareEN").hasClass('declareEN')){console.log(HSCode);
+          $.ajax({
+              type:"POST",
+              url:"/ProductManagement/addClass",
+              data:{parent_id:parent_id,title_cn:title_cn,title_en:title_en,sort:sort,id:id,HSCode:HSCode
+				    ,declare_en:declare_en,class_id:class_id,isleaf:isleaf,level:level,status:status,icon:icon},
+              dataType:"json",
+              cache:false,
+              success:function(msg){
+                  if(msg.code == 200){
+                      layer.msg(msg.result, {icon: 1});
+                      setTimeout(function(){
+                          window.location.reload();
+                      },1500);
+                  }else{layer.msg(msg.result, {icon: 2});
+                  }
+              },
+              error:function(error){}
+          });
+      }else{
+          layer.msg('数据有误', {icon: 2});
+      }
+  }
+
+  function save(e){
+      $.get('/ProductManagement/edit_brand/id/'+e, function (data) {
+          layer.open({
+              title: "修改品牌",
+              content: data,
+              type: 1,
+              area: ['680px', '600px'],
+              offset: '10px',
+              btn: ["保存", "取消"],
+              yes: function (index) {
+                  var formData = new FormData($( "#addUserForm" )[0]);
+                  $.ajax({
+                      type:"POST",
+                      url:"/ProductManagement/edit_brand.html",
+                      dataType: 'json',
+                      data:formData,
+                      async: false,
+                      cache: false,
+                      contentType: false,
+                      processData: false,
+                      // data:JsonData,
+                      success:function(msg){
+                          if(msg.code == 200){
+                              layer.msg(msg.result, {icon: 1});
+                              setTimeout(function(){
+                                  window.location.reload();
+                              },1500);
+                          }else{
+                              layer.msg(msg.result, {icon: 2});
+                          }
+                      }
+                  });
+              },
+              cancel: function () {
+
+              }
+          });
+      });
+      // console.log(2);
+  }
+
+   //弹出编辑框
+  function edit(e){
+      console.log(e);
+    var id        = $.trim($(".classid"+e).attr("data-id"));
+    var title_cn  = $(".classid"+e).attr("title-cn");
+    var title_en  = $(".classid"+e).attr("title-en");
+    var parent_id = $(".classid"+e).attr("parent-id");
+    var sort      = $(".classid"+e).attr("sort");
+    var HSCode    = $(".classid"+e).attr("HSCode");
+    var isleaf    = $(".classid"+e).attr("data-isleaf");
+    var status    = $(".classid"+e).attr("status");
+    var icon    = $(".classid"+e).attr("data-icon");
+    var classimg    = $(".classid"+e).attr("data-classimg");
+    var declart_en_value = $(".classid"+e).attr("data-declare-en");
+    var declare_en    = declart_en_value ==undefined ? '': declart_en_value;
+    var level    = $(".classid"+e).attr("data-level");
+
+    console.log(sort);
+	  // return;
+	  var isleafHtml_0 = '';
+        isleafHtml_1 = '';
+        status_1     = '';
+        status_2     = '';
+	  if(isleaf == 1){
+          isleafHtml_1 = 'checked="checked"';
+	  }else if(isleaf == 0){
+          isleafHtml_0 = 'checked="checked"';
+    }
+    if(status == 1){
+          status_1 = 'checked="checked"';
+    }else if(status == 2){
+          status_2 = 'checked="checked"';
+    }
+  	layer.open({
+  	  title: '修改分类信息888',
+  	  type: 1,
+  	  skin: 'layui-layer-rim', //加上边框
+  	  area: ['420px', '520px'], //宽高
+  	  content: '<div class="pl30">' +
+      '<input type="hidden" class="level" value="'+level+'"> ' +
+	  '<div class="mt20">' +
+	  '<label class="w120 tright">父级ID：</label>' +
+	  '<input type="text"  size="25"  value="'+parent_id+'" disabled="disabled" class="parent_id" datatype="require" title="请输入父级ID">' +
+	  '</div>' +
+	  '<div class="mt20">' +
+	  '<label class="w120 tright">分类ID：</label>' +
+	  '<input type="text" size="25" class = "class_id"  value="'+id+'" disabled="disabled" title="请输入分类ID"  datatype="require" >' +
+	  '</div>' +
+	  '<div class="mt20">' +
+	  '<label class="w120 tright">中文名：</label>' +
+	  '<input type="text" value="'+title_cn+'" name="title" size="25" class="title_cn" datatype="require" title="请输入中文名">' +
+	  '</div>' +
+	  '<div class="mt20">' +
+	  '<label class="w120 tright">英文名：</label>' +
+	  '<input type="text" value="'+title_en+'" name="title" size="25" class="title_en" datatype="require" title="请输入英文名">' +
+	  '</div>' +
+      '<div class="mt20">' +
+      '<label class="w120 tright">是否禁用：</label>' +
+      '<input class="mt0" type="radio" value="1" name="status" '+status_1+'> 启用 ' +
+      '<input class="mt0" type="radio" value="2" name="status" '+status_2+'> 禁用' +
+      '</div>' +
+      '<div class="mt20">' +
+      '<label class="w120 tright">是否为末级：</label>' +
+      '<input class="mt0" type="radio" value="1" name="isleaf" '+isleafHtml_1+'> 是 ' +
+      '<input class="mt0" type="radio" value="0" name="isleaf" '+isleafHtml_0+'> 不是' +
+      '</div>' +
+	  '<div class="mt20">' +
+	  '<label class="w120 tright">排序&nbsp;&nbsp;&nbsp;：</label>' +
+	  '<input type="text" value="'+sort+'" name="title" size="25" class="sort_edit" datatype="require" title="请输入排序">' +
+	  '</div>' +
+	  '<div class="mt20">' +
+	  '<label class="w120 tright">海关编码：</label>' +
+	  '<input type="text" value="'+HSCode+'" name="HSCode" size="25" class="HSCodeEdit" datatype="require" placeholder="海关编码" >' +
+	  '</div>' +
+      '<div class="mt20">' +
+      '<label class="w120 tright">英文海关品名：</label>' +
+      '<input type="text" value="'+declare_en+'" name="declare_en" size="25" class="declare_en" datatype="require" placeholder="英文海关品名" >' +
+      '</div>' +
+      '<div class="mt20">' +
+      '<label class="w120 tright">类别图标：</label>' +
+      '<input type="text" value="'+icon+'" name="icon" size="25" class="icon" placeholder="类别图标" >' +
+      '</div>' +
+      '<div class="mt20">' +
+      '<label class="w120 tright">类别图片：</label>' +
+      '<input type="text" value="'+classimg+'" name="classimg" size="25" class="classimg" placeholder="类别图片" >' +
+      '</div>' +
+	  '<div class="mt30 tcenter">' +
+	  '<a href="#" onclick = "edit_submit()" class = "submit btn-qing f18">提交</a>' +
+	  '</div>' +
+	  '</div>'
+  	});
+  }
+
+  // 提交修改--产品类别
+  function edit_submit(){
+      var parent_id     = $(".parent_id").val();
+      var title_cn      = $(".title_cn").val();
+      var title_en      = $(".title_en").val();
+      var status        = $("input[name='status']:checked").val();
+      var isleaf        = $("input[name='isleaf']:checked").val();
+      var sort          = $(".sort_edit").val();
+      var HSCode        = $(".HSCodeEdit").val(); //console.log(HSCode);return;
+      var declare_en        = $(".declare_en").val();
+      var class_id            = $(".class_id").val();
+      var level            = $(".level").val();
+      var icon            = $(".icon").val();
+      var classimg            = $(".classimg").val();
+
+
+      //判断父级ID是否存在
+      if(parent_id == undefined || parent_id == '' || parent_id == null ){
+          $(".parentID").remove();
+          if(!$(".parentID").hasClass('parentID')){
+              $(".parent_id").after('<span class ="parentID red">父级ID不能为空</span>');
+          }
+      }else if(isNaN(parent_id)){
+          $(".parentID").remove();
+          if(!$(".parentID").hasClass('parentID')){
+              $(".parent_id").after('<span class ="parentID red">父级ID必须为数字</span>');
+          }
+      } else{
+          $(".parentID").remove();
+      }
+      //判断分类中文名称是否存在
+      if(title_cn == undefined || title_cn == '' || title_cn == null ){
+          //$(".titleCN").remove();
+          if(!$(".titleCN").hasClass('titleCN')){
+              $(".title_cn").after('<span class ="titleCN red">中文名不能为空</span>');
+          }
+      }else {
+          $(".titleCN").remove();
+      }
+
+      //判断分类英文名称是否存在
+      if(title_en == undefined || title_en == '' || title_en == null ){
+          $(".titleEN").remove();
+          if(!$(".titleEN").hasClass('titleEN')){
+              $(".title_en").after('<span class ="titleEN red">英文名不能为空</span>');
+          }
+      }else {
+          $(".titleEN").remove();
+      }
+
+      //判断新增分类ID
+      if(class_id == undefined || class_id == '' || class_id == null ){
+          $(".classID").remove();
+          if(!$(".classID").hasClass('class_id')){
+              $(".class_id").after('<span class ="classID red"> 分类ID不能为空</span>');
+          }
+      }else if(isNaN(class_id)){
+          $(".classID").remove();
+          if(!$(".classID").hasClass('classID')){
+              $(".class_id").after('<span class ="classID red">分类ID必须为数子</span>');
+          }
+      }else {
+          $(".classID").remove();
+      }
+
+      //判断排序是否存在
+      if(sort == undefined || sort == '' || sort == null ){
+          $(".sortPX").remove();
+          if(!$(".sortPX").hasClass('sortPX')){
+              $(".sort").after('<span class ="sortPX red">排序不能为空</span>');
+          }
+      }else if(isNaN(sort)){
+          $(".sortPX").remove();
+          if(!$(".sortPX").hasClass('sortPX')){
+              $(".sort").after('<span class ="sortPX red">排序必须为数字</span>');
+          }
+      }else {
+          $(".sortPX").remove();
+      }
+
+      //判断海关编码是否存在
+      // if(HSCode == undefined || HSCode == '' || HSCode == null ){
+      //     $(".HSCodePX").remove();
+      //     if(!$(".HSCodePX").hasClass('HSCodePX')){
+      //         $(".HSCode").after('<span class ="HSCodePX red">海关编码不能为空</span>');
+      //     }
+      // }else if(isNaN(HSCode)){
+      //     $(".HSCodePX").remove();
+      //     if(!$(".HSCodePX").hasClass('HSCodePX')){
+      //         $(".HSCode").after('<span class ="HSCodePX red">海关编码必须为数字</span>');
+      //     }
+      // }else {
+      //     $(".sortPX").remove();
+      // }
+
+      //判断英文海关品名是否存在
+      // if(declare_en == undefined || declare_en == '' || declare_en == null ){
+      //     $(".declareEN").remove();
+      //     if(!$(".declareEN").hasClass('declareEN')){
+      //         $(".declare_en").after('<span class ="declareEN red"> 英文海关品名不能为空</span>');
+      //     }
+      // }else {
+      //     $(".declareEN").remove();
+      // }
+      //在没有问题的情况下提交
+      if(!$(".parentID").hasClass('parentID')&& !$(".titleCN").hasClass('titleCN') && !$(".titleEN").hasClass('titleEN') && !$(".sortPX").hasClass('sortPX')){
+          $.ajax({
+              type:"POST",
+              url:"/ProductManagement/updateClass",
+              data:{parent_id:parent_id,title_cn:title_cn,title_en:title_en,sort:sort,id:0,class_id:class_id,HSCode:HSCode,
+                  declare_en:declare_en,isleaf:isleaf,level:level,status:status,icon:icon,classimg:classimg},
+              dataType:"json",
+              cache:false,
+              success:function(msg){
+                  if(msg.code == 200){
+                      layer.msg(msg.result, {icon: 1});
+                      setTimeout(function(){
+                          window.location.reload()
+                      },1500);
+                  }else{
+                      layer.msg(msg.result, {icon: 1});
+                  }
+              },
+              error:function(error){}
+          });
+      }
+  }
+</script>
+	    <a  onclick="add_class(0)" class="btn btn-gray ml20" href="javascript:;">新增一级</a>
+		<a class="btn btn-gray ml10" href="/ProductManagement/exportAllClassData">导出全部类别数据</a>
+		<a class="btn btn-gray ml10" href="/ProductManagement/eidt_class_lang">分类多语言修改</a>
+		<ul id="browser" class="filetree mg20">
+		 {volist name="class_data" id="vo"}
+		 <li class="closed">
+	     <div onclick="classid({$vo.id})" class="hitarea closed-hitarea expandable-hitarea"></div>
+       <i data-id ="{$vo.id}" class="hit{$vo.id}"></i>
+	     <span onclick="classid({$vo.id})" HSCode = "{$vo.HSCode}" data-id ="{$vo.id}" data-level ="{$vo.level} " title-cn ="{$vo.title_cn}"
+			   title-en = "{$vo.title_en}" parent-id = "0" sort = "{$vo.sort}" status = "{$vo.status}" data-icon = "{$vo.icon}" data-classimg = "{$vo.classimg}" data-declare-en = "{$vo.declare_en}" data-isleaf = "{$vo.isleaf}" status = "{$vo.status}" class="folder classid{$vo.id}">{$vo.id} {$vo.title_cn}[{$vo.title_en}]
+		 </span>
+	     <input name="sort" class="form-inline w40 sort" data-id = "{$vo.id}"  value="{$vo.sort}" type="text">
+	     <input name="HSCode" class="form-inline w90 HSCode" data-id = "{$vo.id}" value="{$vo.HSCode}" type="text">
+
+
+             <b onclick="edit({$vo.id})" class="pd2 btn btn-orange" href="javascript:;">修改</b>
+	     <b onclick="add_class({$vo.id})"  class="pd2 btn btn-qing"  href="javascript:;">新增</b>
+		     <ul class="shuoge class{$vo.id}">
+			 </ul>
+			</li>
+		{/volist}
+		</ul>
+	<div class="success_data"></div>
+</div>
+</body></html>
+<script src="/static/js/product.js" type="text/javascript"></script>
+    <!-- END JAVASCRIPTS -->
+    <script>
+        $(function() {
+            App.init();
+            Product.addAttribute();
+        })
+    </script>

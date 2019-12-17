@@ -1,0 +1,166 @@
+{layout name="layout/main"/}
+{load href="/static/css/allOrder.css" /}
+{load href="/static/js/module/allOrder.js" /}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+{load href="/static/js/plugin/webuploader/webuploader.js" /}
+<style>
+	/*分页CSS*/
+	.pagination  li {display: inline;padding: 0 2px;float: left;}
+	.pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+	.pagination .active span{color: red;}
+	.main-base-table tr{border: 0px red solid;}
+	.main-base-table tr td{padding: 5px;}
+	.order .list .main-base-table tr td {border: 1px #f8f8f8 solid; vertical-align: middle;}
+	/*星级 start*/
+	.star-view-big {display: inline-block;width: 125px;height: 23px;background: url('/static/img/star-gray-big.png') repeat-x;}
+	.star-view-big span {display: block;height: 23px;background: url('/static/img/star-light-big.png') repeat-x;}
+	.star-view {display: inline-block;width: 75px;height: 14px;overflow: hidden;background: url(/static/img/star-gray-small.png) repeat-x;}
+	.star-view span {display: block;height: 14px;background: url(/static/img/star-light-small.png) repeat-x;}
+	/*星级 end*/
+</style>
+
+<div class="main-box fl order">
+	<div class="box-white mt0">
+		<div class="main-cont-title">评价管理</div>
+		<div class="waring mt20" role="alert">
+			<div>规则：</div>
+			<div>1、卖家已全部发货的订单，在交易结束30天内，您可以在“等待我评价的订单”里对买家的评价进行回复</div>
+			<div>2、
+				<a href="">了解更多评价积分规则</a>
+			</div>
+		</div>
+		<div class="search-bar box-white">
+			<form action="{:url('Orders/evaluate')}" method="get" id="order_search_form">
+				<ul>
+					<li class="mb5 mt5">
+						<label>订单号：
+							<input type="text" name="order_number" placeholder="订单号" value="{:input('order_number')}">
+						</label>
+						<a href="javascript:$('#order_search_form').submit();" class="search btn-orange">搜索</a>
+					</li>
+				</ul>
+			</form>
+		</div>
+		<div class="box-white list">
+			<table class="main-base-table mt20">
+				<tr class="tr-border">
+					<th colspan="" class="table-title w250">订单详情</th>
+					<th>评价</th>
+					<th class="w200">操作</th>
+				</tr>
+
+				{notempty name='order_data'}
+
+				<tr class="tr-edit">
+					<td width="20px" colspan="3">
+						<input name="checkAllProducts" type="checkbox">
+						<span class="mr20 selectAll">全选</span>
+						<a href="javascript:;" class="mr5 ls-bottonTwo batch-reply-btn">批量回复评价</a>
+					</td>
+				</tr>
+
+				{volist name='order_data' id='val'}
+
+				<tr class="j-mouse-hover colorfbf" style="background: #f8f8f8;">
+					<td class="padleft20 lspadleft20 ">
+						<input class="j-check-group-id" name="orderAuditForm.itemcodeChecked" value="{$val.review_id}" type="checkbox" {if condition="$val['is_replyed'] == 1"}disabled = "disabled"{/if}>
+						订单号：<a href="">{$val.order_number}</a>
+					</td>
+					<td class="padimg">买家：{$val.customer_name}</td>
+					<td class="padpro w150">
+						订单完成：{notempty name='val.complete_on'}{:date('Y-m-d H:i:s', $val['complete_on'])}{else/}-{/notempty}
+							<span class="langcont padright40 clearfix j-tip-container" style="z-index: auto;">
+								<a class="j-multi-trigger-evaluate" href="javascript:void(0);" target="_blank">
+								</a>
+							</span>
+						<div class="qualityGrade tipstion j-tip-container" style="z-index: auto;">
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="332">
+						<div class="thum-wrap">
+							<a href="">
+								<img src="{$product_images_url_config}{$val.product_info.ImageSet.ProductImg.0|default=''}" width="50" height="50" data-img="11">
+							</a>
+						</div>
+						<div class="desc-wrap">
+							<h3 class="title">
+								<a href="" title="VOYO i8 Max Tablet PC MTK X20 Deca-core 4GB RAM 64GB ROM 10.1">
+									{$val.product_info.Title|default=''}
+								</a>
+							</h3>
+							<p><!--零售价-->{$val.product_info.RangePrice|default=''}</p>
+						</div>
+					</td>
+					<td>
+						<div class="mt20 mb20">
+							<div><b>我的回复</b></div>
+							<div><p>{$val.reply.content|default=''}</p></div>
+						</div>
+						<div class="mb20">
+							<div><b>我收到的评价</b></div>
+							<div>
+								<!--<div class="star-view-big"><span style="width:{$val.overall_rating_b}%"></span></div>-->
+								<span class="star-view"><span style="width:{$val.overall_rating_b}%"></span></span>
+							</div>
+							<div>{$val.content|default=''}</div>
+							<div>
+								{notempty name='val.file'}
+									{volist name='val.file' id='file'}
+										<img src="{$file.thumb_url|default=''}" alt="img" width="50px" height="50px">
+										<!--<img src="{$file.file_url}" alt="">-->
+									{/volist}
+								{/notempty}
+							</div>
+						</div>
+					</td>
+					<td>
+						{if condition="$val['is_replyed'] == 1"}
+							已回复
+						{else /}
+						<div><a href="javascript:;" data-id="{$val.review_id}" class="reply-btn">回复评价</a></div>
+						<div>还剩：{$val.reply_surplus_days|default=''}天</div>
+						{/if}
+					</td>
+				</tr>
+				{/volist}
+				<tr class="tr-edit">
+					<td width="20px" colspan="3">
+						<input name="checkAllProducts" type="checkbox">
+						<span class="mr20 selectAll">全选</span>
+						<a href="javascript:;" class="mr5 ls-bottonTwo batch-reply-btn">批量回复评价</a>
+					</td>
+				</tr>
+				{else/}
+				<tr>
+					<td colspan="3">无相关数据</td>
+				</tr>
+				{/notempty}
+
+			</table>
+			<div class="page-wrap clearfix mg10">
+				<div class="fr mt10">
+					{$page}
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div id="batch-replay-alert-box" class="pt10 pl10 pr10 pb10 none">
+	<textarea name="batch_replay_content" id="" cols="30" rows="10" placeholder="请输入评价" class="w300"></textarea>
+</div>
+
+<div id="replay-alert-box" class="pt10 pl10 pr10 pb10 none">
+	<textarea name="replay_content" id="" cols="30" rows="10" placeholder="请输入评价" class="w300"></textarea>
+</div>
+
+<script>
+	var ajax_url = {$ajax_url|default="''"};
+
+
+
+
+</script>

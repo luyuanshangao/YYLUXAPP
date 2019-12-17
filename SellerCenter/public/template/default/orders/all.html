@@ -1,0 +1,299 @@
+{layout name="layout/main"/}
+{load href="/static/css/allOrder.css" /}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+{load href="/static/js/module/allOrder.js" /}
+{load href="/static/js/plugin/webuploader/webuploader.js" /}
+<style>
+	/*分页CSS*/
+	.pagination  li {display: inline;padding: 0 2px;float: left;}
+	.pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+	.pagination .active span{color: red;}
+	.main-base-table tr td{padding: 5px;}
+	.sales_attr_box img{width: 25px; height: 25px;}
+</style>
+
+<div class="main-box fl order">
+    <div class="box-white mt0">
+		<h1 class="main-cont-title order-title">我的订单</h1>
+		<div class="filter-tab box-white">
+			<ul>
+				<li>
+					<span class="filter-tab-left">特别关注：</span>
+					<!--<a href="{:url('Orders/all', ['create_on_start'=>date('Y-m-d 00:00:00'),'create_on_end'=>date('Y-m-d 23:59:59')])}" class="filter-tab-item"><b>今日新订单</b>(<span class="number blues">{$status_data.today_num|default=0}</span>)</a>-->
+					<a href="{:url('Orders/all', ['istoday'=>1])}" class="filter-tab-item"><b>今日新订单</b>(<span class="number blues">{$status_data.today_num|default=0}</span>)</a>
+				</li>
+				<li>
+					<span class="filter-tab-left">等待您操作的订单：</span>
+					<a href="{:url('Orders/all', ['order_status'=>400])}" class="filter-tab-item"><b>等待您发货</b>(<span class="number blues">{$status_data.waiting_delivery_num|default=0}</span>)</a>
+					<a href="{:url('Orders/all', ['order_status'=>1400])}" class="filter-tab-item"><b>已取消订单</b>(<span class="number blues">{$status_data.cancelled_order_num|default=0}</span>)</a>
+					<a href="{:url('Orders/all', ['order_status'=>1700])}" class="filter-tab-item"><b>有纠纷的订单</b>(<span class="number blues">{$status_data.dispute_order_num|default=0}</span>)</a>
+					<a href="{:url('Orders/all', ['unread'=>1])}" class="filter-tab-item"><b>未读留言</b>(<span class="number blues">{$status_data.unread_message_order_num|default=0}</span>)</a>
+				</li>
+				<li>
+					<span class="filter-tab-left">等待买家操作的订单：</span>
+					<a href="{:url('Orders/all', ['order_status'=>100])}" class="filter-tab-item"><b>等待买家付款</b>(<span class="number blues">{$status_data.wait_payment_order_num|default=0}</span>)</a>
+					<a href="{:url('Orders/all', ['order_status'=>800])}" class="filter-tab-item"><b>等待确认收货订单</b>(<span class="number blues">{$status_data.waiting_confirm_receipt_order_num|default=0}</span>)</a>
+				</li>
+			</ul>
+		</div>
+		<div class="search-bar box-white">
+			<form action="{:url('Orders/all')}" method="get" id="order_search_form">
+				<ul>
+					<li>
+						<label>产品名称/ID：<input type="text" name="product_name" placeholder="产品名称/ID" value="{:input('product_name')}"></label>
+						<label>订单号：<textarea type="text" name="order_number" style="height:25px;border: 1px solid #ccc;vertical-align: middle;padding: 0 10px;line-height: 25px;" placeholder="订单号">{:input('order_number')}</textarea></label>
+						<label>下单时间：
+							<input type="text" name="create_on_start" class="text Wdate start-time" placeholder="开始时间" value="{:input('create_on_start')}"/> -
+							<input type="text" name="create_on_end" class="text Wdate end-time" placeholder="结束时间" value="{:input('create_on_end')}"/>
+						</label>
+					</li>
+					<li>
+						<label>买家名称/ID：<input type="text" name="customer_name" placeholder="买家名称/ID" value="{:input('customer_name')}"></label>
+						<!--<label>运单号：<input type="text" placeholder="运单号"></label>-->
+						<label>订单状态：
+							<select name="order_status" id="">
+								<option value="">全部订单</option>
+								{volist name="order_status_data" id="val"}
+									{if condition="input('order_status') == $val['code']"}
+										<option value="{$val.code}" selected="selected">{$val.name}</option>
+									{else/}
+										<option value="{$val.code}">{$val.name}</option>
+									{/if}
+								{/volist}
+							</select>
+						</label>
+						<label>是否回复：
+							<select name="is_reply" id="is_reply">
+								<option value="">请选择</option>
+
+								<option value="1" {if condition="input('is_reply') eq 1"}selected="selected"{/if}>未回复</option>
+								<option value="2" {if condition="input('is_reply') eq 2"}selected="selected"{/if}>已回复</option>
+							</select>
+						</label>
+						<label>SKU CODE：<input type="text" name="sku_num" placeholder="SKU CODE" value="{:input('sku_num')}"></label>
+						<a href="javascript:$('#order_search_form').submit();" class="btn-orange">搜索</a>
+					</li>
+				</ul>
+			</form>
+		</div>
+		<div class="list mt20">
+			<table class="main-base-table" valign="top">
+				<tbody>
+					<tr class="tr-title">
+						<th width="342">产品</th>
+						<th width="60">单价</th>
+						<th width="40">数量</th>
+						<th width="151">买家</th>
+						<th>订单状态</th>
+						<th>操作</th>
+					</tr>
+				</tbody>
+			</table>
+			{volist name="order_data" id="val"}
+
+				<table class="main-base-table mt5" valign="top">
+				<tbody>
+					<tr>
+						<th colspan="3">
+							<p class=" order-number">订单号：<a href="{:url('Orders/detail', ['order_number'=>$val['order_number']])}" {eq name="val.is_after" value="0"}class="blues fbold" target="_blank">{else}class="blues fbold red">{/eq}{$val.order_number}</a></p>
+							<p>下单时间：{:date('Y-m-d H:i:s', $val['create_on'])}</p>
+						</th>
+						<th colspan="3">
+							<p><a href="{:config('admin_domain')}/MemberManagement/edit/id/{$val.customer_id}" target="_blank">{$val.customer_name|default=""}</a></p>
+							<p><a href="{:url('Orders/detail', ['order_number'=>$val['order_number']])}#messageinfo" target="_blank"><span class="number blues">{$val.message_unread_count}</span> 未读消息({if condition="$val['no_reply_count'] gt 0"}<span class="red">未回复</span>{else/}{eq name="val['message_count']" value="0"}无消息{else}已回复{/eq}{/if})</a><span class="line">|</span><a href="javascript:void (0)"><i class="iconfont icon-iconfontunie62c"></i>Contact</a></p>
+						</th>
+						<!-- <th colspan="2" class="amount-tr">金额
+							<span class="red amount fbold">
+								{if condition="$val['currency_code'] == 'USD' || $val['currency_code'] == 'usd'"}
+									{$val.currency_code_str}{$val.captured_amount_usd}
+								{else /}
+									${$val.captured_amount_usd}({$val.currency_code_str}{$val.grand_total})
+								{/if}
+							</span>
+						</th> -->
+					</tr>
+
+					{volist name="val.item_data" id="item"}
+					<tr>
+						<td class="bborder" width="360">
+							<div class="thum-wrap">
+								<a href="{php}echo config('mall_url_config').'p/'.$item['product_id'];{/php}" target="_blank">
+									<img src="{$product_images_url_config}{$item.product_img}" width="50" height="50" data-img="{$product_images_url_config}{$item.product_img}">
+								</a>
+							</div>
+							<div class="desc-wrap">
+								<h3 class="title">
+									<a href="{php}echo config('mall_url_config').'p/'.$item['product_id'];{/php}" target="_blank" title="{$item.product_name}">
+										{$item.product_name}
+									</a>
+								</h3>
+								<p class="sales_attr_box">销售属性：{$item.product_attr_desc}</p>
+								<p>商品编码：{$item.sku_num}</p>
+								<!--<p class="logistics-vehicle mt20">
+									<i class="iconfont icon-che-tianchong" title="预估航运时间：{$item.delivery_time}天"></i>
+								</p>-->
+							</div>
+						</td>
+						<td class="bborder" width="70">{$val.currency_code_str}{$item.product_price}</td>
+						<td class="bborder" width="50">{$item.product_nums}</td>
+
+						{if condition="$key == 0"}
+						<td rowspan="{:count($val['item_data'])}" class="ttop" width="160">
+							<span class="red amount fbold">
+								{if condition="$val['currency_code'] == 'USD' || $val['currency_code'] == 'usd'"}
+									{$val.currency_code_str}{$val.captured_amount_usd_new}
+								{else /}
+									{$val.currency_code_str}{$val.grand_total_new}<br>(${$val.captured_amount_usd_new})
+								{/if}
+							</span>
+						</td>
+						<td rowspan="{:count($val['item_data'])}" class="ttop">
+							<div class="order-status">
+								<p>{$val.order_status_str}</p><!-- 此处取订单现在所处状态。如等待买家收货/等待买家付款/等待发货等 -->
+								<a href="{:url('Orders/detail', ['order_number'=>$val['order_number']])}" class="blues">订单详情</a>
+							</div>
+							<div>
+								<p>物流详情：</p>
+								{volist name='val.tracking_number_data' id='tnd'}
+									<a href="{:url('index/Orders/logisticsDetail', ['package_id'=>$key, 'order_id'=>$val['order_id']])}" class=" blues">{$tnd.tracking_number}</a>
+								{/volist}
+								{empty name='val.tracking_number_data'}
+
+								{/empty}
+							</div>
+						</td>
+						<td rowspan="{:count($val['item_data'])}" class="ttop" width="130">
+							{if condition="$val['order_status'] == 100"}
+								<!--等待付款-->
+								<a href="javascript:;" class="operating-btn blues change-price-box" data-id="{$val.order_id}">调整价格</a>
+								<!-- 调整价格box start -->
+								<div id="alert-change-price-box-{$val.order_id}" class="none">
+									<table>
+										<tr>
+											<td class="w120 tright">
+												<input type="hidden" value="{$val.exchange_rate}" name="exchange_rate_{$val.order_id}">
+												<input type="hidden" value="{$val.currency_code}" name="currency_code_{$val.order_id}">
+												<input type="hidden" value="{$val.currency_code_str}" name="currency_code_str_{$val.order_id}">
+												<input type="hidden" value="{$val.grand_total}" name="change_before_true_price_{$val.order_id}">
+												<input type="hidden" value="{$val.captured_amount_usd}" name="change_before_usd_price_{$val.order_id}">
+												调整前金额：
+											</td>
+											<td>
+												{if condition="$val['currency_code'] == 'USD' || $val['currency_code'] == 'usd'"}
+													US{$val.currency_code_str}{$val.captured_amount_usd}
+												{else /}
+													US${$val.captured_amount_usd}({$val.currency_code_str}{$val.grand_total})
+												{/if}
+
+											</td>
+										</tr>
+
+										<tr>
+											<td class="tright">涨价或折扣：</td>
+											<td>
+												<!-- US$<input type="text" name="change_value_{$val.order_id}" placeholder="涨价或折扣" class="change-box-value" data-id="{$val.order_id}" onkeyup="this.value=this.value.replace(/[^\-?\d.]/g,'')"> -->
+												US$<input type="text" name="change_value_{$val.order_id}" placeholder="涨价或折扣" class="change-box-value" data-id="{$val.order_id}"> <!-- 抽离键盘输入事件 -->
+												<div class="mt5 gray">例如：要给买家便宜10，则输入"-10";要提高价格10，则输入"10"</div>
+											</td>
+										</tr>
+										<tr>
+											<td class="tright">买家应付：</td>
+											<td>
+												<input type="hidden" class="buy-price-usd-{$val.order_id}">
+												<input type="hidden" class="change-value-{$val.order_id}">
+												<input type="hidden" class="buy-price-other-{$val.order_id}">
+												<span class="changed-price-{$val.order_id}">
+													{if condition="$val['currency_code'] == 'USD' || $val['currency_code'] == 'usd'"}
+														US{$val.currency_code_str}{$val.captured_amount_usd}
+													{else /}
+														US${$val.captured_amount_usd}({$val.currency_code_str}{$val.grand_total})
+													{/if}
+												</span>
+											</td>
+										</tr>
+										<!--<tr>
+											<td class="tright">交易手续费：</td>
+											<td>US${php}echo round($val['handling_fee']*$val['exchange_rate'], 2); {/php}</td>
+										</tr>-->
+										<tr>
+											<td class="tright">原因：</td>
+											<td><textarea class="change_reason_{$val.order_id}" cols="30" rows="10" style="padding: 0 10px;" placeholder="请使用英文。不超过512个字符"></textarea></td>
+										</tr>
+									</table>
+								</div>
+								<!-- 调整价格box end -->
+							{/if}
+							{if condition="$val['order_status'] == 700"}
+								<!--等待买家收货-->
+								<!--<a href="javascript:;" class="operating-btn blues extend-receive-time" data-id="{$val.order_id}">延长收货时间</a>-->
+								<!--延长收货时间设置box start-->
+								<!--<div id="alert-extend-receive-time-{$val.order_id}" class="pt10 none">
+									<table>
+										<tr>
+											<td class="w120 tright">调整日期为：</td>
+											<td>
+												<input type="text" name="" class="text Wdate start-time extend-receive-date-{$val.order_id}" placeholder="选择时间"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="w120 tright">往后顺延天数：</td>
+											<td>
+												<input type="text" class="extend-receive-day-num-{$val.order_id}" placeholder="顺延天数">
+											</td>
+										</tr>
+									</table>
+								</div>-->
+								<!--延长收货时间设置box end-->
+							{/if}
+							{if condition="$val['order_status'] == 1100 || $val['order_status'] == 1200"}
+								<a href="{:url('index/Orders/evaluate', ['order_number'=>$val['order_number']])}" class="operating-btn blues">回复评价</a>
+							{/if}
+							{if condition="$val['order_status'] >= 200 && $val['order_status'] != 1400 && $val['order_status'] != 1900 && $val['order_status'] != 920 &&  $val['order_master_number']>0"}
+							<a href="{:url('index/OrderRefund/orderRefund', ['order_id'=>$val['order_id']])}" class="operating-btn blues">申请退款</a>
+							{/if}
+						</td>
+						{/if}
+					</tr>
+					{/volist}
+				</tbody>
+			</table>
+			{/volist}
+
+			{empty name="order_data"}
+			<table class="main-base-table mt5" valign="top">
+				<tbody>
+				<tr>
+					<td>没有相关数据</td>
+				</tr>
+				</tbody>
+			</table>
+			{/empty}
+
+		</div>
+		<div class="page-wrap clearfix mt20">
+			<!--<div class="page-range fl">
+				<span class="page-number">1</span>/<span class="page-count">2</span>
+				<span class="ml10">跳转至第几</span>
+				<input class="page-put ml5" type="text"> 页
+				<a href="" class="page-go ml5">确定</a>
+			</div>-->
+			<!--<ul class="page mt5 fr">
+                <li><span class="pre"></span></li>
+                <li><span class="curr" href="#">1</span></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#" class="next"></a></li>
+            </ul>-->
+			<div class="fr">{$page_html}</div>
+		</div>
+
+		<!-- 显示产品大图 -->
+		<div class="thum-pop">
+			<img src="" width="270" height="270">
+		</div>
+	</div>
+</div>
+<script>
+	var ajax_url = {$ajax_url|default=''};
+</script>

@@ -1,0 +1,266 @@
+{layout name="layout/main"/}
+{load href="/static/css/base.css" /}
+{load href="/static/js/plugin/umeditor/themes/default/css/umeditor.min.css" /}
+<!-- umeditor -->
+<!--{load href="/static/js/plugin/umeditor/umeditor.config.js" /}
+{load href="/static/js/plugin/umeditor/umeditor.js" /}
+{load href="/static/js/plugin/umeditor/lang/zh-cn/zh-cn.js" /}-->
+<script type="text/javascript" src="/static/js/plugin/umeditor/umeditor.config.js?v={$static_version_number|default='20181219'}"></script>
+<script type="text/javascript" src="/static/js/plugin/umeditor/umeditor.js?v={$static_version_number|default='20181219'}"></script>
+<script type="text/javascript" src="/static/js/plugin/umeditor/lang/zh-cn/zh-cn.js?v={$static_version_number|default='20181219'}"></script>
+<!-- umeditor end -->
+<style type="text/css">
+   .mr250{width: 600px;}
+   .mr150{width:150px;} 
+</style>
+<div class="main-box fl product-management">
+    <div class="box-white">
+        <form action="{:url('Product/productSplit')}" method="get" class="pb10" id="product-form">
+            <ul class="search-ul-layout">
+                <li>
+                    <label>SPU <input type="radio"name="type" value="1" {if condition ="$type eq 1"}checked {/if}></label>
+                    <label style="margin-left:10px;">SKU <input type="radio" name="type"  value="2" {if condition ="$type eq 2" }checked {/if}></label>
+                    <input class="input-text small-input" type="text" name="code"  value="{:input('code')}" />
+                </li>
+                <li class="search-li">
+                    <input type="submit" value="搜索" class="btn-orange">
+                </li>
+            </ul>
+        </form>
+
+    </div>
+    {notempty name="productAttr"}
+    <div class="box-white box-white-m0">
+        <dl class="dl-layout relative">
+            <dt class="w120 tright">产品ID:</dt>
+            <dd><span>{$product_id}</span></dd>
+        </dl>
+        <dl class="dl-layout relative">
+            <dt class="w120 tright">产品名称:</dt>
+            <dd><span class="product_name" data-name="{$product_name}">{$product_name}</span></dd>
+        </dl>
+        <dl class="dl-layout relative">
+            <dt class="w120 tright">SKU CODE:</dt>
+            <dd><span>{$skuCode}</span></dd>
+        </dl>
+        <dl class="dl-layout relative">
+            <dt class="w120 tright">
+                        产品属性:
+            </dt>
+        </dl>
+        {foreach name="productAttr" item="val"}
+        {if condition="$val['name'] eq 'Color'"}
+         <dl class="relative dl-layout js-combination-tr" data-title="{$val['name']}">
+            <div class="disable-box none activity-flag multi-language-flag"></div>
+            <dt class="w120 tright">颜色</dt>
+            <dd><div class="chose-box js-chose-box">
+                {foreach name="$val['attr']" item="v"}
+                <label class="mr10" title="{$v['option_name']}">
+                    <input class="color-chose-checkbox js-productAttr-chose mr3" type="checkbox" name="color_chose" value="{$v['option_id']}">
+                <span class="color-chose" style="background:{$v['option_name']}"></span>
+                </label>
+                {/foreach}
+            </dd>
+        </dl>
+        {else/}
+         <dl class="relative dl-layout js-combination-tr" data-title="{$val['name']}">
+            <div class="disable-box none activity-flag multi-language-flag"></div>
+            <dt class="w120 tright">{$val['name']}</dt>
+            <dd><div class="chose-box js-chose-box">
+                {foreach name="$val['attr']" item="v"}
+                <label class="mr10" title="{$v['option_name']}">
+                    <input class="color-chose-checkbox js-productAttr-chose mr3" type="checkbox" name="{$val['name']}" value="{$v['option_id']}">{$v['option_name']}
+                </label>
+                {/foreach}
+            </dd>
+        </dl>
+        {/if}
+        {/foreach}
+    </div>
+    <div class="box-white hide"style="overflow:hidden;">
+        <label style="width:800px;float:left;display:line-block;line-height:30px;min-height:30px;">SKU:<span class="skuId" data-id="" style="word-break: break-all"></span></label>
+        <label style="width:100px;float:right;display:line-block;line-height:30px;"><input type="button" class="btn-orange resure" value="拷贝SKU"style="margin-left: 20px;"></label>
+    </div>
+    <div class="box-white">
+        <label>分组 <input type="button" class="btn-orange addgroup" value="添加"style="margin-left: 20px;"></label>
+        <table class="table-gray w1000 mt10 tcenter">
+            <thead><tr><th>SKU CODE</th><th>标题</th><th>操作</th></tr></thead>
+            <tbody>
+                <tr class="js-chose-tr"><td><input type="text" class="sku_code"name="sku_code" class="mr150"></td>
+                    <td><input type="text" name="title" class="mr250"maxlength="128" placeholder="最多输入128个字符"></td>
+                    <td><a href="javascript:void(0);" onclick="del(this);" class="del hide">删除</a></td>
+                </tr>
+                <div id="foot"></div>
+            </tbody>
+        </table>
+    </div>
+    <div class="submit-box" style="padding-top: 10px;">
+            <div class="tcenter">
+                <input type="hidden" id="product_id" name="product_id" value="{$product_id}">
+                <a class="btn-orange mr20 js-product-submit-btn" href="javascript:splitProduct();">提交</a>
+            </div>
+    </div>
+    {/notempty}
+    
+</div>
+<script type="text/javascript">
+    var attrlist = {$attrList};
+    $('.js-productAttr-chose ').change(function(){
+        var tr = $(this).parent().parent().parent().parent('.js-combination-tr');
+        var len = tr.find("input[type='checkbox']:checked").length;
+        if(len>0){
+            tr.addClass('checked');
+        }else{
+            tr.removeClass('checked');
+        }
+        if($('.js-combination-tr').length==$('.js-combination-tr.checked').length){
+            var allAttributesObj =[];
+            $(".js-combination-tr").each(function(index,el) {
+                var _type = $(el).attr('data-title');
+                var checkedCheckbox = $(el).find(("input[type='checkbox']:checked"));
+                allAttributesObj[_type] = [];
+                checkedCheckbox.each(function(cheIndex,ele) {
+                    allAttributesObj[_type].push($(ele).val())
+                });
+            });
+            //两个数组的连接
+            var conb = function(arr1,arr2){
+                var data =[],k=0;
+                for(var i=0;i<arr1.length;i++){
+                    for(j=0;j<arr2.length;j++){
+                        var str =arr1[i]+'-'+arr2[j];
+                        data.push(str);
+                    }
+                }
+                return data;
+            }
+            var comb = function(){
+                // 定义一个二维数组
+                var _arr = [];
+                for(var attr in allAttributesObj) {
+                    if (allAttributesObj.hasOwnProperty(attr) && allAttributesObj[attr].length > 0) {
+                        _arr.push(allAttributesObj[attr]);
+                    }
+                }
+                //生产属性组合
+                var conarr =[];
+                for(var n=0;n<_arr.length;n++){
+                    if(n==0){
+                        conarr =_arr[n];
+                    }else{
+                        conarr =conb(conarr,_arr[n]);
+                    }
+                }
+                //根据选项组合查找对应的skucode
+                var sku_id ='';
+                for(var m=0;m<conarr.length;m++){
+                    if(attrlist[conarr[m]] != undefined) {
+                        if(sku_id == ''){
+                           sku_id +=attrlist[conarr[m]]['Code'];
+                        }else{
+                           sku_id +=','+attrlist[conarr[m]]['Code'];
+                        }
+                    }
+                }
+                $('.skuId').attr('data-id',sku_id);
+                $('.skuId').html(sku_id);
+            }
+            comb();
+            $('.skuId').parent().parent().removeClass('hide');
+        }else{
+            $('.skuId').attr('data-id','');
+            $('.skuId').html('');
+        }
+    });
+    $('.addgroup').click(function(){
+        $("tbody").append('<tr class="js-chose-tr"><td><input type="text" class="sku_code" name="sku_code" class="mr150"></td><td><input type="text" name="title" class="mr250"maxlength="128"placeholder="最多输入128个字符"></td><td><a href="javascript:void(0);" onclick="del(this);" class="del">删除</a></td></tr>');
+        $('.del').removeClass('hide');
+    });
+    $('.resure').click(function(){
+        var sku = $('.skuId').attr('data-id');
+        $("input[name='sku_code']").each(function(){
+            if($(this).val()==''){
+               $(this).val(sku);
+               $(this).parent().siblings().find("input[name='title']").val($('.product_name').attr("data-name"));
+               $(this).blur();
+               return false; 
+            }
+        });
+
+    });
+    function duplicates(arr) {
+        var newArr=[];
+        arr.sort();
+        for(var i =0;i<arr.length;i++){
+            if(arr[i]==arr[i+1]&&(newArr.indexOf(arr[i])==-1) ){
+                newArr.push(arr[i]);
+                i++;
+
+            }
+        }
+        return newArr;
+    }
+    $("body").delegate(".sku_code","blur",function(){
+        if($(this).val()!=''){
+           var sku = '';
+           $('.sku_code').each(function(index){
+              if($(this).val()!=''){
+                if(sku!=''){
+                    sku += ','+$(this).val();
+                }else{
+                    sku +=$(this).val(); 
+                }
+              }
+           });
+           var arr =sku.split(',');
+           var a =duplicates(arr).sort();
+           if(a!=''){
+             $(this).val('');
+             layer.alert("SKU:"+a.join(",")+"重复");
+           }
+           
+        }
+    })
+    function del(obj){
+        $(obj).parent().parent().remove();
+        if($('.del').length==1){
+            $('.del').addClass('hide');
+        }
+    }
+    function splitProduct(){
+       var arr =[],flag =true;
+       var product_id =$("input[name='product_id']").val();
+       $('.js-chose-tr').each(function(){
+           var title = $(this).find("input[name='title']").val();
+           var sku_code =$(this).find("input[name='sku_code']").val();
+           if(title !='' && sku_code !=''){
+            var info ={title:title,sku_codes:sku_code};
+            arr.push(info);
+           }else{
+                layer.alert('SKU CODE和标题都不能为空');
+                flag =false;
+           }
+       });
+       if(flag){
+            $.ajax({
+                url: '/index/Product/splitProduct',
+                type: 'POST',
+                data:{product_id:product_id,data:JSON.stringify(arr)},
+                success:function(data){
+                   if(data.code==0){ 
+                        layer.confirm(data.msg, {
+                        btn: ['确定','取消']
+                         }, function(){
+                            layer.closeAll();
+                            window.location.reload()
+                         });
+                   }else{
+                        layer.alert(data.msg);
+                   }
+                }
+            });
+       }else{
+        return false;
+       }
+    }
+</script>

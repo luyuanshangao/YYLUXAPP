@@ -1,0 +1,353 @@
+<!-- {layout name="layout/main"/} -->
+<!-- <div class="main-box fl">
+    <h1 class="main-cont-title">
+        My Order
+    </h1>
+    <div class="box-white">
+        <ul class="main-cont-tabs">
+            <li><a href="#">Awaiting payment (0)</a></li>
+            <li><a href="#">Awaiting shipment (0)</a></li>
+            <li><a href="#">Awaiting delivery (0)</a></li>
+            <li><a href="#">Disputes (0)</a></li>
+            <li><a href="#">Unread order messages (0)</a></li>
+        </ul>
+    </div>
+    <div class="box-white">
+        <ul class="search-ul-layout">
+            <li>
+                <label class="search-label-title">order number:</label>
+                <input class="input-text" type="text"/>
+            </li>
+            <li>
+                <label class="search-label-title">product:</label>
+                <input class="input-text" type="text"/>
+            </li>
+            <li>
+                <label class="search-label-title">order number:</label>
+                <input class="input-text" type="text"/>
+            </li>
+            <li>
+                <label class="search-label-title">site:</label>
+                <select>
+                    <option value="">DX.COM</option>
+                    <option value="">EUD.DX.COM</option>
+                    <option value="">DXSOUL.COM</option>
+                </select>
+            </li>
+            <li class="hide">
+                <label class="search-label-title">order number:</label>
+                <input class="input-text" type="text"/>
+            </li>
+            <li class="hide">
+                <label class="search-label-title">product:</label>
+                <input class="input-text" type="text"/>
+            </li>
+            <li class="hide">
+                <label class="search-label-title">order number:</label>
+                <input class="input-text" type="text"/>
+            </li>
+            <li class="hide">
+                <label class="search-label-title">site:</label>
+                <select>
+                    <option value="">DX.COM</option>
+                    <option value="">EUD.DX.COM</option>
+                    <option value="">DXSOUL.COM</option>
+                </select>
+            </li>
+            <li class="search-li">
+                <a href="javascript:void(0);" class="search-btn">searh</a>
+                <a href="javascript:void(0);" class="more-filter js-more-filter down ml10">more filters</a>
+            </li>
+        </ul>
+    </div>
+    <div class="box-white">
+        <table class="main-base-table">
+            <tr>
+                <th>product</th>
+                <th>product</th>
+                <th>product</th>
+                <th>product</th>
+            </tr>
+            <tr>
+                <td colspan="4" class="no-result">Your search didn't match any listings.</td>
+            </tr>
+        </table>
+    </div>
+</div> -->
+
+
+
+
+{load href="/static/css/index.css" /}
+<div class="index-wrap clearfix">
+    <!-- ***************** Left column ******************** -->
+    <div class="left-column">
+        <h3>快捷入口</h3>
+        <ul class="sidebar">
+            <li>
+                <a href="/index/product/index.html"><span>产品管理</span></a>
+            </li>
+            <li>
+                <a href="/index/orders/all.html"><span>订单管理</span></a>
+            </li>
+            <li>
+                <a href="/index/product/productgroup.html"><span>产品分组管理</span></a>
+            </li>
+            <li>
+                <a href="/index/product/category.html"><span>上架产品</span></a>
+            </li>
+            <li>
+                <a href="/index/orders/evaluate.html"><span>评价管理</span></a>
+            </li>
+            <li>
+                <a href="/index/orders/refundall.html"><span>退款&纠纷</span></a>
+            </li>
+            <li>
+                <a href="/index/product_qa/index.html"><span>消息中心</span></a>
+            </li>
+            <li>
+                <a href="/index/marketing_promotion/signupactivity.html"><span>营销推广</span></a>
+            </li>
+            <li>
+                <a href=""><span>我的广告</span></a>
+            </li>
+            <li>
+                <a href=""><span>账户设置</span></a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ***************** main ******************** -->
+    <div class="main">
+        <div class="sellercenter">
+            <dl class="usercon">
+                <dt>
+                    <em class="headimgico"></em>
+                    <p class="headimg">
+                        <i class="iconfont icon-touxiang"></i>
+                    </p>
+                    <b class="nickName">{$seller_info.true_name}</b> <br>
+                    认证：
+                    <a href="" title="已认证">
+                        <i class="nonameidico iconfont icon-ai59 green"></i> <!-- 实名认证后可以添加类名green -->
+                    </a>
+                    <!--<a href="" title="未开通手机短信提醒">-->
+                    <a href="" title="手机已验证">
+                        <i class="notelephoneico iconfont icon-shouji green"></i> <!-- 开通手机短信提醒后可以添加类名green -->
+                    </a>
+                    <br><!-- 账号类型：1 个人用户，2 企业用户 -->
+                    账号类型：
+                    {if condition="$seller_info.extension.management_model != 1"}
+                    企业用户
+                    {else/}
+                    个人用户
+                    {/if}
+                </dt>
+                <dd>
+                    <p>
+                        <a href="{:url('index/Message/internalLetter')}">
+                            <i class="messagecenterico iconfont icon-iconfontunie62c"></i>
+                            <span class="pl5">站内信</span>
+                            <span class="numberlink">4<!-- TODO --></span>
+                        </a>
+                    </p>
+                    <p>
+                        <a href="{:url('index/Message/index')}">
+                            <i class="leavewordsico iconfont icon-htmal5icon07"></i>
+                            <span class="pl10">留言</span>
+                            <span class="numberlink">1<!-- TODO --></span>
+                        </a>
+                    </p>
+                </dd>
+                <dd class="none">
+                    <ul>
+                        <li>
+                            商户评级：
+                            <a class="lowerbasic" href="">标准商户</a>
+                        </li>
+                        <li id="disputes-rate" class="disputes-rate">
+                            <span id="disputeRateNew" class="d-rate">纠纷率：0.00%</span>
+                            <i class="todown"></i>
+                            <i class="lineico">&nbsp;</i>
+                            <div id="disputes-rateshow" class="disputes-rateshow hide">
+                                <ul>
+                                    <li><span>纠纷项</span></li>
+                                    <li><span id="disputeRateDuty">商户责任纠纷率：0.00%</span></li>
+                                    <li><span id="refundRateNew">退款率：0.00%</span></li>
+                                    <li><span id="refundRateCause">商户原因退款率：0.00%</span></li>
+                                </ul>
+                                <span class="checkrules">
+                                    <a href="" target="_blank" class="link-a">查看纠纷率规则</a>
+                                </span>
+                            </div>
+                        </li>
+                        <li id="refuse-rate" class="refuse-rate">
+                            <a href="" target="_blank">
+                                <span id="refusePay" class="d-rate">拒付率：0.00%</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="link-a">如何提升商户评级</a>
+                        </li>
+                    </ul>
+                </dd>
+            </dl>
+            <div class="systemmessages-wrap">
+                <div class="systemmessages sys-top none">
+                    <i>待操作提醒：</i>
+                    <p>（以下操作如未完成，您只处于体验阶段，店铺无法正常经营，<a href="http://seller.dx.com/industry-trends/c_40606.html" target="_blank" class="link-a">详情查看</a> ）</p>
+                    <p>
+                        <span class="red">您尚未进行身份认证，您上传的产品将无法被买家看到，请尽快完成</span>
+                        <a href="" target="_blank" class="link-a">身份认证</a>
+                    </p>
+                </div>
+                <div class="systemmessages sys-bott">
+                    <i>系统消息：</i>
+                    {notempty name='sys_message_data'}
+                    {volist name='sys_message_data' id='val'}
+                    <p>
+                        {$val.title}
+                    </p>
+                    {/volist}
+                    {/notempty}
+
+                    <!--<p id="addcateid">
+                        平台新增<span class="red">食品饮料</span>及<span class="red">家用电器</span>两类产品的销售， <a href="" target="_blank" class="link-a">详情查看</a>
+                    </p>
+                    <p>
+                        <span id="wholesaleId">您当前还不是批发通道精选商户,
+                            <a href="" target="_blank" class="link-a">了解更多</a><br>
+                        </span>
+                    </p>
+                    <p>
+                        <span id="msgOpcateId">当前绑定经营品类为
+                            <span>K类</span>，
+                            商品数量上限<span>300</span>，
+                            剩余<span>299</span>。
+                            <a href="" target="_blank" class="link-a">了解详情</a><br>
+                        </span>
+                    </p>
+                    <p>您当前商品有
+                        <span class="red" id="indexQuickAudit">0</span> 个已经享受了快速审核服务，占现有产品量的
+                        <span class="red" id="indexAllAudit">0.00%</span> &nbsp;
+                        <a href="" class="link-a">如何享受快速审核服务</a>
+                    </p>
+                    <p>
+                        <span id="bankverifyid">请及时完成您的银行账户设置，以免影响款项下发 。 <a href="" target="_blank" class="link-a">银行账户设置</a></span>
+                    </p>
+                    <p>
+                        <span id="sellerstoreid"> [商铺相关]
+                            目前，您的店铺橱窗中没有可以显示的产品，
+                            <a href="" class="link-a">现在就去管理商铺！</a>
+                        </span>
+                    </p>
+                    <p>
+                        <span class="loadtime">上次登录：<span>2018-04-12 09:30</span>
+                            <a href="" title="安全提示" target="_blank" class="link-a">安全提示</a>
+                        </span>
+                    </p>-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ***************** Left column ******************** -->
+    <div class="right-column">
+        <div class="rightcon">
+            <h4>最新公告</h4>
+            <ul class="recommend">
+                {notempty name='article_announcement_data'}
+                {volist name='article_announcement_data' id='vals'}
+                <li>
+                    <span class="recommend-date">{:date('m-d', $vals['add_time'])}</span>
+                    <a href="" title="{$vals.article_title}" target="_blank">{$vals.article_title}</a>
+                </li>
+                {/volist}
+                {/notempty}
+                <li class="more-content">
+                    <a href="{$platform_notice_more_url|default=''}" target="_blank">更多»</a>
+                </li>
+
+                <!--<li>
+                    <span class="recommend-date">05/09</span>
+                    <a href="" title="一键达搬家工具停止使用通知" target="_blank">一键达搬家工具停止使用通知</a>
+                </li>
+                <li>
+                    <span class="recommend-date">05/03</span>
+                    <a href="" title="WOW VR新增保护知识产权保护公告" target="_blank">WOW VR新增保护知识产权保护公告</a>
+                </li>
+                <li>
+                    <span class="recommend-date">05/02</span>
+                    <a href="" title="Tommy Hilfiger品牌自查通知" target="_blank">Tommy Hilfiger品牌自查通知</a>
+                </li>
+                <li>
+                    <span class="recommend-date">04/28</span>
+                    <a href="" title="敦煌网商户版APP升级通知" target="_blank">敦煌网商户版APP升级通知</a>
+                </li>
+                <li>
+                    <span class="recommend-date">04/25</span>
+                    <a href="" title="球服类目新增保护知识产权公告" target="_blank">球服类目新增保护知识产权公告</a>
+                </li>
+                <li class="more-content">
+                    <a href="" target="_blank">更多»</a>
+                </li>-->
+            </ul>
+        </div>
+        <div class="rightcon">
+            <h4>新手必读</h4>
+            <ul class="recommend">
+
+                {notempty name='article_announcement_data'}
+                {volist name='article_announcement_data' id='vals'}
+                <li>
+                    <a href="" title="{$vals.article_title}" target="_blank">{$vals.article_title}</a>
+                </li>
+                {/volist}
+                {/notempty}
+                <li class="more-content">
+                    <a href="{$novice_must_read_more_url}" title="" target="_blank">更多»</a>
+                </li>
+
+                <!--<li>
+                    <a href="" title="卖一个夏季的水上类目产品招募ing" target="_blank">卖一个夏季的水上类目产品招募ing</a>
+                </li>
+
+                <li>
+                    <a href="" title="Q1海外服饰，有这些属性的都畅销" target="_blank">Q1海外服饰，有这些属性的都畅销</a>
+                </li>
+                <li>
+                    <a href="" title="全球母亲节，卖脱销的类目都有谁" target="_blank">全球母亲节，卖脱销的类目都有谁</a>
+                </li>
+                <li>
+                    <a href="" title="敦煌网平台全行业产品上传规范" target="_blank">敦煌网平台全行业产品上传规范</a>
+                </li>
+                <li>
+                    <a href="" title="做好跨境电商，选好产品很重要" target="_blank">做好跨境电商，选好产品很重要</a>
+                </li>
+                <li class="more-content">
+                    <a href="" title="" target="_blank">更多»</a>
+                </li>-->
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $("#disputes-rate").hover(function(){
+        $(this).children(".todown").addClass("ihover");
+        $(this).children(".disputes-rateshow").removeClass("hide");
+        $(this).addClass("ihover");
+    },function(){
+        $(this).children(".todown").removeClass("ihover");
+        $(this).children(".disputes-rateshow").addClass("hide");
+        $(this).removeClass("ihover");
+    });
+
+    $(".d-rate").hover(function(){
+        $(this).css("color","#ff6000");
+    },function(){
+        $(this).css("color","#333");
+    });
+</script>

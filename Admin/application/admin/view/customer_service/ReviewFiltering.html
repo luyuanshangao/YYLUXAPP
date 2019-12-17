@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>DX_品牌列表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addUserForm" action="{url('admin/CustomerService/ReviewFiltering')}"  method="post"  enctype="multipart/form-data">
+            <input type="hidden" name="id"  value="1">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>过滤关键词：</label>
+                </dd>
+                <dd>
+                   <textarea name="KeyWord"  placeholder='请输入过滤词，多个可以用"|"隔开' cols="200" rows="40" value="{$list['KeyWord']}" class="pd3 KeyWord">{$list.KeyWord}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+            <a style="margin-left: 100px;" class="btn btn-gray addUserForm" data-url="/CustomerService/ReviewFiltering" href="javascript:;">提交</a>
+        </form>
+    </div>
+</div>
+    <!-- 日期插件 -->
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!--<script type="text/javascript" src="/assets/plugins/bootstrap-daterangepicker/daterangepicker-zh-cn.js"></script>-->
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script src="/static/js/dx_cs_common.js" type="text/javascript"></script>
+    <!-- END JAVASCRIPTS -->
+    <script>
+        $(function(){
+            $('.addUserForm').click(function(event) {
+                var that = $(this),url = that.data('url');
+                  Common.submit_data(url,'#addUserForm')
+            });
+        });
+    </script>
+    <!-- END JAVASCRIPTS -->
+
+
+</html>

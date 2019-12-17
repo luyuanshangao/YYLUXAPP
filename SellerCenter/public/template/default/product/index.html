@@ -1,0 +1,509 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/productMan.js" /}
+<style>
+    /*分页CSS*/
+    .pagination  li {display: inline;padding: 0 2px;float: left;}
+    .pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+    .pagination .active span{color: red;}
+
+</style>
+<div class="main-box fl product-management">
+    <ul class="main-cont-tabs">
+        <li {if condition="$ProductStatus eq PRODUCT_STATUS_REVIEWING" }class="curr" {/if}>
+            <a href="{:url('Product/index',array('ProductStatus'=>0))}">审核中 ({$count_pro[0]})</a>
+        </li>
+        <li {if condition="$ProductStatus eq PRODUCT_STATUS_REJECT" }class="curr" {/if}>
+            <a href="{:url('Product/index',array('ProductStatus'=>12))}">审核不通过 ({php}echo $count_pro[12][1]+$count_pro[12][2];{/php})</a>
+        </li>
+        <li {if condition="$ProductStatus eq PRODUCT_STATUS_DOWN" }class="curr" {/if}>
+            <a href="{:url('Product/index',array('ProductStatus'=>PRODUCT_STATUS_DOWN))}">已下架/停售 ({$count_pro[4]+$count_pro[3]})</a>
+        </li>
+        <li {if condition="$ProductStatus eq PRODUCT_STATUS_SUCCESS" }class="curr" {/if}>
+            <a href="{:url('Product/index',array('ProductStatus'=>1))}">正在销售中 ({php}echo $count_pro[1]+$count_pro[5];{/php})</a>
+        </li>
+    </ul>
+
+    {if condition="$ProductStatus eq PRODUCT_STATUS_REJECT" }
+    <ul class="main-cont-tabs mt5">
+        <li {if condition="$RejectType eq 1" }class="curr" {/if} style="border-bottom-color: #fff;">
+            <a href="{:url('Product/index',array('ProductStatus'=>$ProductStatus,'RejectType'=>1))}">侵权/禁限售 ({$count_pro[12][1]})</a>
+        </li>
+        <li {if condition="$RejectType eq 2" }class="curr" {/if} style="border-bottom-color: #fff;">
+            <a href="{:url('Product/index',array('ProductStatus'=>$ProductStatus,'RejectType'=>2))}">商品考核不达标 ({$count_pro[12][2]})</a>
+        </li>
+    </ul>
+    {/if}
+
+    <div class="box-white">
+        <form action="{:url('Product/index',['ProductStatus'=>$ProductStatus,'RejectType'=>$RejectType])}" method="get" class="pb10" id="product-form">
+            <ul class="search-ul-layout">
+                <li>
+                    <input type="hidden" name="{$ProductStatus}">
+                    <label class="search-label-title">产品名称(ID):</label>
+                    <input class="input-text small-input" type="text" name="Title" placeholder="产品名或关键词" value="{:input('Title')}" />
+                </li>
+                <li>
+                    <label class="search-label-title">商品编码:</label>
+                    <input class="input-text small-input" type="text" name="Code" placeholder="输入商品编码" value="{:input('Code')}" />
+                </li>
+                <li>
+                    <label class="search-label-title">产品分组:</label>
+                    <select name="GroupId">
+                        <option value="">--请选择--</option>
+                        {foreach name="group_data" item="val"}
+                        <option value="{$val['_id']}" {if condition="$val['_id'] eq $GroupId" }selected{/if}>{$val['group_name']}</option>
+                        {if condition="$val['child'] neq ''"} {foreach name="val['child']" item="v"}
+                        <option value="{$v['_id']}" {if condition="$v['_id'] eq $GroupId" }selected{/if}>--{$v['group_name']}</option>
+                        {/foreach} {/if} {/foreach}
+                    </select>
+                </li>
+                <li>
+                    <label class="search-label-title">编辑时间排序:</label>
+                    <select name="sort_time">
+                        <option value="">--请选择--</option>
+                        <option value="1" {if condition="$sort_time eq 1" }selected{/if}>正序</option>
+                        <option value="-1" {if condition="$sort_time eq -1" }selected{/if}>倒序</option>
+                    </select>
+                </li>
+                {if condition="$ProductStatus eq PRODUCT_STATUS_SUCCESS"}
+                <li>
+                    <label class="search-label-title">到期时间:</label>
+                    <select name="ExpiryTime">
+                        <option value="">全部</option>
+                        <option {if condition="$ExpiryTime eq 3" }selected{/if} value="3">剩余3天内</option>
+                        <option {if condition="$ExpiryTime eq 7" }selected{/if} value="7">剩余7天内</option>
+                        <option {if condition="$ExpiryTime eq 30" }selected{/if} value="30">剩余30天内</option>
+                    </select>
+                </li>
+                {/if}
+
+                {if condition="$ProductStatus eq PRODUCT_STATUS_SUCCESS || $ProductStatus eq PRODUCT_STATUS_DOWN "}
+               <!-- <li>
+                    <label class="search-label-title">到期时间:</label>
+                    <select name="ExpiryTime">
+                        <option value="">全部</option>
+                        <option {if condition="$ExpiryTime eq 3" }selected{/if} value="3">剩余3天内</option>
+                        <option {if condition="$ExpiryTime eq 7" }selected{/if} value="7">剩余7天内</option>
+                        <option {if condition="$ExpiryTime eq 30" }selected{/if} value="30">剩余30天内</option>
+                    </select>
+                </li>-->
+                <li>
+                    <label class="search-label-title">库存量:</label>
+                    <select name="InventoryFlag">
+                        <option value="1" {if condition="input('InventoryFlag') == 1"}selected="selected"{/if}>全部</option>
+                        <option value="2" {if condition="input('InventoryFlag') == 2"}selected="selected"{/if}>无货</option>
+                    </select>
+                </li>
+                {/if}
+
+
+                <li class="search-li">
+                    <a href="javascript:product_form_submit()" class="search-btn">搜索</a>
+                    <a class="btn-orange" href="{:url('index/Product/productSplit')}">SPU拆分</a>
+                </li>
+            </ul>
+            <input type="hidden" name="page_size" id="page_size">
+        </form>
+
+    </div>
+    <div class="box-white box-white-m0">
+        
+
+        <table class="main-base-table mt20">
+            <tr class="tr-border">
+                <th colspan="3" class="table-title">产品标题</th>
+                <th>状态</th>
+                <th>产品组</th>
+                <th>售价(USD)</th>
+                <th>库存</th>
+                <th>运费模板</th>
+                <th class="sortTime">
+                    {if condition='$ProductStatus == 1'}
+                        剩余时间
+                    {else/}
+                        {if condition='input("sort_time") == 1'}
+                            最新更新日期<a href="{:url('index/Product/index', ['ProductStatus'=>$ProductStatus, 'RejectType'=>$RejectType, 'sort_time'=>2])}" class="sortImgThree"></a>
+                        {else/}
+                            最新更新日期<a href="{:url('index/Product/index', ['ProductStatus'=>$ProductStatus, 'RejectType'=>$RejectType, 'sort_time'=>1])}" class="sortImgThree"></a>
+                        {/if}
+                    {/if}
+                </th>
+                {if condition="$RejectType == 2" }
+                <th width="60">原因</th>
+                {/if}
+                <th>操作</th>
+            </tr>
+            <tr class="tr-edit">
+                <td width="20px">
+                    <input name="checkAllProducts" type="checkbox">
+                </td>
+                <td {if condition="$RejectType == 2" }colspan="9"{else/}colspan="8"{/if}>
+                    <a href="javascript:void(0);" class="mr20 selectAll">全选</a>
+                    {switch name="ProductStatus" }
+                        {case value=":PRODUCT_STATUS_REVIEWING" break="1"}
+                            <a href="javascript:updategroup();" class="mr5 ls-bottonTwo">调整产品组</a>
+                        {/case}
+                        {case value=":PRODUCT_STATUS_REJECT" break="1"}
+                        {/case}
+                        {case value=":PRODUCT_STATUS_DOWN" break="1"}
+                            <a href="javascript:updategroup();" class="mr5 ls-bottonTwo">调整产品组</a>
+                            <a href="javascript:checkUpdateStatus({:PRODUCT_STATUS_SUCCESS})" class="mr5 ls-bottonTwo">上架</a>
+                        {/case}
+                        {case value=":PRODUCT_STATUS_SUCCESS" break="1"}
+                            <a href="javascript:updategroup();" class="mr5 ls-bottonTwo">调整产品组</a>
+                            <a href="javascript:extend_time();" class="mr5 ls-bottonTwo">延长有效期</a>
+                            <a href="javascript:checkUpdateStatus({:PRODUCT_STATUS_DOWN})" class="mr5 ls-bottonTwo">下架</a>
+                        {/case}
+                        {default /}
+                    {/switch}
+                    <!--<a href="javascript:updategroup();" class="mr5 ls-bottonTwo">调整产品组</a>
+                    <a href="javascript:extend_time();" class="mr5 ls-bottonTwo">延长有效期</a>
+                    {if condition="$ProductStatus neq PRODUCT_STATUS_DOWN"}<a href="javascript:checkUpdateStatus({:PRODUCT_STATUS_DOWN})" class="mr5 ls-bottonTwo">下架</a>{else/}<a href="javascript:checkUpdateStatus({:PRODUCT_STATUS_SUCCESS})" class="mr5 ls-bottonTwo">上架</a>{/if}-->
+                    {if condition="$ProductStatus neq PRODUCT_STATUS_DELETE"}<a href="javascript:checkUpdateStatus({:PRODUCT_STATUS_DELETE})" class="mr5 ls-bottonTwo">删除</a>{/if}
+                    <a href="javascript:moditygroup();" class="mr5 ls-bottonTwo">批量修改</a>
+					<span class="rightbtnbox fr pr10">默认按更新日期排序</span>
+				</td>
+            </tr>
+            {notempty name='product.data'}
+            {if condition="count($product['data']) gt 0"}
+            {foreach name="product['data']" item="val"}
+            {php}
+                if($ProductStatus == 1){
+                    $product_link = config('mall_url_config').'p/'.$val['_id'];
+                }else{
+                    if(isset($val['IsHistory'])&&$val['IsHistory']== 1){
+                        $product_link = url('Product/historyShelfProEditor', ['product_id'=>$val['_id'], 'category_id'=>$val['category_id'], 'language'=>'en']);
+                    }else{
+                        $product_link = url('Product/shelfProEditor', ['product_id'=>$val['_id'], 'category_id'=>$val['category_id'], 'language'=>'en']);
+                    }
+                    
+                }
+            {/php}
+            <tr class="j-mouse-hover colorfbf">
+                <td class="padleft20 lspadleft20 ">
+                    <input class="j-check-group-id" name="prodAuditForm.itemcodeChecked" id="ckbox{$val['_id']}" value="{$val['_id']}" type="checkbox">
+                </td>
+                <td class="padimg">
+                    <span class="prolayout">
+                        <a target="_blank" href="{$product_link}">
+                            <!--<img src="//www.dhresource.com/100x100/f2/albu/g6/M00/2A/68/rBVaR1qVLfaAJBUPAAOpj0BuUmc565.jpg">-->
+                            <img src="{$product_images_url_config}{$val['ImageSet']['ProductImg'][0]|default=''}" width="50" height="50">
+                        </a>
+                    </span>
+                </td>
+                <td class="padpro" width="300">
+                    <span class="langcont padright40 clearfix j-tip-container" style="z-index: auto;">
+                        <a class="j-multi-trigger" href="{$product_link}"data-id="{$val['_id']}" target="_blank">
+							{$val['Title']}
+						</a>
+						<div class="langtitle j-multi-content">
+                        	<!-- <i class="langarrow"></i>
+                        	<dl>
+								<dt>俄语标题:</dt>
+								<dd>
+									<a class="j-multi-title-ru" title="" target="_blank">
+										翻译中...
+									</a>
+								</dd>
+							</dl>
+							<dl>
+								<dt>德语标题:</dt>
+								<dd>
+									<a class="j-multi-title-de" title="" target="_blank">
+										翻译中...
+									</a>
+								</dd>
+							</dl>
+							<dl>
+								<dt>法语标题:</dt>
+								<dd>
+									<a class="j-multi-title-fr" title="" target="_blank">
+										翻译中...
+									</a>
+								</dd>
+							</dl>
+							<dl>
+								<dt>西班牙语标题:</dt>
+								<dd>
+									<a class="j-multi-title-es" title="" target="_blank">
+										翻译中...
+									</a>
+								</dd>
+							</dl>
+							<dl>
+								<dt>意大利语标题:</dt>
+								<dd>
+									<a class="j-multi-title-it" title="" target="_blank">
+										翻译中...
+									</a>
+								</dd>
+							</dl>
+							<dl>
+								<dt>葡萄牙语标题:</dt>
+								<dd>
+									<a class="j-multi-title-pt" title="" target="_blank">
+										翻译中...
+									</a>
+								</dd>
+							</dl> -->
+                        </div>
+					</span>
+
+                    {if condition="$ProductStatus eq PRODUCT_STATUS_DOWN || $ProductStatus eq PRODUCT_STATUS_SUCCESS" }
+                        <div class="qualityGrade tipstion j-tip-container" style="z-index: auto;">
+                            <span class="lsWrapOne">产品编号：{$val['_id']}</span>
+                        </div>
+                    {/if}
+                </td>
+                <td class="productgroup">
+                    <span class="groupreline">{if condition="$val['ProductStatus'] eq PRODUCT_STATUS_REVIEWING"}审中核{elseif condition="$val['ProductStatus'] eq PRODUCT_STATUS_REVIEWING"}{elseif condition="$val['ProductStatus'] eq PRODUCT_STATUS_SUCCESS"}正常销售{elseif condition="$val['ProductStatus'] eq PRODUCT_STATUS_PRESALE"}预售{elseif condition="$val['ProductStatus'] eq PRODUCT_STATUS_STOP_PRESALE"}暂停销售{elseif condition="$val['ProductStatus'] eq PRODUCT_STATUS_DOWN"}已下架{elseif condition="$val['ProductStatus'] eq PRODUCT_STATUS_SUCCESS_UPDATE"}正在销售{elseif condition="$val['ProductStatus'] eq PRODUCT_STATUS_DELETE"}已删除{elseif condition="$val['ProductStatus'] eq PRODUCT_STATUS_REJECT"}审核不通过{/if}</span>
+                </td>
+                <td class="productgroup prodThTwo">
+                    <span class="groupreline">{$val['GroupName']|default="未分组"}</span>
+                </td>
+                <td class="right prodThThree">{$val['LowPrice']|default="-"} - {$val['HightPrice']|default="-"}<!--{$val['RangePrice']|default="-"}--></td>
+                <td class=" prodThFour"><span id="{$val['_id']}total">{$val['total_Inventory']}</span> <a href="javascript:void(0);" class="edit-btn iconfont icon-edit" data-id="{$val['_id']|default=''}"></a></td>
+                <td class="prodThFive">{$val['LogisticsTemplateName']|default=""}</td>
+                <td class="">
+                    {if condition='$ProductStatus == 1'}
+                        {$val.ExpiryDateStr|0}天
+                    {else/}
+                        {notempty name='val.EditorTime'}{$val['EditorTime']|date="Y-m-d",###}{else/}-{/notempty}
+                    {/if}
+                </td>
+
+                {if condition="$RejectType != 1" }
+
+                {if condition="$RejectType == 2" }
+                <td align="center">
+                    <div style="height: 70px;overflow: hidden;" title="{$val.RejectReason|default=''}">{$val.RejectReason|default=''}</div>
+                </td>
+                {/if}
+
+                <td class="operation prodThSix">
+                    {if condition="$ProductStatus eq PRODUCT_STATUS_SUCCESS || $ProductStatus eq PRODUCT_STATUS_REVIEWING || ($ProductStatus eq PRODUCT_STATUS_REJECT && $RejectType eq 2) || $ProductStatus eq PRODUCT_STATUS_DOWN "}
+                    {php}$mode = (isset($val['IsHistory'])&&$val['IsHistory']==1)?'historyShelfProEditor':'shelfProEditor';{/php}
+                    <div id="multiEdit_409845544" class="langedit j-multi-edit-container">
+                        <span class="blank"></span><a class="j-multi-edit-trigger" data-id="{$val['_id']}" data-url="{:url('Product/'.$mode, ['product_id'=>$val['_id'], 'category_id'=>$val['category_id']])}" href="{:url('Product/'.$mode, ['product_id'=>$val['_id'], 'category_id'=>$val['category_id'], 'language'=>'en'])}" target="_blank">编辑</a><b></b>
+                        <div class="dd j-multi-edit-content">
+                           <!--  <a class="click11" href="{:url('Product/'.$mode, ['product_id'=>$val['_id'],'category_id'=>$val['category_id'], 'language'=>'en'])}" target="_blank">英语</a>
+                            <a class="j-multi-edit-opt-ru" href="{:url('Product/'.$mode, ['product_id'=>$val['_id'], 'category_id'=>$val['category_id'], 'language'=>'ru'])}" opttext="俄语" target="_blank">俄语（翻译中）</a>
+                            <a class="j-multi-edit-opt-de" href="{:url('Product/'.$mode, ['product_id'=>$val['_id'], 'category_id'=>$val['category_id'], 'language'=>'de'])}" opttext="德语" target="_blank">德语（翻译中）</a>
+                            <a class="j-multi-edit-opt-fr" href="{:url('Product/'.$mode, ['product_id'=>$val['_id'], 'category_id'=>$val['category_id'], 'language'=>'fr'])}" opttext="法语" target="_blank">法语（翻译中）</a>
+                            <a class="j-multi-edit-opt-es" href="{:url('Product/'.$mode, ['product_id'=>$val['_id'], 'category_id'=>$val['category_id'], 'language'=>'es'])}" opttext="西班牙语" target="_blank">西班牙语（翻译中）</a>
+                            <a class="j-multi-edit-opt-it" href="{:url('Product/'.$mode, ['product_id'=>$val['_id'], 'category_id'=>$val['category_id'], 'language'=>'it'])}" opttext="意大利语" target="_blank">意大利语（翻译中）</a>
+                            <a class="j-multi-edit-opt-pt" href="{:url('Product/'.$mode, ['product_id'=>$val['_id'], 'category_id'=>$val['category_id'], 'language'=>'pt'])}" opttext="葡萄牙语" target="_blank">葡萄牙语（翻译中）</a> -->
+                        </div>
+                    </div>
+                    {/if}
+
+                    {if condition="$ProductStatus eq PRODUCT_STATUS_SUCCESS || $ProductStatus eq PRODUCT_STATUS_REVIEWING"}
+                    <a href="{:url('Product/shelfPro', ['product_id'=>$val['_id'], 'category_id'=>$val['category_id']])}" class="addsimilar-products">添加类似产品 </a><br>
+                    {/if}
+
+                    {if condition="$ProductStatus eq PRODUCT_STATUS_SUCCESS"}
+                        <a href="javascript:updateStatus({:PRODUCT_STATUS_DOWN},{$val['_id']})" class="btn_batchUpdate" itemcode="{$val['_id']} {$val['Title']}">下架</a>
+                    {/if}
+                </td>
+
+                {else/}
+                <td></td>
+                {/if}
+
+            </tr>
+            {/foreach}
+            {else/}
+                <tr class="tr-zeroCenter">
+                    <td height="270" {if condition="$RejectType == 2" }colspan="10"{else/}colspan="9"{/if} class="no-result">没有找到符合条件的信息。 </td>
+                </tr>
+            {/if}
+            {else/}
+            <tr class="tr-zeroCenter">
+                <td height="270" {if condition="$RejectType == 2" }colspan="10"{else/}colspan="9"{/if} class="no-result">没有找到符合条件的信息。 </td>
+            </tr>
+            {/notempty}
+            <tr class="tr-edit">
+                <td width="20px">
+                    <input name="checkAllProducts" type="checkbox">
+                </td>
+                <td {if condition="$RejectType == 2" }colspan="9"{else/}colspan="8"{/if}>
+				 <span class="mr20 selectAll">全选</span>
+                    {switch name="ProductStatus" }
+                        {case value=":PRODUCT_STATUS_REVIEWING" break="1"}
+                            <a class="mr5 ls-bottonTwo" href="javascript:updategroup();">调整产品组</a>
+                        {/case}
+                        {case value=":PRODUCT_STATUS_REJECT" break="1"}
+                        {/case}
+                        {case value=":PRODUCT_STATUS_DOWN" break="1"}
+                            <a class="mr5 ls-bottonTwo" href="javascript:updategroup();">调整产品组</a>
+                            <a class="mr5 ls-bottonTwo" name="btn_batchUpdate" href="javascript:checkUpdateStatus({:PRODUCT_STATUS_SUCCESS});">上架</a>
+                        {/case}
+                        {case value=":PRODUCT_STATUS_SUCCESS" break="1"}
+                            <a class="mr5 ls-bottonTwo" href="javascript:updategroup();">调整产品组</a>
+                            <a class="mr5 ls-bottonTwo" href="javascript:extend_time();">延长有效期</a>
+                            <a class="mr5 ls-bottonTwo" name="btn_batchUpdate" href="javascript:checkUpdateStatus({:PRODUCT_STATUS_DOWN});">下架</a>
+                        {/case}
+                        {default /}
+                    {/switch}
+                 <!--<a class="mr5 ls-bottonTwo" href="javascript:updategroup();">调整产品组</a>
+                 <a class="mr5 ls-bottonTwo" href="javascript:extend_time();">延长有效期</a>
+                    {if condition="$ProductStatus neq PRODUCT_STATUS_DOWN"}<a class="mr5 ls-bottonTwo" name="btn_batchUpdate" href="javascript:checkUpdateStatus({:PRODUCT_STATUS_DOWN});">下架</a>{else/}<a class="mr5 ls-bottonTwo" name="btn_batchUpdate" href="javascript:checkUpdateStatus({:PRODUCT_STATUS_SUCCESS});">上架</a>{/if}-->
+                    {if condition="$ProductStatus neq PRODUCT_STATUS_DELETE"}<a class="mr5 ls-bottonTwo" href="javascript:checkUpdateStatus({:PRODUCT_STATUS_DELETE})">删除</a>{/if}
+                    <a href="javascript:moditygroup();" class="mr5 ls-bottonTwo">批量修改</a>
+				</td>
+            </tr>
+        </table>
+        <div class="commonpage page-wrap mt20">
+     	    <!--<span class="pageleft">
+                <span>共有{$product['total']|default=''}条记录，每页显示
+				    <select id="selectpagesize" name="page_size" onchange="javascript:turnpageS(1,'prodAuditForm')">
+						<option value="20" selected="">20</option>
+						<option value="40">40</option>
+						<option value="60">60</option>
+					</select>
+				    条，
+                </span>
+            </span>-->
+            <div class="fr">
+                {$product['Page']|default=''}
+                <!--<ul class="page mt5 fr">
+                    <li><span class="pre"></span></li>
+                    <li><span class="curr" href="#">1</span></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#" class="next"></a></li>
+                </ul>-->
+                <!--<span class="pageright">
+                    <span class="gotopage">到 <input name="page" id="pageid" class="inputtext page-put mr5" type="text">页<span class="buttonpage lsBtnTwo">
+                        <a href="javascript:gotopage();" class="page-put">确 定</a>
+                    </span>
+                </span>-->
+            </div>
+        </div>
+        <input type="hidden" id="editpro">
+        <div class="product-mask"></div>
+        <div class="product-pop">
+            <a class="product-pop-colse">X</a>
+            <div class="product-pop-list">
+                <div id="product-pop-title"></div>
+                <ul class="clearfix" id="proeditul">
+                    <!--<li class="product-pop-item pb10">
+                        <div class="pro-name title" i="edit-title"></div>
+                        <div class="pro-input title">库存</div>
+                    </li>-->
+                    <!--<li class="product-pop-item pb10">
+                        <div class="pro-name">16G</div>
+                        <div class="pro-input">
+                            <input type="number" maxlength="4" class="modify-inventory" value="99">
+                        </div>
+                    </li>
+                    <li class="product-pop-item pb10">
+                        <div class="pro-name">32G</div>
+                        <div class="pro-input">
+                            <input type="number" maxlength="4" class="modify-inventory" value="99">
+                        </div>
+                    </li>
+                    <li class="product-pop-item pb10">
+                        <div class="pro-name">64G</div>
+                        <div class="pro-input">
+                            <input type="number" maxlength="4" class="modify-inventory" value="99">
+                        </div>
+                    </li>-->
+                </ul>
+                <div class="total-inventory mt20">库存总数<span id="total-inventory"></span></div>
+                <div class="btn mt20 pop-btn">
+                    <a class="pop-save btn-orange mr10">确定</a>
+                    <a class="pop-cancel">取消</a>
+                </div>
+            </div>
+        </div>
+        <div id="modalContainer" class="modalContainer">     
+            <a class="modalCloseImg modalClose" title="Close"></a>
+            <div class="tc_warp modalData">
+                <div class="tc_title">
+                    <dl>
+                        <dt>产品下架</dt>
+                        <dd>
+                            <a href="#blank" class="closebtn">
+                                <span class="lsClose">X</span>
+                            </a>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="tc_main">
+                    <div class="tc_content">
+                        <div class="box1">
+                            <p class="p4">您确定将产品 <span id="itemcode"></span> 下架？</p>
+                            <div class="tc_content_button center">
+                                <button type="button" class="confirmbtn">
+                                    <span style="color:#fff" class="button1_ri" data-id="">确定</span>
+                                </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="closebtn">
+                                    <span style="color:#6C6C6C" class="button2_ri">取消</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="progroup" class="progroup hide">
+            <div class="progroup-content">
+                <a class="modalCloseImg modalClose" title="Close"></a>
+                <div class="tc_warp modalData">
+                    <div class="tc_title clearfix">
+                        <dl>
+                            <dt class="fbold fl">请选择产品组</dt>
+                            <dd class="fr">
+                                <a href="#blank" class="closebtn">
+                                    <span class="lsClose">X</span>
+                                </a>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="tc_main mt20">
+                        <div class="tc_content">
+                            <!-- {foreach name="group_data" item="val"}
+                            <div>{if condition="$val['child'] eq ''"}<input type="radio" name="group" value="{$val['_id']}">{/if}{$val['group_name']}</div>
+                            {if condition="$val['child'] neq ''"}
+                            {foreach name="val['child']" item="v"}
+                            <div><input type="radio" name="group" value="{$v['_id']}">--{$v['group_name']}</div>
+                            {/foreach}
+                            {/if}
+                            {/foreach} -->
+
+                            <select class="group-select">
+                                <option value="">请选择</option>
+                                {foreach name="group_data" item="val"}
+                                <option data-id="{if condition="$val['child'] eq ''"}{$val['_id']}{/if}">{$val['group_name']}</option>
+                                {if condition="$val['child'] neq ''"}
+                                {foreach name="val['child']" item="v"}
+                                <option data-id="{$v['_id']}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$v['group_name']}</option>
+                                {/foreach}
+                                {/if}
+                                {/foreach}
+                            </select>
+                            <div class="box1 mt20">
+                                <div class="tc_content_button center">
+                                    <button type="button" class="confirmbtn submit-group-btn">
+                                        <span class="button1_ri_group submit-group" data-id="">确定</span>
+                                    </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="closebtn">
+                                        <span class="button2_ri_group cancel-group">取消</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="show-pic hide">
+            <img src="">
+        </div>
+    </div>
+</div>

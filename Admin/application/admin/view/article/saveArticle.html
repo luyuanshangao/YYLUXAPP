@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>DX_订单查看</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <link rel="stylesheet" href="/assets/plugins/layui/css/layui.css"  media="all">
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+{load href="/assets/plugins/kindeditor/kindeditor.js" /}
+{load href="/assets/plugins/kindeditor/lang/zh_CN.js" /}
+<!--{load href="/assets/plugins/umeditor/themes/default/css/umeditor.min.css" /}
+{load href="/assets/plugins/umeditor/umeditor.config.js" /}
+{load href="/assets/plugins/umeditor/umeditor.js" /}
+{load href="/assets/plugins/umeditor/lang/zh-cn/zh-cn.js" /}-->
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="saveForm" action="{url('/Article/saveArticle')}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="article_id"  value="{$article_data['article_id']}">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>文章标题：</label>
+                </dd>
+                <dd class="col-md-4" style="padding: 0">
+                    <input name="article_title" value="{$article_data['article_title']}" class="form-control" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>作者：</label>
+                </dd>
+                <dd>
+                    <input name="add_author" value="{$article_data['add_author']}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>作者头像：</label>
+                </dd>
+                <dd>
+                    <div class="layui-upload-drag" id="BannerHeaderImgdiv">
+                        {if condition="$article_data['header_image'] eq ''"}
+                        <i class="layui-icon"></i>
+                        <p>点击上传，或将文件拖拽到此处</p>
+                        {else/}
+                        <img height="100" class="layui-upload-img" src="{$article_data['header_image']}">
+                        {/if}
+                    </div>
+                    <input name="header_image" id="header_image" value="{$article_data['header_image']}" class="form-control input-medium inline" type="hidden">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>文章类别：</label>
+                </dd>
+                <dd>
+                    <div class="input-icon right">
+                        {$cate_all}
+                    </div>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>文章概要：</label>
+                </dd>
+                <dd>
+                    <textarea name="excerpt" class="form-control" rows="8" cols="100">{$article_data['excerpt']}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>关键词：</label>
+                </dd>
+                <dd>
+                    <textarea name="keywords" class="form-control" rows="3" cols="100">{$article_data['keywords']}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>是否推荐：</label>
+                </dd>
+                <dd>
+                    <input type="checkbox" value="1" name="recommend" {if condition="$article_data['recommend'] eq 1"} checked="checked" {/if} /> 推荐
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>文章封面：</label>
+                </dd>
+                <dd>
+                    <div class="layui-upload-drag" id="BannerImgdiv">
+                        {if condition="$article_data['image'] eq ''"}
+                        <i class="layui-icon"></i>
+                        <p>点击上传，或将文件拖拽到此处</p>
+                        {else/}
+                        <img height="100" class="layui-upload-img" src="{$article_data['image']}">
+                        {/if}
+                    </div>
+                    <input name="image" id="image" value="{$article_data['image']}" class="form-control input-medium inline" type="hidden">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>是否显示：</label>
+                </dd>
+                <dd>
+                    <select name="status" id="status" class="form-control input-small inline">
+                        <option value="1" {if condition="$article_data['status'] eq 1"}selected{/if}>显示</option>
+                        <option value="2" {if condition="$article_data['status'] eq 2"}selected{/if}>不显示</option>
+                    </select>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>内容：</label>
+                </dd>
+                <dd>
+                    <div id="descBoxt"></div>
+                    <textarea id="content" name="content" style="width:800px;height:500px;">{$article_data["content"]}</textarea>
+                    <div class="err-tip mt10"></div>
+                </dd>
+                <dt></dt>
+            </dl>
+            <div class="layui-layer-btn layui-layer-btn-tleft pl100 mt20"><a href="javascript:void (0);" onclick="document.getElementById('saveForm').submit();" class="layui-layer-btn0">保存</a><a class="layui-layer-btn1" href="/Article/index">取消</a></div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/js/custom.js"></script>
+<script src="/assets/plugins/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript">
+    /*实例化编辑器*/
+    KindEditor.ready(function(K) {
+        window.editor = K.create('#content',{
+            afterBlur: function () { this.sync();},
+            uploadJson : '/Article/remoteUpload',
+            fileManagerJson : '/Article/remoteUpload.php',
+            imgFile:'file',
+            allowFileManager : true
+        });
+    });
+
+    layui.use(['layer','laydate','upload'], function(){
+        var upload = layui.upload;
+        var layer = layui.layer;
+        upload.render({
+            elem: '#BannerImgdiv'
+            ,url: '/Article/remoteUpload'
+            ,size:0
+            ,accept:"images"
+            ,done: function(res){
+                if(res['error']== 0 ){
+                    var img = '<img height="100" class="layui-upload-img" id="BannerImgshow" src="'+res.url+'">';
+                    $("#BannerImgdiv").html(img);
+                    $("#image").val(res.url);
+                }else {
+                    layer.msg(res.msg)
+                }
+
+            }
+        });
+
+        upload.render({
+            elem: '#BannerHeaderImgdiv'
+            ,url: '/Article/remoteUpload'
+            ,size:0
+            ,accept:"images"
+            ,done: function(res){
+                if(res['error']== 0 ){
+                    var img = '<img height="100" class="layui-upload-img" id="BannerHeaderImgshow" src="'+res.url+'">';
+                    $("#BannerHeaderImgdiv").html(img);
+                    $("#header_image").val(res.url);
+                }else {
+                    layer.msg(res.msg)
+                }
+
+            }
+        });
+
+
+    });
+    $(function(){
+        /**
+         * param1 user_id:用户id
+         * param2 category_id:产品分类id
+         * param3 product_id:产品id(编辑页面需要传值，新增页面不需要)
+         */
+    });
+</script>

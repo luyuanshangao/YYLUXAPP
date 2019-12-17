@@ -1,0 +1,63 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addForm" action="" enctype="multipart/form-data">
+            <input type="hidden" name="id"  value="{$model.id}">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>汇率名称：</label>
+                </dd>
+                <dd class="v-title">
+                    {$currency_name[$model.From]}兑{$currency_name[$model.To]}
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>国际汇率：</label>
+                </dd>
+                <dd class="v-title">
+                    {$model.BaseRate}
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>DX基础汇率：</label>
+                </dd>
+                <dd class="v-title">
+                    {$model.BaseRate}
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>上浮率：</label>
+                </dd>
+                <dd>
+                    <input name="Ratio" id="" value="{$model.Ratio}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>DX汇率：</label>
+                </dd>
+                <dd>
+                    <input name="Rate" id="" value="{$model.Rate}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>报警阀值：</label>
+                </dd>
+                <dd>
+                    <input name="Alarm" id="Alarm" value="{$model.Alarm * 100}" class="form-control input-medium inline" type="text">%
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+</script>

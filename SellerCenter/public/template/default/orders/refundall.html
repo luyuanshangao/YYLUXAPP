@@ -1,0 +1,488 @@
+{layout name="layout/main"/}
+{load href="/static/js/plugin/webuploader/webuploader.css" /}
+{load href="/static/css/allOrder.css" /}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/plugin/webuploader/webuploader.js" /}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+{load href="/static/js/module/refundall.js" /}
+<style>
+	.product-price-input{}
+	.main-base-table tr{border: 0 solid #e8e8e8;border-bottom: 0 solid #e8e8e8 !important;}
+	.main-base-table{border-top: 1px solid #e8e8e8 !important;}
+	.main-base-table tr td {padding: 5px !important;padding-top: 10px !important;padding-bottom: 10px !important;}
+	.pull-right{float: right;}
+	.btn-product-release{padding: 3px 10px;}
+	.search-ul-layout li{width: 100%; height: auto;}
+	#order_search_form .search {padding: 4px 12px;}
+	#order_search_form label {display: inline-block;margin-right: 14px;}
+	.main-base-table tr {border: 1px solid #e8e8e8 !important;}
+	/** 分页 **/
+	.pagination  li {display: inline;padding: 0 2px;float: left;}
+	.pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+	.pagination .active span{color: red;}
+</style>
+
+<div class="main-box fl product-management order">
+		<!--<ul class="main-cont-tabs">
+			<li {if condition="$tab_type == 1" }class="curr" {/if}>
+				<a href="{:url('Orders/refundAll', ['tab_type'=>1])}">退换货管理</a>
+			</li>
+			<li {if condition="$tab_type == 2" }class="curr" {/if}>
+				<a href="{:url('Orders/refundAll', ['tab_type'=>2])}">纠纷管理</a>
+			</li>
+		</ul>-->
+
+	<div class="box-white mb20 mt0"><div class="main-cont-title">退款&纠纷</div></div>
+
+	<div style="overflow: hidden;">
+		{if condition="$tab_type == 1"}
+		<div class="search-bar box-white mt0">
+			<form action="{:url('Orders/refundAll', ['tab_type'=>1])}" method="get" id="order_search_form">
+				<ul>
+					<li class="mb15">
+						<label>订单号：
+							<input type="text" name="order_number" class="text"  placeholder="订单号" value="{:input('order_number')}">
+						</label>
+
+						<label>售后单号：
+							<input type="text" name="after_sale_number" class="text"  placeholder="售后单号" value="{:input('after_sale_number')}">
+						</label>
+
+						<label>申请售后类型：
+							<select name="type" id="">
+								<option value="">全部</option>
+								{volist name='type' id='val'}
+									<option value="{$val.id}" {if condition="$val['id'] == input('type')"}selected="selected"{/if}>
+										{$val.name}
+									</option>
+								{/volist}
+							</select>
+						</label>
+						<label class="mt10">申请时间：
+							<input type="text" name="create_on_start" class="text Wdate start-time" readonly="readonly" placeholder="开始时间" value="{:input('create_on_start')}"> -
+							<input type="text" name="create_on_end" class="text Wdate end-time" readonly="readonly" placeholder="结束时间" value="{:input('create_on_end')}">
+						</label>
+					</li>
+					<li>
+						<label>售后状态：
+							<select name="status" id="">
+								<option value="">全部</option>
+								{volist name='status' id='sval'}
+									<option value="{$sval.code}" {if condition="$sval['code'] == input('status')"}selected="selected"{/if}>{$sval.name}</option>
+								{/volist}
+							</select>
+						</label>
+						<label>待处理倒计时：
+							<select name="count_down_type" id="">
+								<option value="">全部</option>
+								{volist name='count_down_data' id='cval'}
+									<option value="{$cval.id}" {if condition="$cval['id'] == input('count_down_type')"}selected="selected"{/if}>{$cval.name}</option>
+								{/volist}
+							</select>
+						</label>
+						<label>平台介入：
+							<select name="is_platform_intervention" id="">
+								<option value="">全部</option>
+								<option value="1" {if condition="input('is_platform_intervention') == 1"}selected="selected"{/if}>是</option>
+								<option value="2" {if condition="input('is_platform_intervention') == 2"}selected="selected"{/if}>否</option>
+							</select>
+						</label>
+						<a href="javascript:$('#order_search_form').submit();" class="btn-orange">搜索</a>&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="javascript:;" class="search-btn export-excel-btn" style=" width: auto;">导出订单</a>
+					</li>
+
+				</ul>
+			</form>
+		</div>
+		<div class="box-white mt20" style="overflow: hidden;">
+			<table class="main-base-table" valign="top">
+				<tbody>
+				<tr class="tr-title">
+					<th width="326">申请产品</th>
+					<th width="60">申请金额</th>
+					<th width="50">申请数量</th>
+					<th width="140">类型、状态和原因</th>
+					<th width="140">待处理倒计时</th>
+					<th>操作</th>
+				</tr>
+				</tbody>
+			</table>
+
+			{volist name='list_data' id='val'}
+			<table class="main-base-table mt5" valign="top" data-after_sale_id="{$val.after_sale_id}" data-type="{$val.type}" data-order_id="{$val.order_id}" data-captured_refunded_fee="{$val.captured_refunded_fee}" data-order_number="{$val.order_number}">
+				<tbody>
+				<tr>
+					<th colspan="3">
+						<p class="gray">售后单号：<span class="">{$val.after_sale_number}</span></p>
+						<p class="gray">订单号：<span class="">{$val.order_number}</span></p>
+					</th>
+					<th>
+						<p><a href=""></a></p>
+						<p><span class="gray">申请售后类型：</span>{$val.type_str}</p>
+						<p><span class="gray">售后状态：</span>{$val.status_str}</p>
+					</th>
+					<th colspan="3" class="amount-tr">
+						<p class="gray">申请时间：{:date('Y-m-d H:i:s', $val['add_time'])}</p>
+						<p class="gray">平台介入：{$val.is_platform_intervention_str}</p>
+						<span class="red amount"></span>
+					</th>
+				</tr>
+				{volist name='val.item_info' id='item'}
+				<tr>
+					<td class="bborder" width="326">
+						<div class="thum-wrap">
+							<a href="">
+								<img src="{$product_images_url_config}{$item.product_img}" width="50" height="50" data-img="">
+							</a>
+						</div>
+						<div class="desc-wrap">
+							<h3 class="title">
+								<a href="" title="">
+									{$item.product_name}
+								</a>
+							</h3>
+							<p class="gray">产品编号：{$item.product_id}</p>
+							<p class="gray">商品编码：{$item.sku_num}</p>
+						</div>
+					</td>
+					<td class="bborder" width="70" align="center">{$item.product_price}</td>
+					<td class="bborder" width="60" align="center">{$item.product_nums}</td>
+
+					{if condition="$key == 0"}
+					<td rowspan="{:count($val['item_info'])}" class="ttop w140">{$val.after_sale_reason_str}</td>
+					<td rowspan="{:count($val['item_info'])}" class="ttop w140" align="center">
+						<div>
+							{php}
+								$count_down = -1;
+								$flag1 = ($val['edit_time'] + $val['count_down_limit_day1']*24*60*60) - time();
+								$flag2 = ($val['edit_time'] + $val['count_down_limit_day2']*24*60*60) - time();
+								//待买家发货 && (换货 || 退货) -15天倒计时
+								if($val['status'] == 2 && ($val['type'] == 1 || $val['type'] == 2 )){
+									$count_down = $flag1>0?$flag1:0;
+								}
+								//待卖家收货 30天倒计时
+								if($val['status'] == 3){
+									$count_down = $flag2>0?$flag2:0;
+								}
+							{/php}
+							{if condition='$count_down != -1'}
+								<span class="orange amount djs-box" data-time="{$count_down}">-天-小时-分钟-秒</span>
+							{else/}
+
+							{/if}
+							{if condition="!empty($val['log'])"}
+							<a href="javascript:show_after_log({$val.after_sale_id})" class="blues show-after-log-{$val.after_sale_id}">展开详情</a>
+							{/if}
+						</div>
+					</td>
+					{/if}
+				</tr>
+				{/volist}
+				<tr>
+					<td colspan="5" class="gray">
+						<div class="mb10">
+							买家描述详情：
+							{$val.remarks|default=''}
+						</div>
+						<div class="mb10">
+							<div class="fl mb10">买家上传附件：</div>
+							{volist name='val.imgs' id='img'}
+							<div class="fl alert-photos-{$val.after_sale_id} ml5"><img src="{$cdn_base_url_config}{$img}" alt="" height="50" width="50" class="" style="cursor: pointer;"></div>
+							{/volist}
+						</div>
+						<!--售后状态变为‘待卖家收货’-->
+						{if condition="$val['status'] == 3" }
+						<div class="" style="clear: both;">
+							物流单号：
+							<a href="{$track17_url}" target="_blank">{$val.expressage_info.expressage_num|default=''}</a>
+						</div>
+						{/if}
+						<script>
+                            layer.photos({
+                                photos: '.alert-photos-'+{$val.after_sale_id}
+                                ,anim: 5
+                            });
+						</script>
+					</td>
+					<td rowspan="{:count($val['item_info'])}" class="ttop" align="center">
+						<!--初始值-->
+						{if condition="$val['status'] != 1 && $val['status'] != 3 && $val['status'] != 4 && $val['status'] != 8" }
+
+						{/if}
+						{if condition="$val['initiator'] eq 1"}
+						<!--在售后状态为‘待处理申请’，且售后类型为‘退货’或‘退款’时，出现该按钮-->
+						{if condition="$val['status'] == 1 AND ($val['type'] == 2 OR $val['type'] == 3 )" }
+						<a href="javascript:void(0);" class="operating-btn blues change-price-box" data-id="">修改申请金额</a>
+						{/if}
+						<!--在售后状态为‘待处理申请’-->
+						{if condition="$val['status'] == 1" }
+						<a href="javascript:void(0);" class="operating-btn blues confirm-application" data-id="">确认申请</a>
+						<a href="javascript:void(0);" class="operating-btn blues rejection-application">拒绝申请</a>
+						{/if}
+						<!--售后状态变为‘待卖家收货’-->
+						{if condition="$val['status'] == 3" }
+						<a href="javascript:void(0);" class="operating-btn blues confirm-receipt">确认收货</a>
+						<a href="javascript:void(0);" class="operating-btn blues apply-arbitration">申请仲裁</a>
+						{/if}
+						<!--售后状态变更为‘换货成功后’，出现该按钮-->
+						{if condition="$val['status'] == 4" }
+						<a href="javascript:void(0);" class="operating-btn blues submit-RMA-order">提交RMA单</a>
+						{/if}
+						{else}
+						<!--后台退款失败-->
+						{if condition="$val['status'] == 8" }
+						<a href="javascript:void(0);" class="operating-btn blues submit-re-refund-order" data-url="{:url('OrderAfterSaleApply/async_submitApply')}">重新退款</a>
+						{/if}
+						{/if}
+					</td>
+					{foreach name="val['log']" item="vo"}
+					<tr  class="after-log-{$val.after_sale_id} hide">
+						<td colspan="5" class="gray">
+							<div class="mb10">
+								{if condition="$vo['user_type'] eq 1"}买家描述详情：{elseif condition="$vo['user_type'] eq 2"}<span class="orange">卖家描述详情：</span>{else/}<span class="blue">后台描述详情：</span>{/if}
+								{$vo.content|default=''}
+							</div>
+							<div class="mb10">
+								<div class="fl mb10">{if condition="$vo['user_type'] eq 1"}买家上传附件：{elseif condition="$vo['user_type'] eq 2"}<span class="orange">卖家上传附件：</span>{else/}<span class="blue">后台上传附件：</span>{/if}</div>
+								{volist name='vo.imgs' id='img'}
+								<div class="fl alert-photos-{$vo.log_id} ml5"><img src="{$cdn_base_url_config}{$img}" alt="" height="50" width="50" class="" style="cursor: pointer;"></div>
+								{/volist}
+							</div>
+							<script>
+								layer.photos({
+										photos: '.alert-photos-'+{$vo.log_id}
+									,anim: 5
+								});
+							</script>
+						</td>
+					</tr>
+					{/foreach}
+				</tr>
+				<tr class="total-price">
+					<td colspan="6">
+						订单总金额：
+						<b class="red">{$val.currency_code_str}</b><b class="red product-price-span">{$val.captured_refunded_fee}</b>
+						<input type="number" name="" class="product-price-input w60 hide" maxlength="7" value="{$val.captured_refunded_fee}">
+						<span class="err red hide">只可录入0.01~999999之间的数字</span>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+			{/volist}
+
+			{empty name='list_data'}
+			<table class="main-base-table mt5" valign="top">
+				<tbody>
+				<tr>
+					<td>没有相关数据</td>
+				</tr>
+				</tbody>
+			</table>
+			{/empty}
+
+			<div class="fr mt10">{$page_html}</div>
+		</div>
+
+		{/if}
+
+		{if condition="$tab_type == 2"}
+		<div class="search-bar box-white">
+			<form action="{:url('Orders/refundAll', ['tab_type'=>2])}" method="get" id="order_search_form2">
+				<ul>
+					<li class="mb15">
+						<label>纠纷类型：
+							<select name="after_sale_type" id="">
+								<option value="">全部</option>
+								{volist name='type' id='val'}
+								<option value="{$val.id}" {if condition="$val['id'] == input('after_sale_type')"}selected="selected"{/if}>{$val.name}</option>
+								{/volist}
+							</select>
+						</label>
+						<label>申请时间：
+							<input type="text" name="create_on_start" class="text Wdate start-time" readonly="readonly" placeholder="开始时间" value="{:input('create_on_start')}"> -
+							<input type="text" name="create_on_end" class="text Wdate end-time" readonly="readonly" placeholder="结束时间" value="{:input('create_on_end')}">
+						</label>
+					</li>
+					<li>
+						<label>纠纷状态：
+							<select name="complaint_status" id="">
+								<option value="">全部</option>
+								{volist name='complaint_status' id='sval'}
+								<option value="{$sval.id}" {if condition="$sval['id'] == input('complaint_status')"}selected="selected"{/if}>{$sval.name}</option>
+								{/volist}
+							</select>
+						</label>
+						<a href="javascript:$('#order_search_form2').submit();" class="btn-orange">搜索</a>
+					</li>
+				</ul>
+			</form>
+		</div>
+
+		<div class="list mt20">
+
+			<table class="main-base-table mt20">
+				<tbody>
+				<tr class="tr-border">
+					<th class="table-title">订单号</th>
+					<th>纠纷类型</th>
+					<th>售后单号</th>
+					<th>申请产品</th>
+					<th>申请产品名称</th>
+					<th>申请数量</th>
+					<th>申请金额（$）</th>
+					<th>申请时间</th>
+					<th>售后状态</th>
+					<th>平台介入</th>
+					<th>纠纷状态</th>
+				</tr>
+
+				{volist name='list_data' id='val'}
+				<tr>
+					<td>{$val.order_number}</td>
+					<td>{$val.after_sale_type_str}</td>
+					<td>{$val.after_sale_id}</td>
+					<td>{$val.product_id}</td>
+					<td>{$val.product_name}</td>
+					<td>{$val.product_nums}</td>
+					<td>{$val.product_price}</td>
+					<td>{:date('Y-m-d H:i:s', $val['add_time'])}</td>
+					<td>{$val.after_sale_status_str}</td>
+					<td>{$val.is_platform_intervention_str}</td>
+					<td>{$val.complaint_status_str}</td>
+				</tr>
+				{/volist}
+
+				{empty name='list_data'}
+				<tr class="tr-zeroCenter">
+					<td height="100" colspan="10" class="no-result">没有找到符合条件的信息。 </td>
+				</tr>
+				{/empty}
+
+				</tbody>
+			</table>
+
+			<div class="fr mt10">{$page_html}</div>
+
+		</div>
+
+		{/if}
+
+
+		<div class="dialog-box hide">
+	        <div class="dialog-bg"></div>
+	        <div class="dialog-cont">
+	            <form class="dialog-form mt20">
+	                <dl class="clearfix">
+	                    <dt class="dia-content-des">agag</dt>
+	                    <dd>
+		                    <textarea class="dialog-content"></textarea>
+		                    <p class="dialog-err-tips red hide"></p>
+	                    </dd>
+	                </dl>
+	                <dl class="clearfix">
+	                    <dt>附件:</dt>
+	                    <dd>
+	                        <p class="red">附件不超过3M,最多只能上传三张图片</p>
+	                        <div class="img-onload-wrap protection-uploader" id="img-onload-wrap">
+		                        <ul id="imgOnloadBox" class="img-onload-box mb10">
+		                            <li>
+		                               <div class="file-picker-btn clearfix">点击上传</div>
+		                               <div class="uploader-list"></div>
+		                            </li>
+		                        </ul>
+		                    </div>
+	                    </dd>
+	                </dl>
+	                <dl class="clearfix mt10">
+	                    <dt>&nbsp;</dt>
+	                    <dd>
+	                        <a class="btn-default confirm-submission">确认提交</a>
+	                        <a class="btn-default cancel-submission">取消</a>
+	                    </dd>
+	                </dl>
+	            </form>
+	        </div>
+	    </div>
+
+		<div class="pop hide">
+			<div class="pop-bg"></div>
+			<div class="pop-cont">
+	            <form class="pop-form">
+		            <div class="fbold">原订单号：<span class="pop-order-number"></span></div>
+	            	<div class="pop-wrap mt20">
+		                <div class="pop-main ">
+		                	<p class="fbold pop-title">选择换单产品：<span class="blue">选出该产品编码下所需换货的商品编码</span></p>
+		                </div>
+		            </div>
+	                <div class="fbold mt20 pop-amount">
+	                	订单金额：<input type="number" maxlength="7" class="pop-order-amount w150"> $
+	                </div>
+	                <div class="mt20">
+	                	<a href="javascript:void(0);" class="btn-default pop-submit">提交</a>
+	                	<a href="javascript:void(0);" class="btn-default pop-cancel">取消</a>
+	                </div>
+	            </form>
+	        </div>
+		</div>
+	</div>
+</div>
+<script>
+    var ajax_url = {$url|default='""'};
+
+    // 搜索开始及结束时间
+    $(".start-time").click(function(){
+        WdatePicker({
+            el:this,
+            dateFmt:'yyyy-MM-dd HH:mm:ss'
+        });
+    });
+    $(".end-time").click(function(event) {
+        WdatePicker({
+            el:this,
+            minDate:$(".end-time").siblings('.start-time').val(),
+            //maxDate:getMaxDate(),
+            dateFmt:'yyyy-MM-dd HH:mm:ss'
+        });
+    });
+    /** 倒计时功能 start **/
+    function handle_num(num){
+        if (num < 10){
+            num = "0"+num;
+        }
+        return num;
+    }
+    $(".djs-box").each(function(){
+        var that = this;
+        var j_that = $(this);
+        var time_value = $(this).attr("data-time");
+        setInterval(function () {
+            var day = parseInt(time_value / 60 / 60 / 24);
+            var hour = handle_num(parseInt(time_value / 60 / 60 % 24));
+            var minute = handle_num(parseInt(time_value / 60 % 60));
+            var seconds = handle_num(parseInt(time_value % 60));
+
+            var html = day+'天'+hour+'小时'+minute+'分钟'+seconds+'秒';
+            j_that.html(html);
+            if(time_value > 0){
+                time_value -= 1;
+            }
+        }, 1000);
+    });
+    /** 倒计时功能 end **/
+	//导出订单excel数据
+	$('.export-excel-btn').click(function () {
+		var param = $('#order_search_form').serialize();
+		window.location.href = ajax_url.Orders+'?'+param;
+	});
+
+	function show_after_log(log_id) {
+		if($(".after-log-"+log_id).hasClass("hide")){
+            $(".after-log-"+log_id).removeClass("hide");
+            $(".show-after-log-"+log_id).html("收起详情");
+		}else {
+            $(".after-log-"+log_id).addClass("hide");
+            $(".show-after-log-"+log_id).html("展开详情");
+		}
+	}
+
+</script>

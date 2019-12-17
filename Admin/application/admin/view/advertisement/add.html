@@ -1,0 +1,1725 @@
+{include file="layout/c_global_style" /}
+{include file="layout/c_style" /}
+{load href="/static/css/advertisement.css" /}
+{include file="layout/c_corejs" /}
+{load href="/static/js/dx_cs_ad.js" /}
+<div class="page-container pd20">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                <div>
+                    <div class="tab-content">
+                        <div class="active d-element-bind btns-link" id="month6">
+                            <div class="search-btn-wrap">
+                                <form id="ad-index-top-form" class="navbar-left" action="attribute" method="post" role="search">
+                                    <ul class="c-h-ul search-ul query-ul">
+                                        <li class="w200">
+                                            <label class="c-h-ul-li-title w60">站点：</label>
+                                            <select name="SiteID" id="add_SiteID" class="form-control w100">
+                                                <option value="" selected="selected">请选择</option>
+                                                {volist name="site_data" id="site_info"}
+                                                    {if condition="$site_info['SiteID'] == $info['SiteID']"}
+                                                        <option value="{$site_info.SiteID}" selected="selected">{$site_info.SiteName}</option>
+                                                    {else/}
+                                                        <option value="{$site_info.SiteID}" >{$site_info.SiteName}</option>
+                                                    {/if}
+                                                {/volist}
+                                            </select>
+                                        </li>
+                                        <li>
+                                            <label class="c-h-ul-li-title w60">页面：</label>
+                                            <select name="PageID" id="add_PageID" class="form-control input-small inline">
+                                                <option value="">请选择</option>
+                                                {volist name="page_data" id="page_info"}
+                                                    {if condition="$page_info['PageID'] == $info['PageID']"}
+                                                        <option value="{$page_info.PageID}" selected="selected">{$page_info.PageName}</option>
+                                                    {else/}
+                                                        <option value="{$page_info.PageID}" >{$page_info.PageName}</option>
+                                                    {/if}
+                                                {/volist}
+                                            </select>
+                                        </li>
+                                        <li>
+                                            <label class="c-h-ul-li-title w60">区域：</label>
+                                            <select name="AreaID" id="add_AreaID" class="form-control input-small inline">
+                                                <option value="">请选择</option>
+                                                {volist name="area_data" id="area_info"}
+                                                    {if condition="$area_info['AreaID'] == $info['AreaID']"}
+                                                        <option value="{$area_info.AreaID}" selected="selected">{$area_info.AreaName}</option>
+                                                    {else/}
+                                                        <option value="{$area_info.AreaID}" >{$area_info.AreaName}</option>
+                                                    {/if}
+                                                {/volist}
+                                            </select>
+                                        </li>
+                                        <li>
+                                            <label class="c-h-ul-li-title w60">布局编号：</label>
+                                            <select name="AreasLayoutID" data-flag="add" id="add_AreasLayoutID" class="form-control input-small inline">
+                                                <option value="">请选择</option>
+
+                                                {volist name="number_data" id="number_info"}
+                                                {if condition="$number_info['AreasLayoutID'] == $info['AreasLayoutID']"}
+                                                    <option value="{$number_info.AreasLayoutID}" selected="selected">{$number_info.AreasLayoutName}</option>
+                                                    {else/}
+                                                    <option value="{$number_info.AreasLayoutID}" >{$number_info.AreasLayoutName}</option>
+                                                    {/if}
+                                                {/volist}
+                                            </select>
+                                            <input type="hidden" value="{$number_detail.ContentTypeID}" name="ContentTypeID" id="add_ContentTypeID">
+                                        </li>
+                                        <li class="w300">
+                                            <label class="c-h-ul-li-title w60">系统编码：</label>
+                                            <input type="text" name="Key" class="w150" value="{$info.Key}" placeholder="系统编码">
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                            <div class="row mt20">
+                                <div class="col-md-12">
+                                    <div>上传内容类型：{$number_detail.ContentTypeName}</div>
+                                    {if condition='$number_detail["ContentTypeName"] == "Banner" '}
+                                    <div>是否多图：{$number_detail.IsMoreImage_str}</div>
+                                    {/if}
+                                </div>
+                            </div>
+                            <div class="row row16 pd15 pd10">
+                                {if condition='$number_detail["ContentTypeName"] == "Banner" '}
+                                <div class="col-md-16">
+                                    是否包含文案 <input type="checkbox" name="IsContainsFont" value="1" id="IsContainsFont" checked="checked">
+                                </div>
+                                {/if}
+                                <div class="col-md-16">
+                                    <span class="red">注意：若非EN的多语言与EN共用图片地址，则多语言的图片地址可不填。</span>
+                                    <a href="javascript:;" class="btn btn-warning one-clear">一键清除</a>
+                                </div>
+                                <br><br><br>
+                                <div class="col-md-16">
+                                    <span class="red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        多图时，多个“主文案”、“副文案”用“||”隔开，如有三个图，则相应文案为：“color||size||keywords”，以此类推。
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pl20 pr10">
+    {if condition='$number_detail["ContentTypeName"] == "Banner" '}
+    <div class="row mb10">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-en">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">EN</div>
+                    <input type="hidden" value="en" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                        <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-EN">
+                            <div>
+                                <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                    <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                    <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-1 pl0">
+                            <span class="btn btn-warning add-img-items">添加</span>
+                        </div>
+                    {else/}
+                        <div class="col-sm-10 img-items-box">
+                            <input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                        </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-EN">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-es">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">ES</div>
+                    <input type="hidden" value="es" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                    <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-ES"> 
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>   
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>   
+                    </div>
+                    <div class="col-sm-1 pl0">
+                        <span class="btn btn-warning add-img-items">添加</span>
+                    </div>
+                    {else/}
+                    <div class="col-sm-10 img-items-box">
+                        <input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                    </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-ES">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb10">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-pt">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">PT</div>
+                    <input type="hidden" value="pt" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                    <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-PT">
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 pl0">
+                        <span class="btn btn-warning add-img-items">添加</span>
+                    </div>
+                    {else/}
+                    <div class="col-sm-10 img-items-box">
+                        <input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                    </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-PT">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span><input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span><input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-ru">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">RU</div>
+                    <input type="hidden" value="ru" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                    <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-RU">
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 pl0">
+                        <span class="btn btn-warning add-img-items">添加</span>
+                    </div>
+                    {else/}
+                    <div class="col-sm-10 img-items-box">
+                        <input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                    </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-RU">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb10">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-de">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">DE</div>
+                    <input type="hidden" value="de" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                    <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-DE">
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 pl0">
+                        <span class="btn btn-warning add-img-items">添加</span>
+                    </div>
+                    {else/}
+                    <div class="col-sm-10 img-items-box">
+                        <input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                    </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-DE">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-fr">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">FR</div>
+                    <input type="hidden" value="fr" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                    <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-FR">
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 pl0">
+                        <span class="btn btn-warning add-img-items">添加</span>
+                    </div>
+                    {else/}
+                    <div class="col-sm-10 img-items-box">
+                        <input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                    </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-FR">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb10">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-nl">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">NL</div>
+                    <input type="hidden" value="nl" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                    <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-NL">
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 pl0">
+                        <span class="btn btn-warning add-img-items">添加</span>
+                    </div>
+                    {else/}
+                    <div class="col-sm-10 img-items-box">
+                        <input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                    </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-NL">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-cs">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">CS</div>
+                    <input type="hidden" value="cs" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                    <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-CS">
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                <span class="handle"></span>
+                                <input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 pl0">
+                        <span class="btn btn-warning add-img-items">添加</span>
+                    </div>
+                    {else/}
+                    <div class="col-sm-10 img-items-box">
+                        <input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                    </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-CS">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb10">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-fi">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">FI</div>
+                    <input type="hidden" value="fi" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                    <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-FI">
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                <span class="handle"></span>
+                                <input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 pl0">
+                        <span class="btn btn-warning add-img-items">添加</span>
+                    </div>
+                    {else/}
+                    <div class="col-sm-10 img-items-box">
+                        <input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                    </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-FI">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-it">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">IT</div>
+                    <input type="hidden" value="it" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                    <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-IT">
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 pl0">
+                        <span class="btn btn-warning add-img-items">添加</span>
+                    </div>
+                    {else/}
+                    <div class="col-sm-10 img-items-box">
+                        <input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                    </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-IT">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb10">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-no">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">NO</div>
+                    <input type="hidden" value="no" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                    <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-NO">
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 pl0">
+                        <span class="btn btn-warning add-img-items">添加</span>
+                    </div>
+                    {else/}
+                    <div class="col-sm-10 img-items-box">
+                        <input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                    </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-NO">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-sv">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">SV</div>
+                    <input type="hidden" value="sv" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                    <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-SV">
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 pl0">
+                        <span class="btn btn-warning add-img-items">添加</span>
+                    </div>
+                    {else/}
+                    <div class="col-sm-10 img-items-box">
+                        <input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                    </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-SV">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb10">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-ar">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">AR</div>
+                    <input type="hidden" value="ar" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                    <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-AR">
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 pl0">
+                        <span class="btn btn-warning add-img-items">添加</span>
+                    </div>
+                    {else/}
+                    <div class="col-sm-10 img-items-box">
+                        <input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                    </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-AR">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 box-ul">
+            <div class="main-box" id="main-box-ja">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">JA</div>
+                    <input type="hidden" value="ja" name="Language" class="language-input">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label pr0">图片地址：</label>
+                    {if condition="$is_more_img == 1"}
+                    <div class="col-sm-9 img-items-box container dragula-img-link pl0" id="dragula-img-input-JA">
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap1">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt5 col-sm-10 mb5 pd0 imageUrlWrap add-wrap2">
+                                <span class="handle"></span><input type="text" name="ImageUrl" class="form-control common-input" placeholder="图片地址">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 pl0">
+                        <span class="btn btn-warning add-img-items">添加</span>
+                    </div>
+                    {else/}
+                    <div class="col-sm-10 img-items-box">
+                        <input type="text" name="ImageUrl" class="form-control mt5 common-input" placeholder="图片地址">
+                    </div>
+                    {/if}
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10 linkurl-items-box container pl0 dragula-img-link" id="dragula-link-input-JA">
+                        {if condition="$is_more_img == 1"}
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        <div class="mt5">
+                            <span class="handle"></span>
+                            <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                        </div>
+                        {else/}
+                        <input type="text" name="LinkUrl" class="form-control mt5 common-input" placeholder="链接地址">
+                        {/if}
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10 pl0">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {/if}
+    {if condition='$number_detail["ContentTypeName"] == "Text" '}
+    <div class="row mb10">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">EN</div>
+                    <input type="hidden" value="en" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">ES</div>
+                    <input type="hidden" value="es" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">PT</div>
+                    <input type="hidden" value="pt" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb10">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">RU</div>
+                    <input type="hidden" value="ru" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">DE</div>
+                    <input type="hidden" value="de" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">FR</div>
+                    <input type="hidden" value="fr" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb10">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">NL</div>
+                    <input type="hidden" value="nl" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">CS</div>
+                    <input type="hidden" value="cs" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">FI</div>
+                    <input type="hidden" value="fi" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb10">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">IT</div>
+                    <input type="hidden" value="it" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">NO</div>
+                    <input type="hidden" value="no" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">SV</div>
+                    <input type="hidden" value="sv" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb10">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">AR</div>
+                    <input type="hidden" value="ar" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">语言：</label>
+                    <div class="col-sm-9">JA</div>
+                    <input type="hidden" value="ja" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">关键词内容：</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" name="keywords" class="form-control common-input h100"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {/if}
+
+    {if condition='$number_detail["ContentTypeName"] == "SKU_AD" '}
+    <div class="row mb10">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">EN</div>
+                    <input type="hidden" value="en" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">ES</div>
+                    <input type="hidden" value="es" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">PT</div>
+                    <input type="hidden" value="pt" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb10">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">RU</div>
+                    <input type="hidden" value="ru" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">DE</div>
+                    <input type="hidden" value="de" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">FR</div>
+                    <input type="hidden" value="fr" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb10">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">NL</div>
+                    <input type="hidden" value="nl" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">CS</div>
+                    <input type="hidden" value="cs" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">FI</div>
+                    <input type="hidden" value="fi" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb10">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">IT</div>
+                    <input type="hidden" value="it" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">NO</div>
+                    <input type="hidden" value="no" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">SV</div>
+                    <input type="hidden" value="sv" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb10">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">AR</div>
+                    <input type="hidden" value="ar" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 box-ul">
+            <div class="main-box">
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">语言：</label>
+                    <div class="col-sm-10">JA</div>
+                    <input type="hidden" value="ja" name="Language">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">SKU：</label>
+                    <div class="col-sm-8 img-items-box">
+                        <input type="text" name="SKUInput" class="form-control mt5 common-input" placeholder="SKU">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">链接地址：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="LinkUrl" class="form-control common-input" placeholder="链接地址">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">主文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="MainText" class="form-control common-input" placeholder="主文案">
+                    </div>
+                </div>
+                <div class="form-group row font-box">
+                    <label class="col-sm-2 control-label">副文案：</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="SubText" class="form-control common-input" placeholder="副文案">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {/if}
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <span class="btn btn-primary btn-save" data-flag="add">提交</span>
+        </div>
+    </div>
+    <br>
+</div>
+
+<script>
+    var url = {$url|default=''};
+    var init_c_type = "{$number_detail.ContentTypeName|default=''}";
+    var init_is_more_img = "{$number_detail.IsMoreImage_str|default='否'}";
+    //是否包含文案
+    $("#IsContainsFont").change(function () {
+        if($(this).is(':checked')){
+            $('.font-box').show();
+        }else{
+            $('.font-box').hide();
+        }
+    });
+    //一键清除
+    $('.one-clear').click(function () {
+        if(confirm('是否一键清除所有内容？')){ //只有当点击confirm框的确定时，该层才会关闭
+            $('.common-input').val('');
+        }
+    });
+</script>
+{load href="/static/js/dragula.js" /}
+{load href="/static/js/dragulaImg.js" /}

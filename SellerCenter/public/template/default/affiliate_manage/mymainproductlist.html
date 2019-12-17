@@ -1,0 +1,165 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/productMan.js" /}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+{load href="/static/js/module/setAffiliateClass.js" /}
+
+<style>
+    /** 分页 **/
+    .pagination  li {display: inline;padding: 0 2px;float: left;}
+    .pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+    .pagination .active span{color: red;}
+
+</style>
+
+<div class="main-box fl product-management">
+    <ul class="main-cont-tabs">
+        <li {if condition="$status eq 0" }class="curr" {/if}>
+            <a href="{:url('AffiliateManage/myMainProductList',array('status'=>0))}">待审核</a>
+        </li>
+        <li {if condition="$status eq 1" }class="curr" {/if}>
+            <a href="{:url('AffiliateManage/myMainProductList',array('status'=>1))}">已审核</a>
+        </li>
+        <li {if condition="$status eq 2" }class="curr" {/if}>
+            <a href="{:url('AffiliateManage/myMainProductList',array('status'=>2))}">已驳回</a>
+        </li>
+    </ul>
+    <div class="box-white box-white-m0" style="overflow: hidden;">
+        
+        <form action="{:url('AffiliateManage/myMainProductList', ['status'=>input('status')])}" method="get" class="pb10" id="product-form">
+            <ul class="search-ul-layout">
+                <li>
+                    <label class="search-label-title">产品ID:</label>
+                    <input class="input-text small-input" type="text" name="spu" placeholder="输入产品ID"  value="{:input('spu')}"/>
+                </li>
+                <li class="search-li">
+                    <a href="javascript:product_form_submit()" class="search-btn">搜索</a>
+                </li>
+            </ul>
+        </form>
+        <table class="main-base-table mt20">
+            <tr class="tr-border">
+                <th colspan="{if condition="$status != 1"}3{else/}2{/if}" class="table-title w300">产品标题</th>
+                <th>产品分类</th>
+                <th>售价(USD)</th>
+                <th>佣金比例</th>
+                <th>生效日期</th>
+                <th>申请状态</th>
+                {if condition="$status == 2"}
+                    <th width="100">原因</th>
+                {/if}
+                <th>操作</th>
+            </tr>
+            {if condition="count($list) gt 0"}
+
+            {if condition="$status != 1"}
+            <tr class="tr-edit">
+                <td width="20px">
+                    <input name="checkAllProducts" type="checkbox">
+                </td>
+                <td colspan="8">
+                    <span class="mr20 selectAll">全选</span>
+                </td>
+            </tr>
+            {/if}
+            {volist name="list" id="val"}
+            {php}
+                $product_link = config('mall_url_config').'p/'.$val['spu'];
+            {/php}
+            <tr class="j-mouse-hover colorfbf" data-spu="{$val.spu}">
+                {if condition="$status != 1"}
+                <td class="padleft20 lspadleft20 ">
+                    <input class="j-check-group-id" name="prodAuditForm.itemcodeChecked" id="ckbox{$val['id']}" value="{$val['id']}" type="checkbox">
+                </td>
+                {/if}
+                <td class="padimg">
+                    <span class="prolayout">
+                        <a target="_blank" href="{$product_link}">
+                            <img src="{$product_images_url_config}{$val['product_img']|default=''}" width="50">
+                        </a>
+                    </span>
+                </td>
+
+
+                <td class="padpro" width="150">
+                        <span class="langcont padright40 clearfix j-tip-container" style="z-index: auto;">
+                            <a class="j-multi-trigger-my-main-product-list" href="{$product_link}" target="_blank">
+                                {$val['product_title']|default=''}
+                            </a>
+                        </span>
+                    <div class="qualityGrade tipstion j-tip-container" style="z-index: auto;">
+                    </div>
+                </td>
+                <td class="productgroup prodThTwo">
+                    <span class="groupreline" title="{$val['FirstCategoryName_en']|default=''}">{$val['FirstCategoryName_cn']|default="-"}</span>
+                </td>
+                <td class="right prodThThree">{$val['product_range_price']|default=""}</td>
+                <td class="prodThFour">
+
+                    {if condition="$status != 1"}
+                    <!--<span class="commission-val">{$val['commission']|default=""}%</span>-->
+                    <input type="number" name="commission-main-pro-{$val.id}" class="edit-commission-input" data-value="5.0" placeholder="" value="{$val['commission']}">
+                    {else/}
+                    {$val['commission']}
+                    {/if}
+                    <input type="hidden" name="class-id-{$val.id}" value="{$val.class_id}">
+                    <span class="edit-err-tips red hide"></span>
+
+                </td>
+                <td class="prodThFive">
+                    {if condition="$status != 1"}
+                    <!--<span class="effective-time-span">{:date('Y-m-d', $val['effect_time'])}</span>-->
+                    <input type="text" name="effective-time-main-pro-{$val.id}" class="effective-time" placeholder="" value="{:date('Y-m-d', $val['effect_time'])}">
+                    {else/}
+                    {:date('Y-m-d', $val['effect_time'])}
+                    {/if}
+                    <p class="effective-time-tips hide red"></p>
+                    <!--<input type="text" name="effect_time_{$val.id}" class="effective-time" placeholder="生效时间">-->
+                </td>
+                <td>{$val.status_str|default=''}</td>
+
+                {if condition="$status == 2"}
+                    <td>{$val.remark|default=''}</td>
+                {/if}
+                <td>
+                    {if condition='$val["status"] != 1'}
+                        <a href="javascript:;" data-id="{$val.id}" data-class-id="{$val.class_id}" class="update-main-product-btn">修改</a>
+                    {else /}
+                        -
+                    {/if}
+                </td>
+            </tr>
+            {/volist}
+            {else/}
+            <tr class="tr-zeroCenter">
+                <td height="270" colspan="11" class="no-result">没有找到符合条件的信息。 </td>
+            </tr>
+            {/if}
+
+            {if condition="count($list) gt 0 AND $status != 1"}
+            <tr class="tr-edit">
+                <td width="20px">
+                    <input name="checkAllProducts" type="checkbox">
+                </td>
+                <td colspan="8">
+
+                    <span class="mr20 selectAll">全选</span>
+                    <div class="fr">
+                        <!--您已经选择 <span class="select-pro-nums">0</span> 个产品：--><a href="javascript:;" class="batch-editor-btn search-btn">修改主推产品</a>
+                    </div>
+
+                </td>
+            </tr>
+            {/if}
+        </table>
+        {notempty name='page'}
+        <div class="commonpage page-wrap mt20 fr">
+            {$page}
+        </div>
+        {/notempty}
+    </div>
+</div>
+
+<script>
+    var ajax_url = {$ajax_url|default=''};
+</script>

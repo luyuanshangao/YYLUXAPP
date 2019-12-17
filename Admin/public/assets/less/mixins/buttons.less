@@ -1,0 +1,26 @@
+//@c:文字颜色, @bgc：背景颜色, @bc：边框颜色, @hc：hover颜色, @hbc：hover背景颜色, @hbdc:hover边框颜色
+.btn-bby(@c, @bgc, @bc, @hc, @hbc, @hbdc){
+    color: @c;
+    background-color: @bgc;
+    border-color: @bc;
+    border-width: 1px;
+    padding: 3px 13px;
+    &:hover, &:focus, &:active, &.active, .open .dropdown-toggle& {
+        color: @hc;
+        background-color: @hbc;
+        border-color: @hbdc;
+    }
+    &:active, .active, .open > .dropdown-toggle& {
+        background-image: none
+    }
+    &.disabled, &[disabled], fieldset[disabled] {
+        &, &:hover, &:focus, &:active, &.active {
+            background-color: @bgc;
+            border-color: @bc
+        }
+    }
+    .badge {
+        color: @bgc;
+        background-color: @c
+    }
+}

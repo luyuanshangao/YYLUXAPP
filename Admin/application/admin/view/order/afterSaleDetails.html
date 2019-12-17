@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>{$list['after_sale_number']},商城管理-订单管理-订单详情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/order-details.css" type="text/css" />
+
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="page-header-fixed page-sidebar-fixed ml20 mr20">
+    <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+        <div class="row bg-color-gray0 area_btn0 border-gray mt10 mg0">
+            <div class="col-md-8">
+            <strong class="f14">订单编号:<a href="{:url('order/edit',array('id'=>$list.order_number))}" target="_blank">{$list['order_number']}</a></strong>
+            </div>
+            <div class="col-md-4 tright">
+            <form action="/order/edit">
+                <span class="gray">快速跳转到订单:</span>
+                <input name="id" type="text"/>
+                <input type="submit" value="GO" class="btn btn-qing">
+             </form>
+            </div>
+        </div>
+        <div class="row col-md-12 mt20 ml0 mr0">
+            <ul class="step-list clearfix">
+                <li class="clearfix">
+                    <div class="tcenter w120 fl">
+                        <div class="circly"><i class="glyphicon glyphicon f18 glyphicon-ok green"></i></div>
+                        <p class="mt10">申请售后</p>
+                        <p class="gray mt5">{$list['add_time'] |date="Y-m-d H:i:s",###}</p>
+                    </div>
+                    <div class="line {$paymentGraybgStyle} fl"></div>
+                </li>
+                <li class="clearfix">
+                    <div class="tcenter w120 fl">
+                        <div class="circly {$paymentGraybgStyle}"><i class="glyphicon glyphicon f18 {$paymentGreenStyle}"></i></div>
+                        <p class="mt10">售后处理中</p>
+                        <p class="gray mt5">{$paymentTime}</p>
+                    </div>
+                    <div class="line {$shippingGraybgStyle} fl"></div>
+                </li>
+                <li class="clearfix">
+                    <div class="tcenter w120 fl">
+                        <div class="circly {$confirmShippingGraybgStyle}"><i class="glyphicon glyphicon f18 {$confirmShippingGreenStyle}"></i></div>
+                        <p class="mt10">完成售后</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="blank20"></div>
+        <div class="row pd10 bg-gray border-gray ml0 mr0">
+            <div class="col-md-8">
+                <div class="red">
+                    <i class="glyphicon glyphicon-exclamation-sign mr5"></i>
+                    <span>售后状态：
+                    {volist name="$after_sale_status" id="as"}
+                        {if condition="$as.code eq $list.status"}{$as['name']}
+                        {/if}
+                    {/volist}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12 border_bottom mt20 mr0 ml0 pb20">
+            <strong>收货人信息</strong>
+            <div class="pl10 c-h-dl-label100 mt10">
+                <dl class="c-h-dl-validator form-group clearfix">
+                    <dd class="v-title">
+                        <label>客户ID：</label>
+                    </dd>
+                    <dd class="red pt7">
+	                    <a href="/MemberManagement/detail/id/{$orderDetail['customer_id']}" target="_blank"
+	                         title="{$orderDetail['customer_name']}">
+	                         {$list['customer_id'].'-'.$list['customer_name']}
+	                    </a>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+            <strong>基本信息</strong>
+            <table class="table-ex tcenter mt10">
+                <thead>
+                    <tr>
+                        <th>售后订单</th>
+                        <th>售后类型</th>
+                        <th>退款金额</th>
+                        <th>币种</th>
+                        <th>订单类型</th>
+                        <th>卖家账号</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{$list['after_sale_number']}</td>
+                        <td class="red">
+                            {volist name="$after_sale_status" id="as"}
+                                {if condition="$as.code eq $list.status"}{$as['name']}
+                                {/if}
+                            {/volist}
+                        </td>
+                        <td>{$list['refunded_fee']}</td>
+                        <td class="red"><b>{$list['currency_code']}</b></td>
+                        <td>{$orderType}</td>
+                        <td><a href="/seller/selleredit/id/{$orderDetail['store_id']}" target="_blank" title="{$orderDetail['store_name']}">{$list['store_id'].'-'.$list['store_name']}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+         <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+            <strong>商品信息</strong>
+            <table class="table-ex tcenter mt10">
+                <thead>
+                    <tr>
+                        <th>商品名称</th>
+                        <th>单价</th>
+                        <th>属性</th>
+                        <th>数量</th>
+                        <th>优惠金额</th>
+                        <th class="border-right-gray">小计</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {volist name="$list['itemList']" id="it"}
+                    <tr>
+                        <td class="w300 tleft">
+	                        <a href="/{$it.product_id}" target="_blank">
+	                           {$it['product_name']}
+	                        </a>
+                        </td>
+                        <td>{$it['product_price']}</td>
+                        <td>
+                            {$it['product_attr_desc']}
+                        </td>
+                        <td>{$it['product_nums']}</td>
+                        <td>{$it['discount_total']}</td>
+                        <td class="border-right-gray">{$price = $it['product_nums']*$it['product_price']*$it['discount_total']}</td>
+                    </tr>
+                    <?php $price_total +=$price;?>
+
+                {/volist}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="7" class="bg-gray tright">
+                            <span>合计：</span>
+                            <strong class="red">{$orderDetail['currency_code']} {$price_total}</strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+            <strong>退款信息</strong>
+            <table class="table-ex tcenter mt10">
+                <thead>
+
+                    <tr>
+                        <th>退货金额</th>
+                        <th>退款TxnID</th>
+                        <th>退款状态</th>
+                        <th>退款类型</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>{$list['captured_refunded_fee']}</td>
+                        <td>{$list['payment_txn_id']}</td>
+                        <td>{$list['status_name']}</td>
+                        <td>{$list['refunded_type_name']}</td>
+                        <td class="w700" title="{$list['remarks']}">
+                            <div class="w700 exceed">{$list['remarks']}</div>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+            <strong>发货信息</strong>
+            <div class="mt10">
+                <textarea class="form-control" name="" id="" cols="100" rows="10"></textarea>
+            </div>
+        </div>
+
+        <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+            <strong>订单状态变更记录</strong>
+            <table class="table-ex tcenter mt10">
+                <thead>
+                    <tr>
+                        <th>订单状态</th>
+                        <th>修改人</th>
+                        <th>修改时间</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {volist name="$orderDetail['order_status_change']" id="osc"}
+                    <tr>
+                        <td>{$osc['order_status']}</td>
+                        <td>{$osc['create_by']}</td>
+                        <td>{$osc['create_on'] |date="Y-m-d H:i:s",###}</td>
+                        <td class="w700" title="{$osc['change_reason']}">
+                            <div class="w700 exceed">{$osc['change_reason']}</div>
+                        </td>
+                    </tr>
+                 {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script src="/static/js/order.js" type="text/javascript"></script>
+    <script>
+    $(function() {
+        App.init();
+        Order.afterSaleDetails();
+    });
+    </script>
+    <!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+
+</html>

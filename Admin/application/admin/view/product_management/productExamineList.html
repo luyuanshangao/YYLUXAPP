@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>商品管理->商品管理->商城管理</title>
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+    {load href="/static/css/productManagement.css" /}
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<!-- BEGIN CONTAINER -->
+<!-- BEGIN SIDEBAR -->
+<!--#include file="layout/sidebar.html"-->
+<!-- END SIDEBAR -->
+<!-- BEGIN CONTENT -->
+<div class="page-content pt0 ml20 pl0">
+    <div class="bg-color-gray0 area_btn0 border-gray ml0 mr0">
+        <a href="javascript:void(0);" class="btn btn-qing" id="getValue">批量通过</a>
+        <a href="javascript:void(0);" class="btn btn-qing" id="notgetValue">批量不通过</a>
+    </div>
+    <!-- 订单内容 begin -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                <div>
+                    <div class="tab-content mt15">
+                        <div class="tab-pane active d-element-bind btns-link" id="month6">
+                            <div class="search-btn-wrap">
+                                <form id="navbar" class="navbar-left" action="{:url('ProductManagement/productExamineList')}" method="post">
+                                    <ul class="c-h-ul search-ul query-ul">
+                                        <li>
+                                            <label class="c-h-ul-li-title">SPU：</label>
+                                                <input name="id" value='{$data.id?$data.id:''}' class="form-control input-small" type="text" />
+                                        </li>
+                                        <li>
+                                            <label class="c-h-ul-li-title">产品标题：</label>
+                                            <input name="Title" value="{$data.Title?$data.Title:''}" class="form-control input-small" type="text" />
+                                        </li>
+
+                                            <li>
+                                            <label class="c-h-ul-li-title">商品品牌：</label>
+                                            <input name="BrandName" value="{$data.BrandName?$data.BrandName:''}" class="form-control input-small" type="text" />
+                                        </li>
+                                            <li class="w680">
+
+                                                <label class="c-h-ul-li-title">产品类别：</label>
+                                                {if condition="empty($parent_class) && $parent_class  == ''"}
+                                                    <select name="first_level" id="first_level" class="form-control input-small inline mr10">
+                                                    <option value="">请选择</option>
+                                                    {volist name="classList" id="vo"}
+                                                    <option {if condition="!empty($data.first_level) && $data.first_level eq $vo.id"} selected = "selected"{/if} value="{$vo.id}">{$vo.title_en}</option>
+                                                    {/volist}
+                                                    </select>
+                                                {else /}
+
+                                                    {$parent_class?$parent_class:''}
+                                                {/if}
+                                                <a onclick="javascript:document:navbar.submit();" class="btn btn-gray ttop" href="javascript:;">查 询</a>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                            <div id="enlarge_images" style="display: none; top: 244px; left: 170px;"></div>
+                            <!-- start base table -->
+                            <div class="row">
+                                <div class="col-md-12 pb10">
+                                    <table class="table-basic table-hover table-padding mb10 mt15">
+                                        <thead>
+                                        <tr>
+                                            <th><input type="checkbox"  id="all"/></th>
+                                            <th>SPU</th>
+                                            <th>商品图片</th>
+                                            <th>商品标题</th>
+                                            <th>品牌名称</th>
+                                            <th>产品售价($)</th>
+                                            <th>商品信息(编码-售价-库存)</th>
+                                            <th>卖家名称</th>
+                                            <th>类别</th>
+                                            <th class="w60">状态</th>
+                                            <th>上架时间</th>
+                                            <th class="w60">操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody  id="list">
+                                            {volist name="list" key = 'k' id="vo"}
+                                                <tr  class="obtain">
+                                                    <td><input class="single-checkbox" value="{$vo._id}" type="checkbox" /></td>
+                                                    <td>{$vo._id?$vo._id:''}</td>
+                                                    <td  id="demo{$k}">
+                                                    <img width="25" height="25" src="{$dx_mall_img_url}{$vo['FirstProductImage']}" class="show-pic"></td>
+                                                    <td class="w300 word-break-all word-wrap-break">{$vo.Title}</td>
+                                                    <td>{$vo.BrandName?$vo.BrandName:''}</td>
+                                                    <td>$ {$vo.LowPrice?$vo.LowPrice:'0.00'}--$ {$vo.HightPrice?$vo.HightPrice:'0.00'}</td>
+                                                    <td>
+                                                        {volist name="$vo['Skus']" key = 'key' id="vk"}
+                                                        {$vk.Code}-${$vk.SalesPrice}-{$vk.Inventory}<br>
+                                                        {/volist}
+                                                    </td>
+                                                    <td>{$vo.StoreName?$vo.StoreName:''}</td>
+                                                    <td>
+                                                        <?php
+                                                        $category1 = '';
+                                                        $category2 = '';
+                                                        $category3 = '';
+                                                        $category4 = '';
+                                                        $str = explode("-",$vo['CategoryPath']);
+                                                         ?>
+                                                        {volist name="product_class" id="vi"}
+                                                        {if condition="!empty($str['0']) && $vi.id == $str['0']"}
+                                                            <?php $category1 = $vi['title_en'];  ?>
+                                                        {elseif condition="!empty($str['1']) && $vi.id == $str['1']"/}
+                                                            <?php $category2 = ' -> '.$vi['title_en'];  ?>
+                                                        {elseif condition="!empty($str['2']) && $vi.id == $str['2']"/}
+                                                            <?php $category3 = ' -> '.$vi['title_en'];  ?>
+                                                        {elseif condition="!empty($str['3']) && $vi.id == $str['3']"/}
+                                                            <?php $category4 = ' -> '.$vi['title_en'];  ?>
+                                                        {/if}
+                                                        {/volist}
+                                                        {$category1.$category2.$category3.$category4}
+                                                    </td>
+                                                    <td>
+                                                    {volist name="ProductStatus" id="ve"}
+                                                        {if condition="$vo.ProductStatus == $ve['0']"}
+                                                            {$ve['1']}
+                                                        {/if}
+                                                    {/volist}
+                                                    </td>
+                                                    <td> {if condition="!empty($vo.AddTime)"}{$vo.AddTime|date="Y-m-d H:i:s",###}{/if} </td>
+                                                    <td>
+                                                        <a href="{$mall_base_url}home/product/audit?access_token={$mall_url_token}&product_id={$vo._id}&user={$user_en_name}" target="view_frame"  class="Qing">
+                                                            审核</a>
+                                                    </td>
+                                                </tr>
+                                            {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- end base table -->
+                            <div class="row row16 pd15 mt10">
+                                <div class="dataTables_paginate paging_bootstrap fr">
+                                    <!-- 本页不分页 -->
+                                    {$page?$page:''}
+                                </div>
+                            </div>
+                            <!-- 订单内容 end -->
+                        </div>
+                    </div>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="batchNotDialog" class="ml30 mb50 none">
+    <form id="examine_submit"  method="post">
+        <div class="mt25">
+            <label class="relative">类型：</label>
+            <select name="type" id="type" class="form-control input-small inline mr10">
+                <option value="">请选择</option>
+                {$html?$html:''}
+            </select>
+            </div>
+            <div class="mt10"><label class="top-76-relative">理由：</label>
+            <textarea class="reason" name="reason" cols="37" rows="9"></textarea>
+        </div>
+    </form>
+    <a href="javascript:;" class="submit js-notbatch-submit btn-qing ml46">提交</a>
+</div>
+
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script src="/static/js/product.js" type="text/javascript"></script>
+    <!-- END JAVASCRIPTS -->
+    <script>
+        $(function(){
+            Product.productExamineList();
+        });
+    </script>
+
+</body>
+</html>

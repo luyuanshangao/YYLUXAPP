@@ -1,0 +1,139 @@
+{include file="layout/c_global_style" /}
+{include file="layout/c_style" /}
+{include file="layout/c_corejs" /}
+{load href="/static/js/dx_cs_ad.js" /}
+<div class="page-container pd20">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                <div>
+                    <div class="tab-content">
+                        <div class="tab-pane active d-element-bind btns-link" id="month6">
+                            <div class="search-btn-wrap">
+                                <form id="ad-index-top-form" class="navbar-left" action="attribute" method="post" role="search">
+                                    <ul class="c-h-ul search-ul query-ul">
+                                        <li class="w200">
+                                            <label class="c-h-ul-li-title w60">站点：</label>
+                                            <select name="SiteID" id="add_SiteID" class="form-control w100">
+                                                <option value="" selected="selected">请选择</option>
+                                                {volist name="site_data" id="site_info"}
+                                                    {if condition="$site_info['SiteID'] == $info['SiteID']"}
+                                                        <option value="{$site_info.SiteID}" selected="selected">{$site_info.SiteName}</option>
+                                                    {else/}
+                                                        <option value="{$site_info.SiteID}" >{$site_info.SiteName}</option>
+                                                    {/if}
+                                                {/volist}
+                                            </select>
+                                        </li>
+                                        <li>
+                                            <label class="c-h-ul-li-title w60">页面：</label>
+                                            <select name="PageID" id="add_PageID" class="form-control input-small inline">
+                                                <option value="">请选择</option>
+                                                {volist name="page_data" id="page_info"}
+                                                    {if condition="$page_info['PageID'] == $info['PageID']"}
+                                                        <option value="{$page_info.PageID}" selected="selected">{$page_info.PageName}</option>
+                                                    {else/}
+                                                        <option value="{$page_info.PageID}" >{$page_info.PageName}</option>
+                                                    {/if}
+                                                {/volist}
+                                            </select>
+                                        </li>
+                                        <li>
+                                            <label class="c-h-ul-li-title w60">区域：</label>
+                                            <select name="AreaID" id="add_AreaID" class="form-control input-small inline">
+                                                <option value="">请选择</option>
+                                                {volist name="area_data" id="area_info"}
+                                                    {if condition="$area_info['AreaID'] == $info['AreaID']"}
+                                                        <option value="{$area_info.AreaID}" selected="selected">{$area_info.AreaName}</option>
+                                                    {else/}
+                                                        <option value="{$area_info.AreaID}" >{$area_info.AreaName}</option>
+                                                    {/if}
+                                                {/volist}
+                                            </select>
+                                        </li>
+                                        <li>
+                                            <label class="c-h-ul-li-title w60">布局编号：</label>
+                                            <select name="AreasLayoutID" id="add_AreasLayoutID" class="form-control input-small inline">
+                                                <option value="">请选择</option>
+                                                {volist name="number_data" id="number_info"}
+                                                    {if condition="$number_info['AreasLayoutID'] == $info['AreasLayoutID']"}
+                                                        <option value="{$number_info.AreasLayoutID}" selected="selected">{$number_info.AreasLayoutName}</option>
+                                                    {else/}
+                                                        <option value="{$number_info.AreasLayoutID}" >{$number_info.AreasLayoutName}</option>
+                                                    {/if}
+                                                {/volist}
+                                            </select>
+                                        </li>
+
+                                        <li class="w260">
+                                            <label class="c-h-ul-li-title w60"></label>
+                                            <a class="btn btn-gray ad-index-search" href="javascript:;">查 询</a>
+                                            <a class="btn btn-gray ad-index-add" href="javascript:;">添 加</a>
+                                            <a class="btn btn-gray ad-index-import" href="javascript:;">导入</a>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered mt15 table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>标识ID</th>
+                                            <th>系统编码</th>
+                                            <th>站点</th>
+                                            <th>页面</th>
+                                            <th>区域</th>
+                                            <th>区域编号</th>
+                                            <th>上传内容类型</th>
+                                            <th>是否多图</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {volist name="list" id="val"}
+                                            <tr>
+                                                <td>{$val._id}</td>
+                                                <td>{$val.Key|default='-'}</td>
+                                                <td>{$val.SiteName|default='-'}</td>
+                                                <td>{$val.PageName|default='-'}</td>
+                                                <td>{$val.AreaName|default='-'}</td>
+                                                <td>{$val.AreasLayoutName|default='-'}</td>
+                                                <td>{$val.ContentTypeName|default='-'}</td>
+                                                <td>{$val.IsMoreImageStr|default='-'}</td>
+                                                <td>
+                                                    <a href="{$editor_url}?id={$val._id}&SiteID={$val.SiteID}&PageID={$val.PageID}&AreaID={$val.AreaID}&AreasLayoutID={$val.AreasLayoutID}&Key={$val.Key}" data-id="{$val._id}" class="Qing">
+                                                        <i class="glyphicon glyphicon-edit f16"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                            <div class="row row16 pd15">
+                                <div class="col-md-16">
+                                    <div class="dataTables_paginate paging_bootstrap fr">
+                                        {$list->render()}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{load href="/static/js/system.js" /}
+
+<script>
+    var url = {$url|default=''};
+    $(function() {
+        App.init();
+        System.import_ads();
+    })
+
+</script>

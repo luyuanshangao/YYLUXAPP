@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>商城管理--订单管理--订单管理</title>
+    {include file="layout/c_style" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+    <style>
+        .page-content .search-btn-wrap table{
+            border-color: #ececec !important;
+        }
+        .page-content .search-btn-wrap table tr{
+            border-color: #cecece !important;
+        }
+        .page-content .search-btn-wrap table tr td{
+            border-color: #cecece !important;
+        }
+    </style>
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<!-- BEGIN CONTAINER -->
+<!-- BEGIN SIDEBAR -->
+<!--#include file="layout/sidebar.html"-->
+<!-- END SIDEBAR -->
+<!-- BEGIN CONTENT -->
+<div class="page-content pt0 ml20 pl0">
+    <!-- 订单内容 begin -->
+    <!--<div class="row">-->
+        <!--<div class="col-md-12">-->
+            <!--<div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">-->
+
+            <div class="search-btn-wrap bborder-no">
+                <table border="1" cellpadding="5" cellspacing="5" width="100%" class="">
+                    <tbody>
+                    <tr>
+                        <td class="w150">CVVCode</td>
+                        <td class="w150"><span></span></td>
+                        <td class="w150">CreditCardTokenID</td>
+                        <td><span></span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">CurrencyCode</td>
+                        <td class="w150"><span>{$data['CurrencyCode']|default=''}</span></td>
+                        <td class="w150">CustomField</td>
+                        <td><span></span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">CustomerID</td>
+                        <td class="w150"><span>{$data['CustomerID']|default=''}</span></td>
+                        <td class="w150">CustomerIP</td>
+                        <td><span>{$data['CustomerIP']|default=''}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">HandlingTotal</td>
+                        <td class="w150"><span></span></td>
+                        <td class="w150">ItemsTotal</td>
+                        <td><span></span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">NotificationUrl</td>
+                        <td class="w150"><span></span></td>
+                        <td class="w150">OrderNumber</td>
+                        <td><span>{$data['OrderNumber']|default=''}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">OrderTotal</td>
+                        <td class="w150"><span>{$data['Amount']|default=''}</span></td>
+                        <td class="w150">PaymentAction</td>
+                        <td><span></span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">ShippingTotal</td>
+                        <td class="w150"><span></span></td>
+                        <td class="w150">UCI</td>
+                        <td><span></span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">EnableTokenCheckout</td>
+                        <td class="w150"><span></span></td>
+                        <td class="w150">DiscountTotal</td>
+                        <td><span></span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">QueryString</td>
+                        <td colspan="3"><span></span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">Notes</td>
+                        <td colspan="3"><span></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="search-btn-wrap bborder-no">
+                <h4>Shiping Information</h4>
+                <table border="1" cellpadding="5" cellspacing="5" width="100%">
+                    <tbody>
+                    <tr>
+                        <td class="w150">Ship_City</td>
+                        <td class="w150"><span>{$data['ShippAddressCity']|default=''}</span></td>
+                        <td class="w150">Ship_Country</td>
+                        <td><span>{$data['ShippAddressCountry']|default=''}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">Ship_Email</td>
+                        <td class="w150"><span>{$data['ShippAddressEmail']|default=''}</span></td>
+                        <td class="w150">Ship_FirstName</td>
+                        <td><span>{$data['ShippAddressFirstName']|default=''}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">Ship_LastName</td>
+                        <td class="w150"><span>{$data['ShippAddressLastName']|default=''}</span></td>
+                        <td class="w150">Ship_Mobile</td>
+                        <td><span></span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">Ship_Phone</td>
+                        <td class="w150"><span>{$data['ShippAddressPhone']|default=''}</span></td>
+                        <td class="w150">Ship_PostalCode</td>
+                        <td><span>15</span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">Ship_State</td>
+                        <td class="w150"><span>{$data['ShippAddressState']|default=''}</span></td>
+                        <td class="w150">Ship_Street1</td>
+                        <td><span>{$data['ShippAddressStreet1']|default=''}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">Ship_Street2</td>
+                        <td class="w150"><span>{$data['ShippAddressStreet2']|default=''}</span></td>
+                        <td class="w150">ShippingMethod</td>
+                        <td><span></span></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="search-btn-wrap bborder-no">
+                <h4>Billing Information</h4>
+                <table border="1" cellpadding="5" cellspacing="5" width="100%">
+                    <tbody>
+                    <tr>
+                        <td class="w150">Bill_City</td>
+                        <td class="w150"><span>{$data['BillingAddressCity']|default=''}</span></td>
+                        <td class="w150">Bill_Country</td>
+                        <td><span>{$data['BillingAddressCountry']|default=''}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">Bill_Email</td>
+                        <td class="w150"><span>{$data['BillingAddressEmail']|default=''}</span></td>
+                        <td class="w150">Bill_FirstName</td>
+                        <td><span>{$data['BillingAddressFirstName']|default=''}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">Bill_LastName</td>
+                        <td class="w150"><span>{$data['BillingAddressLastName']|default=''}</span></td>
+                        <td class="w150">Bill_Mobile</td>
+                        <td><span></span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">Bill_Phone</td>
+                        <td class="w150"><span>{$data['BillingAddressPhone']|default=''}</span></td>
+                        <td class="w150">Bill_PostalCode</td>
+                        <td><span>{$data['BillingAddressZipCode']|default=''}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">Bill_State</td>
+                        <td class="w150"><span>{$data['BillingAddressState']|default=''}</span></td>
+                        <td class="w150">Bill_Street1</td>
+                        <td><span>{$data['BillingAddressStreet1']|default=''}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="w150">Bill_Street2</td>
+                        <td colspan="3"><span>{$data['BillingAddressStreet2']|default=''}</span></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{layout name="layout/main"/}
+{load href="/static/css/shippingTemplate.css" /}
+{load href="/static/js/module/shippingTemplate.js" /}
+
+<!-- 新增运费模板 -->
+<div class="main-box fl shipping-template pd20">
+	<p class="title fbold pb10">
+		新增运费模板
+	</p>
+	<div class="add-shipping-template-wrap mt20 mb20">
+		<form>
+			<div class="add-shipping-template-name fbold relative">
+				<i class="red mr5">*</i>运费模板名称：<input type="text" class="template-name" placeholder="请输入英文">
+				<div class="success-tip absolute"><i class="iconfont icon-iconcorrect ok-sign-tip green"></i></div>
+				<span class="logistics-properties">物流属性：
+					<input type="radio" name="logistics-properties" checked="checked" id="logistics-properties-1" data-logistics-properties="1">
+					<label for="logistics-properties-1" class="logistics-properties-label" data-logistics-properties="1">普货</label>
+					<input type="radio" name="logistics-properties" id="logistics-properties-2" data-logistics-properties="2">
+					<label for="logistics-properties-2" class="logistics-properties-label" data-logistics-properties="2">纯电</label>
+					<input type="radio" name="logistics-properties" id="logistics-properties-3" data-logistics-properties="3">
+					<label for="logistics-properties-3" class="logistics-properties-label" data-logistics-properties="3">带电</label>
+				</span>
+				<div class="err-tip mt10"></div>
+			</div>
+			<p class="mt20">请根据您的产品所在地选择发货地区：<a href="" class="a-color">查看教程</a><a href="javascript:;" class="quote-summary ml20">平台物流报价汇总</a></p>
+			<p class="mt20">
+				<span class="fbold">发货地区：</span><i class="iconfont icon-flag china-flag red"></i>China 
+				<a href="" class="a-color trigger-settings">收起设置 <i class="iconfont icon-iconfonticontrianglecopy"></i></a>
+			</p>
+			<div class="shipping-methods"></div>
+			<p class="cancel-save mt30 hide">
+				<a href="" class="save btn-orange mr30">保存</a>
+				<a href="" class="cancel btn-default">取消</a>
+			</p>
+		</form>
+		<!-- *************************标准运费，减免率规则提示******************************* -->
+		<p class="rules-tips fixed hide">折扣数小于100表示下调，折扣数大于100表示上浮</p>
+	</div>
+</div>

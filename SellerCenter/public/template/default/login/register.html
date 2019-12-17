@@ -1,0 +1,65 @@
+{layout name="layout/registerLayout"/}
+{load href="/static/css/drag.css" /}
+{load href="/static/css/login-register.css" /}
+{load href="/static/css/login-index.css" /}
+{load href="/static/js/drag.js" /}
+{load href="/static/js/module/module.login.js" /}
+<div class="login-regist-bg">
+    <div class="w1200">
+        <div class="reg-wrap">
+            <ul class="steps-ul">
+                <li class="active"><span class="circle"><i>1</i></span><span class="pl10">设置邮箱</span></li>
+                <li><span class="circle"><i>2</i></span><span class="pl10">填写账号信息</span></li>
+                <li><span class="circle"><i>3</i></span><span class="pl10">注册成功</span></li>
+            </ul>
+            <div class="register-box" id="content-box">
+                <form id="register-form">
+                    <input type="hidden" name="flag" value="1">
+                    <input type="hidden" name="drag_key" id="drag-key-input">
+                    <dl class="dl-layout relative">
+                        <dt>电子邮箱</dt>
+                       <dd>
+                           <input type="text" name="email" class="form-control" placeholder="请输入邮箱" onblur="login.registerInputBlur(this)">
+                           <div class="ml10 mt10 email-tips"></div>
+                       </dd>
+                    </dl>
+                    <dl class="dl-layout">
+                        <dt>验证</dt>
+                        <dd>
+                            <div id="drag"></div>
+                            <script type="text/javascript">
+                                var drag_key = '{$drag_key}';
+                                $('#drag').drag();
+                            </script>
+                        </dd>
+                    </dl>
+                    <dl class="dl-layout">
+                        <dt></dt>
+                        <dd>
+                            <div class="agreement mt50">
+                                <input type="checkbox" name="agreement" class="mr5" value="1" checked="checked" onchange="login.registerCkChange(this)">
+                                    <span>创建网站账号的同时，我同意：</span>
+                                    <p class="mt5 pl20">- 遵守 <a class="red" href="{$seller_registration_protocol_url|default='#'}" target="_blank">dx.com 会员协议</a></p>
+                                    <p class="mt5 pl20">- 愿意接收相关来自dx.com的会员及服务邮件</p>
+                                
+                            </div>
+                            <div class="next-stes mb30 mt20">
+                                <span class="btn btn-orange register-email ">下一步</span>
+                                <p class="err-box color-ff5b20 mt20"></p>
+                            </div>
+                            
+                        </dd>
+                    </dl>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var login = new Login();
+    $(function(){
+        $('.register-email').bind('click',function () {
+            login.register(1);
+        });
+    });
+</script>

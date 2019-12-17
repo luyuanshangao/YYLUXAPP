@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>DX_属性添加</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    {include file="layout/c_global_style" /}
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+    {load href="/assets/plugins/umeditor/themes/default/css/umeditor.min.css" /}
+    {load href="/assets/plugins/umeditor/umeditor.config.js" /}
+    {load href="/assets/plugins/umeditor/umeditor.js" /}
+    {load href="/assets/plugins/umeditor/lang/zh-cn/zh-cn.js" /}
+</head>
+<body id="Order_List" class="page-header-fixed  page-sidebar-fixed">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="month6">
+                                        <!-- start add -->
+                                        <div class="info-pb10 c-h-dl-label100 mt10">
+                                            <form id="public_submit" class="f12_i form-horizontal" action="#" novalidate="novalidate">
+                                                <input type="hidden" id="class_url" name="class_url"  value="/PromotionManagement/catalog_next">
+                                                {if condition="$activity['id'] neq ''"}
+                                                <input type="hidden" name="id"  value="{$activity['id']}">
+                                                {/if}
+                                                <div class="form-body info-pb10 ml20">
+
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title w100">
+                                                            <label><em>*</em>活动类型：</label>
+                                                        </dd>
+                                                        <dd>
+                                                             <div class="input-icon right">
+                                                                <select name="type" id="type" class="form-control input-small inline w240">
+                                                                    <option value="">请选择</option>
+                                                                    {volist name="ActivityType" id="vo"}
+                                                                      <option {if condition="$activity.type == $vo[0] "} selected="selected" {/if} value="{$vo[0]}">{$vo[1]}</option>
+                                                                    {/volist}
+                                                                </select>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>活动标题：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <input value="{$activity['activity_title']?$activity['activity_title']:''}" name="activity_title" id="input-color-en" class="form-control input-medium fl w500" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <div id="langs_select">
+                                                     <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><!--<em>*</em>-->语种：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                               <select  id="langs" class="form-control input-small inline">
+                                                                    <option value="">请选择</option>
+                                                                    {volist name="$langs" id="vo"}
+                                                                      <option  value="{$vo['Code']}">{$vo['Name']}</option>
+                                                                    {/volist}
+                                                                </select>
+                                                            </div>
+                                                        </dd>
+                                                         <span class="ml10 mt10 red">注：Flash Deals活动语种必填</span>
+                                                        <!--<dt></dt>-->
+                                                    </dl>
+                                                    {$html_common}
+
+                                                    </div>
+                                        <script type="text/javascript">
+                                            $("#langs").change(function(){
+                                                   var value = $(this).val();
+                                                   if($(".delete"+value).is('.delete'+value)){
+                                                      return;
+                                                   }
+                                                   var  html = 'add_activity_class('+value+')';
+                                                   var html_input = '<dl class="c-h-dl-validator form-group clearfix delete'+value+'"> <dd class="v-title"><label><em>*</em>简码：</label></dd><dd><div class="input-icon right"><input value="'+value+'" readonly="readonly" name="common['+value+'][code]" id="input-color-en" class="form-control input-medium fl w60" type="text"></div></dd><dd class="v-title"><label class="w60">活动类型：</label></dd><dd><div class="input-icon right"><input value="" name="common['+value+'][type]" id="input-color-en" class="form-control input-medium fl" type="text"></div></dd><dd class="v-title"><label class="w40">标题：</label></dd><dd><div class="input-icon right"><input value="" name="common['+value+'][title]" id="input-color-en" class="form-control input-medium fl w500" type="text"></div></dd><a class="eliminate eliminate-btn'+value+'" onclick="delect_langs(\''+value+'\')" href="javascript:;">删除</a><dt></dt></dl>'
+                                                   $("#langs_select").append(html_input);
+                                            })
+                                            function delect_langs(e){
+                                                $(".delete"+e).remove();
+                                            }
+
+                                        </script>
+                                           {if condition="($activity['registration_start_time'] elt $time) && ($activity['registration_start_time'] neq '')"}
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>活动报名时间：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <input disabled="disabled" type="text" name="registration_start_time" id="reservationtime" class="form-control input-small w150 pr0" value="<?php echo $activity['registration_start_time']?date("Y-m-d H:i:s",$activity['registration_start_time']):'' ?>" />
+                                                            </div>
+                                                        </dd>
+                                                        <dd class="v-title w30">
+                                                            <label class="tcenter">至</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <input disabled="disabled" type="text" name="registration_end_time" id="canceltime" class="form-control input-small w150 pr0"  value="<?php echo $activity['registration_end_time']?date("Y-m-d H:i:s",$activity['registration_end_time']):'' ?>"/>
+                                                                注：录入时间按UTC时间
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>活动时间：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <input disabled="disabled" type="text" name="activity_start_time" id="reservationtime" class="form-control input-small w150 pr0" value="<?php echo $activity['activity_start_time']?date("Y-m-d H:i:s",$activity['activity_start_time']):'' ?>" />
+                                                            </div>
+                                                        </dd>
+                                                        <dd class="v-title w30">
+                                                            <label class="tcenter">至</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <input disabled="disabled" type="text" name="activity_end_time" id="canceltime" class="form-control input-small w150 pr0"  value="<?php echo $activity['activity_end_time']?date("Y-m-d H:i:s",$activity['activity_end_time']):'' ?>"/>
+                                                                注：录入时间按UTC时间(请录入短日期,如：2018-08-08)
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    {else/}
+                                                        <dl class="c-h-dl-validator form-group clearfix">
+                                                            <dd class="v-title">
+                                                                <label><em>*</em>活动报名时间：</label>
+                                                            </dd>
+                                                            <dd>
+                                                                <div class="input-icon right">
+                                                                    <input type="text" name="registration_start_time" id="reservationtime" class="form-control input-small w150 pr0" value="<?php echo $activity['registration_start_time']?date("Y-m-d H:i:s",$activity['registration_start_time']):'' ?>" />
+                                                                </div>
+                                                            </dd>
+                                                            <dd class="v-title w30">
+                                                                <label class="tcenter">至</label>
+                                                            </dd>
+                                                            <dd>
+                                                                <div class="input-icon right">
+                                                                    <input type="text" name="registration_end_time" id="canceltime" class="form-control input-small w150 pr0"  value="<?php echo $activity['registration_end_time']?date("Y-m-d H:i:s",$activity['registration_end_time']):'' ?>"/>
+                                                                    注：录入时间按UTC时间
+                                                                </div>
+                                                            </dd>
+                                                            <dt></dt>
+                                                        </dl>
+                                                        <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>活动时间：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <input type="text" name="activity_start_time" id="reservationtime" class="form-control input-small w150 pr0" value="<?php echo $activity['activity_start_time']?date("Y-m-d H:i:s",$activity['activity_start_time']):'' ?>" />
+                                                            </div>
+                                                        </dd>
+                                                        <dd class="v-title w30">
+                                                            <label  class="tcenter">至</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <input type="text" name="activity_end_time" id="canceltime" class="form-control input-small w150 pr0"  value="<?php echo $activity['activity_end_time']?date("Y-m-d H:i:s",$activity['activity_end_time']):'' ?>"/>
+                                                                注：录入时间按UTC时间(请录入短日期,如：2018-08-08)
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    {/if}
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>在线/下线：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <input class="ml10" {$activity['status']==1?'checked="true"':($activity['status']?'':'checked="true"')}   type="radio" name="status" value="1"/><span class="relative-top4">在线</span>
+                                                                <input class="ml10" {$activity['status']==2?'checked="true"':''}  type="radio" name="status" value="2"/><span class="relative-top4">下线</span>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                     <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label  ><em>*</em>图片地址：</label>
+                                                        </dd>
+                                                        <dd class="w500">
+                                                            <div class="input-icon right w600">
+                                                                <i class="fa"></i>
+                                                                <input value="{$activity['activity_img']?$activity['activity_img']:''}" name="activity_img" id="input-color-en" class="form-control input-medium fl w500" type="text">
+                                                            </div>
+
+                                                        </dd>
+                                                        <span class="ml10 red">注：请录入图片完整地址,例如：https://www.dx.com/a/6.jpg</span>
+                                                    </dl>
+
+                                                      <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>活动描述：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div id="descBoxt"></div>
+                                                            <script id="content" name="description" type="text/plain">{$activity['description']}</script>
+                                                            <div class="err-tip mt10"></div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>活动范围：</label>
+                                                        </dd>
+                                                        <dd class="pt5">
+                                                            <div class="input-icon right">
+                                                                <input class="class_hide ml10" {$activity['range']==1?'checked="true"':($activity['range']?'':'checked="true"')}  type="radio" name="range" value="1"/><span class="relative-top4">按商品进行</span>
+                                                                <input class="class_show ml10" {$activity['range']==2?'checked="true"':''} type="radio" name="range" value="2"/><span class="relative-top4">按分类进行</span>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                     {if condition="$activity['range'] == 2 "}
+                                                     <div  id = "behind"  class="behind">
+                                                            <dl class="c-h-dl-validator form-group clearfix  add-attribute1 delect_dl">
+                                                                <dd class="v-title w100">
+                                                                    <label><em>*</em>分类：</label>
+                                                                </dd>
+                                                                <dd>
+                                                                    <div class="input-icon right">
+                                                                        <select name="where[1][first_level_mongo]" id="first_level_mongo" class="form-control input-small inline inline_block">
+                                                                            <option value="">请选择</option>
+                                                                            {volist name="classList" id="vo"}
+                                                                            <option value="{$vo.id}">{$vo.title_cn}[{$vo.title_en}]</option>
+                                                                            {/volist}
+                                                                        </select>
+                                                                        <a class="add_activity_class eliminate-btn2" onclick="add_activity_class({$i?$i:'1'})" href="javascript:;">添加</a>
+                                                                    </div>
+                                                                </dd>
+                                                                <dt></dt>
+                                                            </dl>
+                                                            {$html}
+                                                          </div>
+                                                     {else/}
+                                                          <div id = "behind"  class="behind hide">
+                                                            <dl class="c-h-dl-validator form-group clearfix  add-attribute1 delect_dl">
+                                                                <dd class="v-title w100">
+                                                                    <label><em>*</em>分类：</label>
+                                                                </dd>
+                                                                <dd>
+                                                                    <div class="input-icon right">
+                                                                        <select name="where[1][first_level_mongo]" id="first_level_mongo" class="form-control input-small inline inline_block">
+                                                                            <option value="">请选择</option>
+                                                                            {volist name="classList" id="vo"}
+                                                                            <option value="{$vo.id}">{$vo.title_en}</option>
+                                                                            {/volist}
+                                                                        </select>
+                                                                        <a class="add_activity_class eliminate-btn2" onclick="add_activity_class(1)" href="javascript:;">添加</a>
+                                                                    </div>
+                                                                </dd>
+                                                                <dt></dt>
+                                                            </dl>
+
+                                                          </div>
+                                                     {/if}
+
+                                                    <dl class="c-h-dl-validator form-group clearfix mt20">
+                                                        <dd class="v-title"><label><em>&nbsp;</em>&nbsp;</label></dd>
+                                                        <dd class="layui-layer-btn pl0">
+
+                                                           {if condition="$exhibition neq 1 "}
+                                                            <a {if condition="$activity['range'] == 1 "} onclick="public_add('/PromotionManagement/edit_activity')" {else/} onclick="public_add('/PromotionManagement/add_activity')" {/if}  class="layui-layer-btn0 ml0" href="javascript:;" id="aSub">提交</a>
+                                                           {/if}
+                                                            <a id="addressCancel" class="layui-layer-btn1" href="/PromotionManagement/index">返回</a></dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                </div>
+                                            </form>
+                                        </div>
+                                         <!-- end add -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+                <div class="success_data"></div>
+
+                <script type="text/javascript">
+                    $(".class_hide").click(function(){
+                        // $(".show_hide").addClass("reason_show_hide");
+                        $("#behind").addClass('hide');
+                    });
+                    $(".class_show").click(function(){
+                    // $(".show_hide").removeClass("reason_show_hide");
+                      $("#behind").removeClass('hide');
+                    });
+                   function add_activity_class(e){
+                       e = e + 1 ;
+                       var first_level_val   = $('#first_level_mongo').val();
+                       var first_level_name  = $('#first_level_mongo').find("option:selected").text();
+
+                       var second_level_val  = $('#second_level_mongo').val();
+                       var second_level_name = $('#second_level_mongo').find("option:selected").text();
+
+                       var third_level_val   = $('#third_level_mongo').val();
+                       var third_level_name  = $('#third_level_mongo').find("option:selected").text();
+
+                       var fourth_level_val  = $('#fourth_level_mongo').val();
+                       var fourth_level_name = $('#fourth_level_mongo').find("option:selected").text();
+
+                       var classname = '';
+                       var classid   = '';
+                       if(first_level_val && first_level_name){
+                          classname += first_level_name;
+                          classid   += first_level_val;
+                       }
+                       if(second_level_val && second_level_name){
+                          classname += '>'+second_level_name;
+                          classid   += '>'+second_level_val;
+                       }
+                       if(third_level_val && third_level_name){
+                          classname += '>'+third_level_name;
+                          classid   += '>'+third_level_val;
+                       }
+                       if(fourth_level_val && fourth_level_name){
+                          classname += '>'+fourth_level_name;
+                          classid   += '>'+fourth_level_val;
+                       }
+                       var  html = 'add_activity_class('+e+')';
+                       $('.add_activity_class').attr("onclick",html);
+                       var html_input = '<dl class="c-h-dl-validator form-group clearfix delete'+e+'"><dd class="v-title w100"><label><em>*</em>选中的分类：</label></dd><dd><input value="'+classname+'" name="className['+e+'][classname]" readonly="readonly" class="form-control input-medium fl w360" type="text"><input type="hidden" name="className['+e+'][classid]"  value="'+classid+'"><a class="eliminate-btn2 eliminate'+e+'"  onclick="delect_dl('+e+')" href="javascript:;">删除</a></dd></dl>'
+                       $(".behind").append(html_input);
+                   }
+                   function delect_dl(e){
+                        $(".delete"+e).remove();
+                   }
+                </script>
+               <script type="text/javascript">
+                    function public_add(url){
+                        $("#aSub").attr('disabled',true);
+                         $.ajax({
+                            type: "POST",//方法类型
+                            dataType: "json",//预期服务器返回的数据类型
+                            url: ''+url+'' ,//url
+                            data: $('#public_submit').serialize(),
+                            success: function (result) {
+                                //console.log(result);//打印服务端返回的数据(调试用)
+                                if (result.code == 200) {
+                                    layer.msg(result.result, {icon: 1});
+                                    setTimeout(function(){
+                                        history.go(-1);
+                                    },1000);
+                                }else{
+                                    layer.msg(result.result, {icon: 2});
+                                }
+                                $("#aSub").attr('disabled',false);
+                            },
+                            error : function() {
+                                layer.msg('操作异常！', {icon: 2});
+                            }
+                        });
+                    }
+                   var val_attribute = {$val?$val:'null'};//用于添加新选
+               </script>
+    <!-- 日期插件 -->
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!--<script type="text/javascript" src="/assets/plugins/bootstrap-daterangepicker/daterangepicker-zh-cn.js"></script>-->
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <!-- <script>
+    $(function() {
+        App.init();
+    })
+    </script> -->
+    <script type="text/javascript">
+    /*实例化编辑器*/
+    var um = UM.getEditor('content');
+    $(function(){
+        /**
+         * param1 user_id:用户id
+         * param2 category_id:产品分类id
+         * param3 product_id:产品id(编辑页面需要传值，新增页面不需要)
+         */
+    });
+</script>
+    <!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+
+</html>

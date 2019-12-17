@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>商城配置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    {include file="layout/c_global_style" /}
+    {include file="layout/c_style" /}
+    {load href="/static/css/systemManage.css" /}
+    {include file="layout/c_corejs" /}
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+
+<body>
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+            <div class="pt20 pr10 pb20 pl10 border-gray">
+        <form id="form_send_address" class="f12_i form-horizontal" action="#" novalidate="novalidate">
+            <dl class="c-h-dl-validator form-group clearfix">
+                  <dd class="v-title w100">
+                     <label><em>*</em>语种：</label>
+                  </dd>
+                   <dd>
+                    <div class="input-icon right">
+                        <select name="Code" id='Code' class="form-control input-small inline">
+                               <option value="">请选择</option>
+                                {volist name="region" id="vo"}
+                                   <option  {eq name="$vo.Code" value="en"} selected = "selected"{/eq} value="{$vo.Code}">{$vo.Name}</option>
+                                {/volist}
+                        </select>
+                    </div>
+                   </dd>
+
+                  <dt><a class="delete-lang" href="javascript:;">清除该语言</a></dt>
+              </dl>
+        <div id="HotWords">
+        {empty name="$Language"}
+
+          <dl class="c-h-dl-validator form-group clearfix dl-HotWords">
+              <dd class="v-title w100">
+                <label>搜索热词：</label>
+              </dd>
+              <dd>
+                 <div class="input-icon right">
+                  <i class="fa"></i>
+                  <input value="" name="HotWords[]" class="form-control input-medium inline w200 fl" type="text">
+               </div>
+              </dd>
+             <dd class="Hot">
+             <a class="fa fa-plus hotwords-btn add-hotwords-btn" data-id='1' href="javascript:void(0);">+</a></dd>
+              <dt></dt>
+          </dl>
+        {else /}
+        {$Language}
+        {/empty}
+        <div class="fl absolute c-h-dl-validator-wrap">
+            <dl class="c-h-dl-validator form-group clearfix ">
+              <dd class="v-title">
+                <label>首页底部logo：</label>
+              </dd>
+              <dd>
+                <textarea name="bottom_logo" rows="5" cols="50">{$bottom_logo}</textarea>
+              </dd>
+              <dt></dt>
+          </dl>
+
+        </div>
+
+</div>
+
+
+          <a class="btn_send" href="javascript:;">提交</a>
+        </form>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/js/custom.js"></script>
+<script src="/static/js/system.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function(){
+        System.mallSet();
+    });
+</script>
+</body>
+</html>

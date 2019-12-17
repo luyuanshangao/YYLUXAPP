@@ -1,0 +1,76 @@
+<link rel="stylesheet" href="/assets/plugins/layui/css/layui.css" media="all">
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="saveForm" action="{url('/FinancialManagement/addAffiliateBonus')}" enctype="multipart/form-data">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>affiliate ID：</label>
+                </dd>
+                <dd>
+                    <input name="affiliate_id" value="" class="form-control input-medium inline" type="number">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>奖金金额($)：</label>
+                </dd>
+                <dd>
+                    <input name="amount" value="" class="form-control input-medium inline" type="number">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix enclosure">
+                <dd class="v-title">
+                    <label><em>*</em>审批截图：</label>
+                </dd>
+                <dd>
+                    <button type="button" class="layui-btn" id="test2">图片上传</button>
+                    <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                        预览图：
+                        <div class="layui-upload-list" id="demo2"></div>
+                    </blockquote>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['layer','laydate','upload'], function(){
+
+        var laydate = layui.laydate;
+        var upload = layui.upload;
+        var layer = layui.layer;
+
+        //常规用法
+        laydate.render({
+            elem: '#StartDate'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#EndDate'
+            ,type: 'datetime'
+        });
+
+
+        //多图片上传
+        upload.render({
+            elem: '#test2'
+            ,url: '/FinancialManagement/remoteUpload'
+            ,multiple: true
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo2').append('<img height="50px" src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img">')
+                });
+            }
+            ,done: function(res){
+                if(res.code == 200){
+                    $(".enclosure").after("<input type='hidden' name='enclosure[]' value='"+res.url+"'>");
+                }
+            }
+        });
+
+    });
+</script>

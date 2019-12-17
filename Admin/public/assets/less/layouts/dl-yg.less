@@ -1,0 +1,155 @@
+@import "../tool/tools.less";
+.c-h-dl {
+  .margin_normal();
+  .padding_normal();
+  dt {
+    font-weight: normal;
+    float: left;
+    width: 90px;
+    margin-right: -100%;
+    padding: 10px 0;
+    .edit-form &{
+      line-height: 29px;
+    }
+  }
+  dd {
+    float: left;
+    .border-solid(left);
+    margin-left: 100px;
+    padding: 10px 0;
+    .edit-form & *{
+      vertical-align: middle;
+    }
+  }
+  &.dl-basic {
+    dt {
+      .padding_normal();
+//      font-size: 24px;
+//      color: @c_qing_1;
+      width: 65px;
+    }
+    dd {
+      .padding_normal();
+      .border_no();
+//      width: 97%;
+      margin-left: 68px;
+    }
+  }
+  .clearfix();
+  &.dl-basic-70{
+    dt{
+      width: 70px;
+    }
+    dd{
+      margin-left:73px;
+    }
+  }
+  &.dl-basic-95{
+    dt{
+      width: 95px;
+    }
+    dd{
+      margin-left:98px;
+    }
+  }
+  &.dl-basic-105{
+    dt{
+      width: 105px;
+    }
+    dd{
+      margin-left:108px;
+    }
+  }
+
+  &.dl-basic-130{
+    dt{
+      width: 130px;
+    }
+    dd{
+      margin-left:133px;
+    }
+  }
+
+  &.dl-basic-field{
+    dt{
+      width: 100px;
+      text-align: right;
+    }
+    dd{
+      margin-left: 103px;
+      border-left: 0;
+    }
+  }
+}
+
+.c-h-dl-validator {
+  .margin_normal();
+  .padding_normal();
+  dt {
+    float: left;
+    font-weight: normal;
+    padding: 7px 0 0 10px;
+    color: @c_red_2;
+  }
+  dd {
+    float: left;
+    &.v-title {
+      padding-top: 7px;
+      label {
+        font-weight: normal;
+        width: 60px;
+        display: inline-block;
+        .tright();
+        .c-h-dl-label85 &{
+          width: 85px;
+        }
+        .c-h-dl-label100 &{
+          width: 100px;
+        }
+         .c-h-dl-label120 &{
+          width: 120px;
+        }
+        .c-h-dl-label130 &{
+          width: 130px;
+        }
+        .c-h-dl-label150 &{
+          width: 150px;
+        }
+        .c-h-dl-label185 &{
+          width: 185px;
+        }
+      }
+      em {
+        color: @c_red_3;
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .info-pb10 & {
+    padding-bottom: 10px;
+  }
+  .info-ptb10 & {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  &.form-radio {
+    .v-title {
+      padding-top: 2px;
+      label {
+        margin-right: 0;
+      }
+    }
+    label {
+      margin-bottom: 0;
+      margin-right: 25px;
+      .radio {
+        padding-top: 1px;
+      }
+    }
+    dt {
+      padding: 2px 0 0 0;
+    }
+  }
+}

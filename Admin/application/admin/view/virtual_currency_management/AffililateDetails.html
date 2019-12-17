@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>运营管理-虚拟货币管理-Affililate佣金管理详情</title>
+    {include file="layout/c_style" /}
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+
+</head>
+<body>
+    <div class="page-content pt0 ml20 pl0">
+       <!--  <div class="row col-md-12 border_bottom mt20 pr0 ml0 pb20 bborder-no">
+            <div class="pl10 c-h-dl-label100 mt10">
+                <div class="clearfix">
+                    <dl class="c-h-dl-validator form-group clearfix w300 fl">
+                        <dd class="v-title">
+                            客户ID：
+                            <a href="" target="_blank" class="red">34-1007360726</a>
+                        </dd>
+                    </dl>
+                    <dl class="c-h-dl-validator form-group clearfix  w300 fl">
+                        <dd class="v-title">
+                            Email：<span class="red">liu@qq.com</span>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="clearfix">
+                    <dl class="c-h-dl-validator form-group clearfix w300 fl">
+                        <dd class="v-title">
+                           币种：<span class="red">USD</span>
+                        </dd>
+                    </dl>
+                    <dl class="c-h-dl-validator form-group clearfix w300 fl">
+                        <dd class="v-title">
+                            可用余额：<span class="red">122</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                    <div>
+                        <div class="tab-content">
+                            <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                <div class="search-btn-wrap bborder-no">
+                                    <form id="navbar" class="navbar-left" action="/VirtualCurrencyManagement/AffililateDetails?id={$list.CustomerID}" method="post">
+                                        <ul class="c-h-ul search-ul query-ul">
+
+                                            <li class="w300">
+                                                <label class="c-h-ul-li-title">订单号：</label>
+                                                <input type="text" name="OrderNumber"class="OrderNumber"  value="{$data['OrderNumber']}"/>
+                                            </li>
+                                           <!--  <li class="w300">
+                                                <label class="c-h-ul-li-title">订单号：</label>
+                                                <input type="text" name="OrderNumber"class=""  value="{$data['OrderNumber']}"/>
+                                            </li> -->
+                                            <li class="pb6">
+                                                <label  class="c-h-ul-li-title">交易类型：</label>
+                                                <select  name="OperateType"  class="form-control input-small inline OperateType">
+                                                    <option value="">请选择</option>
+                                                    <option {if condition="($data.OperateType eq 0)  AND ($data.OperateType != '')"}selected = "selected"{/if} value="0">扣除</option>
+                                                    <option {if condition="$data.OperateType eq 1 "}selected = "selected"{/if} value="1">添加</option>
+                                                </select>
+                                            </li>
+                                            <li class="pb6">
+                                                <label class="c-h-ul-li-title">是否生效：</label>
+                                                <select name="ActiveFlag" class="form-control input-small inline ActiveFlag">
+                                                    <option value="">请选择</option>
+                                                    <option {if condition="($data.ActiveFlag eq 0)  AND ($data.ActiveFlag != '') "}selected = "selected"{/if} value="0">未生效</option>
+                                                    <option {if condition="($data.ActiveFlag eq 1)  AND ($data.ActiveFlag != '') "}selected = "selected"{/if} value="1">已生效</option>
+                                                   <!--  <option {if condition="($data.ActiveFlag eq 2)  AND ($data.ActiveFlag != '') "}selected = "selected"{/if} value="2">已拒绝</option> -->
+                                                </select>
+                                            </li>
+                                            <li class="w440">
+                                                <label class="c-h-ul-li-title" for="reservationtime">交易时间：</label>
+                                                <input type="text" name="startTime" id="reservationtime" class="form-control input-small startTime" value="{:input('startTime')}" autocomplete="off" />
+                                                <span class="time-text">至</span>
+                                                <input type="text" name="endTime" id="canceltime" class="form-control input-small endTime"  value="{:input('endTime')}" autocomplete="off"/>
+                                            </li>
+                                            <li class="w260">
+                                                <label class="c-h-ul-li-title w60"></label>
+                                                <a class="btn btn-gray" onclick="javascript:document:navbar.submit();"  href="javascript:;">查 询</a>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                    <a href="javascript:;"  data-url="/VirtualCurrencyManagement/AffililateDetailsExport?id={$list.CustomerID}"  class="fr mr50 btn btn-gray AffililateDetailsExport">导出</a>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table-basic table-hover table-padding">
+                                            <thead>
+                                                <tr>
+                                                    <th>客户ID</th>
+                                                    <th>RCode</th>
+                                                    <th>客户Email</th>
+                                                    <th>订单号</th>
+                                                    <th>操作者</th>
+                                                    <th>交易类型</th>
+                                                    <th>交易时间</th>
+                                                    <th>佣金($)</th>
+                                                    <th>是否生效</th>
+                                                    <th>备注</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {volist name="$list.items" id="ve"}
+                                                <tr>
+                                                    <td>{$ve.CustomerID}</td>
+                                                    <td>{$list.RCode}</td>
+                                                    <td>{$list.PayPalEU}</td>
+                                                    <td>{$ve.OrderNumber}</td>
+                                                    <td>{$ve.Operator}</td>
+                                                    <td>
+                                                          {if condition="($ve.OperateType eq 0) AND ($ve.OperateType != '')"}
+                                                          扣除
+                                                          {elseif condition="$ve.OperateType eq 1 "/}
+                                                          添加
+                                                          {/if}
+                                                    </td>
+                                                    <td>{if condition="$ve.TransactionTime neq ''"}{$ve.TransactionTime|date="Y-m-d H:i:s",###}{/if}</td>
+                                                    <td>{$ve.PointsCount}</td>
+                                                    <td>
+                                                        {if condition="$ve.ActiveFlag == 0 "}
+                                                        未生效
+                                                        {elseif condition="$ve.ActiveFlag == 1 "/}
+                                                        已生效
+
+                                                        {/if}
+                                                   <!--  {$ve.Status} -->
+                                                    </td>
+                                                    <td class="w600" title="{$ve.Memo}">
+                                                        <div class="w600 exceed">{$ve.Memo}</div>
+                                                    </td>
+                                                </tr>
+                                           {/volist}
+                                           </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                  <div class="row row16 pd15 mt10">
+                                    <div class="dataTables_paginate paging_bootstrap fr">
+                                        {$page}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    /*
+   *导出
+   */
+    $('.AffililateDetailsExport').click(function(event){
+        var that = $(this);
+        var OrderNumber = $('.OrderNumber').val()?$('.OrderNumber').val():'';
+        var OperateType = $('.OperateType').val()?$('.OperateType').val():'';
+        var ActiveFlag = $('.ActiveFlag').val()?$('.ActiveFlag').val():'';
+        var startTime = $('.startTime').val()?$('.startTime').val():'';
+        var endTime = $('.endTime').val()?$('.endTime').val():'';
+        var url = that.data('url');
+        var url = url+'&startTime='+startTime+'&endTime='+endTime+'&ActiveFlag='+ActiveFlag+'&OrderNumber='+OrderNumber+'&OperateType='+OperateType;
+        window.location.href=url;
+    })
+</script>

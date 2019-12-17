@@ -1,0 +1,43 @@
+<div class="modal-body f12_i">
+   <div class="info-pb10 c-h-dl-label100">
+      <form id="addUserForm"  action="importDataPost" enctype="multipart/form-data">
+         <dl class="c-h-dl-validator form-group clearfix">
+           <div class="row">
+             <div class="col-md-12">
+                <table class="table-basic table-padding">
+                    <tbody>
+                      <tr>
+                       <!--  <td width="180px" align="right">操作节点：</td>
+                        <td align="left">广告导入
+                            <input type="hidden" name="id" value="{$id}" >
+                            <input type="hidden" name="keyName" value="{$keyName}" >
+                        </td> -->
+                       </tr>
+                       <tr>
+                         <td width="180px" align="right">模板文件下载：</td>
+                         <td align="left">
+                         <a href="/static/adImportTemplate/TemplateOne.xlsx" class="red">模板一 </a>
+                         <a href="/static/adImportTemplate/TemplateTwo.xlsx" class="red">模板二 </a>
+                         <a href="/static/adImportTemplate/TemplateThree.xlsx" class="red">模板三</a>
+                         </td>
+                       </tr>
+                        <tr>
+                         <td width="180px" align="right">请选择文件：</td>
+                         <td align="left">
+                            <input type="file" name="excel" id="import_ads">
+                         </td>
+                       </tr>
+                       <tr>
+                        <td colspan="2" class="red">
+                            * 请使用本系统提供的模板文件，格式为：xlsx,xls；<br>
+                                                                 <!--   另外，注意每个国家对应的语言; -->
+                         </td>
+                       </tr>
+                     </tbody>
+                 </table>
+               </div>
+             </div>
+            </dl>
+        </form>
+    </div>
+</div>

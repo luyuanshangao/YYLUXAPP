@@ -1,0 +1,45 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addForm" action="" enctype="multipart/form-data">
+            <input type="hidden" name="id"  value="{$model.id}">
+
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>颜色中文名称：</label>
+                </dd>
+                <dd>
+                    <input name="title_cn" id="title_cn" value="{$model.title_cn}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>颜色英文名称：</label>
+                </dd>
+                <dd>
+                    <input name="title_en" id="title_en" value="{$model.title_en}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>颜色值(16进制)：</label>
+                </dd>
+                <dd>
+                    <input name="color_value" id="color_value" value="{$model.color_value}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd>
+                    注：颜色值无需录入"#",最大长度6个字符，最小长度3个字符
+                </dd>
+                <dt></dt>
+            </dl>
+
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/js/custom.js"></script>
+<script type="text/javascript">
+</script>

@@ -1,0 +1,59 @@
+#app {
+  font-family: "微软雅黑";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+div{
+  box-sizing: border-box;
+}
+.iconfont{
+  font-size:1.8rem;
+}
+a{
+  color:$black-1;
+  &:hover{
+    color:$red;
+  }
+}
+div,
+input,
+li,
+span,
+i,
+a,
+a:hover,
+a:active,
+a:visited,
+a:link,
+a:focus{
+  text-decoration: none;
+  outline: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-user-select: auto;
+  -moz-user-select:auto;
+  -moz-user-focus: none;
+  
+}
+input{
+  border:1px solid $border-color-deep;
+  height:25px;
+}
+ul,li,ol{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.error-tips{color:$red;}
+.yellow-tips{
+  background: $yellow;
+  color: $white;
+  padding: 5px 10px;
+  font-size: $f14;
+  a{
+    text-decoration: underline;
+    color: $white;
+  }
+}

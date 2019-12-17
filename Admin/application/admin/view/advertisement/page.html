@@ -1,0 +1,108 @@
+{include file="layout/c_global_style" /}
+{include file="layout/c_style" /}
+{load href="/static/css/advertisement.css" /}
+{include file="layout/c_corejs" /}
+{load href="/static/js/dx_cs_ad.js" /}
+<div class="page-container pd20">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                <div>
+                    <div class="tab-content">
+                        <div class="tab-pane active d-element-bind btns-link" id="month6">
+                            <div class="search-btn-wrap">
+                                <form id="navbar" class="navbar-left" action="attribute" method="post" role="search">
+                                    <ul class="c-h-ul search-ul query-ul">
+                                        <li class="w260">
+                                            <label class="c-h-ul-li-title w20"></label>
+                                            <a class="btn btn-gray add-pages" href="javascript:;">添 加</a>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered mt15 table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>标识ID</th>
+                                            <th>站点</th>
+                                            <th>页面名称</th>
+                                            <th>域名</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {volist name="list" id="val"}
+                                            <tr>
+                                                <td>{$val._id}</td>
+                                                <td>{$val.SiteName}</td>
+                                                <td>{$val.PageName}</td>
+                                                <td>{$val.Domain}</td>
+                                                <td>
+                                                    <a href="javascript:;" data-id="{$val._id}" date-siteid="{$val.SiteID}" data-sitename="{$val.SiteName}" data-pagename="{$val.PageName}" data-domain="{$val.Domain}" class="Qing page-editor">
+                                                        <i class="glyphicon glyphicon-edit f16"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row row16 pd15">
+                                <div class="col-md-16">
+                                    <div class="dataTables_paginate paging_bootstrap fr">
+                                        {$list->render()}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加页面BOX start -->
+<div id="add_pages_box" class="none default-padding page-box">
+    <form id="add_pages_form">
+        <table class="table mt10">
+            <tbody>
+                <tr>
+                    <td class="text-align-reverse">站点：</td>
+                    <td>
+                        <input type="hidden" value="DX" name="SiteName">
+                        <select name="SiteID" id="SiteID" class="form-control w200">
+                            <option value="1" selected="selected">DX</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-align-reverse">页面名称：</td>
+                    <td>
+                        <input type="text" name="PageName" id="PageName" class="form-control w200" placeholder="请输入页面名称" >
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-align-reverse">域名：</td>
+                    <td>
+                        <input type="text" name="Domain" id="Domain" class="form-control w200" placeholder="请输入域名">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-align-reverse"></td>
+                    <td>
+                        <span class="btn btn-qing add-pages-confirm">确认保存</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<!-- 添加页面BOX end -->
+
+<script>
+    var url = {$url|default=''};
+</script>

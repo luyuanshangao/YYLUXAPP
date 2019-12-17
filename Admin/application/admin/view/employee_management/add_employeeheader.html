@@ -1,0 +1,61 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addUserForm" action="{url('admin/EmployeeManagement/editEmployeeheader')}" enctype="multipart/form-data">
+            <input type="hidden" name="id"  value="{$list.id}">
+
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>用户名：</label>
+                </dd>
+                <dd>
+                    <input name="username" id="username" {if condition="$list['username'] neq ''"} readonly="readonly" {/if} value="{$list['username']}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>密码：</label>
+                </dd>
+                <dd>
+                    <input name="password" id="password" value="" class="form-control input-medium inline" type="password"><span class="red">(不修改请留空)</span>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>确认密码：</label>
+                </dd>
+                <dd>
+                    <input name="confirmPassword" id="confirmPassword" value="" class="form-control input-medium inline" type="password"><span class="red">(不修改请留空)</span>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>描述：</label>
+                </dd>
+                <dd>
+                   <textarea name="description" cols="36" rows="8" value="{$list.description}" class="pd3">{$list.description}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+
+
+             <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>状态：</label>
+                </dd>
+                <dd>
+                 <select class="w60" name="status">
+                     <option {eq name="$list.status" value="1"}selected = "selected"{/eq} value="1">启用</option>
+                     <option{eq name="$list.status" value="0"}selected = "selected"{/eq} value="0">禁用</option>
+                 </select>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/js/custom.js"></script>
+<script type="text/javascript">
+</script>

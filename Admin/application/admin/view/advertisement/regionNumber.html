@@ -1,0 +1,145 @@
+{include file="layout/c_global_style" /}
+{include file="layout/c_style" /}
+{load href="/static/css/advertisement.css" /}
+{include file="layout/c_corejs" /}
+{load href="/static/js/dx_cs_ad.js" /}
+<div class="page-container pd20">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                <div>
+                    <div class="tab-content">
+                        <div class="tab-pane active d-element-bind btns-link" id="month6">
+                            <div class="search-btn-wrap">
+                                <form id="navbar" class="navbar-left" action="attribute" method="post" role="search">
+                                    <ul class="c-h-ul search-ul query-ul">
+                                        <li class="w260">
+                                            <label class="c-h-ul-li-title w20"></label>
+                                            <a class="btn btn-gray add-region-number" href="javascript:;">添 加</a>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered mt15 table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>标识ID</th>
+                                            <th>站点</th>
+                                            <th>页面</th>
+                                            <th>区域</th>
+                                            <th>区域编号</th>
+                                            <th>上传内容类型</th>
+                                            <th>是否多图</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            {volist name="list" id="val"}
+                                                <tr>
+                                                    <td>{$val._id}</td>
+                                                    <td>{$val.SiteName}</td>
+                                                    <td>{$val.PageName}</td>
+                                                    <td>{$val.AreaName}</td>
+                                                    <td>{$val.AreasLayoutName}</td>
+                                                    <td>{$val.ContentTypeName}</td>
+                                                    <td>{$val.IsMoreImageStr}</td>
+                                                    <td>
+                                                        <a href="{$editor_url}?id={$val._id}" data-id="{$val._id}" class="Qing">
+                                                            <i class="glyphicon glyphicon-edit f16"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {/volist}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                            <div class="row row16 pd15">
+                                <div class="col-md-16">
+                                    <div class="dataTables_paginate paging_bootstrap fr">
+                                        {$list->render()}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加区域BOX start -->
+<div id="add_region_number_box" class="none default-padding page-box">
+    <form id="add_region_number_form">
+        <table class="table mt10">
+            <tbody>
+            <tr>
+                <td class="text-align-reverse">站点：</td>
+                <td>
+                    <input type="hidden" value="DX" name="SiteName">
+                    <select name="SiteID" id="add_SiteID" class="form-control w200">
+                        <option value="" selected="selected">请选择</option>
+                        {volist name="site_data" id="site_info"}
+                            <option value="{$site_info.SiteID}">{$site_info.SiteName}</option>
+                        {/volist}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-align-reverse">页面：</td>
+                <td>
+                    <select name="PageID" id="add_PageID" class="form-control w200">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-align-reverse">区域：</td>
+                <td>
+                    <select name="AreaID" id="add_AreaID" class="form-control w200">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-align-reverse">布局编码：</td>
+                <td>
+                    <input type="text" name="AreasLayoutName" class="form-control w200" placeholder="请输入区域名称">
+                </td>
+            </tr>
+            <tr>
+                <td class="text-align-reverse">上传内容类型：</td>
+                <td>
+                    <select name="ContentTypeID" class="form-control w200">
+                        <option value="">请选择</option>
+                        {volist name="type_data" id="type_info"}
+                            <option value="{$type_info.ContentTypeID}">{$type_info.ContentTypeName}</option>
+                        {/volist}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-align-reverse">是否多图：</td>
+                <td>
+                    <input type="checkbox" name="IsMoreImage" value="1">
+                </td>
+            </tr>
+            <tr>
+                <td class="text-align-reverse"></td>
+                <td>
+                    <span class="btn btn-qing add-region-number-confirm">确认保存</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<!-- 添加区域BOX end -->
+
+<script>
+    var url = {$url|default=''};
+</script>

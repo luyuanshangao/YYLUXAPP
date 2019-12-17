@@ -1,0 +1,226 @@
+{layout name="layout/main"/}
+{load href="/static/js/plugin/webuploader/webuploader.css" /}
+{load href="/static/css/authorization.css" /}
+{load href="/static/js/plugin/webuploader/webuploader.js" /}
+{load href="/static/js/module/authorization.js" /}
+<div class="main-box fl">
+    <div class="Identity-Audit">
+    	<h3 class="main-cont-title">身份认证</h3>
+
+		{if condition="$seller_info.extension.management_model != 1"}
+
+    	<!-- 公司 -->
+	    <p class="company-name-tip red mt20"><i class="iconfont icon-xinxitishi"></i>仅限于中国大陆公司注册。不包含港澳台地区</p>
+    	<form id="form_2">
+			<input type="hidden" name="flag" value="2">
+	    	<ul class="Identity-Audit-list mt40">
+	    		<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>公司名称：
+	    				</span>
+	    				<input type="text" name="company_name" class="company-name" minlength="1" maxlength="1200" value="{$seller_info.extension.company_name}">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	    		<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>社会信用代码：
+	    				</span>
+	    				<input type="text" name="social_credit_code" class="social-credit-code" minlength="1" maxlength="1200" value="{$seller_info.extension.social_credit_code}">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	    		<li>
+    				<span class="label-des label-des-span">
+    					<i class="red">*</i>营业执照图片：
+						<input type="hidden" name="business_license_pic"  value="{$seller_info.extension.business_license_pic}">
+    				</span>
+    				<div class="pic-wrap">
+	    				<div class="thum ml10 pb5 pt5">
+	    					<img src="{$seller_info.extension.business_license_pic_url}" alt="" width="114px" height="114px">
+	    				</div>
+	    				<div class="product-img-upload-wrap">
+	    					<p class="gray title">图片格式支持 <span class="orange">JPG、JPEG、GIF、PNG、BMP</span>，文件大小<span class="orange">2M以内</span></p>
+	    					<div class="img-onload-wrap">
+		    					<p class="product-img-upload-title">
+		    						<a class="remove-img-onload blue" href="javascript:void(0);">删除图片</a>
+		                        </p>
+		                        <ul class="img-onload-box mt10 mb10">
+		                            <li>
+		                               <div class="uploader-list"></div>
+		                               <div class="file-picker-btn" data-flag="1">+点击上传</div>
+		                            </li>
+		                        </ul>
+	                        </div>
+	    				</div>
+    				</div>
+	    		</li>
+	    		<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>公司住址：
+	    				</span>
+	    				<input type="text" name="company_address" class="company-address" minlength="1" maxlength="1200" value="{$seller_info.extension.company_address}">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	    		<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>经营范围：
+	    				</span>
+	    				<input type="text" name="operation_scope" class="business-scope" minlength="1" maxlength="1500" value="{$seller_info.extension.operation_scope}">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	    		<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>注册资金：
+	    				</span>
+	    				<input type="text" name="registered_capital" class="registered-capital" minlength="1" maxlength="10" value="{$seller_info.extension.registered_capital}">&nbsp;&nbsp;(人民币,单位万元)
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	    		<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>公司联系电话：
+	    				</span>
+	    				<input type="text" name="company_phone" class="company-telephone-number" minlength="1" maxlength="120" value="{$seller_info.extension.company_phone}">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	    		<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>公司联系人：
+	    				</span>
+	    				<input type="text" name="company_contact" class="company-contacts" minlength="1" maxlength="150" value="{$seller_info.extension.company_contact}">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	    		<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>公司联系人电话：
+	    				</span>
+	    				<input type="text" name="company_contact_phone" class="company-contact-phone" minlength="1" maxlength="150" value="{$seller_info.extension.company_contact_phone}">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	    		<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>法人姓名：
+	    				</span>
+	    				<input type="text" name="corporation_name" class="legal-name" minlength="1" maxlength="150" value="{$seller_info.extension.corporation_name}">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	    		<li>
+    				<span class="label-des label-des-span">
+    					<i class="red">*</i>法人手持身份证拍照（正反）：
+						<input type="hidden" name="corporation_idcard_facade" value="{$seller_info.extension.corporation_idcard_facade}">
+						<input type="hidden" name="corporation_idcard_reverse" value="{$seller_info.extension.corporation_idcard_reverse}">
+    				</span>
+    				<div class="pic-wrap">
+	    				<div class="thum ml10 pb5 pt5">
+	    					<img src="{$seller_info.extension.corporation_idcard_facade_url}" alt="" width="114px" height="114px">
+	    					<img src="{$seller_info.extension.corporation_idcard_reverse_url}" alt="" width="114px" height="114px">
+	    				</div>
+	    				<div class="product-img-upload-wrap">
+	    					<p class="gray title">图片格式支持 <span class="orange">JPG、JPEG、GIF、PNG、BMP</span>，文件大小<span class="orange">2M以内</span></p>
+	    					<div class="img-onload-wrap">
+		    					<p class="product-img-upload-title">
+		    						<a class="remove-img-onload blue" href="javascript:void(0);">删除图片</a>
+		                        </p>
+		                        <ul class="img-onload-box mt10 mb10">
+		                            <li>
+		                               <div class="uploader-list"></div>
+		                               <div class="file-picker-btn" data-flag="20">+点击上传</div>
+		                            </li>
+		                            <li>
+		                               <div class="uploader-list"></div>
+		                               <div class="file-picker-btn" data-flag="21">+点击上传</div>
+		                            </li>
+		                        </ul>
+	                        </div>
+	    				</div>
+    				</div>
+	    		</li>
+	    	</ul>
+	    	<a href="javascript:;" class="btn-orange authorization-submit mt50" data-flag="2">确认</a>
+	   	</form>
+
+		{else /}
+	   	<!-- 个人 -->
+	   	<form id="form_1">
+			<input type="hidden" name="flag" value="1">
+	   		<ul class="Identity-Audit-list mt40">
+	   			<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>真实姓名：
+	    				</span>
+	    				<input type="text" name="true_name" class="actual-name" minlength="1" maxlength="100" value="{$seller_info.true_name}">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	   			<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>身份证号码：
+	    				</span>
+	    				<input type="text" name="idcard_num" class="ID-card" minlength="1" maxlength="1200" value="{$seller_info.extension.idcard_num}">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	    		<li>
+    				<span class="label-des label-des-span">
+    					<i class="red">*</i>身份证照片（正反）：
+						<input type="hidden" name="idcard_facade" value="{$seller_info.extension.idcard_facade}">
+						<input type="hidden" name="idcard_reverse" value="{$seller_info.extension.idcard_reverse}">
+    				</span>
+    				<div class="pic-wrap">
+	    				<div class="thum ml10 pb5 pt5">
+	    					<img src="{$seller_info.extension.idcard_facade_url}" alt="" width="114px" height="114px">
+	    					<img src="{$seller_info.extension.idcard_reverse_url}" alt="" width="114px" height="114px">
+	    				</div>
+	    				<div class="product-img-upload-wrap">
+	    					<p class="gray title">图片格式支持 <span class="orange">JPG、JPEG、GIF、PNG、BMP</span>，文件大小<span class="orange">2M以内</span></p>
+	    					<div class="img-onload-wrap">
+		    					<p class="product-img-upload-title">
+		    						<a class="remove-img-onload blue" href="javascript:void(0);">删除图片</a>
+		                        </p>
+		                        <ul class="img-onload-box mt10 mb10">
+		                            <li>
+		                               <div class="uploader-list"></div>
+		                               <div class="file-picker-btn" data-flag="30">+点击上传</div>
+		                            </li>
+		                            <li>
+		                               <div class="uploader-list"></div>
+		                               <div class="file-picker-btn" data-flag="31">+点击上传</div>
+		                            </li>
+		                        </ul>
+	                        </div>
+	    				</div>
+    				</div>
+	    		</li>
+	   		</ul>
+	    	<a href="javascript:;" class="btn-orange authorization-submit mt50" data-flag="1">确认</a>
+	   	</form>
+		{/if}
+    </div>
+</div>
+
+
+<script>
+	var async_url = {$async_url|default=''};
+	var authorization = new authorization();
+	$(function(){
+	    authorization.init();
+    });
+</script>

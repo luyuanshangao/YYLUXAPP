@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>站外合作伙伴统计</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <!--#include file="layout/c_global_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="only-body-page-content">
+
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <div class="page-content pt0">
+                <!--end  按钮功能区 -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt25">
+                                    <div class="tab-pane active d-element-bind btns-link">
+                                        <div class="search-btn-wrap">
+                                            <form class="navbar-left" name="navbar" action="/AffiliateReport/ClassifiedSales/" method="post" role="search">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li class="w100">
+                                                        <label class="c-h-ul-li-title">订单号：</label>
+                                                    </li>
+                                                    <li class="w350">
+                                                        <textarea rows="8" name="order_number" id="order_number" cols="40">{$data['order_number']?$data['order_number']:''}</textarea>
+                                                        <span>可输入多个，请用","或者";"分割</span>
+                                                    </li>
+                                                    <li class="w100">
+                                                        <label class="c-h-ul-li-title">SKU：</label>
+                                                    </li>
+                                                    <li class="w350">
+                                                        <textarea rows="8" name="sku_id" id="sku_id" cols="40">{$data['sku_id']?$data['sku_id']:''}</textarea>
+                                                        <span>可输入多个，请用","或者";"分割</span>
+                                                    </li>
+                                                     <li class="w680">
+                                                            <label class="c-h-ul-li-title">Categories：</label>
+                                                            {if condition="$parent_class  == ''"}
+                                                                <select name="first_level" id="first_level" class="form-control input-small inline mr10">
+                                                                <option value="">请选择</option>
+                                                                {volist name="FirstLevelClass" id="vo"}
+                                                                <option {if condition="!empty($data.first_level) && $data.first_level eq $vo.id"} selected = "selected"{/if} value="{$vo.id}">{$vo.title_en}</option>
+                                                                {/volist}
+                                                                </select>
+                                                            {else /}
+                                                                {$parent_class}
+                                                            {/if}
+                                                    </li>
+                                                    <li class="w440">
+                                                        <label class="c-h-ul-li-title">交易时间(UTC)：</label>
+                                                        <input type="text" name="startTime" value="{$data['startTime']?$data['startTime']:''}" class="form-control input-small startTime">
+                                                        <span class="time-text w20">至</span>
+                                                        <input type="text" name="endTime" value="{$data['endTime']?$data['endTime']:''}" class="form-control input-small endTime">
+                                                    </li>
+                                                    <li class="w400">
+                                                        <label class="c-h-ul-li-title">操作：</label>
+                                                        <a class="btn btn-gray" onclick="javascript:document:navbar.submit();" href="javascript:;">查询</a>
+                                                        <a class="btn btn-gray Export_ClassifiedSales" data-url="/AffiliateReport/Export_ClassifiedSales" href="javascript:;">导出</a>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <!-- start base table -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-hover table-padding">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>订单号</th>
+                                                            <th>订单明细类别</th>
+                                                            <th>SKU</th>
+                                                            <th>订单创建日期</th>
+                                                            <th>积分状态</th>
+                                                            <th>佣金</th>
+                                                            <th>订单当前金额($)</th>
+                                                            <th>数量</th>
+                                                            <!-- <th>详情</th> -->
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                      {volist name="$list" id="vo"}
+                                                        <tr>
+                                                            <td>
+                                                                <a href="/AffiliateReport/OrderUserDetails/order_number/{$order_array[$vo.affiliate_order_id]['order_number']}" class="Qing">{$order_array[$vo.affiliate_order_id]['order_number']}</a>
+                                                            </td>
+                                                            <td>
+                                                            {if condition="!empty($class_list[$vo.first_category_id]) "}
+                                                                  {$class_list[$vo.first_category_id]['title_en']}
+                                                            {/if}
+                                                            {if condition="!empty($class_list[$vo.second_category_id]) "}
+                                                                 &gt; {$class_list[$vo.second_category_id]['title_en']}
+                                                            {/if}
+                                                            {if condition="!empty($class_list[$vo.third_category_id]) "}
+                                                                 &gt; {$class_list[$vo.third_category_id]['title_en']}
+                                                            {/if}
+                                                            {if condition="!empty($class_list[$vo.four_category_id]) "}
+                                                                 &gt; {$class_list[$vo.four_category_id]['title_en']}
+                                                            {/if}
+                                                            </td>
+                                                            <td>{$vo.sku_id}</td>
+                                                            <td> {$vo['create_on'] |date="Y-m-d H:i:s",###}</td>
+                                                            <td>
+                                                            {if condition="!empty($order_array[$vo.affiliate_order_id]['settlement_status']) && $order_array[$vo.affiliate_order_id]['settlement_status'] == 1"}
+                                                                   未生效
+                                                                 {elseif condition="!empty($order_array[$vo.affiliate_order_id]['settlement_status']) && $order_array[$vo.affiliate_order_id]['settlement_status'] == 2"/}
+                                                                   有效
+                                                                 {elseif condition="!empty($order_array[$vo.affiliate_order_id]['settlement_status']) && $order_array[$vo.affiliate_order_id]['settlement_status'] == 3"/}
+                                                                   待审核
+                                                                 {elseif condition="!empty($order_array[$vo.affiliate_order_id]['settlement_status']) && $order_array[$vo.affiliate_order_id]['settlement_status'] == 4"/}
+                                                                   审核通过
+                                                                 {elseif condition="!empty($order_array[$vo.affiliate_order_id]['settlement_status']) && $order_array[$vo.affiliate_order_id]['settlement_status'] == 5"/}
+                                                                   完成
+                                                                 {elseif condition="!empty($order_array[$vo.affiliate_order_id]['settlement_status']) && $order_array[$vo.affiliate_order_id]['settlement_status'] == 6"/}
+                                                                   无效
+                                                            {/if}
+
+                                                            </td>
+                                                            <td>{$vo.commission_price?$vo.commission_price:''}</td>
+                                                            <td>{$vo.total_amount?$vo.total_amount:''}</td>
+                                                            <td>{$vo.sku_count?$vo.sku_count:''}</td>
+                                                          <!--   <td>{$order_array[$vo.affiliate_order_id]['source']?$order_array[$vo.affiliate_order_id]['source']:''}</td> -->
+                                                        </tr>
+                                                      {/volist}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row16 pd15">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                                {$page}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/static/js/affiliate.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            affiliate.affiliate_order_statistics();
+        })
+    </script>
+</body>
+</html>

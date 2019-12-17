@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>商城管理--订单管理--订单管理</title>
+    {include file="layout/c_style" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+    <style>
+        .table-padding.table-basic tbody tr td {
+            padding: 5px 2px !important;
+        }
+
+        .bg_flag{background-color: #efdede !important;}
+        .font_color_flag{color: #ea4040 !important; font-weight: bold !important;}
+    </style>
+
+</head>
+
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<!-- BEGIN CONTAINER -->
+<!-- BEGIN SIDEBAR -->
+<!--#include file="layout/sidebar.html"-->
+<!-- END SIDEBAR -->
+<!-- BEGIN CONTENT -->
+<div class="page-content pt0 ml20 pl0">
+    <!-- 订单内容 begin -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                <div>
+                    <div class="tab-content mt25">
+                        <div class="tab-pane active d-element-bind btns-link" id="month6">
+                            <div class="search-btn-wrap bborder-no">
+                                <form id="form1" class="navbar-left" method="post">
+                                    <ul class="c-h-ul search-ul query-ul">
+                                        <li>
+                                            <label class="c-h-ul-li-title">OrderNumber：</label>
+                                            <input name="OrderNumber" value="{:input('OrderNumber')}" class="form-control input-small" type="text" />
+                                        </li>
+                                        <li>
+                                            <label class="c-h-ul-li-title">TransactionID：</label>
+                                            <input name="TransactionID" value="{:input('TransactionID')}" class="form-control input-small" type="text" />
+                                        </li>
+
+                                        <li>
+                                            <label class="c-h-ul-li-title">交易类型：</label>
+                                            <select name="TransactionType" id="TransactionType" class="form-control input-small order_from">
+                                                <option value="egp" {if condition="input('TransactionType') eq 'egp'"}selected="selected"{/if}>EGP</option>
+                                                <option value="paypal" {if condition="input('TransactionType') eq 'paypal'"}selected="selected"{/if}>Paypal</option>
+                                                <option value="asiabill" {if condition="input('TransactionType') eq 'asiabill'"}selected="selected"{/if}>Globebill</option>
+                                                <option value="astropay" {if condition="input('TransactionType') eq 'astropay'"}selected="selected"{/if}>AstroPay</option>
+                                            </select>
+                                        </li>
+
+                                        <li class="w260">
+                                            <label class="c-h-ul-li-title w60"></label>
+                                            <a onclick="SearchInfo(1)" class="btn btn-gray" href="javascript:;">查找Detail</a>
+                                        </li>
+
+                                        <br>
+                                        <br>
+                                        <li class="w440">
+                                            <label class="c-h-ul-li-title" for="orderstarttime">下单日期：</label>
+                                            <input type="text" name="startTime" id="orderstarttime" class="form-control input-small startTime" value="{$startTime|default=''}"  placeholder="{$startTime|default=''}"  autocomplete="off" />
+                                            <span class="time-text">至</span>
+                                            <input type="text" name="endTime" id="orderendtime" class="form-control input-small endTime"  value="{$endTime|default=''}" placeholder="{$endTime|default=''}" autocomplete="off"/><span class="time-text"></span>
+                                        </li>
+
+                                        <li class="w260">
+                                            <label class="c-h-ul-li-title w60"></label>
+                                            <a onclick="SearchInfo(2)" class="btn btn-gray" href="javascript:;">Search</a>
+                                        </li>
+                                    </ul>
+                                </form>
+                                <div><h5><a href="{$go4Url}" class="Qing" target="_blank"> === 链接到GO4查看 ===</a></h5></div>
+                            </div>
+
+                            <div class="search-btn-wrap bborder-no">
+                                <table id="tableDetailInformations" border="1" cellpadding="5" cellspacing="5" width="100%">
+                                    <tbody>
+                                    <tr>
+                                        <td class="w200">
+                                            <input id="rdIP" type="radio" name="RadioType" value="rdIP"
+                                                   {if condition="input('RadioType') == 'rdIP' || input('RadioType') == ''"} checked="checked"{/if}
+                                            >
+                                            Same IP
+                                        </td>
+                                        <td>
+                                            <span id="rdIPText">{$data['CustomerIP']|default=''}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="rdCardNumber" type="radio" name="RadioType" value="rdCardNumber"
+                                                   {if condition="input('RadioType') == 'rdCardNumber'"} checked="checked"{/if}
+                                            >
+                                            Same Card Number
+                                        </td>
+                                        <td>
+                                            <span id="rdCardNumberText"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="rdBillPhone" type="radio" name="RadioType" value="rdBillPhone"
+                                                   {if condition="input('RadioType') == 'rdBillPhone'"} checked="checked"{/if}
+                                            >
+                                            Same Billing Phone
+                                        </td>
+                                        <td>
+                                            <span id="rdBillPhoneText">{$data['BillingAddressPhone']|default=''}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="rdBillEmail" type="radio" name="RadioType" value="rdBillEmail"
+                                                   {if condition="input('RadioType') == 'rdBillEmail'"} checked="checked"{/if}
+                                            >
+                                            Same Billing Email
+                                        </td>
+                                        <td>
+                                            <span id="rdBillEmailText">{$data['BillingAddressEmail']|default=''}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="rdBillAddress" type="radio" name="RadioType" value="rdBillAddress"
+                                                   {if condition="input('RadioType') == 'rdBillAddress'"} checked="checked"{/if}
+                                            >
+                                            Same Billing Address
+                                        </td>
+                                        <td>
+                                            <!--(国家简码+市、区+省份+地址一+地址二)-->
+                                            <span id="rdBillAddressText">
+                                                {$data['BillingAddressCountry']|default=''}
+                                                {$data['BillingAddressCity']|default=''}
+                                                {$data['BillingAddressState']|default=''}
+                                                {$data['BillingAddressStreet1']|default=''}
+                                                {$data['BillingAddressStreet2']|default=''}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="rdShipPhone" type="radio" name="RadioType" value="rdShipPhone"
+                                                   {if condition="input('RadioType') == 'rdShipPhone'"} checked="checked"{/if}
+                                            >
+                                            Same Shipping Phone
+                                        </td>
+                                        <td>
+                                            <span id="rdShipPhoneText">{$data['ShippAddressPhone']|default=''}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="rdShipEmail" type="radio" name="RadioType" value="rdShipEmail"
+                                                   {if condition="input('RadioType') == 'rdShipEmail'"} checked="checked"{/if}
+                                            >
+                                            Same Shipping Email
+                                        </td>
+                                        <td>
+                                            <span id="rdShipEmailText">{$data['ShippAddressEmail']|default=''}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="rdShipAddress" type="radio" name="RadioType" value="rdShipAddress"
+                                                   {if condition="input('RadioType') == 'rdShipAddress'"} checked="checked"{/if}
+                                            >
+                                            Same Shipping Address
+                                        </td>
+                                        <td>
+                                            <!--(国家简码+市、区+省份+地址一+地址二)-->
+                                            <span id="rdShipAddressText">
+                                                {$data['ShippAddressCountry']|default=''}
+                                                {$data['ShippAddressCity']|default=''}
+                                                {$data['ShippAddressState']|default=''}
+                                                {$data['ShippAddressStreet1']|default=''}
+                                                {$data['ShippAddressStreet2']|default=''}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="rdCardHolder" type="radio" name="RadioType" value="rdCardHolder"
+                                                   {if condition="input('RadioType') == 'rdCardHolder'"} checked="checked"{/if}
+                                            >Same Card Holder
+                                        </td>
+                                        <td>
+                                            <span id="rdCardHolderText"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="rdConsignee" type="radio" name="RadioType" value="rdConsignee"
+                                                   {if condition="input('RadioType') == 'rdConsignee'"} checked="checked"{/if}
+                                            >Same Consignee
+                                        </td>
+                                        <td>
+                                            <span id="rdConsigneeText"></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="search-btn-wrap">
+                                1、<span style="background-color: #efdede; padding: 2px;">此背景为同一订单</span>
+                                2、<span style="color: #ea4040; padding: 2px;font-weight: bold;">此字体为同一客户下的订单 。</span>
+                            </div>
+                            <!-- start base table -->
+                            <div class="row newBox" style="margin-top: 20px;">
+                                <div class="col-md-12">
+                                    <h4 class="Qing">一、新CRC数据：</h4><br>
+                                </div>
+                                <div class="col-md-12">
+                                    <table class="table-basic table-hover table-padding">
+                                        <thead>
+                                            <tr>
+                                                <th class="">风控ID</th>
+                                                <th class="">Site</th>
+                                                <th>订单号</th>
+                                                <th>3PartyTxnID</th>
+                                                <th class="">金额</th>
+                                                <th class="">IP</th>
+                                                <th>ShipCountry</th>
+                                                <th class="">BillCountry</th>
+
+                                                <th class="">时间(UTC)</th>
+
+                                                <th class="w120">PayerEmail</th>
+                                                <th class="w60">PaymentMethod</th>
+                                                <th class="w60">OrderStatus</th>
+                                                <th class="w60">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {empty name="listHisData['data']['data']"}
+                                            <tr><td colspan = "16">没有符合条件的数据</td></tr>
+                                        {/empty}
+
+                                        {volist name="listHisData['data']['data']" id="vo"}
+                                            <tr>
+                                                {php}
+                                                $currCustomerIDNew = isset($vo["CustomerID"])?$vo["CustomerID"]:-1;
+                                                $flagOrderNumber = input('OrderNumber');
+                                                $flagOrderNumber_1 = $vo['OrderNumber'];
+
+                                                {/php}
+                                                <td
+                                                class = "
+                                                {if condition='$flagOrderNumber == $flagOrderNumber_1'}
+                                                bg_flag
+                                                {/if}
+                                                {if condition='$currCustomerID == $currCustomerIDNew'}
+                                                 font_color_flag
+                                                {/if}
+                                                "
+                                                >
+                                                    {$vo.Id|default=''}
+                                                </td>
+                                                <td>
+                                                    {$vo.SiteID|default=''}
+                                                </td>
+                                                <td>
+                                                    {$vo.OrderNumber|default=''}
+                                                </td>
+                                                <td>
+                                                    {$vo.ThirdPartyTxnID|default=''}
+                                                </td>
+                                                <td>
+                                                    {$vo.CurrencyCode} {$vo.Amount|default=''}
+                                                </td>
+
+                                                <td>
+                                                    {$vo.CustomerIP|default=''}
+                                                </td>
+                                                <td>
+                                                    {$vo.ShippAddressCountry|default='-'}
+                                                </td>
+                                                <td>
+                                                    {$vo.BillingAddressCountry|default='-'}
+                                                </td>
+                                                <td>
+                                                    {$vo.AddTime|default=''}
+                                                </td>
+
+                                                <td>
+                                                    {$vo.ShippAddressEmail|default='-'}
+                                                </td>
+
+                                                <td>
+                                                    {$vo.PaymentChannel|default=''}
+                                                    （{$vo.PaymentMethod|default=''}）
+                                                </td>
+
+                                                <td>
+                                                    Unknown
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:;" target='_blank' class="Qing" onclick="seeDetailBox({$vo.Id},1, '{$vo.CurrencyCode}')">
+                                                        查看
+                                                    </a>&nbsp;&nbsp;
+                                                </td>
+                                            </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- end base table -->
+
+                            {notempty name="listHisData['data']['data']"}
+                            <div class="row row16 pd15 mt10 newBox">
+
+                                <div class="dataTables_paginate paging_bootstrap fr">
+                                    {$listHisData['page']}
+                                </div>
+
+
+                                <div style="float: right;height: 27px;margin: 4px 12px 0px 0px;" >总条数 {$listHisData['data']['total']} 条</div>
+                            </div>
+                            {/notempty}
+                            <!-- 订单内容 end -->
+
+                            <!-- start base table GO4 -->
+                            <div class="row go4Box">
+                                <div class="col-md-12">
+                                    <h4 class="Qing">二、GO4数据：</h4><br>
+                                </div>
+                                <div class="col-md-12">
+                                    <table class="table-basic table-hover table-padding">
+                                        <thead>
+                                        <tr>
+                                            <th class="">风控ID</th>
+                                            <th class="">Site</th>
+                                            <th>订单号</th>
+                                            <th>3PartyTxnID</th>
+                                            <th class="">金额</th>
+                                            <th class="">IP</th>
+                                            <th>ShipCountry</th>
+                                            <th class="">BillCountry</th>
+
+                                            <th class="">时间(UTC)</th>
+
+                                            <th class="w120">PayerEmail</th>
+                                            <th class="w60">PaymentMethod</th>
+                                            <th class="w60">OrderStatus</th>
+                                            <th class="w60">操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {empty name="listHisDataOld"}
+                                        <tr><td colspan = "16">没有符合条件的数据</td></tr>
+                                        {/empty}
+
+                                        {volist name="listHisDataOld" id="vinfo"}
+                                        <tr>
+                                            {php}
+                                            $currCustomerIDNew = isset($vinfo["CICID"])?$vinfo["CICID"]:-1;
+                                            $flagOrderNumber = input('OrderNumber');
+                                            $flagOrderNumber_1 = $vinfo['OrderNumber'];
+
+                                            {/php}
+                                            <td
+                                                    class = "
+                                                {if condition='$flagOrderNumber == $flagOrderNumber_1'}
+                                                bg_flag
+                                                {/if}
+                                                {if condition='$currCustomerID != $currCustomerIDNew'}
+                                                 font_color_flag
+                                                {/if}
+                                                "
+                                            >
+                                                无
+                                            </td>
+                                            <td>
+                                                {$vinfo.SiteID|default=''}
+                                            </td>
+                                            <td>
+                                                {$vinfo.OrderNumber|default=''}
+                                            </td>
+                                            <td>
+                                                {$vinfo.ThirdPartyTxnID|default=''}
+                                            </td>
+                                            <td>
+                                                {$vinfo.CurrencyCode} {$vinfo.BillAmount|default=''}
+                                            </td>
+
+                                            <td>
+                                                {$vinfo.CustomerIp|default=''}
+                                            </td>
+                                            <td>
+                                                {$vinfo.ShipCountry|default='-'}
+                                            </td>
+                                            <td>
+                                                {$vinfo.BillCountry|default='-'}
+                                            </td>
+                                            <td>
+                                                {$vinfo.CreateTime|default=''}
+                                            </td>
+
+                                            <td>
+                                                -
+                                            </td>
+
+                                            <td>
+                                                {$vinfo.PaymentMethod|default=''}
+                                            </td>
+
+                                            <td>
+                                                Unknown
+                                            </td>
+                                            <td>
+                                                <a href="javascript:;" target='_blank' class="Qing" onclick="seeDetailBox({$vinfo.PmtTxnID}, 2, '{$vinfo.CurrencyCode}')">
+                                                    查看
+                                                </a>&nbsp;&nbsp;
+                                            </td>
+                                        </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- end base table GO4 -->
+
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+<!--<script type="text/javascript" src="/js/custom.js"></script>-->
+<script src="/static/js/order.js" type="text/javascript"></script>
+<!-- END JAVASCRIPTS -->
+<script>
+    var ajax_url = {$ajaxUrl|default=""};
+    var curr_url = '{$currUrl|default=""}';
+    function SearchInfo(type) {
+        var OrderNumber = $('input[name="OrderNumber"]').val(),
+            TransactionID = $('input[name="TransactionID"]').val(),
+            TransactionType = $('#TransactionType').val(),
+            OrderstartTime = $('#orderstarttime').val(),
+            OrderEndTime = $('#orderendtime').val(),
+            RadioType = $('input[name="RadioType"]:checked').val(),
+
+            url = curr_url+
+            '?TransactionID='+ TransactionID+
+            '&OrderNumber='+OrderNumber+
+            '&TransactionType='+TransactionType+
+            '&OrderstartTime='+OrderstartTime +
+            '&OrderEndTime='+OrderEndTime +
+            '&RadioType='+RadioType
+        ;
+
+        console.log(OrderNumber)
+        console.log(TransactionID)
+        console.log(TransactionType)
+        console.log(OrderstartTime)
+        console.log(OrderEndTime)
+        console.log(RadioType)
+        console.log(url)
+
+        //查询Detail TODO
+        if (type == '2'){
+            //Search
+            console.log($('#'+RadioType+'Text').text()+'==='+RadioType+'Text')
+            if ((($('#'+RadioType+'Text').text()).replace(/\s*/g,"")) == ''){
+                alert('选择的条件为空');
+                return false;
+            }
+        }
+        window.location.href = url;
+    }
+
+    //添加物流
+    function seeDetailBox(searchId, flag, currencyCode){
+        /*$.get(ajax_url.asyncGetHistoryDetail+'?searchId='+searchId+'&flag='+flag+'&currencyCode='+currencyCode, function (data) {
+            layer.open({
+                title: "查看详细支付交易信息",
+                content: data,
+                type: 1,
+                area: ['680px', '600px'],
+                // offset: '10px',
+                btn: ["确定"],
+                yes: function (index) {
+                    layer.closeAll();
+                },
+                cancel: function () {
+                }
+            });
+        });*/
+        var loadingIndex = '';
+        $.ajax({
+            type:"GET",
+            url:ajax_url.asyncGetHistoryDetail+'?searchId='+searchId+'&flag='+flag+'&currencyCode='+currencyCode,
+            // data:{ID:e,Status:Status},
+            // dataType:"json",
+            // cache:false,
+            success:function(data){
+                layer.open({
+                    title: "查看详细支付交易信息",
+                    content: data,
+                    type: 1,
+                    area: ['680px', '600px'],
+                    // offset: '10px',
+                    btn: ["确定"],
+                    yes: function (index) {
+                        layer.closeAll();
+                    },
+                    cancel: function () {
+                    }
+                });
+            },
+            beforeSend: function() {
+                loadingIndex = layer.load(1, {
+                    shade: [0.1,'#fff'] //0.1透明度的白色背景
+                });
+            },
+            complete:function(){
+                layer.close(loadingIndex);
+            },
+            error:function(error){layer.close(loadingIndex);layer.closeAll();layer.msg('提交出错', {icon: 1});}
+        });
+        // console.log(2);
+    }
+    $(function(){
+        $('#orderstarttime').click(function() {
+            var end_id = 'orderendtime';
+            WdatePicker({
+                // startDate: '%y-%M-%d',
+                dateFmt: 'yyyy-MM-dd',
+                alwaysUseStartDate: false,
+                minDate:'2000-01-01',
+                // maxDate: '%y-%M-%d',
+                onpicked: function () {
+                    var starttime = $(this).val();
+                    starttime = new Date(starttime.replace(/-/g,"/")).getTime();
+                    starttime = starttime -1000 + (3*30*24*3600*1000);
+                    var timestamp = Date.parse(new Date());
+                    if(starttime>=timestamp){
+                        starttime = timestamp;
+                    }
+                    var oDate  = new Date(starttime),
+                        oYear = oDate.getFullYear(),
+                        oMonth = oDate.getMonth()+1,
+                        oDay = oDate.getDate(),
+                        oHour = oDate.getHours(),
+                        oMin = oDate.getMinutes(),
+                        oSen = oDate.getSeconds(),
+                        oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay) ;//最后拼接时间
+                    // $('#orderendtime').val(oTime)
+                }
+            });
+        });
+        function getzf(num){
+            if(parseInt(num) < 10){
+                num = '0'+num;
+            }
+            return num;
+        }
+        $('#orderendtime').click(function() {
+
+            var start_id = 'orderstarttime';
+
+            WdatePicker({
+                // startDate: '%y-%M-%d',
+                dateFmt: 'yyyy-MM-dd',
+                minDate:'2000-01-01',
+                // maxDate: '%y-%M-%d',
+                alwaysUseStartDate: false,
+                onpicked: function () {
+                    var endtime = $(this).val();
+                    endtime = new Date(endtime.replace(/-/g,"/")).getTime();
+                    maxstarttime = endtime + 1000 - (3*30*24*3600*1000);
+                    starttime = new Date($('#orderstarttime').val()).getTime();
+                    if(starttime<maxstarttime){
+                        var oDate  = new Date(maxstarttime),
+                            oYear = oDate.getFullYear(),
+                            oMonth = oDate.getMonth(),
+                            oDay = oDate.getDate(),
+                            oHour = oDate.getHours(),
+                            oMin = oDate.getMinutes(),
+                            oSen = oDate.getSeconds(),
+                            oTime = oYear +'-'+ getzf(oMonth) +'-'+ getzf(oDay) ;//最后拼接时间
+                        // $('#orderstarttime').val(oTime)
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
+<script>
+</script>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>平台管理--客服相关---风控凭证</title>
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+    {load href="/static/css/productManagement.css" /}
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+        <!-- BEGIN SIDEBAR -->
+        <!--#include file="layout/sidebar.html"-->
+        <!-- END SIDEBAR -->
+        <!-- BEGIN CONTENT -->
+            <div class="page-content pt0 ml20 pl0">
+                <!-- 订单内容 begin -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt25">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap bborder-no">
+                                            <form id="navbar" class="navbar-left" action="CustomsInsurance" method="post">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li>
+                                                        <input type="hidden" name="is_export" id="is_export" value="0">
+                                                        <label class="c-h-ul-li-title">买家名：</label>
+                                                           <input name="customer_name" value="{$data.customer_name}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">卖家名：</label>
+                                                        <input name="seller_name" value="{$data.seller_name}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">买家ID：</label>
+                                                        <input name="customer_id" value="{$data.customer_id}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">卖家ID：</label>
+                                                        <input name="seller_id" value="{$data.seller_id}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">订单编码：</label>
+                                                        <input name="order_number" value="{$data.order_number}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                     <li class="pb6">
+                                                        <label class="c-h-ul-li-title">投诉状态：</label>
+                                                        {$statusSelectHtml}
+                                                    </li>
+                                                    <li class="w440">
+                                                        <label class="c-h-ul-li-title" for="reservationtime">投诉时间：</label>
+                                                        <input type="text" name="startTime" id="reservationtime" class="form-control input-small startTime" value="{$data.startTime}" autocomplete="off"/>
+                                                        <span class="time-text w20">至</span>
+                                                        <input type="text" name="endTime" id="canceltime" class="form-control input-small endTime"  value="{$data.endTime}" autocomplete="off"/>
+                                                    </li>
+                                                    <li class="w240">
+                                                        <label class="c-h-ul-li-title w60"></label>
+                                                        <!--<a onclick="javascript:document:navbar.submit();" class="btn btn-gray insurance-query-btn" href="javascript:;">查 询</a>-->
+                                                        <a class="btn btn-gray insurance-query-btn" href="javascript:;">查 询</a>
+                                                        <a class="btn btn-gray" href="/CustomerService/edit">新 增</a>
+                                                        <a class="btn btn-warning export-insurance-data" href="javascript:;">导出</a>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <div id="enlarge_images" ></div>
+                                        <!-- start base table -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-hover table-padding">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>用户ID/名称</th>
+                                                        <th>卖家ID/名称</th>
+                                                        <th class="w60">举报类型</th>
+                                                        <th>PayPal账号</th>
+                                                       <!--  <th>产品SPU</th>
+                                                        <th>产品路径</th> -->
+                                                        <th>投诉图片</th>
+                                                        <th style="width: 100px !important;">退款原因</th>
+                                                        <th class="w100">金额(币种)</th>
+                                                        <th>订单编码</th>
+                                                        <th class="w100">状态</th>
+                                                        <th class="w100">审核状态</th>
+                                                        <th class="w100">操作人</th>
+                                                        <th class="w100">退款时间</th>
+                                                        <th class="w100">投诉时间</th>
+                                                        <th class="w100">来源</th>
+                                                        <th class="w60">操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {volist name="list" key = 'k' id="vo"}
+                                                            <tr>
+                                                                <td>{$vo.id}</td>
+                                                                <td>{$vo.customer_id}-{$vo.customer_name}</td>
+                                                                <td>{$vo.seller_id}-{$vo.seller_name}</td>
+                                                                <td>
+                                                                {volist name="riskConfig" id="vi"}
+                                                                   {if condition="$vi.code ==$vo.report_type"}
+                                                                       {$vi.name}
+                                                                   {/if}
+                                                                {/volist}
+                                                                </td>
+                                                                <td>{$vo.all_paypal_account|default='-'}</td>
+                                                                <td id="demo{$k}">
+                                                                    {php}$vo_imgs = json_decode(htmlspecialchars_decode($vo['enclosure']), true);{/php}
+                                                                    <!--  <img  width="25" height="25" src="//img.dxcdn.com/productimages/sku_544237_1.jpg"> -->
+                                                                    {notempty name='vo_imgs'}
+
+                                                                        {volist name="$vo_imgs" id="ve"}
+                                                                           <img src="{:DX_FTP_ACCESS_URL}{$ve}" width="50" height="50" style="cursor: pointer;">
+                                                                        {/volist}
+
+                                                                    {else /}
+                                                                    -
+                                                                    {/notempty}
+                                                                </td>
+                                                                <script>
+                                                                    var demo = document.getElementById("demo{$k}");
+                                                                    var gg = demo.getElementsByTagName("img");
+                                                                    var ei = document.getElementById("enlarge_images");//console.log(ei);
+                                                                    for(i=0; i<gg.length; i++){
+                                                                        var ts = gg[i];
+                                                                        ts.onmousemove = function(event){
+                                                                            event = event || window.event;
+                                                                            ei.style.display = "block";
+                                                                            ei.innerHTML = '<img width="400" height="400" src="' + this.src + '" />';
+                                                                            ei.style.top  = document.body.scrollTop + event.clientY + 10 + "px";
+                                                                            ei.style.left = document.body.scrollLeft + event.clientX + 10 + "px";
+                                                                        }
+                                                                        ts.onmouseout = function(){
+                                                                            ei.innerHTML = "";
+                                                                            ei.style.display = "none";
+                                                                        }
+                                                                        ts.onclick = function(){
+                                                                            window.open( this.src );
+                                                                        }
+                                                                    }
+                                                                </script>
+                                                                <td class="w200">
+                                                                    <div class="w200 exceed">{$vo.reason}</div>
+                                                                </td>
+                                                                <td>{$vo.amount}({$vo.currency_code})</td>
+                                                                <td>{$vo.order_number}</td>
+                                                                <td class="risk-status-td">
+                                                                  <span class="light-blue-2" href="javascript:;">{$vo.report_name}</span>
+                                                                <!-- {if condition="$vo.report_status == 1"}
+                                                                   <a class="red js-risk-status" target="_blank" data-id="{$vo.id}" data-msgname="确定要修改为已处理么?" data-status = "{$vo.report_status}" href="javascript:;">{$vo.report_name}</a>
+                                                                {elseif condition="$vo.report_status == 3"/}
+                                                                   <a class="light-blue-2" target="_blank"  data-status = "{$vo.report_status}" href="javascript:;">{$vo.report_name}</a>
+                                                                {else /}
+                                                                   展示有误
+                                                                {/if} -->
+                                                                </td>
+                                                                <td><span class="light-blue-2">{$vo.verify_status_str}</span></td>
+                                                                <td>{$vo.operator}</td>
+                                                                <td>{notempty name='$vo.refund_time'}{$vo.refund_time |date="Y-m-d H:i:s",###}{else /}-{/notempty}</td>
+                                                                <td>{$vo.add_time |date="Y-m-d H:i:s",###}</td>
+                                                                <td>
+                                                                    {switch name='vo.from'}
+                                                                        {case value='1'}My{/case}
+                                                                        {case value='2'}<b>Admin</b>{/case}
+                                                                        {defualt /}-
+                                                                    {/switch}
+                                                                </td>
+                                                                <td>
+                                                                    <a href="/CustomerService/edit/id/{$vo.id}/order_number/{$vo.order_number}">
+                                                                        {if condition='$vo.report_status eq 3 or $vo.report_status eq 4'}
+                                                                        查看
+                                                                        {else /}
+                                                                        修改
+                                                                        {/if}
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        {/volist}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row16 pd15 mt10">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                                {$page}
+                                            </div>
+                                        </div>
+                                        <!-- 订单内容 end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="show-copy-pop hide"></div>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+     <script src="/static/js/order.js" type="text/javascript"></script>
+    <!-- END JAVASCRIPTS -->
+    <script>
+        $(function(){
+            Order.riskManageMent();
+            $('.insurance-query-btn').click(function(event){
+                $("#is_export").val(0);
+                $("#navbar").submit();
+            })
+            $('.export-insurance-data').click(function(event){
+                $("#is_export").val(1);
+                $("#navbar").submit();
+            })
+        });
+    </script>
+
+</body>
+</html>
+<script>
+
+</script>

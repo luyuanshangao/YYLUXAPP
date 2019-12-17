@@ -1,0 +1,60 @@
+{layout name="layout/main"/}
+{load href="/static/css/acctManage.css" /}
+{load href="/static/js/module/acctManage.js" /}
+<div class="main-box fl acctManage">
+	<div class="box-white mt0">
+	    <h1 class="main-cont-title">
+	        账户信息管理
+	    </h1>
+	    <div class="info-box mt20">
+	    	<form action="">
+	    		<dl class="dl-layout relative">
+                    <dt>手机号码</dt>
+                   	<dd>
+                        <input type="text" name="phone_num" class="form-control" id="phone_num" placeholder="手机号码" disabled="disabled" value="{$seller_info['phone_num']}">
+                        <div class="err-tip hide"></div>
+                   	</dd>
+                </dl>
+	    		<dl class="dl-layout relative">
+	                <dt>电子邮箱</dt>
+	                <dd>
+	                    <input type="text" name="email" id="user-emial" class="form-control" placeholder="请输入邮箱" disabled="disabled" value="{$seller_info['email']}">
+	                    <div class="email-tips"></div>
+	                </dd>
+	            </dl>
+				<dl class="dl-layout relative">
+					<dt>旧密码</dt>
+					<dd>
+						<input type="password" name="old-password" class="form-control" id="old-password" minlength="6" maxlength="20" placeholder="旧密码">
+						<div class="err-tip hide"></div>
+					</dd>
+				</dl>
+	    		<dl class="dl-layout relative">
+	                <dt>新密码</dt>
+	               	<dd>
+	                    <input type="password" name="password" class="form-control" id="password" minlength="6" maxlength="20" placeholder="新密码">
+	                    <div class="err-tip hide"></div>
+	               	</dd>
+	            </dl>
+	            <dl class="dl-layout relative">
+	                <dt></dt>
+	               	<dd>
+	                    <ul class="pass-strength">
+	                        <li class="low">LOW</li>
+	                        <li class="medium">MEDIUM</li>
+	                        <li class="high">HIGH</li>
+	                    </ul>
+	               	</dd>
+	            </dl>
+	            <dl class="dl-layout relative">
+	                <dt>确认密码</dt>
+	               	<dd>
+	                    <input type="password" name="confirm_password" class="form-control" id="confirm-password" placeholder="密码确认"/>
+	                    <div class="err-tip hide"></div>
+	               	</dd>
+	            </dl>
+	            <a href="javascript:void (0)" class="submit btn-orange mt20">保存</a>
+	    	</form>
+	    </div>
+	</div>
+</div>

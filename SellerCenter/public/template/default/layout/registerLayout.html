@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {php}
+        if(empty($title)){
+        echo "DX Seller中心";
+        }else{
+        echo $title." - DX";
+        }
+        {/php}
+    </title>
+    {include file="public/load" /}
+</head>
+<body>
+{include file="public/header_register" /}
+{__CONTENT__}
+{include file="public/footer_register" /}
+</body>
+</html>

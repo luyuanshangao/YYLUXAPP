@@ -1,0 +1,79 @@
+{layout name="layout/main"/}
+{load href="/static/css/authorization.css" /}
+{load href="/static/js/module/acctChildManage.js" /}
+<div class="main-box fl">
+    <div class="Identity-Audit">
+    	<h3 class="main-cont-title">添加子账号</h3>
+
+	   	<form id="form_add_child_acct">
+			<input type="hidden" name="flag" value="1">
+	   		<ul class="Identity-Audit-list mt40">
+	   			<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>邮箱：
+	    				</span>
+	    				<input type="text" name="email" class="actual-name" value="" placeholder="请输入邮箱" autocomplete="off">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	   			<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>密码：
+	    				</span>
+	    				<input type="password" name="password" class="actual-name" minlength="1" maxlength="100" value="" placeholder="请输入密码" autocomplete="off">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	   			<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>确认密码：
+	    				</span>
+	    				<input type="password" name="confirm_password" class="actual-name" minlength="1" maxlength="100" value="" placeholder="请输入确认密码" autocomplete="off">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	   			<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>真实姓名：
+	    				</span>
+	    				<input type="text" name="true_name" class="actual-name" minlength="1" maxlength="100" value="" placeholder="请输入真实姓名" autocomplete="off">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	   			<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>性别：
+	    				</span>
+                        <input type="radio" value="1" name="sex" style="width: auto;height: auto;"> 男
+                        <input type="radio" value="2" name="sex" style="width: auto;height: auto;"> 女
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	   			<li>
+	    			<label>
+	    				<span class="label-des">
+	    					<i class="red">*</i>手机号码：
+	    				</span>
+	    				<input type="text" name="phone_num" class="ID-card" minlength="1" maxlength="1200" value="" placeholder="请输入手机号码" autocomplete="off">
+	    				<div class="err-tip"></div>
+	    			</label>
+	    		</li>
+	   		</ul>
+	    	<a href="javascript:;" class="btn-orange add-child-acct-submit mt50" data-flag="1" style=" margin-left: 194px;width: 296px;font-size: 14px;text-align: center;">确认</a>
+	   	</form>
+
+    </div>
+</div>
+
+
+<script>
+	var async_url = {$async_url|default='""'};
+	//var authorization = new authorization();
+	$(function(){
+    });
+</script>

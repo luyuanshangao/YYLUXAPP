@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>运营管理--EIP报表--指定SKU查询</title>
+    {include file="layout/c_style" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    {include file="layout/c_style" /} {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <!-- select2自动补全下拉框样式 -->
+</head>
+
+<body>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+    <!-- BEGIN SIDEBAR -->
+    <!--#include file="layout/sidebar.html"-->
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content pt0 ml20 pl0">
+        <!-- 订单内容 begin -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                    <div>
+                        <div class="tab-content mt25">
+                            <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                <div class="search-btn-wrap">
+                                    <form class="search-form" action="/payment/multiTransaction" method="post">
+                                        <ul class="c-h-ul search-ul query-ul">
+                                            <li class="w460">
+                                                <label class="c-h-ul-li-title">起止时间：</label>
+                                                <input type="text" id="saleStartTime" class="data-time form-control input-small" />
+                                                <span class="time-text">至</span>
+                                                <input type="text" id="saleEndTime" class="data-time form-control input-small" />
+                                            </li>
+                                            
+                                            <li>
+                                                <label class="c-h-ul-li-title">SKU：</label>
+                                                <select id="oneCategory" class="form-control input-small">
+                                                    <option value="1">1138</option>
+                                                    <option value="2">1139</option>
+                                                </select>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title" for="reservationtime"></label>
+                                                <a class="btn btn-gray btn-search" href="javascript:;">查 询</a>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                </div>
+                                <!-- start base table -->
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table-basic table-hover table-padding mt20">
+                                            <thead>
+                                                <tr>
+                                                    <th>SKU</th>
+                                                    <th>销售额</th>
+                                                    <th>销售量</th>
+                                                    <th>订单量</th>
+                                                    <th>均单额</th>
+                                                    <th>均单量</th>
+                                                    <th>PV值</th>
+                                                    <th>转化率</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1138</td>
+                                                    <td>￥50.22</td>
+                                                    <td>500</td>
+                                                    <td>30</td>
+                                                    <td>$30.22</td>
+                                                    <td>20</td>
+                                                    <td></td>
+                                                    <td>0.001%</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- end base table -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="refundDialog" class="pd10" style="display:none;">
+        <dl class="c-h-dl-validator form-group clearfix">
+            <dd class="v-title">
+                <label>
+                    <em>*</em>金额：</label>
+            </dd>
+            <dd>
+                <input name="amount" id="" value="" class="form-control input-medium inline" type="number">
+                <p class="error-tip red pt5 pb10"></p>
+            </dd>
+            <dt></dt>
+        </dl>
+        <dl class="c-h-dl-validator form-group clearfix">
+            <dd class="v-title">
+                <label>
+                    <em>*</em>原因：</label>
+            </dd>
+            <dd>
+                <textarea id="refundDialogReason" name="reason" cols="34" rows="10" class="form-control input-medium inline"></textarea>
+                <p class="error-tip red pt5 pb10"></p>
+            </dd>
+            <dt></dt>
+        </dl>
+    </div>
+    <script src="/static/js/eipReport.js" type="text/javascript"></script>
+    <!-- END JAVASCRIPTS -->
+    <script>
+        $(function () {
+            EipReport.skuSelection();
+        });
+    </script>
+</body>
+
+</html>
+<script>
+</script>

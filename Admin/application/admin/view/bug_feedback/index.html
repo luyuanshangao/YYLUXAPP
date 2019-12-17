@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>平台管理--客服相关---BUG反馈</title>
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+    {load href="/static/css/productManagement.css" /}
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+        <!-- BEGIN SIDEBAR -->
+        <!--#include file="layout/sidebar.html"-->
+        <!-- END SIDEBAR -->
+        <!-- BEGIN CONTENT -->
+            <div class="page-content pt0 ml20 pl0">
+                <!-- 订单内容 begin -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt25">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap bborder-no">
+                                            <form id="navbar" class="navbar-left" action="orderAccuse" method="post">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">买家名：</label>
+                                                           <input name="customer_name" value="{$data.customer_name}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">买家ID：</label>
+                                                        <input name="customer_id" value="{$data.customer_id}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                     <li class="pb6">
+                                                        <label class="c-h-ul-li-title">反馈状态：</label>
+                                                        {$statusSelectHtml}
+                                                    </li>
+                                                    <li class="w440">
+                                                        <label class="c-h-ul-li-title" for="reservationtime">反馈时间：</label>
+                                                        <input type="text" name="startTime" id="reservationtime" class="form-control input-small startTime" value="{$data.startTime}" autocomplete="off"/>
+                                                        <span class="time-text w20">至</span>
+                                                        <input type="text" name="endTime" id="canceltime" class="form-control input-small endTime"  value="{$data.endTime}" autocomplete="off"/>
+                                                    </li>
+                                                    <li class="w240">
+                                                        <label class="c-h-ul-li-title w60"></label>
+                                                        <a onclick="javascript:document:navbar.submit();"
+                                                        class="btn btn-gray" href="javascript:;">查 询</a>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <div id="enlarge_images" style="display: none; top: 244px; left: 170px;"></div>
+                                        <!-- start base table -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-hover table-padding">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>用户ID/名称</th>
+                                                        <th class="w100">举报类型</th>
+                                                        <th>反馈图片</th>
+                                                        <th>反馈内容</th>
+                                                        <th class="w100">电话</th>
+                                                        <!-- <th>订单编码</th> -->
+                                                        <th class="w100">状态</th>
+                                                        <th class="w100">操作人</th>
+                                                        <th class="w100">提交时间</th>
+                                                        <!--<th class="w100">操作</th>-->
+
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {volist name="list"  key = 'k' id="vo"}
+                                                            <tr>
+                                                                <td>{$vo.customer_id}-{$vo.customer_name}</td>
+                                                                <td>
+                                                                {volist name="riskConfig" id="vi"}
+                                                                   {if condition="$vi.code ==$vo.report_type"}
+                                                                       {$vi.name}
+                                                                   {/if}
+                                                                {/volist}
+                                                                <!-- {$vo.report_type} -->
+                                                                </td>
+                                                             <!--    <td><a class="light-blue-2" target="_blank" href="{$vo.product_url}">查看产品</a> </td> -->
+                                                                <td id="demo{$k}">
+                                                                  <!--  <img  width="25" height="25" src="//img.dxcdn.com/productimages/sku_544237_1.jpg"> -->
+                                                                    {volist name="$vo.enclosure" id="ve"}
+                                                                       <img width="50" src="{:config('dx_mall_img_url')}{$ve}">
+                                                                    {/volist}
+                                                                </td>
+                                                                <script>
+                                                                    var demo = document.getElementById("demo{$k}");
+                                                                    var gg = demo.getElementsByTagName("img");
+                                                                    var ei = document.getElementById("enlarge_images");//console.log(ei);
+                                                                    for(i=0; i<gg.length; i++){
+                                                                        var ts = gg[i];
+                                                                        ts.onmousemove = function(event){
+                                                                            event = event || window.event;
+                                                                            ei.style.display = "block";
+                                                                            ei.innerHTML = '<img width="400" height="400" src="' + this.src + '" />';
+                                                                            ei.style.top  = document.body.scrollTop + event.clientY + 10 + "px";
+                                                                            ei.style.left = document.body.scrollLeft + event.clientX + 10 + "px";
+                                                                        }
+                                                                        ts.onmouseout = function(){
+                                                                            ei.innerHTML = "";
+                                                                            ei.style.display = "none";
+                                                                        }
+                                                                        ts.onclick = function(){
+                                                                            window.open( this.src );
+                                                                        }
+                                                                    }
+                                                                </script>
+                                                                <td class="w500">
+                                                                    <div class="w500 exceed">{$vo.reason}</div>
+                                                                </td>
+                                                                <td>{$vo.phone}</td>
+                                                                <!-- <td>{$vo.order_number}</td> -->
+                                                                <td class="risk-status-td">
+                                                                {if condition="$vo.report_status == 1"}
+                                                                   <a class="red js-risk-status" data-id="{$vo.id}" data-msgname="确定要修改为已处理么?" data-status = "{$vo.report_status}" href="javascript:;">{$vo.report_name}</a>
+                                                                {elseif condition="$vo.report_status == 3"/}
+                                                                   <a class="light-blue-2"  data-status = "{$vo.report_status}" href="javascript:;">{$vo.report_name}</a>
+                                                                {else /}
+                                                                   展示有误
+                                                                {/if}
+                                                                </td>
+                                                                <td>{$vo.operator}</td>
+                                                                <td>{$vo.add_time |date="Y-m-d H:i:s",###}</td>
+                                                            </tr>
+
+                                                        {/volist}
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row16 pd15 mt10">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                                {$page}
+                                            </div>
+                                        </div>
+                                        <!-- 订单内容 end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="show-copy-pop hide"></div>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script src="/static/js/order.js" type="text/javascript"></script>
+    <!-- END JAVASCRIPTS -->
+    <script>
+        $(function(){
+            Order.riskManageMent();
+        });
+    </script>
+
+</body>
+</html>
+<script>
+
+</script>

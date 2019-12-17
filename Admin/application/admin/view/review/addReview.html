@@ -1,0 +1,153 @@
+<link rel="stylesheet" href="/assets/plugins/layui/css/layui.css" media="all">
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="AddReviewFrom" action="{:url('ProductQa/reply_message')}" enctype="multipart/form-data">
+            <input id="user_id" type="hidden" name="order_number"  value="{$OrderDetail['order_number']|default=''}">
+            <input type="hidden" value="{$seller['id']|default=''}" />
+            <div class="form-body info-pb10 ml20">
+                <dl class="c-h-dl-validator form-group clearfix">
+                    <dd class="v-title">
+                        <label class="w80"><em>*</em>SKU：</label>
+                    </dd>
+                    <dd>
+                        <input class="form-control input-medium fl w120" name="sku_num" id="sku_num" value="">
+                    </dd>
+                    <dd class="v-title">
+                        <label class="w80"><em>*</em>用户昵称：</label>
+                    </dd>
+                    <dd class="state-dd">
+                        <input class="form-control input-medium fl w120" name="customer_name" id="customer_name" value="">
+                    </dd>
+                    <dt></dt>
+                </dl>
+                <!--<div class="row col-md-12 border_bottom mt20 pr0 ml0 pb20 shipping-address-div">-->
+                    <dl class="c-h-dl-validator form-group clearfix mt10">
+                        <dd class="v-title">
+                            <label class="w80"><em>*</em>国家：</label>
+                        </dd>
+                        <dd>
+                            <select class="form-control input-small inline" name="country_code" id="country_code">
+                                <option value="">请选择</option>
+                                {foreach name="country" item="vo"}
+                                <option value="{$vo['Value']}">{$vo['Text']}</option>
+                                {/foreach}
+                            </select>
+                        </dd>
+                        <dd class="v-title">
+                            <label class="w80">评分：</label>
+                        </dd>
+                        <dd class="city-dd">
+                            <select name="overall_rating" id="overall_rating" class="form-control input-small inline">
+                                <option value="5">5分</option>
+                                <option value="4">4分</option>
+                                <option value="3">3分</option>
+                                <option value="2">2分</option>
+                                <option value="1">1分</option>
+                            </select>
+                        </dd>
+                        <dt></dt>
+                    </dl>
+                    <dl class="c-h-dl-validator form-group clearfix mt10">
+                        <dd class="v-title">
+                            <label class="w80">标签：</label>
+                        </dd>
+                        <dd>
+                            <input class="form-control input-medium fl w100" name="reviews_label" id="reviews_label" value="">
+                        </dd>
+                        <dd class="v-title">
+                            <label><em>*</em>添加时间：</label>
+                        </dd>
+                        <dd>
+                            <input name="add_time" id="add_time" value="{:date('Y-m-d H:i:s')}" class="form-control input-medium inline" type="text">
+                        </dd>
+                        <dt></dt>
+                        <dt></dt>
+                    </dl>
+                    <dl class="c-h-dl-validator form-group clearfix review-image">
+                        <dd class="v-title">
+                            <label>图片上传：</label>
+                        </dd>
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn" id="test2">图片上传</button>
+                            <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                                预览图：
+                                <div class="layui-upload-list" id="demo2"></div>
+                            </blockquote>
+                        </div>
+                        <dt></dt>
+                    </dl>
+                    <dl class="c-h-dl-validator form-group clearfix mt10">
+                        <dd class="v-title">
+                            <label class="w80"><em>*</em>内容：</label>
+                        </dd>
+                        <dd>
+                            <textarea rows="4" cols="34" name="content" id="content"></textarea>
+                        </dd>
+                        <dt></dt>
+                    </dl>
+                    <!--<input type="hidden" name="country_code">
+                    <input type="hidden" name="state_code">
+                    <input type="hidden" name="city_code">-->
+                <!--</div>-->
+                <!--隐藏变量-->
+                <!--<input type="hidden" name="store_name" id="store_name">-->
+            </div>
+        </form>
+    </div>
+</div>
+<!--<script src="/assets/plugins/layui/layui.js" charset="utf-8"></script>-->
+<script>
+    layui.use(['layer','laydate','upload'], function(){
+        var upload = layui.upload;
+        var layer = layui.layer;
+        var laydate = layui.laydate;
+//常规用法
+        laydate.render({
+            elem: '#add_time'
+            ,type: 'datetime'
+        });
+        //多图片上传
+        upload.render({
+            elem: '#test2'
+            ,url: '/Review/remoteUpload'
+            ,multiple: true
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo2').append('<img height="50px" src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img">')
+                });
+            }
+            ,done: function(res){
+                if(res.code == 200){
+                    $(".review-image").after("<input type='hidden' name='images[]' value='"+res.url+"'>");
+                }
+            }
+        });
+
+
+
+
+
+        /*upload.render({
+            elem: '#ReviewImgdiv'
+            ,url: '/Review/remoteUpload'
+            ,multiple: true
+            ,accept:"images"
+            ,done: function(res){
+                if(res['code']==200){
+                    var img = '<img height="100" class="layui-upload-img" id="BannerImgshow" src="'+res.complete_url+'">';
+                    $("#BannerImgdiv").html(img);
+                    $("#BannerImg").val(res.url);
+                    /!* $("#BannerImgshow").attr("src",res.url);
+                     $("#BannerImgshow").show();
+                     $("#BannerImg").val(res.url)*!/
+                }else {
+                    layer.msg(res.msg)
+                }
+
+            }
+        });*/
+
+
+    });
+</script>

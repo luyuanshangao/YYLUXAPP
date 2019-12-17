@@ -1,0 +1,166 @@
+{layout name="layout/main"/}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+<style>
+	/*分页CSS*/
+	.pagination  li {display: inline;padding: 0 2px;float: left;}
+	.pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+	.pagination .active span{color: red;}
+	.main-base-table tr{border: 0px red solid;}
+	.main-base-table tr td{padding: 5px;}
+
+	.order .list {padding: 10px 0 0 0 ;}
+</style>
+
+<div class="main-box fl">
+	<div class="box-white mt0">
+
+		<h1 class="main-cont-title order-title">
+			Coupon列表
+			<a href="{:url('Coupon/add')}" class="fr btn-red f12 mt5">添加Coupon</a>
+		</h1>
+
+		<div class="box-white">
+			<form action="{:url('Coupon/index')}" method="get" id="order_search_form">
+				<ul class="search-ul-layout">
+					<li>
+						<span>状态：</span>
+						<select name="CouponStatus">
+							<option value="">全部</option>
+							<option value="1" {if condition="input('CouponStatus') == 1"} selected="selected" {/if}>初始</option>
+							<option value="2" {if condition="input('CouponStatus') == 2"} selected="selected" {/if}>审核</option>
+							<option value="3" {if condition="input('CouponStatus') == 3"} selected="selected" {/if}>开启</option>
+							<option value="4" {if condition="input('CouponStatus') == 4"} selected="selected" {/if}>关闭</option>
+							<option value="5" {if condition="input('CouponStatus') == 5"} selected="selected" {/if}>待审核</option>
+						</select>
+					</li>
+					<li>
+						<span>优惠券策略：</span>
+						<select name="CouponStrategy">
+							<option value="">全部</option>
+							<option value="1" {if condition="input('CouponStrategy') == 1"} selected="selected" {/if}>手动活动</option>
+							<option value="2" {if condition="input('CouponStrategy') == 2"} selected="selected" {/if}>自动活动</option>
+						</select>
+					</li>
+					<li>
+						<span>使用渠道：</span>
+						<select name="CouponChannels">
+							<option value="">全部</option>
+							<option value="1" {if condition="input('CouponChannels') == 1"} selected="selected" {/if}>全站</option>
+							<option value="2" {if condition="input('CouponChannels') == 2"} selected="selected" {/if}>Web站</option>
+							<option value="3" {if condition="input('CouponChannels') == 3"} selected="selected" {/if}>APP</option>
+							<option value="4" {if condition="input('CouponChannels') == 4"} selected="selected" {/if}>移动端</option>
+						</select>
+					</li>
+					<li>
+						<span>优惠级别：</span>
+						<select name="DiscountLevel">
+							<option value="">全部</option>
+							<option value="1" {if condition="input('DiscountLevel') == 1"} selected="selected" {/if}>单品优惠</option>
+							<option value="2" {if condition="input('DiscountLevel') == 2"} selected="selected" {/if}>订单优惠</option>
+						</select>
+					</li>
+					<li>
+						<label>优惠券名称：<input type="text" name="Name" placeholder="优惠券名称" value="{:input('Name')}"></label>
+					</li>
+					<!--<li>
+						<label>CouponCode：<input type="text" name="" placeholder="CouponCode" value=""></label>
+					</li>-->
+					<li>
+						<label>有效期：
+							<input type="text" name="create_on_start" class="text Wdate start-time" readonly="readonly" placeholder="开始时间" value="{:input('create_on_start')}" autocomplete="off"/> -
+							<input type="text" name="create_on_end" class="text Wdate end-time" readonly="readonly" placeholder="结束时间" value="{:input('create_on_end')}" autocomplete="off"/>
+						</label>
+					</li>
+					<li>
+						<a href="javascript:$('#order_search_form').submit();" class="btn-orange">搜索</a>
+					</li>
+				</ul>
+			</form>
+		</div>
+
+		<table class="table-gray mt20" valign="top">
+			<tbody>
+				<tr class="tr-title">
+					<th>ID</th>
+					<th>优惠券名称</th>
+					<th>状态</th>
+					<th>优惠级别</th>
+					<th>优惠券策略</th>
+					<th>优惠券类型</th>
+					<th>使用渠道</th>
+					<th>已使用次数</th>
+					<th>优惠券总量</th>
+					<!--<th>执行策略</th>-->
+					<th>开始时间</th>
+					<th>结束时间</th>
+					<th>操作</th>
+				</tr>
+				{volist name='coupon_data' id='val'}
+				<tr class="tr-title">
+					<td>{$val.CouponId|default=''}</td>
+					<td>{$val.Name|default=''}</td>
+					<td>{$val.CouponStatusStr|default=''}</td>
+					<td>{$val.DiscountLevelStr|default=''}</td>
+					<td>{$val.CouponStrategyStr|default=''}</td>
+					<td>{$val.DiscountTypeStr|default=''}</td>
+					<td>{$val.CouponChannelsStr|default=''}</td>
+					<td>{$val.is_used_num|default=''}</td>
+					<td>{$val.CouponNumLimitStr|default=''}</td>
+					<!--<td>TODO</td>-->
+					<td>{:date('Y-m-d H:i:s', $val['CouponTime']['StartTime'])}</td>
+					<td>{:date('Y-m-d H:i:s', $val['CouponTime']['EndTime'])}</td>
+					<td><a href="{:url('index/Coupon/editor', ['coupon_id'=>isset($val['CouponId'])?$val['CouponId']:0])}">活动详情</a></td>
+				</tr>
+				{/volist}
+				{empty name='coupon_data'}
+				<tr>
+					<td colspan="12" align="center" class="fbold">无数据</td>
+				</tr>
+				{/empty}
+			</tbody>
+		</table>
+
+		<table class="table-gray" valign="top">
+		</table>
+		{notempty name='page_html'}
+		<div class="page-wrap mt20 clearfix">
+			<!--<div class="page-range fl">
+				<span class="page-number">1</span>/<span class="page-count">2</span>
+				<span class="ml10">跳转至第几</span>
+				<input class="page-put ml5" type="text"> 页
+				<a href="" class="page-go ml5">确定</a>
+			</div>-->
+			<div class="fr">{$page_html}</div>
+			<!--<ul class="page mt5 fr">
+                <li><span class="pre"></span></li>
+                <li><span class="curr" href="#">1</span></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#" class="next"></a></li>
+            </ul>-->
+		</div>
+		{/notempty}
+	</div>
+</div>
+<script>
+	var ajax_url = {$ajax_url|default='""'};
+	
+	$(function(){
+		$(".start-time").click(function(){
+			WdatePicker({
+		        el:this,
+		        startDate:'%y-%M-01 00:00:00',
+		        dateFmt:'yyyy-MM-dd HH:mm:ss',
+		        alwaysUseStartDate:true
+		    });
+		});
+		$(".end-time").click(function(event) {
+	        WdatePicker({
+	            el:this,
+	            minDate:$(".end-time").siblings('.start-time').val(),
+	            dateFmt:'yyyy-MM-dd HH:mm:ss'
+	        });
+	    });
+	})	
+</script>

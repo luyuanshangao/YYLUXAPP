@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>分类配置添加与修改</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    {include file="layout/c_global_style" /}
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+
+<body id="Order_List" class="page-header-fixed  page-sidebar-fixed">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="month6">
+                                        <div class="info-pb10 c-h-dl-label100 mt10">
+                                            <form id="form_send_address" class="f12_i form-horizontal" action="#" novalidate="novalidate">
+                                                <div class="form-body info-pb10 ml20">
+                                                      <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>语种：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                 <select name="language"  class="form-control input-small inline">
+                                                                    <option value="">请选择</option>
+																	                              {volist name="language" id="vo"}
+                                                                		<option {if condition="$vo.Code eq $list['language']"} selected = "selected"{/if} value="{$vo.Code}">{$vo.Name}</option>
+                                                            		{/volist}
+                                                                </select>
+                                                            </div>
+                                                        </dd>
+                                                         <dd class="v-title">
+                                                            <label><em>*</em>隔开符：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$list['character']?$list['character']:'&'}" id="input-color" name="character" class="form-control input-medium fl w130" type="text">
+                                                            </div>
+                                                        </dd>
+                                                         <dd class="v-title">
+                                                            <label><em>*</em>排序：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$list.sort}" id="input-color" name="sort" class="form-control input-medium fl w130" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <div class="behind">
+                                                    {if condition="$list['select'] neq ''"}
+                                                        {$list['select']}
+                                                    {else /}
+                                                      <dl class="c-h-dl-validator form-group clearfix">
+                                                          <dd class="v-title w100">
+                                                              <label><em>*</em>分类：</label>
+                                                          </dd>
+                                                          <dd>
+                                                              <div class="input-icon right">
+                                                                      <select  onclick="select_class(1)" name="where[1][classId]" id="first" class="form-control input-small inline input-class-name">
+                                                                          <option value="">请选择</option>
+                                                                          {$html}
+                                                                      </select>
+                                                              </div>
+                                                          </dd>
+                                                           <dd class="v-title">
+                                                              <label><em>*</em>分类名称：</label>
+                                                          </dd>
+                                                          <dd>
+                                                              <div class="input-icon right">
+                                                                  <i class="fa"></i>
+                                                                  <input value="{$list.className}" id="input-color" name="where[1][className]" class="form-control input-medium w130 fl" type="text">
+                                                                  <input class="class-name" type="hidden" name="where[1][class_name]" value="">
+                                                              </div>
+                                                          </dd>
+                                                          <dd><a class="btn btn-qing add-new-item-btn ml10" data-index='1' href="javascript:;">添加新项</a></dd>
+                                                          <dt></dt>
+                                                      </dl>
+                                                    {/if}
+
+                                                </div>
+                                                    <dl class="c-h-dl-validator form-group clearfix hide">
+                                                        <dd class="v-title">
+                                                            <label>小图标-图片：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$list.classIconImg}" id="classIconImg" name="classIconImg" class="w400" type="text">
+                                                                例：images/a.jpg
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>小图标-样式：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                {$class_Icon_Css_Html}
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>分类展示模板：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <textarea name="content" cols="90" rows="17" class="pd5">{$list["content"]}</textarea>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                     <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>右侧展示模板：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <textarea name="content_right" cols="90" rows="17" class="pd5">{$list["content_right"]}</textarea>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>是否启用：</label>
+                                                        </dd>
+                                                        <dd class="mt5">
+                                                        <!-- ["status"] -->
+                                                          {if condition="($list.status eq 1) OR ($list.status eq '')"}
+                                                              <input type="radio" name="status" value="1" checked class="mt0"> 启用
+                                                              <input type="radio" name="status" value="2" class="mt0 ml15"> 不启用
+                                                          {elseif condition="$list.status eq 2"/}
+                                                              <input type="radio" name="status" value="1" class="mt0"> 启用
+                                                              <input type="radio" name="status" value="2" checked class="mt0 ml15"> 不启用
+                                                          {/if}
+
+
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix mt20">
+                                                        <dd class="layui-layer-btn ml80">
+                                                           <input type="hidden" id="url"  value="{:url('SystemManage/add_Configure')}">
+                                                            {if condition="$list neq ''"}
+                                                                <a data-id="{$id}" class="btn btn-qing submit-btn" href="javascript:;">提交</a>
+                                                            {else /}
+                                                                <a class="btn btn-qing submit-btn" href="javascript:;">提交</a>
+                                                            {/if}
+                                                            <a id="addressCancel" class="btn layui-layer-btn1" href="/SystemManage/ClassConfigure/id/70">取消</a></dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                </div>
+                                            </form>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="success_data"></div>
+                <select id="classHtml" class="hide">
+                    {$html}
+                </select>
+    <?php //include "application/admin/view/public/footer.html" ?>
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script src="/static/js/system.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    $(function(){
+        App.init();
+        System.classSett();
+    });
+    </script>
+    <!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+
+</html>

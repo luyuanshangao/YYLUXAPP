@@ -1,0 +1,34 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100 editor-rolse-box">
+        <label for="selectAll"><input type="checkbox" id="selectAll" class="pr5"/>全选</label>
+        <form id="addUserForm" action="{url('admin/EmployeeManagement/EditPermissions')}" enctype="multipart/form-data">
+            <input type="hidden" name="id"  value="{$id}">
+            {volist name="list" key="k" id="vo"}
+                 <div class="leve1 mb20">
+                    <input data-leve="1" class="leve-input leve-1"  name="where[]" {if condition="in_array($vo['id'],$navigation_data) == true"}checked="checked"{/if} type="checkbox" value="{$vo.id}"/>{$vo.name}
+                     {if condition="$vo.subset neq ''"}
+                        {volist name="vo.subset" key="ke" id="ve"}
+                            <div data-leve="2" class="leve2 mt10 pl20">
+                            <input class="subset{$vo.id} leve-input leve-2 leve-child-input"  name="where[]" {if condition="in_array($ve['id'],$navigation_data) == true"}checked="checked"{/if}  type="checkbox" value="{$ve.id}" />{$ve.name}
+                            {if condition="$ve.subset neq ' '"}
+                                <div data-leve="3" class="leve3 mt10 mb10 pl20">
+                                {volist name="ve.subset" id="vi"}
+                                    <input  class="subset{$vo.id} leve-input leve-child-input leve-3" name="where[]" {if condition="in_array($vi['id'],$navigation_data) == true"}checked="checked"{/if} value="{$vi.id}" type="checkbox" />{$vi.name}
+                                {/volist}
+                                </div>
+                            {/if}
+                            </div>
+                        {/volist}
+
+                     {/if}
+                </div>
+            {/volist}
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/js/custom.js"></script>
+<script type="text/javascript">
+    $(function() {
+        Employee.editorPermissions();
+    });
+</script>

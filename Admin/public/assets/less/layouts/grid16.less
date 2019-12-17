@@ -1,0 +1,108 @@
+@import "../mixins/mixins.less";
+.row16 {
+  @grid-columns: 16;
+  //@class: md;
+  @ns: ".row16";
+  .make-grid-columns-b() {
+    // Common styles for all sizes of grid columns, widths 1-12
+    .col(@index) when (@index = 1) {
+      // initial
+      @item: ~"> .col-xs-@{index}, @{ns} > .col-sm-@{index}, @{ns} > .col-md-@{index}, @{ns} > .col-lg-@{index}";
+      .col((@index + 1), @item);
+    }
+    .col(@index, @list) when (@index =< @grid-columns) {
+      // general; "=<" isn't a typo
+      @item: ~"@{ns} > .col-xs-@{index}, @{ns} > .col-sm-@{index}, @{ns} > .col-md-@{index}, @{ns} > .col-lg-@{index}";
+      .col((@index + 1), ~"@{list}, @{item}");
+    }
+    .col(@index, @list) when (@index > @grid-columns) {
+      // terminal
+      @{list} {
+        position: relative;
+        // Prevent columns from collapsing when empty
+        min-height: 1px;
+        @grid-gutter-width: 4px;
+        // Inner gutter via padding
+        padding-left: (@grid-gutter-width / 2);
+        padding-right: (@grid-gutter-width / 2);
+      }
+    }
+    .col(1); // kickstart it
+  }
+  .float-grid-columns-b(@class) {
+    .col(@index) when (@index = 1) { // initial
+      @item: ~".col-@{class}-@{index}";
+      .col((@index + 1), @item);
+    }
+    .col(@index, @list) when (@index =< @grid-columns) { // general
+      @item: ~"@{ns} > .col-@{class}-@{index}";
+      .col((@index + 1), ~"@{list}, @{item}");
+    }
+    .col(@index, @list) when (@index > @grid-columns) { // terminal
+      @{list} {
+        float: left;
+      }
+    }
+    .col(1); // kickstart it
+  }
+
+  .calc-grid-column-b(@index, @class, @type) when (@type = width) and (@index > 0) {
+    > .col-@{class}-@{index} {
+      width: percentage((@index / @grid-columns));
+    }
+  }
+  .calc-grid-column-b(@index, @class, @type) when (@type = push) and (@index > 0) {
+    > .col-@{class}-push-@{index} {
+      left: percentage((@index / @grid-columns));
+    }
+  }
+  .calc-grid-column-b(@index, @class, @type) when (@type = push) and (@index = 0) {
+    > .col-@{class}-push-0 {
+      left: auto;
+    }
+  }
+  .calc-grid-column-b(@index, @class, @type) when (@type = pull) and (@index > 0) {
+    > .col-@{class}-pull-@{index} {
+      right: percentage((@index / @grid-columns));
+    }
+  }
+  .calc-grid-column-b(@index, @class, @type) when (@type = pull) and (@index = 0) {
+    > .col-@{class}-pull-0 {
+      right: auto;
+    }
+  }
+  .calc-grid-column-b(@index, @class, @type) when (@type = offset) {
+    > .col-@{class}-offset-@{index} {
+      margin-left: percentage((@index / @grid-columns));
+    }
+  }
+
+  // Basic looping in LESS
+  .loop-grid-columns-b(@index, @class, @type) when (@index >= 0) {
+    .calc-grid-column-b(@index, @class, @type);
+    // next iteration
+    .loop-grid-columns-b((@index - 1), @class, @type);
+  }
+
+  .make-grid-b(@class) {
+    .float-grid-columns-b(@class);
+    .loop-grid-columns-b(@grid-columns, @class, width);
+    .loop-grid-columns-b(@grid-columns, @class, pull);
+    .loop-grid-columns-b(@grid-columns, @class, push);
+    .loop-grid-columns-b(@grid-columns, @class, offset);
+  }
+
+  .make-row();
+  .make-grid-columns-b();
+  .make-grid-b(xs);
+  @media (min-width: @screen-sm-min) {
+    .make-grid-b(sm);
+  }
+  @media (min-width: @screen-md-min) {
+    .make-grid-b(md);
+  }
+  @media (min-width: @screen-lg-min) {
+    .make-grid-b(lg);
+  }
+
+}

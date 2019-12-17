@@ -1,0 +1,304 @@
+{layout name="layout/main"/}
+{load href="/static/css/setAffiliateClass.css" /}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+{load href="/static/js/module/setAffiliateClass.js" /}
+
+<div class="main-box fl setAffiliateClass">
+    <div class="box-white box-white-m0">
+        <h1 class="main-cont-title setAffiliateClass-title">分类佣金设置</h1>
+        <div class="panel">
+            <div class="content setAffiliateClass-instructions pb20">
+                <p>1.您可以为指定的分类设置单独的佣金比例。</p>
+                <p>2.您不能移除“默认佣金比例”，未单独设置的分类产品将使用默认的佣金比例。</p>
+                <p>3.想要为您设置特定的主推产品的佣金比例？<a href="" class="link">点击这里</a></p>
+                <p>4.了解更多联盟营销信息。<a href="" class="link">点击查看</a></p>
+            </div>
+            <div class="content setAffiliateClass-main mt20">
+                <a href="" class="add-classified-commission-btn">添加分类佣金</a>
+            </div>
+        </div>
+        <!-- ***************** 分组列表 ******************** -->
+        <div class="panel">
+            <div class="commission-list-tab clearfix">
+                <ul>
+                    <li class="curr">已审核</li>
+                    <li>待审核</li>
+                    <li>已驳回</li>
+                </ul>
+            </div>
+            <div class="commission-list-wrap mt20">
+                <table class="main-base-table commission-list-item">
+                    <tbody>
+                        <tr>
+                            <th>产品分组名称</th>
+                            <th>佣金比例</th>
+                            <th width="240">生效时间</th>
+                            <th>更新时间</th>
+                            <th>操作</th>
+                        </tr>
+                        {volist name='data.success_data' id='val'}
+                        {if condition="$val['class_id'] == -99 "}
+                        <tr class="system-default-commission" data-id="{$val.id}" data-class-id="{$val.class_id}">
+                            <td>所有未设置分组的商品</td>
+                            <td>
+                                <span class="commission-val">{$val.commission|default='0'}%（默认）</span>
+                                <input type="number" name="" class="edit-commission-input edit-default-commission-input hide"  data-value="3.0">
+                                <span class="edit-err-tips red hide"></span>
+                            </td>
+                            <td width="240">
+                                <span class="effective-time-span">{:date('Y-m-d', $val['effect_time'])}</span>
+                                <input type="text" name="effective-time" class="effective-time hide" />
+                                <p class="effective-time-tips hide red"></p>
+                            </td>
+                            <td><span class="update-time">{:date('Y-m-d H:i:s', $val['update_time'])}</span></td>
+                            <td>
+                                <a href="" class="edit-commission-btn">修改</a>
+                                <a href="" class="save-commission-btn hide default">保存</a>
+                                <a href="" class="cancel-commission-btn hide">取消</a>
+                            </td>
+                        </tr>
+                        {else /}
+                        <tr data-id="{$val.id}" data-class-id="{$val.class_id}">
+                            <td>{$val.class_name_en|default=''}</td>
+                            <td>
+                                <span class="commission-val">{$val.commission|default='0'}%</span>
+                                <input type="number" name="" class="edit-commission-input hide" data-value="5.0">
+                                <span class="edit-err-tips red hide"></span>
+                            </td>
+                            <td width="240">
+                                <span class="effective-time-span">{:date('Y-m-d', $val['effect_time'])}</span>
+                                <input type="text" name="effective-time" class="effective-time hide" />
+                                <p class="effective-time-tips hide red"></p>
+                            </td>
+                            <td>
+                                <span class="update-time">
+                                    {notempty name='$val["update_time"]'}
+                                        {:date('Y-m-d H:i:s', $val['update_time'])}
+                                    {else/}
+                                        -
+                                    {/notempty}
+                                </span>
+
+                            </td>
+                            <td>
+                                <a href="" class="edit-commission-btn">修改</a>
+                                <a href="" class="remove-commission-btn">删除</a>
+                                <a href="" class="save-commission-btn hide">保存</a>
+                                <a href="" class="cancel-commission-btn hide">取消</a>
+                            </td>
+                        </tr>
+                        {/if}
+
+                        {/volist}
+                    </tbody>
+                </table>
+
+                <table class="main-base-table commission-list-item hide">
+                    <tbody>
+                        <tr>
+                            <th>产品分组名称</th>
+                            <th>佣金比例</th>
+                            <th width="240">生效时间</th>
+                            <th>更新时间</th>
+                            <th>操作</th>
+                        </tr>
+                        {volist name='data.wait_data' id='val'}
+                        {if condition="$val['class_id'] == -99 "}
+                        <tr class="system-default-commission" data-id="{$val.id}" data-class-id="{$val.class_id}">
+                            <td>所有未设置分组的商品</td>
+                            <td>
+                                <span class="commission-val">{$val.commission|default='0'}%（默认）</span>
+                                <input type="number" name="" class="edit-commission-input edit-default-commission-input hide"  data-value="3.0">
+                                <span class="edit-err-tips red hide"></span>
+                            </td>
+                            <td width="240">
+                                <span class="effective-time-span">{:date('Y-m-d', $val['effect_time'])}</span>
+                                <input type="text" name="effective-time" class="effective-time hide" />
+                                <p class="effective-time-tips hide red"></p>
+                            </td>
+                            <td>
+                                <span class="update-time">
+                                    {notempty name='$val["update_time"]'}
+                                        {:date('Y-m-d H:i:s', $val['update_time'])}
+                                    {else/}
+                                        -
+                                    {/notempty}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="" class="edit-commission-btn">修改</a>
+                                <a href="" class="save-commission-btn hide default">保存</a>
+                                <a href="" class="cancel-commission-btn hide">取消</a>
+                            </td>
+                        </tr>
+                        {else /}
+                        <tr data-id="{$val.id}" data-class-id="{$val.class_id}">
+                            <td>{$val.class_name_en|default=''}</td>
+                            <td>
+                                <span class="commission-val">{$val.commission|default='0'}%</span>
+                                <input type="number" name="" class="edit-commission-input hide" data-value="5.0">
+                                <span class="edit-err-tips red hide"></span>
+                            </td>
+                            <td width="240">
+                                <span class="effective-time-span">{:date('Y-m-d', $val['effect_time'])}</span>
+                                <input type="text" name="effective-time" class="effective-time hide" />
+                                <p class="effective-time-tips hide red"></p>
+                            </td>
+                            <td>
+                                <span class="update-time">
+                                    {notempty name='$val["update_time"]'}
+                                        {:date('Y-m-d H:i:s', $val['update_time'])}
+                                    {else/}
+                                        -
+                                    {/notempty}
+                                </span>
+                            </td>
+
+                            <td>
+                                <a href="" class="edit-commission-btn">修改</a>
+                                <a href="" class="remove-commission-btn">删除</a>
+                                <a href="" class="save-commission-btn hide">保存</a>
+                                <a href="" class="cancel-commission-btn hide">取消</a>
+                            </td>
+                        </tr>
+                        {/if}
+
+                        {/volist}
+                    </tbody>
+                </table>
+
+                <table class="main-base-table commission-list-item hide">
+                    <tbody>
+                    <tr>
+                        <th>产品分组名称</th>
+                        <th>佣金比例</th>
+                        <th width="240">生效时间</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                    {volist name='data.fail_data' id='val'}
+                    {if condition="$val['class_id'] == -99 "}
+                    <tr class="system-default-commission" data-id="{$val.id}" data-class-id="{$val.class_id}">
+                        <td>所有未设置分组的商品</td>
+                        <td>
+                            <span class="commission-val">{$val.commission|default='0'}%（默认）</span>
+                            <input type="number" name="" class="edit-commission-input edit-default-commission-input hide"  data-value="3.0">
+                            <span class="edit-err-tips red hide"></span>
+                        </td>
+                        <td width="240">
+                            <span class="effective-time-span">
+                                {notempty name='$val["effect_time"]'}
+                                    {:date('Y-m-d H:i:s', $val['effect_time'])}
+                                {else/}
+                                    -
+                                {/notempty}
+                            </span>
+                            <input type="text" name="effective-time" class="effective-time hide" />
+                            <p class="effective-time-tips hide red"></p>
+                        </td>
+                        <td>
+                            <span class="update-time">
+                                {notempty name='$val["update_time"]'}
+                                    {:date('Y-m-d H:i:s', $val['update_time'])}
+                                {else/}
+                                    -
+                                {/notempty}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="" class="edit-commission-btn">修改</a>
+                            <a href="" class="save-commission-btn hide default">保存</a>
+                            <a href="" class="cancel-commission-btn hide">取消</a>
+                        </td>
+                    </tr>
+                    {else /}
+                    <tr data-id="{$val.id}" data-class-id="{$val.class_id}">
+                        <td>{$val.class_name_en|default=''}</td>
+                        <td>
+                            <span class="commission-val">{$val.commission|default='0'}%</span>
+                            <input type="number" name="" class="edit-commission-input hide" data-value="5.0">
+                            <span class="edit-err-tips red hide"></span>
+                        </td>
+                        <td width="240">
+                            <span class="effective-time-span">{:date('Y-m-d', $val['effect_time'])}</span>
+                            <input type="text" name="effective-time" class="effective-time hide" />
+                            <p class="effective-time-tips hide red"></p>
+                        </td>
+                        <td>
+                            <span class="update-time">
+                                {notempty name='$val["update_time"]'}
+                                    {:date('Y-m-d H:i:s', $val['update_time'])}
+                                {else/}
+                                    -
+                                {/notempty}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="" class="edit-commission-btn">修改</a>
+                            <a href="" class="remove-commission-btn">删除</a>
+                            <a href="" class="save-commission-btn hide">保存</a>
+                            <a href="" class="cancel-commission-btn hide">取消</a>
+                        </td>
+                    </tr>
+                    {/if}
+
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- ***************** 弹窗 ******************** -->
+        <div class="dialog-box hide">
+            <div class="dialog-bg"></div>
+            <div class="dialog-cont">
+                <h3 class="dialog-title absolute clearfix">添加分类佣金</h3>
+                <div class="close-dialog clearfix">X</div>
+                <p class="dialog-tips">您可以单独设置分类的佣金比例，以及佣金比例生效时间。佣金比例一旦生效，将持续9-12天。</p>
+                <form class="dialog-form mt20">
+                    <dl class="clearfix">
+                        <dt>产品分组名称：</dt>
+                        <dd>
+                            <select class="classified-select first-class"></select>
+                        </dd>
+                    </dl>
+                    <dl class="clearfix second-class-dl hide">
+                        <dt>二级分类：</dt>
+                        <dd>
+                            <select class="second-class">
+                                <option>--请选择--</option>
+                            </select>
+                        </dd>
+                    </dl>
+                    <dl class="clearfix">
+                        <dt>佣金比例：</dt>
+                        <dd>
+                            <input type="number" name="" class="dialog-commission-rate" value=""> % <span class="dialog-required-err-tips red hide">请输入佣金比例</span>
+                            <p class="dialog-err-tips">允许范围：3.0%-50.0%，佣金比例只能是0.5的倍数，例如：5.5或6</p>
+                        </dd>
+                    </dl>
+                    <dl class="clearfix">
+                        <dt>生效时间：</dt>
+                        <dd>
+                            <input type="text" name="dialog-effective-time" class="dialog-effective-time" />
+                            <p class="gray">您修改后的佣金比例可选择在每月的1号，10号或20号生效。</p>
+                            <p class="ajax-tips hide"></p>
+                        </dd>
+                    </dl>
+                    <dl class="clearfix mt20">
+                        <dt>&nbsp;</dt>
+                        <dd>
+                            <a class="btn-default dialog-btn-submit">提交</a>
+                            <a class="btn-default dialog-btn-cancel">取消</a>
+                        </dd>
+                    </dl>
+                </form>
+            </div>
+        </div>
+            
+        <!-- <div class="data-msg-dialog">
+            <p class="data-msg-p"></p>
+            <a href="" class="data-msg-btn">确认</a>
+        </div> -->
+
+    </div>
+</div>

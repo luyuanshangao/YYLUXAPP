@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>运营管理--EMD营销--用户筛选</title>
+    {include file="layout/c_style" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+        <!-- BEGIN SIDEBAR -->
+        <!--#include file="layout/sidebar.html"-->
+        <!-- END SIDEBAR -->
+        <!-- BEGIN CONTENT -->
+            <div class="page-content pt0 pl0 ml20">
+                <!-- 订单内容 begin -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt25">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap bborder-no">
+                                            <form id="navbar" class="navbar-left" action="index" method="post">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">主题名称：</label>
+                                                        <input name="TopicName" value="{:input('TopicName')}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                     <li class="w440">
+                                                        <label class="c-h-ul-li-title" for="reservationtime">创建时间：</label>
+                                                        <input type="text" name="startTime" id="reservationtime" class="form-control input-small startTime" value="{:input('startTime')}" />
+                                                        <span class="time-text">至</span>
+                                                        <input type="text" name="endTime" id="canceltime" class="form-control input-small endTime"  value="{:input('endTime')}"/>
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">状态：</label>
+                                                        <select name="status" id="" class="form-control input-small inline">
+                                                              <option value="">请选择</option>
+                                                              <option {if condition="isset($data.status) && $data.status eq '1'"} selected = "selected"{/if} value="1">待查询</option>
+                                                              <option {if condition="isset($data.status) && $data.status eq '2'"} selected = "selected"{/if} value="2">已完成</option>
+                                                              <option {if condition="isset($data.status) && $data.status eq '3'"} selected = "selected"{/if} value="3">查询中</option>
+                                                              <option {if condition="isset($data.status) && $data.status eq '4'"} selected = "selected"{/if} value="4">待推送EDM</option>
+                                                        </select>
+                                                    </li>
+                                                    <li class="w300">
+                                                        <label class="c-h-ul-li-title w60"></label>
+                                                        <a onclick="javascript:document:navbar.submit();" class="btn btn-gray" href="javascript:;">查 询</a>
+
+                                                        <a class="btn btn-gray classadd" href="{:url('CustomFilter/filterUsers')}">新增筛选任务</a>
+                                                        <a onclick="importData('{:url("CustomFilter/importData")}')" class="btn btn-gray">导入</a>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <!-- start base table -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-hover table-padding">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>主题名称</th>
+                                                        <th>用户数量</th>
+                                                        <th>状态</th>
+                                                        <th>是否导入</th>
+                                                        <th>创建时间</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {volist name="list" id="vo"}
+                                                            <tr>
+                                                                <td>{$vo.TopicName?$vo.TopicName:''}</td>
+                                                                <td>{$vo.user_num?$vo.user_num:'0'}</td>
+                                                                <td>
+                                                                   {switch name="vo.status"}
+                                                                        {case value="1"}待查询{/case}
+                                                                        {case value="2"}已完成{/case}
+                                                                        {case value="3"}查询中{/case}
+                                                                        {case value="4"}待推送EDM{/case}
+
+                                                                   {/switch}
+                                                                </td>
+                                                                <td>{$vo.is_export == 1 ? '是':'否'}</td>
+                                                                <td>{$vo.add_time | date="Y-m-d H:i:s",###}</td>
+                                                                <td>
+                                                                    {if condition="$vo.is_export neq '1'"}
+                                                                    <a href="{:url('CustomFilter/FilterDetails',array('id'=>$vo.id))}" class="Qing">详情</a>
+                                                                    {/if}
+
+                                                                    {if condition="$vo.Parent_id eq '0'"}
+                                                                        {if condition="$vo.is_export neq '1'"}
+                                                                             <a href="{:url('CustomFilter/filterUsers',array('id'=>$vo.id))}" class="Qing">合并数据</a>
+                                                                        {/if}
+                                                                     {if condition="isset($vo.status) && $vo.status eq '2'"}
+                                                                            <a href="{:url('CustomFilter/export',array('id'=>$vo.id))}"  class="Qing">导出</a>
+                                                                            <a href="javascript:void(0);" id="data_output" data-id = "{$vo.id}" data-edm = "1" class="Qing data_output">提交</a>
+                                                                      {/if}
+
+                                                                    {/if}
+
+
+                                                                 <!--   <a href="{:url('CustomFilter/view',array('id'=>$vo.id))}" class="Qing">
+                                                                     <i class="glyphicon glyphicon-edit f16"></i>
+                                                                   </a> -->
+                                                                 <!--   <a href="javascript:void(0);"  onclick="Delete({$vo.id})" class="Qing">
+                                                                      <i class="glyphicon glyphicon-trash f16"></i>
+                                                                   </a>
+                                                                   <a href="javascript:void(0);"  onclick="Delete({$vo.id})" class="Qing">
+                                                                      		提交
+                                                                   </a>
+                                                                    <a href="javascript:void(0);"  onclick="Delete({$vo.id})" class="Qing">
+                                                                      		导出
+                                                                   </a> -->
+                                                                </td>
+                                                            </tr>
+                                                        {/volist}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row-no-mlr mt20 clearfix mb20">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                                {$page}
+                                            </div>
+                                        </div>
+                                        <!-- 订单内容 end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <!-- <script type="text/javascript" src="/js/custom.js"></script> -->
+    <!-- <script src="/static/js/dx_cs_order.js"></script> -->
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <!--
+    $(function() {
+        App.init();
+    })
+     -->
+    <!-- END JAVASCRIPTS -->
+<script>
+
+</script>
+</body>
+</html>
+  <script>
+           $('.data_output').click(function(event) {
+                var that = $(this),
+                     id  = that.data('id'),
+                     edm = that.data('edm');
+                $.ajax({
+                    type:"POST",
+                    url:"{:url('CustomFilter/export')}",
+                    data:{id:id,edm:edm},
+                    dataType:"json",
+                    cache:false,
+                    success:function(msg){
+                      if(msg.code == 200){
+                          layer.msg(msg.msg, {icon: 1});
+                      }else{
+                          layer.msg(msg.msg, {icon: 2});
+                      }
+                    },
+                    error:function(error){}
+                });
+            });
+
+           $("#province").change(function () {
+               var catalogId = $("#province").val();//console.log(catalogId);
+               $.get("{:url('Seller/NationalSubordinate')}?province="+catalogId, function(result){
+                    $("#city option").remove();
+                    $("#country_town option").remove();
+                    $("#city").append(result);
+                    $("#country_town").append('<option value="">请选择</option>');
+
+                });
+            });
+           $("#city").change(function () {
+               var catalogId = $("#city").val();//console.log(catalogId);
+               $.get("{:url('Seller/NationalSubordinate')}?province="+catalogId, function(result){
+                    // $("#city option").remove();
+                    $("#country_town option").remove();
+                    $("#country_town").append(result);
+                    // $("#country_town").append('<option value="">请选择</option>');
+
+                });
+            });
+           function Delete(e){
+                layer.open({
+                  title: '删除理由',
+                  type: 1,
+                  skin: 'layui-layer-rim', //加上边框
+                  area: ['450px', '340px'], //宽高
+                  content: '<div class="pl60"><input type="hidden" class="classification" value="'+e+'"><div class="mt20"><textarea class="reason" name="op_desc" maxlength="300"  rows="8" cols="50"></textarea></div><div class="mt20"><div class="mt30"><a href="javascript:;" onclick = "MerchantDelete('+e+')" class = "submit btn btn-qing">提交</a></div></div>'
+                });
+           }
+           function MerchantDelete(e){
+                var op_desc = $('.reason').val();
+                $.ajax({
+                    type:"POST",
+                    url:"{:url('Seller/MerchantDelete')}",
+                    data:{user_id:e,op_desc:op_desc},
+                    dataType:"json",
+                    cache:false,
+                    success:function(msg){
+                      if(msg.code == 200){
+                          layer.msg(msg.msg, {icon: 1});
+                          setTimeout(function(){
+                             window.location.reload();
+                          },1500);
+
+                      }else{
+                          layer.msg(msg.msg, {icon: 2});
+                      }
+                    },
+                    error:function(error){}
+                });
+           }
+
+           //导入数据
+           function importData(e){
+               $.get(e, function (data) {
+                   layer.open({
+                       title: "数据导入",
+                       content: data,
+                       type: 1,
+                       area: ['680px', '300px'],
+                       offset: '10px',
+                       btn: ["保存", "取消"],
+                       yes: function (index) {
+                           var formData = new FormData($( "#importDataPost" )[0]);
+                           //:nth-child(3)
+                           $.ajax({
+                               type:"POST",
+                               url:'/CustomFilter/importDataPost',
+                               dataType: 'json',
+                               data:formData,
+                               async: false,
+                               cache: false,
+                               contentType: false,
+                               processData: false,
+                               // data:JsonData,
+                               success:function(msg){
+                                   if(msg.code == 200){
+                                       layer.msg(msg.result, {icon: 1});
+                                       setTimeout(function(){
+                                           window.location.reload();
+                                       },1500);
+                                   }else{
+                                       layer.msg(msg.result, {icon: 2});
+                                   }
+                               }
+                           });
+                       },
+                       cancel: function () {
+                       }
+                   });
+               });
+               // console.log(2);
+           }
+        </script>

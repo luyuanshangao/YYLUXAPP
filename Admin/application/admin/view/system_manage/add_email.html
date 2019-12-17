@@ -1,0 +1,85 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addUserForm" enctype="multipart/form-data">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>邮件标题：</label>
+                </dd>
+                <dd>
+                    <input name="title" value="{$list.title}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+             <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>发送对象：</label>
+                </dd>
+                <dd>
+                    <input type="hidden" id="selection_url"  value="{:url("SystemManage/Syste_config")}">
+                    <select name="type" id="selection_object" class="form-control input-small inline w240">
+                        <option value="">请选择</option>
+                        <option {if condition="$list.type eq '1'"} selected = "selected"{/if} value="1">Buyer</option>
+                        <option {if condition="$list.type eq '2'"} selected = "selected"{/if} value="2">Seller</option>
+                    </select>
+                </dd>
+                <dt></dt>
+            </dl>
+
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>模板名称：</label>
+                </dd>
+                <dd>
+					<select name="templetName" id="returnHtml" class="form-control input-small inline w240">
+                        <option value="">请选择</option>
+                        {$list['option']}
+
+                    </select>
+                </dd>
+                <dt></dt>
+            </dl>
+             <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>配置内容：</label>
+                </dd>
+                <dd>
+                    <textarea class="bborder pd5" name="content" cols="70" rows="16">{$list.content}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+   $(document).ready(function () {
+       $("#selection_object").bind("change",function(){
+            if($(this).val()==0){
+              return;
+            }else{
+               var url = $('#selection_url').val();
+               if(!url){
+                 layer.msg('获取相应路径失败', {icon: 2});
+                 return;
+               }
+               var select_value = $(this).val();
+               $.ajax({
+                    type:"POST",
+                    url:url,
+                    data:{select_value:select_value},
+                    dataType:"json",
+                    cache:false,
+                    success:function(msg){
+                      if(msg.code == 200){
+                         $(".optionID").remove();
+                         $("#returnHtml").append(msg.result);
+
+                      }else{
+                         layer.msg(msg.result, {icon: 2});
+                      }
+                    },
+                    error:function(error){}
+               });
+            }
+       });
+  });
+</script>

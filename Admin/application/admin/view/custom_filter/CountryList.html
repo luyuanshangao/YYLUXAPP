@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>国家管理</title>
+    {include file="layout/c_style" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/customFilter.css" type="text/css" />
+
+</head>
+
+<body>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+    <!-- BEGIN SIDEBAR -->
+    <!--#include file="layout/sidebar.html"-->
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content pt0 pl0 ml20">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                    <div>
+                        <div class="tab-content mt25">
+                            <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                <!-- start base table -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form method="post" action="CountryList.aspx" id="form1">
+                                            全文检索：
+                                            <input name="txtSearchContent" type="text" id="txtSearchContent">&nbsp;
+                                            <a class="btn btn-gray relative" href="javascript:;">查 询</a>
+                                            <a class="btn btn-gray relative" href="CountryEdit.html">新增</a>
+                                            <div class="mt20">
+                                                <table cellspacing="0" rules="all" border="1" id="gvCountry" class="border-collapse gvCountry" width="1000">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="col" class="tcenter">英文名称</th>
+                                                            <th scope="col" class="tcenter">中文名称</th>
+                                                            <th scope="col" class="tcenter">国家编码</th>
+                                                            <th scope="col" class="tcenter">区域编码</th>
+                                                            <th scope="col" class="tcenter">GMT</th>
+                                                            <th scope="col" class="tcenter">语言</th>
+                                                            <th scope="col" class="tcenter">操作</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">BHUTAN</td>
+                                                            <td align="center">不丹</td>
+                                                            <td align="center">BT</td>
+                                                            <td align="center">&nbsp;</td>
+                                                            <td align="center">&nbsp;</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">CHINA</td>
+                                                            <td align="center">中国</td>
+                                                            <td align="center">CN</td>
+                                                            <td align="center">86</td>
+                                                            <td align="center">0.0</td>
+                                                            <td align="center">汉语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">CENTRAL AFRICAN REPUBLIC</td>
+                                                            <td align="center">中非共和国</td>
+                                                            <td align="center">CF</td>
+                                                            <td align="center">236</td>
+                                                            <td align="center">-7.0</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">DENMARK</td>
+                                                            <td align="center">丹麦</td>
+                                                            <td align="center">DK</td>
+                                                            <td align="center">45</td>
+                                                            <td align="center">-7.0</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">UKRAINE</td>
+                                                            <td align="center">乌克兰</td>
+                                                            <td align="center">UA</td>
+                                                            <td align="center">380</td>
+                                                            <td align="center">-5.0</td>
+                                                            <td align="center">俄语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">UZBEKISTAN</td>
+                                                            <td align="center">乌兹别克斯坦</td>
+                                                            <td align="center">UZ</td>
+                                                            <td align="center">233</td>
+                                                            <td align="center">-5.0</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">UGANDA</td>
+                                                            <td align="center">乌干达</td>
+                                                            <td align="center">UG</td>
+                                                            <td align="center">256</td>
+                                                            <td align="center">-5.0</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">URUGUAY</td>
+                                                            <td align="center">乌拉圭</td>
+                                                            <td align="center">UY</td>
+                                                            <td align="center">598</td>
+                                                            <td align="center">-10.3</td>
+                                                            <td align="center">西班牙语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">CHAD</td>
+                                                            <td align="center">乍得</td>
+                                                            <td align="center">TD</td>
+                                                            <td align="center">235</td>
+                                                            <td align="center">-7.0</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">YEMEN</td>
+                                                            <td align="center">也门</td>
+                                                            <td align="center">YE</td>
+                                                            <td align="center">967</td>
+                                                            <td align="center">-5.0</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">ARMENIA</td>
+                                                            <td align="center">亚美尼亚</td>
+                                                            <td align="center">AM</td>
+                                                            <td align="center">374</td>
+                                                            <td align="center">-6.0</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">AZORES</td>
+                                                            <td align="center">亞速爾</td>
+                                                            <td align="center">XH</td>
+                                                            <td align="center">&nbsp;</td>
+                                                            <td align="center">&nbsp;</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">ARUBA</td>
+                                                            <td align="center">亞魯巴</td>
+                                                            <td align="center">AW</td>
+                                                            <td align="center">&nbsp;</td>
+                                                            <td align="center">&nbsp;</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">ISRAEL</td>
+                                                            <td align="center">以色列</td>
+                                                            <td align="center">IL</td>
+                                                            <td align="center">972</td>
+                                                            <td align="center">-6.0</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">IRAQ</td>
+                                                            <td align="center">伊拉克</td>
+                                                            <td align="center">IQ</td>
+                                                            <td align="center">964</td>
+                                                            <td align="center">-5.0</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">IRAN</td>
+                                                            <td align="center">伊朗</td>
+                                                            <td align="center">IR</td>
+                                                            <td align="center">98</td>
+                                                            <td align="center">-4.3</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">BELIZE</td>
+                                                            <td align="center">伯利兹</td>
+                                                            <td align="center">BZ</td>
+                                                            <td align="center">501</td>
+                                                            <td align="center">-14.0</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">CAPE VERDE</td>
+                                                            <td align="center">佛得角群島</td>
+                                                            <td align="center">CV</td>
+                                                            <td align="center">&nbsp;</td>
+                                                            <td align="center">&nbsp;</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">RUSSIA</td>
+                                                            <td align="center">俄罗斯</td>
+                                                            <td align="center">RU</td>
+                                                            <td align="center">7</td>
+                                                            <td align="center">-5.0</td>
+                                                            <td align="center">俄语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center">BULGARIA</td>
+                                                            <td align="center">保加利亚</td>
+                                                            <td align="center">BG</td>
+                                                            <td align="center">359</td>
+                                                            <td align="center">-6.0</td>
+                                                            <td align="center">英语</td>
+                                                            <td align="center" width="10%">
+                                                                <a href="CountryEdit.html" target="_blank" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16" title="编辑"></i>
+                                                                </a>
+                                                                <a href="javascript:void(0);" class="Qing red">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="dataTables_paginate paging_bootstrap mt20">
+                                                <ul class="pagination">
+                                                    <li class="disabled"><span>«</span></li>
+                                                    <li class="active"><span>1</span></li>
+                                                    <li><a href="">2</a></li>
+                                                    <li><a href="">3</a></li>
+                                                    <li><a href="">4</a></li>
+                                                    <li><a href="">»</a></li>
+                                                </ul>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+</body>
+</html>

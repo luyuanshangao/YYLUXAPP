@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>新增编辑</title>
+    {include file="layout/c_style" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/customFilter.css" type="text/css" />
+
+</head>
+
+<body>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+    <!-- BEGIN SIDEBAR -->
+    <!--#include file="layout/sidebar.html"-->
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content pt0 pl0 ml20">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                    <div>
+                        <div class="tab-content mt25">
+                            <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                <!-- start base table -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table id="tb1" border="0" cellpadding="3" cellspacing="5" class="country-short-cut-act">
+                                            <tbody>
+                                            <form method="post" action="CountryShortCutAct.aspx" id="saveForm">
+                                                <input type="hidden"  name="code_id" value="{$national_language['id']?$national_language['id']:''}" />
+                                                <tr>
+                                                    <th class="w120 tright">
+                                                        显示名称：
+                                                    </th>
+                                                    <td>
+                                                        <input name="shortCutShowName" type="text" id="shortCutShowName" class="w260" value="{$national_language['shortCutShowName']?$national_language['shortCutShowName']:''}">
+                                                        <span class="error red">*</span>
+                                                    </td>
+                                                    <td width="40%">
+                                                        <span class="error red"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+
+                                                    <th class="ttop w120 tright">
+                                                        国家/地区：
+                                                    </th>
+                                                    <td colspan="2">
+                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                            <tbody>
+
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="country-short-div">
+                                                                            <span>国家/地区：<span role="status" aria-live="polite" class="ui-helper-hidden-accessible">
+
+                                                                            </span><input id="txt_country" type="text" class="ui-autocomplete-input" autocomplete="off">(名称/简码)
+                                                                            </span>
+                                                                            <label class="fr"><span class="fr fbold">
+                                                                                <input id="selAllCB" type="checkbox">全选/取消全选 </span>
+                                                                                </label>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                 {volist name="region" id="vo" key="k"}
+                                                                    <?php $k_key = $key; ?>
+                                                                <tr>
+                                                                    <td class="fb">
+                                                                        <b>语种：{if condition="!empty($country[$k_key])"}{$country[$k_key]}{/if}<span {if condition="end(array_keys($vo)) egt 40"}{else /}class="hide"{/if} >(<a class="more" href="javascript:;">展开</a>)</span>
+                                                                        <span class="fr fbold"><span class="allCB">
+                                                                        <input id="SC_rptLanguageType_ckbLan_{$k_key}" type="checkbox" name="SC$rptLanguageType[l0{$k_key}][ckbLan]"{if condition="!empty($country[$k_key])"}value="{$country[$k_key]}"{/if} >
+                                                                        <input type="hidden"  name="LanguageType[l0{$k_key}]" value="{$country[$k_key]}" />
+                                                                        <label for="SC_rptLanguageType_ckbLan_{$k_key}">全选/取消全选</label></span></span> </b>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div data-height="180" class="c_list">
+                                                                            {volist name="vo" id="ve"}
+                                                                            <span class="oCB sub_cb" title="{$ve.Code}"><input id="SC_rptLanguageType_rptLanguage_{$k_key}_ckbCountry_{$key}" type="checkbox" name="rptLanguageType[l0{$k_key}][l0{$key}]" value="{$ve.Code}" {if condition="empty($country_short_code[$ve.Code])"}{else /} checked="checked" {/if} ><label for="SC_rptLanguageType_rptLanguage_{$k_key}_ckbCountry_{$key}">{$ve.Name}({$ve.Code})</label></span>
+                                                                            {/volist}
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                {/volist}
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </form>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3" class="fr">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div id="bottom" class="mb25 tcenter mt50">
+                                            <input type="submit" name="btnSave" value="提交" onclick="return CheckInput();" id="btnSave" class="btn btn-gray f16 mr20">
+                                            <a href="configureCountryShortcuts.html" class="btn btn-gray f16">取 消</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script src="/static/js/jquery-ui.js"></script>
+    <script type="text/javascript">
+    //<![CDATA[
+        var countrys = [{ "value": "BT", "label": "不丹(BT)" }, { "value": "CN", "label": "中国(CN)" }, { "value": "CF", "label": "中非共和国(CF)" }, { "value": "DK", "label": "丹麦(DK)" }, { "value": "UA", "label": "乌克兰(UA)" }, { "value": "UZ", "label": "乌兹别克斯坦(UZ)" }, { "value": "UG", "label": "乌干达(UG)" }, { "value": "UY", "label": "乌拉圭(UY)" }, { "value": "TD", "label": "乍得(TD)" }, { "value": "YE", "label": "也门(YE)" }, { "value": "AM", "label": "亚美尼亚(AM)" }, { "value": "XH", "label": "亞速爾(XH)" }, { "value": "AW", "label": "亞魯巴(AW)" }, { "value": "IL", "label": "以色列(IL)" }, { "value": "IQ", "label": "伊拉克(IQ)" }, { "value": "IR", "label": "伊朗(IR)" }, { "value": "BZ", "label": "伯利兹(BZ)" }, { "value": "CV", "label": "佛得角群島(CV)" }, { "value": "RU", "label": "俄罗斯(RU)" }, { "value": "BG", "label": "保加利亚(BG)" }, { "value": "HR", "label": "克羅地亞(HR)" }, { "value": "GU", "label": "关岛(GU)" }, { "value": "GM", "label": "冈比亚(GM)" }, { "value": "IS", "label": "冰岛(IS)" }, { "value": "GN", "label": "几内亚(GN)" }, { "value": "LI", "label": "列支敦士登(LI)" }, { "value": "CG", "label": "刚果(CG)" }, { "value": "LY", "label": "利比亚(LY)" }, { "value": "LR", "label": "利比里亚(LR)" }, { "value": "CD", "label": "剛果(民主共和國)(CD)" }, { "value": "CA", "label": "加拿大(CA)" }, { "value": "XE", "label": "加沙及汗尤尼斯(XE)" }, { "value": "GH", "label": "加纳(GH)" }, { "value": "XK", "label": "加羅林群島(XK)" }, { "value": "GA", "label": "加蓬(GA)" }, { "value": "XA", "label": "加那利群島(XA)" }, { "value": "HU", "label": "匈牙利(HU)" }, { "value": "XG", "label": "北非西班牙屬土(XG)" }, { "value": "KP", "label": "北韓(KP)" }, { "value": "GS", "label": "南喬治亞島和南桑德韋奇島(GS)" }, { "value": "YU", "label": "南斯拉夫(YU)" }, { "value": "AQ", "label": "南極洲(AQ)" }, { "value": "ZA", "label": "南非(ZA)" }, { "value": "BW", "label": "博茨瓦纳(BW)" }, { "value": "QA", "label": "卡塔尔(QA)" }, { "value": "LU", "label": "卢森堡(LU)" }, { "value": "IN", "label": "印度(IN)" }, { "value": "ID", "label": "印度尼西亚(ID)" }, { "value": "GT", "label": "危地马拉(GT)" }, { "value": "EC", "label": "厄瓜多尔(EC)" }, { "value": "ER", "label": "厄立特里亞(ER)" }, { "value": "SY", "label": "叙利亚(SY)" }, { "value": "CU", "label": "古巴(CU)" }, { "value": "TW", "label": "台湾省(TW)" }, { "value": "KG", "label": "吉尔吉斯坦(KG)" }, { "value": "DJ", "label": "吉布提(DJ)" }, { "value": "KZ", "label": "哈薩克(KZ)" }, { "value": "CO", "label": "哥伦比亚(CO)" }, { "value": "CR", "label": "哥斯达黎加(CR)" }, { "value": "CM", "label": "喀麦隆(CM)" }, { "value": "TV", "label": "圖瓦盧(TV)" }, { "value": "TM", "label": "土库曼斯坦(TM)" }, { "value": "TR", "label": "土耳其(TR)" }, { "value": "ST", "label": "圣多美和普林西比(ST)" }, { "value": "VC", "label": "圣文森特岛(VC)" }, { "value": "SM", "label": "圣马力诺(SM)" }, { "value": "GY", "label": "圭亚那(GY)" }, { "value": "TZ", "label": "坦桑尼亚(TZ)" }, { "value": "EG", "label": "埃及(EG)" }, { "value": "ET", "label": "埃塞俄比亚(ET)" }, { "value": "KI", "label": "基里巴斯(KI)" }, { "value": "TJ", "label": "塔吉克(TJ)" }, { "value": "SN", "label": "塞内加尔(SN)" }, { "value": "SL", "label": "塞拉利昂(SL)" }, { "value": "CY", "label": "塞浦路斯(CY)" }, { "value": "RS", "label": "塞爾維亞(RS)" }, { "value": "SC", "label": "塞舌尔(SC)" }, { "value": "MX", "label": "墨西哥(MX)" }, { "value": "TG", "label": "多哥(TG)" }, { "value": "DO", "label": "多米尼加共和国(DO)" }, { "value": "DM", "label": "多米尼加島(DM)" }, { "value": "AT", "label": "奥地利(AT)" }, { "value": "VE", "label": "委内瑞拉(VE)" }, { "value": "XM", "label": "威克島(XM)" }, { "value": "BD", "label": "孟加拉国(BD)" }, { "value": "AO", "label": "安哥拉(AO)" }, { "value": "AI", "label": "安圭拉岛(AI)" }, { "value": "AG", "label": "安提瓜和巴布达(AG)" }, { "value": "AD", "label": "安道尔共和国(AD)" }, { "value": "FM", "label": "密克羅尼西亞(FM)" }, { "value": "NI", "label": "尼加拉瓜(NI)" }, { "value": "NG", "label": "尼日利亚(NG)" }, { "value": "NE", "label": "尼日尔(NE)" }, { "value": "NP", "label": "尼泊尔(NP)" }, { "value": "XJ", "label": "巴利阿里群島(XJ)" }, { "value": "BS", "label": "巴哈马(BS)" }, { "value": "PK", "label": "巴基斯坦(PK)" }, { "value": "BB", "label": "巴巴多斯(BB)" }, { "value": "PG", "label": "巴布亚新几内亚(PG)" }, { "value": "PY", "label": "巴拉圭(PY)" }, { "value": "PA", "label": "巴拿马(PA)" }, { "value": "BH", "label": "巴林(BH)" }, { "value": "BR", "label": "巴西(BR)" }, { "value": "BF", "label": "布基納法索(BF)" }, { "value": "BV", "label": "布維島(BV)" }, { "value": "BI", "label": "布隆迪(BI)" }, { "value": "GR", "label": "希腊(GR)" }, { "value": "GW", "label": "幾內亞比紹(GW)" }, { "value": "CK", "label": "库克群岛(CK)" }, { "value": "DE", "label": "德国(DE)" }, { "value": "IT", "label": "意大利(IT)" }, { "value": "SB", "label": "所罗门群岛(SB)" }, { "value": "ZR", "label": "扎伊尔(ZR)" }, { "value": "TK", "label": "托克勞(TK)" }, { "value": "VG", "label": "托爾托拉島(英屬處女群島)(VG)" }, { "value": "LV", "label": "拉脱维亚(LV)" }, { "value": "NO", "label": "挪威(NO)" }, { "value": "CZ", "label": "捷克(CZ)" }, { "value": "MD", "label": "摩尔多瓦(MD)" }, { "value": "MA", "label": "摩洛哥(MA)" }, { "value": "MC", "label": "摩纳哥(MC)" }, { "value": "BN", "label": "文莱(BN)" }, { "value": "FJ", "label": "斐济(FJ)" }, { "value": "SJ", "label": "斯匹次卑爾根群島(SJ)" }, { "value": "SZ", "label": "斯威士兰(SZ)" }, { "value": "SK", "label": "斯洛伐克(SK)" }, { "value": "SI", "label": "斯洛文尼亚(SI)" }, { "value": "LK", "label": "斯里兰卡(LK)" }, { "value": "SG", "label": "新加坡(SG)" }, { "value": "NC", "label": "新喀里多尼亞(NC)" }, { "value": "NZ", "label": "新西兰(NZ)" }, { "value": "XL", "label": "新西蘭屬土島嶼 (庫克群島)(XL)" }, { "value": "JP", "label": "日本(JP)" }, { "value": "CL", "label": "智利(CL)" }, { "value": "TP", "label": "東帝汶(TP)" }, { "value": "KH", "label": "柬埔寨(KH)" }, { "value": "GD", "label": "格林纳达(GD)" }, { "value": "GL", "label": "格陵蘭(GL)" }, { "value": "GE", "label": "格鲁吉亚(GE)" }, { "value": "VA", "label": "梵蒂岡(VA)" }, { "value": "BE", "label": "比利时(BE)" }, { "value": "MR", "label": "毛里塔尼亞(MR)" }, { "value": "MU", "label": "毛里求斯(MU)" }, { "value": "TO", "label": "汤加(TO)" }, { "value": "SA", "label": "沙特阿拉伯(SA)" }, { "value": "FR", "label": "法国(FR)" }, { "value": "GF", "label": "法属圭亚那(GF)" }, { "value": "PF", "label": "法属玻利尼西亚(PF)" }, { "value": "TF", "label": "法屬南部領土(TF)" }, { "value": "FX", "label": "法屬美特羅波利坦(FX)" }, { "value": "FO", "label": "法羅群島(FO)" }, { "value": "PL", "label": "波兰(PL)" }, { "value": "PR", "label": "波多黎各(PR)" }, { "value": "BA", "label": "波斯尼亞 - 黑塞哥維那(BA)" }, { "value": "TH", "label": "泰国(TH)" }, { "value": "ZW", "label": "津巴布韦(ZW)" }, { "value": "HN", "label": "洪都拉斯(HN)" }, { "value": "HT", "label": "海地(HT)" }, { "value": "XC", "label": "海峽群島(XC)" }, { "value": "AU", "label": "澳大利亚(AU)" }, { "value": "MO", "label": "澳门(MO)" }, { "value": "IE", "label": "爱尔兰(IE)" }, { "value": "EE", "label": "爱沙尼亚(EE)" }, { "value": "JM", "label": "牙买加(JM)" }, { "value": "TC", "label": "特克斯和凱科斯群島(TC)" }, { "value": "TT", "label": "特立尼达和多巴哥(TT)" }, { "value": "XB", "label": "特里斯坦 - 達庫尼亞島(XB)" }, { "value": "BO", "label": "玻利维亚(BO)" }, { "value": "NR", "label": "瑙鲁(NR)" }, { "value": "SE", "label": "瑞典(SE)" }, { "value": "CH", "label": "瑞士(CH)" }, { "value": "GP", "label": "瓜德羅普島(GP)" }, { "value": "WF", "label": "瓦利斯群島和富圖納群島(WF)" }, { "value": "VU", "label": "瓦努阿圖(VU)" }, { "value": "BY", "label": "白俄罗斯(BY)" }, { "value": "BM", "label": "百慕達(BM)" }, { "value": "PN", "label": "皮特凱恩島(PN)" }, { "value": "RW", "label": "盧旺達(RW)" }, { "value": "GI", "label": "直布罗陀(GI)" }, { "value": "FK", "label": "福克蘭群島(FK)" }, { "value": "KW", "label": "科威特(KW)" }, { "value": "KM", "label": "科摩羅(KM)" }, { "value": "CI", "label": "科特迪瓦(象牙海岸)(CI)" }, { "value": "CC", "label": "科科斯群島(CC)" }, { "value": "XO", "label": "科索夫(XO)" }, { "value": "XF", "label": "科西嘉島(XF)" }, { "value": "PE", "label": "秘鲁(PE)" }, { "value": "TN", "label": "突尼斯(TN)" }, { "value": "LT", "label": "立陶宛(LT)" }, { "value": "NU", "label": "紐埃(NU)" }, { "value": "SO", "label": "索马里(SO)" }, { "value": "JO", "label": "约旦(JO)" }, { "value": "NA", "label": "纳米比亚(NA)" }, { "value": "MM", "label": "缅甸(MM)" }, { "value": "RO", "label": "罗马尼亚(RO)" }, { "value": "US", "label": "美国(US)" }, { "value": "UM", "label": "美國本土外小島嶼(UM)" }, { "value": "VI", "label": "美屬處女群島(VI)" }, { "value": "LA", "label": "老撾(LA)" }, { "value": "KN", "label": "聖基茨和尼維斯(KN)" }, { "value": "PM", "label": "聖皮埃爾和密克隆群島(PM)" }, { "value": "LC", "label": "聖盧西亞(LC)" }, { "value": "CX", "label": "聖誕島(CX)" }, { "value": "SH", "label": "聖赫勒拿島(SH)" }, { "value": "KE", "label": "肯尼亚(KE)" }, { "value": "FI", "label": "芬兰(FI)" }, { "value": "SD", "label": "苏丹(SD)" }, { "value": "SR", "label": "苏里南(SR)" }, { "value": "GB", "label": "英国(GB)" }, { "value": "IO", "label": "英屬印度洋地區(IO)" }, { "value": "NL", "label": "荷兰(NL)" }, { "value": "AN", "label": "荷屬安的列斯群島(AN)" }, { "value": "MZ", "label": "莫桑比克(MZ)" }, { "value": "LS", "label": "莱索托(LS)" }, { "value": "PH", "label": "菲律宾(PH)" }, { "value": "SV", "label": "萨尔瓦多(SV)" }, { "value": "PT", "label": "葡萄牙(PT)" }, { "value": "MN", "label": "蒙古(MN)" }, { "value": "MS", "label": "蒙特塞拉特(MS)" }, { "value": "AS", "label": "薩摩亞 (美國屬土)(AS)" }, { "value": "EH", "label": "西撒哈拉(EH)" }, { "value": "ES", "label": "西班牙(ES)" }, { "value": "WS", "label": "西薩摩亞(WS)" }, { "value": "NF", "label": "諾褔克島(NF)" }, { "value": "BJ", "label": "贝宁(BJ)" }, { "value": "ZM", "label": "赞比亚(ZM)" }, { "value": "GQ", "label": "赤道幾內亞(GQ)" }, { "value": "HM", "label": "赫德島和麥克唐島(HM)" }, { "value": "VN", "label": "越南(VN)" }, { "value": "KY", "label": "開曼群島(KY)" }, { "value": "AZ", "label": "阿塞拜疆(AZ)" }, { "value": "AF", "label": "阿富汗(AF)" }, { "value": "DZ", "label": "阿尔及利亚(DZ)" }, { "value": "AL", "label": "阿尔巴尼亚(AL)" }, { "value": "AE", "label": "阿拉伯联合酋长国(AE)" }, { "value": "OM", "label": "阿曼(OM)" }, { "value": "AR", "label": "阿根廷(AR)" }, { "value": "KR", "label": "韩国(KR)" }, { "value": "HK", "label": "香港(HK)" }, { "value": "MK", "label": "馬其頓(MK)" }, { "value": "XI", "label": "馬德拉(XI)" }, { "value": "YT", "label": "馬約特(YT)" }, { "value": "MH", "label": "馬紹爾群島(MH)" }, { "value": "MP", "label": "馬里亞納群島 (北)(MP)" }, { "value": "MV", "label": "马尔代夫(MV)" }, { "value": "MW", "label": "马拉维(MW)" }, { "value": "MY", "label": "马来西亚(MY)" }, { "value": "MT", "label": "马耳他(MT)" }, { "value": "MG", "label": "马达加斯加(MG)" }, { "value": "ML", "label": "马里(ML)" }, { "value": "LB", "label": "黎巴嫩(LB)" }, { "value": "ME", "label": "黑山共和國(ME)" }]; //]]>
+    </script>
+    <script type="text/javascript" src="/static/js/SelectCountrys.js"></script>
+    <script>
+
+    </script>
+    <script type="text/javascript" src="/static/js/customFilter.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            customFilter.affiliate_order_statistics();
+        })
+    </script>
+</body>
+</html>

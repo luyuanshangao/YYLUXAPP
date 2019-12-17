@@ -1,0 +1,148 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="saveForm" action="{url('/Affiliate/saveBanner')}" enctype="multipart/form-data">
+            <input type="hidden" name="_id"  value="{$banner['_id']}">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>banner名称：</label>
+                </dd>
+                <dd>
+                    <input name="Name" value="{$banner['Name']}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>banner尺寸：</label>
+                </dd>
+                <dd>
+                    <div class="input-icon right">
+                        <select name="Size">
+                            <option value="">请选择</option>
+                            {foreach name="size" key="key"  item="vo"}
+                            <option value="{$key}" {if condition="$banner['Size'] eq $key"}selected{/if}>{$vo}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>站点：</label>
+                </dd>
+                <dd>
+                    <input name="Site" value="{$banner['Site']}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>是否显示：</label>
+                </dd>
+                <dd>
+                    <input type="radio" name="Status" value="1" {if condition="$banner['Status'] eq 1"}checked{/if}>显示
+                    <input type="radio" name="Status" value="2" {if condition="$banner['Status'] eq 2"}checked{/if}>不显示
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>替换文本：</label>
+                </dd>
+                <dd>
+                    <textarea name="AlternateText" class="form-control inline" rows="4" cols="40" placeholder="例如<img src='{ImgUrl}'>">{$banner['AlternateText']}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>图片上传：</label>
+                </dd>
+                <dd>
+                    <div class="layui-upload-drag" id="BannerImgdiv">
+                        {if condition="$banner['BannerImg'] eq ''"}
+                        <i class="layui-icon"></i>
+                        <p>点击上传，或将文件拖拽到此处</p>
+                        {else/}
+                        <img height="100" class="layui-upload-img" src="{:DX_FTP_ACCESS_URL}{$banner['BannerImg']}">
+                        {/if}
+                    </div>
+                    <input name="BannerImg" id="BannerImg" value="{$banner['BannerImg']}" class="form-control input-medium inline" type="hidden">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>开始时间：</label>
+                </dd>
+                <dd>
+                    <input name="StartDate" id="StartDate" value="{$banner['StartDate']|date='Y-m-d H:i:s',###}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>结束时间：</label>
+                </dd>
+                <dd>
+                    <input name="EndDate" id="EndDate" value="{$banner['EndDate']|date='Y-m-d H:i:s',###}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>语言：</label>
+                </dd>
+                <dd>
+                    <select name="Language" id="Language" class="form-control input-small inline">
+                        <option>请选择</option>
+                        {foreach name="langs['data']" key="key" item="vo"}
+                        <option value="{$vo['Code']}" {if condition="$banner['Language'] eq $vo['Code']"}selected{/if}>{$vo['Name']}</option>
+                        {/foreach}
+                    </select>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['layer','laydate','upload'], function(){
+
+        var laydate = layui.laydate;
+        var upload = layui.upload;
+        var layer = layui.layer;
+
+        //常规用法
+        laydate.render({
+            elem: '#StartDate'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#EndDate'
+            ,type: 'datetime'
+        });
+        upload.render({
+            elem: '#BannerImgdiv'
+            ,url: '/Affiliate/remoteUpload'
+            ,size:0
+            ,accept:"images"
+            ,done: function(res){
+                if(res['code']==200){
+                    var img = '<img height="100" class="layui-upload-img" id="BannerImgshow" src="'+res.complete_url+'">';
+                    $("#BannerImgdiv").html(img);
+                    $("#BannerImg").val(res.url);
+                   /* $("#BannerImgshow").attr("src",res.url);
+                    $("#BannerImgshow").show();
+                    $("#BannerImg").val(res.url)*/
+                }else {
+                    layer.msg(res.msg)
+                }
+
+            }
+        });
+
+
+    });
+</script>

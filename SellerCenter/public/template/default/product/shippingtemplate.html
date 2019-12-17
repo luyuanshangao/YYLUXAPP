@@ -1,0 +1,77 @@
+{layout name="layout/main"/}
+{load href="/static/css/shippingTemplate.css" /}
+{load href="/static/js/module/shippingTemplate.js" /}
+
+<!-- 运费模板列表 -->
+<div class="main-box fl">
+	<div class="box-white mt0">
+		<p class="main-cont-title">
+			运费模板列表
+		</p>
+		<a href="./shippingTemplateAdd.html" class="btn-orange mt20 mb20 add-shipping-template-btn">+ 新增运费模板</a>
+		<div class="list">
+			<table class="pl30 main-base-table title-table mb5">
+				<tbody>
+					<tr class="tr-title">
+						<th width="160">发货地区</th>
+						<th>物流服务</th>
+						<th width="160">操作</th>
+					</tr>
+				</tbody>
+			</table>
+			{volist name='list' id='data'}
+				<table class="main-base-table table-item mb20">
+					<tbody>
+						<tr>
+							<th colspan="3">
+								模板名称：<span class="template-name a-color">{$data.template_name}</span>
+								<span class="ml30">
+									物流属性：
+								{switch name="data.is_charged" }
+									{case value="1" break="1"}普货{/case}
+									{case value="2" break="1"}纯电{/case}
+									{case value="3" break="1"}带电{/case}
+									{default /}
+								{/switch}
+								</span>
+
+							</th>
+						</tr>
+						<tr>
+							<td width="160">{$data.delivery_area}</td>
+							<td>{$data.template_type_str}</td>
+							<td width="160">
+								{if condition="$data['is_default'] == 1 "}
+									<span href="" class="a-color default set-default">默认模板</span>
+								{else/}
+									<a href="" class="a-color set-default" data-id="{$data.template_id}">设为默认</a>
+								{/if}
+								<span class="line">|</span>
+								<a href="{$editor_template_url}?template_id={$data.template_id}" class="edit a-color" data-id="{$data.template_id}">编辑</a>
+								<div class="icon-triangle-wrap">
+									<i class="icon-triangle"></i>
+									<div class="copy-delete">
+										<a href="" class="copy" data-id="{$data.template_id}">复制</a>
+										<a href="" class="delete" data-id="{$data.template_id}">删除</a>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			{/volist}
+		</div>
+		{if condition='$list->lastPages > 1 '}
+			<div class="page-wrap clearfix mt20">
+				<div class="page-range fl">
+					<span class="page-number">{$list->currentPages}</span>/<span class="page-count">{$list->lastPages}</span>
+					<span class="ml10">跳转至第几</span>
+					<input class="page-put ml5" type="text"> 页
+					<a href="javascript:Common.jumpUrl('?page='+$('.page-put').val());" class="page-go ml5">确定</a>
+				</div>
+				{$list->render()}
+			</div>
+		{/if}
+	</div>
+
+</div>

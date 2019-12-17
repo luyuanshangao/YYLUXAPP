@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>DataFeed数据下载</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <!--#include file="layout/c_global_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="only-body-page-content">
+
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <div class="page-content pt0">
+                <!--end  按钮功能区 -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt25">
+                                    <div class="tab-pane active d-element-bind btns-link">
+                                        <div class="search-btn-wrap">
+                                            <form class="navbar-left" id="navbar" action="/DataQuery/DataFeed/" method="post" role="search">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li class="w100">
+                                                        <label class="c-h-ul-li-title">Category ID：</label>
+                                                    </li>
+                                                    <li class="w350">
+                                                        <textarea name="category_id" id="category_id"  rows="2" cols="40"></textarea>
+                                                        <span>可输入多个，请用","</span>
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">状态：</label>
+                                                        <select name="product_status" id="product_status" class="form-control input-small inline">
+                                                            <option value="1">在售</option>
+                                                        </select>
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">语言：</label>
+                                                        <select name="lang" id="lang" class="form-control input-small inline">
+                                                            <option value="en">EN</option>
+                                                            <option value="es">ES</option>
+                                                            <option value="pt">PT</option>
+                                                            <option value="nl">NL</option>
+                                                            <option value="ru">RU</option>
+                                                            <option value="fr">FR</option>
+                                                            <option value="de">DE</option>
+                                                            <option value="fi">FI</option>
+                                                            <option value="sv">SV</option>
+                                                            <option value="no">NO</option>
+                                                            <option value="cs">CS</option>
+                                                            <option value="it">IT</option>
+                                                            <option value="ar">AR</option>
+                                                            <option value="ja">JP</option>
+                                                        </select>
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">货币：</label>
+                                                        <select name="currency" id="currency" class="form-control input-small inline">
+                                                            <option value="USD">USD</option>
+                                                            <option value="GBP">GBP</option>
+                                                            <option value="CAD">CAD</option>
+                                                            <option value="EUR">EUR</option>
+                                                            <option value="BRL">BRL</option>
+                                                            <option value="RUB">RUB</option>
+                                                            <option value="AUD">AUD</option>
+                                                            <option value="CAD">CAD</option>
+                                                            <option value="CZK">CZK</option>
+                                                            <option value="MXN">MXN</option>
+                                                            <option value="JPY">JPY</option>
+                                                            <option value="ARS">ARS</option>
+                                                            <option value="NOK">NOK</option>
+                                                        </select>
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">国家：</label>
+                                                        <select name="country" id="country" class="form-control input-small inline">
+                                                            <option value="">请选择</option>
+                                                            <option value="US">US</option>
+                                                            <option value="GB">UK</option>
+                                                            <option value="CA">CA</option>
+                                                            <option value="ES">ES</option>
+                                                            <option value="NL">NL</option>
+                                                            <option value="FI">FI</option>
+                                                            <option value="DE">DE</option>
+                                                            <option value="FR">FR</option>
+                                                            <option value="NO">NO</option>
+                                                            <option value="CZ">CZ</option>
+                                                            <option value="IT">IT</option>
+                                                            <option value="BR">BR</option>
+                                                            <option value="RU">RU</option>
+                                                            <option value="JP">JP</option>
+                                                            <option value="AR">AR</option>
+                                                            <option value="OTHER">OTHER</option>
+                                                        </select>
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">格式：</label>
+                                                        <select name="format" id="format" class="form-control input-small inline">
+                                                            <option value="CSV">CSV</option>
+                                                            <option value="XML">XML</option>
+                                                        </select>
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">平台：</label>
+                                                        <select name="platform" id="platform" class="form-control input-small inline">
+                                                            <option value="DX">DX</option>
+                                                            <option value="Shareasale">Shareasale</option>
+                                                            <option value="Admitad">Admitad</option>
+                                                            <option value="Affiliatewindow">Affiliatewindow</option>
+                                                            <option value="Zanox">Zanox</option>
+                                                            <option value="Tradetracker">Tradetracker</option>
+                                                            <option value="Daisycon">Daisycon</option>
+                                                            <option value="special_case_admitad">special_case_admitad</option>
+                                                        </select>
+                                                    </li>
+
+                                                    <li class="w400">
+                                                        <label class="c-h-ul-li-title">操作：</label>
+                                                        <a class="btn btn-gray" onclick="javascript:document:navbar.submit();" href="javascript:;">新增</a>
+                                                        <!--<a class="btn btn-gray affiliate_order_statistics" data-url = "/AffiliateReport/Export_ReportStatistics" href="javascript:;">导出</a>-->
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-hover table-padding">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>任务ID</th>
+                                                        <th>文件名称</th>
+                                                        <th>平台</th>
+                                                        <th>格式</th>
+                                                        <th>国家</th>
+                                                        <th>币种</th>
+                                                        <th>语种</th>
+                                                        <th>Category ID</th>
+                                                        <th>创建时间</th>
+                                                        <th>任务进度</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {if condition="$error != ''"}
+                                                        <tr><td colspan="10">{$error}</td></tr>
+                                                    {/if}
+                                                    {volist name="$list" id="vo"}
+                                                    <tr>
+                                                        <td>{$vo.id?$vo.id:''}</td>
+                                                        <td>{$vo.filename?$vo.filename:''}</td>
+                                                        <td>{$vo.platform?$vo.platform:''}</td>
+                                                        <td>{$vo.format?$vo.format:''}</td>
+                                                        <td>{$vo.country?$vo.country:''}</td>
+                                                        <td>{$vo.currency?$vo.currency:''}</td>
+                                                        <td>{$vo.lang?$vo.lang:''}</td>
+                                                        <td>{$vo.category_id?$vo.category_id:''}</td>
+                                                        <td>{$vo['add_time'] |date="Y-m-d H:i:s",###}</td>
+                                                        <td>
+                                                            {if condition="$vo.status == 1"}
+                                                            未处理
+                                                            {elseif condition="$vo.status eq 2"/}
+                                                            处理中（{$vo.progressed * 100 .'%'}）
+                                                            {elseif condition="$vo.status eq 3"/}
+                                                            已完成
+                                                            {/if}
+                                                        </td>
+                                                        <td>
+                                                            {if condition="$vo.status == 1"}
+                                                            <a href="javascript:void(0);" onclick="delete_datafeed('{$vo.id}','/DataQuery/DataFeedDelete')" class="red">删除</a>
+                                                            {elseif condition="$vo.status eq 3"/}
+                                                            <a href="/DataQuery/DataFeedDownload?id={$vo.id}" class="blue">下载</a>
+                                                            {/if}
+                                                        </td>
+                                                    </tr>
+                                                    {/volist}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row row16 pd15">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                                {$page}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+</body>
+</html>

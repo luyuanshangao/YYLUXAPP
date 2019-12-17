@@ -1,0 +1,109 @@
+<link rel="stylesheet" type="text/css" href="/assets/plugins/bootstrap-select/bootstrap-select.min.css"/>
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addUserForm" action="{url('admin/ProductManagement/add_brand')}" enctype="multipart/form-data">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>国家：</label>
+                </dd>
+                <dd>
+                <ul class="c-h-ul search-ul query-ul">
+                   <li>
+                        {empty name="countryCode"}
+                            <select id="sltCountryList" class="bs-select input-small w200" data-live-search="true" multiple onchange="checkField(this.value)">
+                                <option value="">请选择</option>
+                                {volist name="$ountries_list" id="vo"}
+                                <option value="{$vo._id}-{$vo.Name}-{$vo.Code}">{$vo.Name}-{$vo.Code}</option>
+                                {/volist}
+                            </select>
+                            <input class="country_val" type="hidden" name="country"  value="">
+                        {else /}
+                           <input name="country" value="{$countryCode}" class="form-control input-medium inline w140" readonly="readonly" type="text">
+                        {/empty}
+
+                        <input class="country_val" type="hidden" id="exclusiveForCountry"  value="{$exclusiveForCountry}">
+                    </li>
+                </ul>
+                </dd>
+                <dt></dt>
+            </dl>
+
+            <div class="country_title">
+            {volist name="$freightData" id="vo" key="k"}
+            <dl class="c-h-dl-validator form-group clearfix" data-id = "{$k}" id="dl{$k}">
+                <dd class="v-title">
+                    <label><em>*</em>{$vo}:</label>
+                </dd>
+                <dd>
+                    <input name="where[{$key}][freight]" value="{$LogisticsList[$key]['freight']}" class="form-control input-medium inline w140" type="text">&nbsp;USD
+                </dd>
+                <input type="hidden" name="where[{$key}][shippingServiceID]" value="{$key}">
+                <input type="hidden" name="where[{$key}][shippingServiceText]" value="{$vo}">
+                <dd class="v-title">
+                    <label><em>*</em>物流时效：</label>
+                </dd>
+                <dd>
+                    <input name="where[{$key}][time_slot]" value="{$LogisticsList[$key]['time_slot']}" class="form-control input-medium inline w140" type="text">&nbsp;天
+                </dd>
+                <dt></dt>
+            </dl>
+            {/volist}
+          </div>
+             <dl class="c-h-dl-validator form-group clearfix mt15">
+                <dd class="v-title">
+                    <label>备注：</label>
+                </dd>
+                <dd>
+                    <textarea name="remarks" cols="66" rows="8" >{$LogisticsList[0]['remarks']}{$content.introduction}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>
+<script src="/static/js/dx_cs_common.js"></script>
+<script type="text/javascript" src="/js/custom.js"></script>
+<script type="text/javascript">
+      function checkField(obj){
+    	  var countryCode = '';
+    	  var words = obj.split('-');
+    	  if(words.length>0){
+    		  countryCode = words[words.length-1];
+    		  if (countryCode !==undefined && countryCode !=''){
+       var id =  $(".country_title dl:last-child").attr('data-id');
+       id = Number(id) + 1;
+       var obj ={$exclusiveForCountry};//console.log(arrayLike);
+        for(var i in obj) {
+            if(words[2] == i){
+                var  html = '<dl class="c-h-dl-validator form-group clearfix delete" data-id = "'+id+'" id="dl'+id+'"><dd class="v-title"><label><em>*</em>'+obj[i]+':</label></dd><dd><input name="where['+id+'][freight]" value="" class="form-control input-medium inline w140" type="text">&nbsp;USD</dd><input type="hidden" name="where['+id+'][shippingServiceID]" value="'+id+'"><input type="hidden" name="where['+id+'][shippingServiceText]" value="'+obj[i]+'"><dd class="v-title"><label><em>*</em>物流时效：</label></dd><dd><input name="where['+id+'][time_slot]" value="" class="form-control input-medium inline w140" type="text">&nbsp;天</dd><dt></dt></dl>';
+                if($(".delete").is('.delete')){
+                    $(".delete").remove();
+                    $(".country_title").append(html);console.log(obj[i]);console.log(i);console.log(words[2]);
+                      return;
+                }else{
+                    $(".country_title").append(html);console.log(obj[i]);console.log(i);console.log(words[2]);
+                    return;
+                }
+
+
+            }else{
+             $(".delete").remove();
+            }
+        }return;
+
+    			  for(var i=0;i<exclusiveForCountry.length;i++){
+    				  console.log(exclusiveForCountry[i]);
+    			  }
+    			  //alert(exclusiveForCountry);
+    			  if(isContains(exclusiveForCountry,countryCode)){
+    				  $('#id').hide();
+    			  }
+
+    		  }
+    	  }
+      }
+      //判断字符串是否在数组内
+      function isContains(exclusiveForCountry, substr) {
+    	    return
+    	}
+</script>

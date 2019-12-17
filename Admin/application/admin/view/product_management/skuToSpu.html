@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>DX_SKU转SPU</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <!--#include file="layout/c_global_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+    {load href="/static/css/productManagement.css" /}
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="only-body-page-content">
+
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <div class="page-content pt0">
+                <div class="bg-color-gray0 area_btn0 border-gray bborder-no ml0 mr0">
+                    {$menu_logo}
+                </div>
+                <!--end  按钮功能区 -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap col-md-6 border-none sku-spu-left">
+                                            <form id="navbar" class="navbar-left" action="" method="post" role="search">
+                                                <ul class="">
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">
+                                                            请选择:
+                                                        <input class="mt0" name="status" checked="checked" type="radio" value="1" />SKU
+                                                        <input class="mt0" name="status" type="radio" value="2" />SPU
+                                                        </label>
+                                                    </li>
+                                                    <li>
+                                                        <textarea  rows="16" cols="40"  name="sku" id="sku"></textarea>
+                                                    </li>
+                                                    <li class="w260">
+                                                        <label class="c-h-ul-li-title w60"></label>
+                                                        <input type="submit" value="转换" class="btn btn-gray" />
+                                                        <!--<a onclick="javascript:transformation();" class="btn btn-gray" href="javascript:;">转换</a>-->
+                                                    </li>
+                                                    <li></li>
+                                                    <!--<li class="w350">-->
+                                                        <!--转换结果：-->
+                                                        <!--<p name="spu" id="spu"></p>-->
+                                                    <!--</li>-->
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <!-- <div class="search-btn-wrap col-md-6 border-none pl20">
+                                             <form class="navbar-left" action="/ProductManagement/excel" method="post" name="f_upload" enctype="multipart/form-data">
+                                                 <ul class="">
+                                                     <li>模板文件下载： <a href="/static/adImportTemplate/SkuToSpu.xlsx" class="blue mr20">SKU转SPU模板</a>
+                                                         <a href="/static/adImportTemplate/SpuToSku.xlsx" class="blue">SPU转SKU模板</a>
+                                                     </li>
+                                                     <li class="mt20">
+                                                         <label class="c-h-ul-li-title">
+                                                             请上传EXCEL:
+                                                             <input name="file"  type="file" value="" />
+                                                         </label>
+                                                     </li>
+                                                     <li class="mt20">
+                                                         <input type="submit" value="上传" class="btn btn-gray" />
+                                                     </li>
+
+                                                 </ul>
+                                             </form>
+                                         </div> -->
+                                         <!-- end base table -->
+                                        <div class="row row16 pd15 mt10">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                            {$page}
+                                            </div>
+                                            <script type="text/javascript">
+                                                 function transformation() {
+                                                     var sku = $("#sku").val();
+                                                     var type = $("input[name='status']:checked").val();
+                                                     $.post("",{'sku':sku,'type':type},function (res) {
+                                                         // $('#type').html(res.type);
+                                                         $('#spu').html(res.data);
+                                                     })
+                                                 }
+
+                                                 function aaa() {
+                                                 $.ajax({
+                                                     type : "POST",
+                                                     url : "houtai/123.do",
+                                                     data : formData,
+                                                     async: false,
+                                                     cache: false,
+                                                     contentType: false,
+                                                     processData: false,
+                                                     success : function(msg) {
+                                                         if(msg){
+                                                             alert('提交成功！');
+                                                         }
+                                                     }
+                                                 });
+                                                 }
+                                            </script>
+                                        </div>
+                                        <!-- 订单内容 end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!--<script type="text/javascript" src="/assets/plugins/bootstrap-daterangepicker/daterangepicker-zh-cn.js"></script>-->
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+
+
+</body>
+</html>

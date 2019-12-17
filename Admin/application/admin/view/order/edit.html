@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>{$orderDetail['order_number']},商城管理-订单管理-订单详情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    {load href="/static/js/global.js" /}
+    <!-- END THEME STYLES -->
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/order-details.css" type="text/css" />
+    <link rel="stylesheet" href="/assets/plugins/layui/css/layui.css"  media="all">
+    {load href="/assets/plugins/kindeditor/kindeditor.js" /}
+    {load href="/assets/plugins/kindeditor/lang/zh_CN.js" /}
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="page-header-fixed page-sidebar-fixed ml20 mr20">
+<div class="tabbable-custom tabbable-custom-bby tabs-below " role="navigation">
+    <div class="row bg-color-gray0 area_btn0 border-gray mt10 mg0">
+        <div class="col-md-8">
+            <strong class="f14">订单详情:{$orderDetail['order_number']}</strong>
+        </div>
+        <div class="col-md-4 tright">
+            <form action="/order/edit">
+                <span class="gray">快速跳转到订单:</span>
+                <input name="id" type="text"/>
+                <input type="submit" value="GO" class="btn btn-qing">
+            </form>
+        </div>
+        <div class="col-md-8">
+            <strong class="f14">父订单:{$orderDetail['order_quantity']["order_master_number"]?$orderDetail['order_quantity']["order_master_number"]:$orderDetail['order_number']}</strong><br/>
+            <label>子订单号：</label>{volist name="$orderDetail['order_quantity']['order_number_subset']" id="it"}
+            <a href="{:url('order/edit',array('id'=>$it.order_number))}" target='_blank' class="Qing">{$it["order_number"]}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            {/volist}
+            {if condition="isset($orderDetail['after_sale_apply'][0]['after_sale_number'])"}
+                <label class="red">售后订单号：</label><a href="{:url('order/afterSaleDetails',array('after_sale_number'=>$orderDetail['after_sale_apply'][0]['after_sale_number']))}" target='_blank' class="Qing">{$orderDetail['after_sale_apply'][0]['after_sale_number']}</a></li>
+            {/if}
+            {if condition="!empty($orderDetail['rma_order'])"}
+            <li class="red"><label>RMA订单：</label></li>
+            <!--<li class="red"><label>RMA订单：</label><a href="{:url('order/edit',array('id'=>$orderDetail['rma_order']['order_number']))}" target='_blank' class="Qing">{$orderDetail['rma_order']['order_number']}</a>  描述：{$orderDetail['rma_order']['remark']}</li>-->
+            {volist name='rma_order_list' id='rma_info'}
+            <li class="red"><a href="{:url('order/edit',array('id'=>$rma_info['order_number']))}" target='_blank' class="Qing">{$rma_info['order_number']}</a>  描述：{$rma_info['remark']}</li>
+            {/volist}
+            {/if}
+            {if condition="!empty($orderDetail['parent_order'])"}
+            <li class="red"><label>原订单：</label><a href="{:url('order/edit',array('id'=>$orderDetail['parent_order']['order_number']))}" target='_blank' class="Qing">{$orderDetail['parent_order']['order_number']}</a> </li>
+            {/if}
+        </div>
+        {if condition="!empty($orderDetail['remark1'])"}
+        <div class="col-md-8">
+            <label>订单备注：</label>
+            <span>{$orderDetail["remark1"]}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+        {/if}
+    </div>
+    <div class="row col-md-12 mt20 ml0 mr0">
+        <ul class="step-list clearfix">
+            <li class="clearfix">
+                <div class="tcenter w120 fl">
+                    <div class="circly"><i class="glyphicon glyphicon f18 glyphicon-ok green"></i></div>
+                    <p class="mt10">提交订单</p>
+                    <p class="gray mt5">{$orderDetail['create_on'] |date="Y-m-d H:i:s",###}</p>
+                </div>
+                <div class="line {$paymentGraybgStyle} fl"></div>
+            </li>
+            <li class="clearfix">
+                <div class="tcenter w120 fl">
+                    <div class="circly {$paymentGraybgStyle}"><i class="glyphicon glyphicon f18 {$paymentGreenStyle}"></i></div>
+                    <p class="mt10">支付订单</p>
+                    <p class="gray mt5">{$paymentTime}</p>
+                </div>
+                <div class="line {$shippingGraybgStyle} fl"></div>
+            </li>
+            <li class="clearfix">
+                <div class="tcenter w120 fl">
+                    <div class="circly {$shippingGraybgStyle}"><i class="glyphicon glyphicon f18 {$shippingGreenStyle}"></i></div>
+                    <p class="mt10">平台发货</p>
+                    <p class="gray mt5">{$shippingTime}</p>
+                </div>
+                <div class="line {$confirmShippingGraybgStyle} fl"></div>
+            </li>
+            <li class="clearfix">
+                <div class="tcenter w120 fl">
+                    <div class="circly {$confirmShippingGraybgStyle}"><i class="glyphicon glyphicon f18 {$confirmShippingGreenStyle}"></i></div>
+                    <p class="mt10">确认收货</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="blank20"></div>
+    <div class="row pd10 bg-gray border-gray ml0 mr0">
+        <div class="col-md-8 pt5">
+            <div class="red">
+                <input type="hidden" value="{$orderDetail['order_status_txt']}" id="currentOrderStatusStr">
+                <i class="glyphicon glyphicon-exclamation-sign mr5"></i>
+                <span><b>当前订单状态：</b>{$orderDetail['order_status_txt']}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>{if condition="$orderDetail['order_branch_status'] gt 0"}<b>小状态：</b>{$order_status_all_data[$orderDetail['order_branch_status']]}{/if}</span>
+                {if condition="$update_order_status_arr.user_auth eq 1 && in_array($orderDetail['order_status'], $update_order_status_arr['from_limit'])"}
+                    <span id="updateOrderStatus" class="btn btn-warning ml20">修改状态</span>
+                    <div id="updateOrderStatusToData" class="hide">
+                        {volist name="update_order_status_arr.to_limit_arr" id="to"}
+                            <option value="{$to[0]}">{$to[1]}</option>
+                        {/volist}
+                    </div>
+                {/if}
+            </div>
+        </div>
+        <div class="col-md-4 tright pr5">
+            <input type="hidden" id="order_id" name="order_id" value="{$orderDetail['order_id']}">
+            <input type="hidden" id="order_status" name="order_id" value="{$orderDetail['order_status']}">
+            <input type="hidden" id="order_number" name="order_number" value="{$orderDetail['order_number']}">
+            <input type="hidden" id="order_message"  value="{$remarks['remarks']?$remarks['remarks']:''}">
+
+            <span id="AddNotes"  class="btn btn-qing">添加备注</span>
+            {if condition="$orderDetail.lock_status eq 60"}
+            <span id="holdBtn" lock-status = "60" class="btn btn-qing">HOLD</span>
+            {else /}
+            <span id="holdBtn" lock-status = "73" class="btn btn-qing">UNHOLD</span>
+            {/if}
+            {if condition="$orderDetail['order_master_number'] neq 0"}
+                {if condition="$orderDetail['order_status'] >= 200 && $orderDetail['order_status'] != 1400 && $orderDetail['order_status'] != 1900 && $orderDetail['order_status'] != 920 && $orderDetail['refunding_amount'] == 0 && $orderDetail['captured_amount']>0 && (!isset($orderDetail['order_refund_status']) || (isset($orderDetail['order_refund_status']) && $orderDetail['order_refund_status'] eq 2))"}
+                    <span id="retrunOrder" order_id = "73" class="btn btn-qing" onclick="Order.retrunOrder('{$orderDetail['order_number']}')">订单退款申请{$orderDetail['order_refund_status']}</span>
+                {/if}
+            {/if}
+
+            {if condition="isset($orderDetail['order_status']) && $orderDetail['order_status'] eq 1900"}
+                 <span  data-order-id = "{$orderDetail['order_id']}" class="btn btn-qing" >已关闭</span>
+            {else /}
+                {if condition="$orderDetail['order_status'] >= 200 && $orderDetail['order_status'] != 1400  && $orderDetail['order_status'] != 920 && $orderDetail['refunding_amount'] == 0 && $orderDetail['captured_amount']>0 && (!isset($orderDetail['order_refund_status']) || (isset($orderDetail['order_refund_status']) && $orderDetail['order_refund_status'] eq 2))"}
+                    <span id="retrunCloseOrder" order_id = "73" class="btn btn-qing" onclick="Order.retrunCloseOrder('{$orderDetail['order_number']}')">点击关闭</span>
+                {else/}
+                    <span id="order-shut-down" data-order-id = "{$orderDetail['order_id']}" data-order-status = "{$orderDetail['order_status']}" class="btn btn-qing" >点击关闭</span>
+                {/if}
+            {/if}
+
+        </div>
+    </div>
+    <div class="row col-md-12 border_bottom mt20 pr0 ml0 pb20">
+        <strong id="addressInformation">收货人信息</strong>
+        <button id="btn-copy-address" data-clipboard-target="#copy-textarea" class="fr btn-orange">复制地址</button>
+        <div class="pl10 c-h-dl-label100 mt10">
+            <!--  <dl class="c-h-dl-validator form-group clearfix">
+                 <dd class="v-title">
+                     <label>客户ID：</label>
+                 </dd>
+                 <dd class="red pt7">
+
+                      <a href="/MemberManagement/edit/id/{$orderDetail['customer_id']}" target="_blank"
+                          title="{$orderDetail['customer_name']}">
+                          {$orderDetail['customer_id'].'-'.$orderDetail['customer_name']}
+                     </a>
+                 </dd>
+             </dl> -->
+         		<textarea id="copy-textarea" class="js-copy hide" row="10" cols="50">&#10;FirstName: {$orderDetail.address.first_name}
+							&#10;LastName:{$orderDetail.address.last_name}
+							&#10;Phone Number: {$orderDetail.address.mobile|default=''}
+							&#10;Country/Region: {$orderDetail.address.country}
+							&#10;State/Province:{$orderDetail.address.state}
+							&#10;City: {$orderDetail.address.city}
+							&#10;Street1: {$orderDetail.address.street1}
+							&#10;Street2:{$orderDetail.address.street2}
+							&#10;Postal Code: {$orderDetail.address.postal_code}
+				</textarea>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label style="font-weight:bold;">收货人名：</label>
+                </dd>
+                <dd class="pt7">{$orderDetail["address"]["first_name"]}</dd>
+                <dd class="v-title">
+                    <label style="font-weight:bold;">收货人姓：</label>
+                </dd>
+                <dd class="pt7">{$orderDetail["address"]["last_name"]}</dd>
+                <dd class="v-title">
+                    <label style="font-weight:bold;">国家/地区：</label>
+                </dd>
+                <dd class="pt7">{$orderDetail["address"]["country"]}</dd>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label style="font-weight:bold;">省份：</label>
+                </dd>
+                <dd class="pt7">{$orderDetail["address"]["state"]}</dd>
+                <dd class="v-title">
+                    <label style="font-weight:bold;">市、区：</label>
+                </dd>
+                <dd class="pt7">{$orderDetail["address"]["city"]}</dd>
+                <dd class="v-title">
+                    <label style="font-weight:bold;">电话：</label>
+                </dd>
+                <dd class="pt7">{$orderDetail["address"]["mobile"]}</dd>
+                <dd class="v-title">
+                    <label style="font-weight:bold;">邮编：</label>
+                </dd>
+                <dd class="pt7">{$orderDetail["address"]["postal_code"]}</dd>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label style="font-weight:bold;">地址一：</label>
+                </dd>
+                <dd class="pt7">{$orderDetail["address"]["street1"]}</dd>
+                <dd class="v-title">
+                    <label style="font-weight:bold;">地址二：</label>
+                </dd>
+                <dd class="pt7">{$orderDetail["address"]["street2"]}</dd>
+                {if condition='$orderDetail["address"]["country_code"] == "BR"'}
+                <dd class="v-title">
+                    <label style="font-weight:bold;">CPF：</label>
+                </dd>
+                <dd class="pt7">{$orderDetail["address"]["cpf"]}</dd>
+                {/if}
+            </dl>
+        </div>
+    </div>
+    <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+        <strong>基本信息</strong>
+        <table class="table-ex tcenter mt10">
+            <thead>
+            <tr>
+                <th>订单编号</th>
+                <th>支付方式</th>
+                <th>金额</th>
+                <th>调整的价格</th>
+                <th>币种</th>
+                <th>订单类型</th>
+                <th>卖家账号</th>
+                <th>可得积分</th>
+                <th>汇率</th>
+                <th>客户ID</th>
+                <th>是否是FSC发货</th>
+                <th>订单来源</th>
+                <th>新支付系统</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{$orderDetail['order_number']}</td>
+                <td>{$orderDetail['pay_type']}</td>
+                <td>{$orderDetail['total_amount']}</td>
+                <td>{$orderDetail['adjust_price']}</td>
+                <td class="red"><b>{$orderDetail['currency_code']}</b></td>
+                <td>{$orderDetail['order_type_txt']}</td>
+                <td><a href="/seller/selleredit/id/{$orderDetail['store_id']}" target="_blank" title="{$orderDetail['store_name']}">{$orderDetail['store_id'].'-'.$orderDetail['store_name']}</a></td>
+                <td>{$orderDetail['order_points']}</td>
+                <td>{$orderDetail['exchange_rate']}</td>
+                <td> <a href="/MemberManagement/edit/id/{$orderDetail['customer_id']}" target="_blank"
+                        title="{$orderDetail['customer_name']}">
+                    {$orderDetail['customer_id'].'-'.$orderDetail['customer_name']}
+                </a></td>
+                <td>{if condition="$orderDetail['fsc_shipment'] eq 0"}不是{else/}是{/if}</td>
+                <td>{$order_from_data[$orderDetail['order_from']]}</td>
+                <td>
+                    {switch name="orderDetail.payment_system" }
+                        {case value="1" break="1"}否{/case}
+                        {case value="2" break="1"}是{/case}
+                        {default /}-
+                    {/switch}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+        <strong id="productInformation">商品信息</strong>
+        <button id="btn-copy-sku" data-clipboard-target="#copy-textarea-sku" class="fr btn-orange">复制SKU</button>
+        <table class="table-ex tcenter mt10">
+            <thead>
+            <tr>
+                <th>商品图片</th>
+                <th>商品名称</th>
+                <th>单价</th>
+                <th>实收单价</th>
+                <th>属性</th>
+                <th>SPU</th>
+                <th>SKU_CODE</th>
+
+                <th>数量</th>
+                <th>运输方式</th>
+                <th>已发数量</th>
+                <th>应收运费</th>
+                <th>留言</th>
+                <th>优惠金额</th>
+                <th>小计</th>
+            </tr>
+            </thead>
+            <style>
+                .td_img img{ width: 50px;}
+            </style>
+            <tbody id="productList">
+            <textarea id="copy-textarea-sku" class="js-copy hide" row="10" cols="10">{volist name="$orderDetail.itemList" id="item"}&#10;{$item.sku_num}{/volist}</textarea>
+
+            {volist name="$orderDetail['itemList']" id="it"}
+            <tr>
+                <td class="w100">
+                    <a href="{$dx_url}{$it.product_id}" target="_blank">
+                        <img src="{$dx_mall_img_url}{$it['product_img']}" alt="{$it['product_name']}" width="50" height="50" />
+                    </a>
+                </td>
+                <td class="w300 tleft">
+                    <a href="{$dx_url}{$it.product_id}" target="_blank">
+                        {$it['product_name']}
+                    </a>
+                </td>
+                <td>{$it['product_price']} / {$it['product_unit']}</td>
+                <td>{$it['captured_price']} / {$it['product_unit']}</td>
+                <td class="td_img">
+                    {$it["product_attr_desc_html"]}
+                </td>
+                <td>
+                    {$it["product_id"]}
+                </td>
+                <td class="sku-id">
+                    {$it["sku_num"]}
+                </td>
+
+                <td>{$it['product_nums']}</td>
+                <td>{$it['shipping_model']}</td>
+                <td>
+                    {if condition="isset($it['code_sum']) "}
+                    {$it['code_sum']}
+                    {else /}
+                    0
+                    {/if}
+                </td>
+                <td>
+                    {if condition="$it.shipping_model eq 'NOCNOC' "}
+                    0
+                    {else /}
+                    {$it['shipping_fee']}
+                    {/if}
+                </td>
+                <td>{$it['message']}</td>
+                <td>{$it['discount_total']}</td>
+                <td><?php echo round($it['product_nums']*$it['captured_price']-$it['product_nums']*$it['discount_total'], 2); ?></td>
+            </tr>
+            {/volist}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="16" class="bg-gray tright">
+                    <span>合计：</span>
+                    <!--<span id="spTotal">-->
+                    <strong class="red">{$orderDetail['currency_code']}<span>{$orderDetail['captured_amount']} {if condition="$orderDetail['currency_code'] neq 'USD'"}(${$orderDetail['captured_amount_usd']}){/if}</span></strong>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+        <strong id="costInformation">费用信息</strong>
+        <table class="table-ex tcenter mt10">
+            <thead>
+            <tr>
+                <th>商品合计</th>
+                <th>运费</th>
+                <!-- <th>优惠券</th> -->
+                <th>活动折扣</th>
+                <th>关税险金额</th>
+                <th>处理费</th>
+                <th>订单总金额</th>
+                <th>应付款金额</th>
+                <th>实收金额</th>
+                <th>退款金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{$orderDetail['currency_code_str']} {$orderDetail['goods_total']}</td>
+                <td>{$orderDetail['currency_code_str']} {$orderDetail['shipping_fee']}</td>
+                <!--   <td>TODO</td> -->
+                <td>
+                    {$orderDetail['currency_code_str']} {$orderDetail['discount_total']}
+                </td>
+                <td>{$orderDetail['currency_code_str']} {$orderDetail['tariff_insurance']}</td>
+                <td>{$orderDetail['currency_code_str']} {$orderDetail['handling_fee']}</td>
+                <td>{$orderDetail['currency_code_str']} {$orderDetail['total_amount']}</td>
+              <!--   <td>{$orderDetail['grand_total']}</td> -->
+                <td>{$orderDetail['currency_code_str']} {$orderDetail['total_amount'] - $orderDetail['discount_total']}</td>
+                <td>{$orderDetail['currency_code_str']} {$orderDetail['captured_amount']}</td>
+                <td>{$orderDetail['currency_code_str']} {$orderDetail['refunded_amount']}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+        <strong id="transactionDetails">交易明细</strong>
+        <table class="table-ex tcenter mt10">
+            <thead>
+            <tr>
+                <th>第三方交易TxnID</th>
+                <th>支付交易ID</th>
+                <th>交易总价</th>
+                <th>币种</th>
+                <th>交易类型</th>
+                <th>交易时间</th>
+                <th>支付方式（渠道）</th>
+                <th>支付状态</th>
+                <th>第三方交易标识</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            {volist name="$orderDetail['order_sales']" id="os"}
+            <tr>
+                <td>{$os['third_party_txn_id']}</td>
+                <td>{$os['payment_txn_id']}</td>
+                <td>{$orderDetail['currency_code_str']} {$os['amount']}</td>
+                <td>{$os['currency_code']}</td>
+                <td>{$os['txn_type']}</td>
+                <td>{$os['create_on'] |date="Y-m-d H:i:s",###}</td>
+                <td>{if condition="$os['third_party_method'] neq 'Unknown' && $os['third_party_method'] neq ''"}{$os['third_party_method']}({$os['payment_method']}){else/}{$os['payment_method']}{/if}</td>
+                <td>{$os['txn_result']}</td>
+                <td>{$os['payment_parent_txn_id']}</td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+    {if condition="!empty($orderDetail['order_refund_data'])"}
+    <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+        <strong>退款信息</strong>
+        <table class="table-ex tcenter mt10">
+            <thead>
+            <tr>
+                <th>退款单号</th>
+                <th>退款TxnID</th>
+                <th>退款金额</th>
+                <th>退款状态</th>
+                <th>退款来源</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="$orderDetail['order_refund_data']" id="as"}
+            <tr>
+                <td>{$as['refund_number']}</td>
+                <td>{$as['payment_txn_id']}</td>
+                <td>{$orderDetail['currency_code_str']} {$as['captured_refunded_fee']}</td>
+                <td>
+                    {if condition="$as['status'] eq 1"}
+                    退款申请中
+                    {elseif condition="$as['status'] eq 2"/}
+                    退款申请成功
+                    {else/}
+                    退款申请失败
+                    {/if}
+                </td>
+                <td>
+                    {if condition="$as['initiator'] eq 1"}
+                    买家
+                    {elseif condition="$as['initiator'] eq 2"/}
+                    seller
+                    {else/}
+                    admin
+                    {/if}
+                </td>
+                <td class="w700" title="{$as['remarks']}">
+                    <div class="w700 exceed">{$as['remarks']}</div>
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+    {/if}
+    {if condition="!empty($orderDetail['after_sale_apply'])"}
+    <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+        <strong>售后信息</strong>
+        <table class="table-ex tcenter mt10">
+            <thead>
+            <tr>
+                <th>售后金额</th>
+                <th>付款标识</th>
+                <th>售后状态</th>
+                <th>售后类型</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="$orderDetail['after_sale_apply']" id="as"}
+            <tr>
+                <td>{$orderDetail['currency_code_str']} {$as['captured_refunded_fee']}</td>
+                <td>{$as['payment_txn_id']}</td>
+                <td>{$as['status_name']}</td>
+                <td>
+                    {if condition="$as['type'] eq 1"}
+                    换货
+                    {elseif condition="$as['type'] eq 2"/}
+                    退货
+                    {else/}
+                    退款
+                    {/if}
+                </td>
+                <td class="w700" title="{$as['remarks']}">
+                    <div class="w700 exceed">{$as['remarks']}</div>
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+{/if}
+
+
+    {if condition="!empty($orderDetail['order_refun_operation'])"}
+    <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+        <strong>退款记录</strong>
+        <table class="table-ex tcenter mt10">
+            <thead>
+            <tr>
+                <th>退款来源</th>
+                <th>退款类型</th>
+                <th>退款金额</th>
+                <th>操作人</th>
+                <th>备注</th>
+                <th>添加时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="$orderDetail['order_refun_operation']" id="as"}
+            <tr>
+                <td>
+                    {if condition="$as['refund_from'] eq 1"}
+                    seller
+                    {elseif condition="$as['refund_from'] eq 2"/}
+                    买家
+                    {else/}
+                    admin
+                    {/if}
+                   </td>
+                <td>
+                    {if condition="$as['refund_type'] eq 1"}
+                    赔保退款
+                    {elseif condition="$as['refund_type'] eq 2"/}
+                    售后退款
+                    {elseif condition="$as['refund_type'] eq 3"/}
+                    订单取消退款
+                    {else/}
+                    普通退款
+                    {/if}
+                </td>
+                <td>{$orderDetail['currency_code_str']} {$as['refund_amount']}</td>
+                <td>
+                    {$as['operator_name']}
+                </td>
+                <td class="w500" title="{$as['reason']}">
+                    <div class="w700 exceed">{$as['reason']}</div>
+                </td>
+                <td>
+                    {$as['add_time']|date="Y-m-d H:i:s",###}
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+    {/if}
+    <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+        <strong>包裹信息 <a target="_blank" class="btn btn-qing fr add-info">人工上传</a></strong>
+        <table class="table-ex tcenter mt10">
+            <thead>
+            <tr>
+                <th>订单号</th>
+                <th>包裹号码</th>
+                <th>追踪号</th>
+                <th>SKU</th>
+                <th>SKU数量</th>
+                <th>发货变化SKU</th>
+                <th>添加时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="$orderDetail['order_tracking_number']" id="otn"}
+            <tr>
+                <td>{$otn['order_number']}</td>
+                <td>{$otn['package_number']}</td>
+                <td><a style="color: #ca3737;" target="_blank" href="/order/logisticsNode/package_id/{$otn.package_id}/o_id/{$orderDetail['order_id']}">{$otn['tracking_number']}</a></td>
+                <td>
+                {volist name="$otn['item_info']" id="item_info"}
+                  {$item_info.sku_id}x{$item_info.sku_qty};
+                {/volist}
+                </td>
+                <td>{$otn['product_all_num']}</td>
+                <td>
+                    {volist name="$otn['item_info']" id="item_info2"}
+                        {if condition='$item_info2["sku_id"] != $item_info2["true_sku_id"] && !empty($item_info2["true_sku_id"])'}
+                            {$item_info2.true_sku_id}({$item_info2.sku_id})x{$item_info2.sku_qty};
+                        {else/}
+                            -
+                        {/if}
+                    {/volist}
+                </td>
+
+                <td>{$otn['add_time'] |date="Y-m-d H:i:s",###}</td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+        <strong>订单状态变更记录</strong>
+        <table class="table-ex tcenter mt10">
+            <thead>
+            <tr>
+                <th>原状态</th>
+                <th>新状态</th>
+                <th>修改人</th>
+                <th>修改时间</th>
+                <th>变化原因</th>
+                <th>变化描述</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="$orderDetail['order_status_change']" id="osc"}
+            <tr>
+                <td>{$osc['order_status_from_txt']}</td>
+                <td>{$osc['order_status_txt']}</td>
+                <td>{$osc['create_by']}</td>
+                <td>{$osc['create_on'] |date="Y-m-d H:i:s",###}</td>
+                <td class="w400" title="{$osc['change_reason']}">
+                    <div class="w400 exceed">{$osc['change_reason']}</div>
+                </td>
+                <td class="w400" title="{$osc['chage_desc']}">
+                    <div class="w400 exceed">{$osc['chage_desc']}</div>
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+    <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+        <strong>订单备注</strong>
+        <table class="table-ex tcenter mt10">
+            <thead>
+            <tr>
+                <th>操作方</th>
+                <th>添加操作人</th>
+                <th>修改操作人</th>
+                <th>备注/留言</th>
+                <th>添加时间</th>
+                <th>修改时间</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                {if condition="!empty($remarks)"}
+                <td>
+                    平台
+                </td>
+                <td>{$remarks['add_user_name']?$remarks['add_user_name']:''}</td>
+                <td class="message-content" >{$remarks['edit_user_name']?$remarks['edit_user_name']:''}</td>
+                <td class="message-content">{$remarks['remarks']?$remarks['remarks']:''}</td>
+                <td style="width: 139px;" >{$remarks['add_time'] |date="Y-m-d H:i:s",###}</td>
+                <td style="width: 139px;" >
+
+                    {if condition="!empty($remarks['edit_time'])"}{$remarks['edit_time'] |date="Y-m-d H:i:s",###}{/if}
+                </td>
+                {/if}
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+        <strong id="orderLeaveMeaage">订单留言记录</strong>
+        <form id="ReplyOrderMessage" action="{:url('OrderMessage/reply_order_message')}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="order_id"  value="{$orderDetail['order_id']}">
+       <!-- <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">-->
+
+            <div class="message-edit-box mt10">
+                <span class="message-edit-box-title" style="top:15px">选择模板：</span>
+                <div class="btn-wrap w800 clearfix">
+                    <select name="order_message_template" id="order_message_template" class="form-control input-small inline">
+                        <option>请选择模板</option>
+                        {foreach name="order_message_template" item="vo"}
+                            <option value="{$vo['content_en']}">{$vo['remark']}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <span class="message-edit-box-title">回复内容：</span>
+                <textarea id="message" name="message" style="width:380px;height:300px;"></textarea>
+                <div class="btn-wrap w800 clearfix">
+                    <p class="fl">
+                        <span  class="btn btn-qing reply mt10">回复</span>
+                        <span class="btn btn-qing solved mt10">已解决</span>
+                        <span class="btn btn-qing reply-solved mt10">回复并解决</span>
+                    </p>
+                    <p class="fr mt5">
+                        {if condition="!empty($UserNewOrderMessageData)" && $UserNewOrderMessageData['is_reply']==1}
+                            {if condition="$group_id eq 12 || $group_id eq 7 || $group_id eq 0"}
+                                <select name="distribution_admin_user" class="form-control input-small inline distribution_admin_user">
+                                    <option value="0">未分配</option>
+                                    {volist name="admin_user" id="user"}
+                                    <option {if condition="$UserNewOrderMessageData['distribution_admin_id'] eq $user['id']"} selected = "selected"{/if} value="{$user['id']}">{$user['username']}</option>
+                                    {/volist}
+                                </select>
+                                <a data-id="{$UserNewOrderMessageData['id']}" class="btn btn-gray relative distribution" href="javascript:void (0);" post-url="{:url('OrderMessage/distribution_order_message')}">分配</a>
+                            {/if}
+                            {if condition="$UserNewOrderMessageData['is_crash']==2"}
+                            <a data-id="{$UserNewOrderMessageData['id']})" class="btn btn-gray relative crash" href="javascript:void (0);" post-url="{:url('OrderMessage/crash_order_message')}" is-crash="1">设置紧急处理</a>
+                            {else/}
+                        <a data-id="{$UserNewOrderMessageData['id']})" class="btn btn-gray relative crash" href="javascript:void (0);" post-url="{:url('OrderMessage/crash_order_message')}" is-crash="2">设置非紧急处理</a>
+                            {/if}
+                        {/if}
+                    </p>
+                </div>
+            </div>
+                <!-- </div>-->
+        </form>
+        <table class="table-ex tcenter mt10 message-table">
+            <thead>
+            <tr>
+                <th>操作方</th>
+                <th>操作人</th>
+                <th class="w600">备注/留言</th>
+                <th>修改时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="$orderDetail['sales_order_message']" id="som"}
+            <tr>
+                <td>
+                    {if condition="$som['message_type'] == 1 "}
+                    卖家
+                    {elseif condition="$som['message_type'] == 2 "/}
+                    买家
+                    {elseif condition="$som['message_type'] == 3 "/}
+                    平台
+                    {/if}
+                </td>
+                <td>{$som['user_name']}</td>
+                <td class="message-content" style="text-align: left;word-wrap:break-word">
+                    <?php echo htmlspecialchars_decode($som['message']);?>
+                        {php}
+                            if (!empty($som['file_url'])){
+                                $som['file_url'] = htmlspecialchars_decode($som['file_url']);
+                                if(false === strpos($som['file_url'], 'http')){
+                                    echo '<img src="'.$dx_mall_img_url.$som['file_url'].'">';
+                                }else{
+                                    echo '<img src="'.$som['file_url'].'">';
+                                }
+                            }
+                        {/php}
+                        <!--<img src="{$dx_mall_img_url}{$som['file_url']}">-->
+                    {notempty name="som['file_url']"}
+                    {/notempty}
+                </td>
+                <td style="width: 139px;" >{$som['create_on'] |date="Y-m-d H:i:s",###}</td>
+                <td style="width: 196px;"><span  class="btn btn-qing translate-cn">翻译中文</span> <span class="btn btn-qing translate-en">翻译英文</span></td>
+                <!-- <td class="w400" title="{$osc['change_reason']}">
+                    <div class="w400 exceed">{$osc['change_reason']}</div>
+                </td> -->
+                <!-- <td class="w400" title="{$osc['chage_desc']}">
+                    <div class="w400 exceed">{$osc['chage_desc']}</div>
+                </td> -->
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+        <strong>历史留言记录</strong>
+        <table class="table-ex tcenter mt10">
+            <thead>
+            <tr>
+                <th>订单号</th>
+                <th>金额(USD)</th>
+                <th>店铺</th>
+                <th>消息内容</th>
+                <th>分配状态</th>
+                <th>提交时间</th>
+                <th>留言状态</th>
+                <th>操作人</th>
+                <th>操作</th>
+              <!--   <th>添加时间</th> -->
+               <!--  <th>修改时间</th> -->
+            </tr>
+            </thead>
+            <tbody class="record_list">
+
+            </tbody>
+        </table>
+        <div id="orderpage"></div>
+        <ul class="go-back-menu js-go-back-menu">
+            <li class="top">
+                <b class="fa fa-3x fa-angle-up"></b>
+            </li>
+            <li>
+                <a href="#addressInformation">收货人信息</a>
+            </li>
+            <li>
+                <a href="#productInformation">商品信息</a>
+            </li>
+            <li>
+                <a href="#costInformation">费用信息</a>
+            </li>
+            <li>
+                <a href="#transactionDetails">交易明细</a>
+            </li>
+            <li>
+                <a href="#orderLeaveMeaage">订单留言</a>
+            </li>
+            <li class="bottom">
+                <i class="fa fa-3x fa-angle-down"></i>
+            </li>
+            <li class="shut-down">
+                <i class="fa fa-times"></i>
+            </li>
+        </ul>
+    </div>
+    <input type="hidden" id="store_id" value="{$orderDetail['store_id']}">
+    <input type="hidden" id="logisticsPop-order-number" value="{$orderDetail['order_number']}">
+
+</div>
+<div id="enlarge_images" style="display: none;"></div>
+<script src="/assets/plugins/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/js/plugin/clipboard/dist/clipboard.min.js"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<script src="/static/js/order.js" type="text/javascript"></script>
+<script>
+    /*实例化编辑器*/
+    /*实例化编辑器*/
+    KindEditor.ready(function(K) {
+        window.editor = K.create('#message',{
+            afterBlur: function () { this.sync();},
+            uploadJson : '/OrderMessage/remoteUpload',
+            fileManagerJson : '/OrderMessage/remoteUpload',
+            imgFile:'file',
+            allowFileManager : true,
+            width:'800px',
+            height:'300px',
+        });
+    });
+    $(function() {
+        App.init();
+        Order.orderDetail();
+        Order.historyRecordList("{$orderDetail['customer_id']}","{$orderDetail['order_id']}");
+        // layer.config({
+        //     extend: 'extend/layer.ext.js'
+        // });
+        /*Order.distribution();
+        Order.crash();*/
+    })
+    $(function(){
+        Global.displayCopy();
+        var clipboard = new ClipboardJS('#btn-copy-address', {
+            text: function() {
+                //console.log($("#copy-textarea").val())
+                // var txt = $("#copy-textarea").val();
+                // return parser.parseFromString(txt, "text/html")
+                return $("#copy-textarea").val();
+            }
+        });
+
+        clipboard.on('success', function(e) {
+            layer.msg("复制成功");
+        });
+
+        clipboard.on('error', function(e) {
+            layer.msg("复制失败");
+        });
+    })
+
+    $(function(){
+        Global.displayCopy();
+        var clipboards = new ClipboardJS('#btn-copy-sku', {
+            text: function() {
+                return $("#copy-textarea-sku").val();
+            }
+        });
+
+        clipboards.on('success', function(e) {
+            layer.msg("复制成功");
+        });
+
+        clipboards.on('error', function(e) {
+            layer.msg("复制失败");
+        });
+    })
+
+    $(function(){
+        //鼠标移入缩略图放大图片
+        $(".message-content img").mouseover(function(event) {
+            var _this = $(this),
+                imgSrc = _this.attr("src"),
+                enlarge_images = $("#enlarge_images"),
+                top = $(document).scrollTop() + event.clientY + 10 + "px";
+            left = $(document).scrollLeft() + event.clientX + 10 + "px";
+            enlarge_images.show();
+            enlarge_images.html('<img width="600" height="600" src="' + imgSrc + '" />');
+            enlarge_images.css({"top":top, "left":left});
+        });
+        //鼠标移出缩略图隐藏放大的图片
+        $(".message-content img").mouseout(function(event) {
+            var enlarge_images = $("#enlarge_images");
+            enlarge_images.hide();
+            enlarge_images.html('');
+        });
+        $(".message-content img").click(function(event) {
+            window.open($(this).attr("src"));
+        })
+    })
+</script>
+<!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+
+</html>

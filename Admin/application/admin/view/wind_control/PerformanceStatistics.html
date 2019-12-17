@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8" />
+    <title>CRC处理情况统计</title>
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/WindControl.css" type="text/css" />
+</head>
+<body>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+    <!-- BEGIN SIDEBAR -->
+    <!--#include file="layout/sidebar.html"-->
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content pt0 ml20 pl0">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                    <div>
+                        <div class="tab-content mt25">
+                            <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                <div class="search-btn-wrap bborder-no">
+                                    <form id="navbar" class="navbar-left" action="PerformanceStatistics" method="post">
+                                        <ul class="c-h-ul search-ul query-ul">
+                                            <li class="pb6">
+                                                <label class="c-h-ul-li-title">TxnType:</label>
+                                                <select name="channel" class="form-control input-small inline">
+                                                    <option value="">请选择</option>
+                                                    {volist name="$Channel"  id="cl"}
+                                                    <option {if condition="input('channel') == $cl"} selected = "selected" {/if}  value="{$cl}">{$cl}</option>
+                                                    {/volist}
+                                                </select>
+                                            </li>
+                                            <li class="w440">
+                                                <label class="c-h-ul-li-title" for="reservationtime">Time Duration</label>
+                                                <input type="text" name="startTime" id="reservationtime" class="form-control input-small startTime h29" value="{:input('startTime',$startTime)}" autocomplete="off" />
+                                                <span class="time-text">至</span>
+                                                <input type="text" name="endTime" id="canceltime" class="form-control input-small endTime h29" value="{:input('endTime',$endTime)}" autocomplete="off" />
+                                            </li>
+                                            <li class="w240">
+                                                <label class="c-h-ul-li-title w60"></label>
+                                                <input type="hidden" name="is_export" id="is_export" value="0">
+                                                <a onclick="javascript:;" class="btn btn-gray query-data" href="javascript:;">search</a>
+                                                <a onclick="javascript:;" class="btn btn-gray export-data" href="javascript:;">导出</a>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                </div>
+                                <!-- start base table -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table-basic table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th class="fbold">风控人员</th>
+                                                    <th class="fbold">Capture数量</th>
+                                                    <th class="fbold">Capture金额</th>
+                                                    <th class="fbold">Void总数</th>
+                                                    <th class="fbold">Void金额</th>
+                                                    <th class="fbold">订单处理时间</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {volist name="$windData"  id="data"}
+                                                <tr>
+                                                    <td>{$data.name}</td>
+                                                    <td>{$data.capture_num}</td>
+                                                    <td>{$data.capture_amount}</td>
+                                                    <td>{$data.void_num}</td>
+                                                    <td>{$data.void_amount}</td>
+                                                    <td>{$data.time}</td>
+                                                </tr>
+                                                {/volist}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- end base table -->
+                                <div class="row ml0 mr0 mt20">
+                                    <div id="PerformanceStatistics" class="col-md-6" style="height: 500px;"></div>
+                                    <div id="PerformanceStatistics_amount" class="col-md-6" style="height: 500px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/scripts/custom/echarts.js"></script>
+    <script type="text/javascript" src="/static/js/PerformanceStatistics.js"></script>
+</body>
+
+</html>

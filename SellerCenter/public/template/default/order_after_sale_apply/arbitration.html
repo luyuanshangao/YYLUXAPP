@@ -1,0 +1,340 @@
+{include file="layout/main" /}
+<link rel="stylesheet" href="{$css}/module/myAccount.css"/>
+	<div class="main-box fl arbitration">
+		<div class="waring">
+			<div class="fb f14">
+				<span>{:lang('status')}:</span>
+				<span>{$data.status_str|default=''}</span>
+			</div>
+			<div class="fb f14">
+				<span>{:lang('after_sale_reason')}:</span>
+				<span>{$data.after_sale_reason_str|default=''}</span>
+			</div>
+		</div>
+		<div class="box-white mt10">
+			<h3 class="pb10">{:lang('order_information')}</h3>
+			<div class="pt10 pb10 bb-gray">
+				<span class="fb">{:lang('receiving_address')}:</span>
+				<span class="pl10">
+					{$order_info.shipping_address.first_name|default=''}
+					{$order_info.shipping_address.last_name|default=''},
+					{$order_info.shipping_address.phone_number|default=''},
+					{$order_info.shipping_address.country|default=''},
+					{$order_info.shipping_address.state|default=''},
+					{$order_info.shipping_address.city|default=''},
+					{$order_info.shipping_address.street1|default=''},
+					{$order_info.shipping_address.street2|default=''}
+					<!--xxx,86-1356256984,guangdong shenzhen nanshang xili,0000--></span>
+			</div>
+			<div class="pt10 pb10 bb-gray">
+				<span class="fb">{:lang('buyer_information')}</span>
+				<div class="clearfix mt10">
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('name')}:</dt>
+						<dd>{$order_info.customer_name|default=''}</dd>
+					</dl>
+					<!--<dl class="dl-layout fl w300">
+						<dt class="w150 tright">Real name:</dt>
+						<dd>wang XXX</dd>
+					</dl>-->
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('city')}:</dt>
+						<dd>{$order_info.shipping_address.city|default=''}</dd>
+					</dl>
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('contact_number')}:</dt>
+						<dd>{$order_info.shipping_address.phone_number|default=''}</dd>
+					</dl>
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('email')}:</dt>
+						<dd>{$order_info.shipping_address.email|default=''}</dd>
+					</dl>
+				</div>
+			</div>
+
+			<div class="pt10 bb-gray pb10">
+				<span class="fb">{:lang('information')}:</span>
+				<div class="clearfix mt10">
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('after_sale_number')}:</dt>
+						<dd>{$data.after_sale_number|default=''}</dd>
+					</dl>
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('order_number')}:</dt>
+						<dd>{$order_info.order_number|default=''}</dd>
+					</dl>
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('creation_time')}:</dt>
+						<dd>{notempty name='data.add_time'}{:date('Y-m-d H:i:s', $data['add_time'])}{else/}-{/notempty}</dd>
+					</dl>
+				</div>
+				<table class="table-gray mt10">
+					<tr>
+						<th>{:lang('goods')}</th>
+						<th>{:lang('attribute')}</th>
+						<th>{:lang('price')}</th>
+						<th>{:lang('quantity')}</th>
+						<th>{:lang('total_price')}</th>
+					</tr>
+					{volist name='data.item' id='val'}
+					<tr>
+						<td>
+							<div class="fl w50">
+								<img src="{:PHOTOPATH}{$val.product_img|default=''}" alt="img" width="50px" height="50px" alt="">
+							</div>
+							<div class="fl w200 ml10">
+								<a href="#">{$val.product_name|default=''}</a>
+							</div>
+						</td>
+						<td class="gray">
+							{$val.product_attr_desc|default=''}
+						</td>
+						<td>{$val.product_price|default=''}</td>
+						<td>{$val.product_nums|default=''}</td>
+						<td>
+							{php}echo round($val['product_price'] * $val['product_nums'],2){/php}
+						</td>
+					</tr>
+					{/volist}
+				</table>
+				<div class="tright mt20 f14">
+					{:lang('total_amount_of_order')}:
+					<b class="red">{$data.total_price|default=''}</b>
+				</div>
+			</div>
+
+			{if condition='$have_arbitration != 1'}
+			<!-- Arbitration application -->
+			<div class="pt10 pb10">
+				<dl class="dl-layout w500">
+					<dt class="w100 tright pt50"><span class="red">*</span>{:lang('describe')}:</dt>
+					<dd>
+						<textarea rows="6" cols="50" class="pd10 describe"></textarea>
+						<div class="err red hide"></div>
+					</dd>
+				</dl>
+				<dl class="dl-layout">
+					<dt class="w100 tright pt15">{:lang('upload_voucher')}:</dt>
+					<dd>
+						<a id="uploadCustorVoucher" href="javascript:void(0);" class="btn-orange-light">{:lang('upload_a_picture')}</a>
+						<ul id="uploadCustorVoucherList" class='upload-list'></ul>
+						<p class="gray mt10 mb20">{:lang('picture_maximum_5M')} <span class="red">6</span> {:lang('fix_support')}</p>
+						
+						<a href="javascript:void(0);" class="btn-orange confirm-application">{:lang('confirm_application')}</a>
+						<a href="javascript:void(0);" class="btn-default ml20 cancel-application">{:lang('cancel_application')}</a>
+					</dd>
+				</dl>
+			</div>
+			{else/}
+			<!-- View arbitration application -->
+			<div class="pt10 pb10 view-arbitration-application relative mt10">
+				<h3 class="view-arbitration-title absolute">{:lang('buyer_description_details')}</h3>
+				<div class="arbitration-des">
+					<p>{$cstomer_arbitration_info.content|default=''}</p>
+				</div>
+				{notempty name='cstomer_arbitration_info.imgs'}
+				<dl class="dl-layout">
+					<dt class="w100 tright">{:lang('voucher')}：</dt>
+					<dd>
+                        {volist name='cstomer_arbitration_info.imgs' id='i_val'}
+						    <img src="{:DX_FTP_ACCESS_URL}{$i_val}" width="50">
+                        {/volist}
+					</dd>
+				</dl>
+				{/notempty}
+
+				{if condition='$data["status"] == 6'}
+				<div class="mt20">
+					<a href="javascript:void(0);" class="btn-orange revoke-arbitration">{:lang('revoke_arbitration')}</a>
+				</div>
+				{/if}
+				
+			</div>
+			<!-- Judging history -->
+			<div class="pt10 pb10 mt10 dispute-history">
+				<h3 class="dispute-history-title">{:lang('dispute_history')}</h3>
+				<div class="dispute-history-main clearfix">
+					<div class="dispute-history-main-top clearfix pt10">
+						<div class="dispute-left">
+							<span>{:lang('buyer')}:</span>
+						</div>
+						<div class="dispute-right">
+							<span>{:lang('seller')}:</span>
+						</div>
+					</div>
+					<div class="history-list mt10 clearfix">
+						{volist name='data.log' id='l_val'}
+						{switch name='$l_val.user_type' }
+							{case value='1' break='1'}
+							<div class="history-list-item clearfix buyer">
+								<div class="dispute-left">
+									<!--<div class="title">Seller paid successfully</div>-->
+									<dl class="dl-layout">
+										<dt>{:lang('details')}:</dt>
+										<dd>
+											{$l_val.content|default=''}
+										</dd>
+									</dl>
+									{notempty name='l_val.imgs'}
+									<dl class="dl-layout">
+										<dt>{:lang('voucher')}:</dt>
+										<dd>
+											{volist name='l_val.imgs' id='img'}
+											<img src="{:DX_FTP_ACCESS_URL}{$img}" alt="" width="50" height="50">
+											{/volist}
+										</dd>
+									</dl>
+									{/notempty}
+									<div class="icon absolute">
+										<div class="triangle-facing-right"></div>
+										<div class="triangle-facing-left"></div>
+									</div>
+								</div>
+								<div class="dispute-right">
+									{:date('Y-m-d', $l_val['add_time'])}
+								</div>
+							</div>
+							{/case}
+							{case value='2' break='1'}
+							<div class="history-list-item clearfix seller">
+								<div class="dispute-right">
+                                    {:date('Y-m-d', $l_val['add_time'])}
+								</div>
+								<div class="dispute-left">
+									<dl class="dl-layout">
+										<dt>{:lang('details')}:</dt>
+										<dd>
+											{$l_val.content|default=''}
+										</dd>
+									</dl>
+									{notempty name='l_val.imgs'}
+									<dl class="dl-layout">
+										<dt>{:lang('voucher')}:</dt>
+										<dd>
+											{volist name='l_val.imgs' id='img'}
+											<img src="{:DX_FTP_ACCESS_URL}{$img}" alt="" width="50" height="50">
+											{/volist}
+										</dd>
+									</dl>
+									{/notempty}
+									<div class="icon absolute">
+										<div class="triangle-facing-right"></div>
+										<div class="triangle-facing-left"></div>
+									</div>
+								</div>
+							</div>
+						{/case}
+							{case value='3' break='1'}
+							<div class="history-list-item clearfix platform">
+								<div class="dispute-right">
+                                    {:date('Y-m-d', $l_val['add_time'])}
+								</div>
+								<div class="dispute-left">
+									<dl class="dl-layout">
+										<dt>{:lang('details')}:</dt>
+										<dd>
+											{$l_val.content|default=''}
+										</dd>
+									</dl>
+									{notempty name='l_val.imgs'}
+									<dl class="dl-layout">
+										<dt>{:lang('voucher')}:</dt>
+										<dd>
+											{volist name='l_val.imgs' id='img'}
+											<img src="{:DX_FTP_ACCESS_URL}{$img}" alt="" width="50" height="50">
+											{/volist}
+										</dd>
+									</dl>
+									{/notempty}
+									<div class="icon absolute">
+										<div class="triangle-facing-right"></div>
+										<div class="triangle-facing-left"></div>
+									</div>
+								</div>
+							</div>
+							{/case}
+						{/switch}
+						{/volist}
+					</div>
+				</div>		
+			</div>
+			{/if}
+			<!-- <a href="/OrderAfterSaleApply/index.html" class="back-to-list mt20">Back</a> -->
+			<div class="dialog-box logistics-message-dialog hide">
+				<div class="dialog-bg"></div>
+				<div class="dialog-cont">
+					<i class="close-dialog iconfontmy icon-cha"></i>
+					<div class="dialog-main">
+						<dl class="dl-layout w500">
+							<dt class="w100 tright mt5">{:lang('logistics')}:</dt>
+							<dd>
+								<select id="Logistics" class="w200">
+									<option value="">{:lang('stand')}</option>
+								</select>
+							</dd>
+						</dl>
+						<dl class="dl-layout w500">
+							<dt class="w100 tright mt5">{:lang('logistics_order')}:</dt>
+							<dd>
+								<input id="LogisticsOrder" type="text" class="w200" maxlength="100" />
+								<div class="err-tips red mt5 hide">{:lang('the_field_logistics_order_required')}.</div>
+							</dd>
+						</dl>
+						<dl class="dl-layout w500">
+							<dt class="w100 tright mt5">{:lang('contact_number')}:</dt>
+							<dd>
+								<input id="ContactNumber" type="text" class="w200" maxlength="100"/>
+								<div class="err-tips red mt5 hide">{:lang('the_field_contact_number_required')}.</div>
+							</dd>
+						</dl>
+						<dl class="dl-layout">
+							<dt class="w100 tright pt15">{:lang('upload_voucher')}:</dt>
+							<dd>
+								<a id="uploadLogisicVoucher" href="javascript:void(0);" class="btn-orange-light">Upload</a>
+								<ul id="uploadLogisicVoucherList" class='upload-list'>
+									<li></li>
+								</ul>
+								<p class="gray mt10 mb20">{:lang('picture_maximum_5M')} 6 {:lang('fix_support')}</p>
+							</dd>
+						</dl>
+						<dl class="dl-layout w500">
+							<dt class="w100 tright mt5">{:lang('explain')}:</dt>
+							<dd>
+								<textarea id="Explain" class="pd10" name="" id="" cols="35" rows="10" maxlength="1000"></textarea>
+								<div class="err-tips red mt5 hide">{:lang('the_field_explain_required')}.</div>
+								<p class="gray mt10">{:lang('enter_within_1000_characters')}</p>
+							</dd>
+						</dl>
+						<dl class="dl-layout w500">
+							<dt class="w100 tright mt5"></dt>
+							<dd>
+								<a id="logisicDialogtYes" href="javascript:void(0);" class="btn-orange-light">{:lang('yes')}</a>
+								<a id="logisictDialogNo" href="javascript:void(0);" class="btn-default ml20">{:lang('cancel')}</a>
+							</dd>
+						</dl>
+					</div>
+				</div>
+			</div>
+			<div class="pop-box hide logistics-message-pop">
+				<div class="pop-bg"></div>
+				<div class="pop-cont">
+					<div class="colse gray">
+						<i class="iconfontmy icon-icon_wrong f14"></i>
+					</div>
+					<div class="cont tcenter pt10 f16">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{include file="layout/footer"/}
+<script type="text/javascript">
+	var ajax_url = {$ajax_url|default=''},
+    	after_sale_id = {:input("after_sale_id")},
+		upload_img_url = ajax_url.uploadImgs,
+        photopath = '{:PHOTOPATH}';
+</script>
+<script src="{$js}/module/arbitration.js"></script>
+</body>
+</html>

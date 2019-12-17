@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>邮件任务列表页</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/edm_system.css" type="text/css" />
+
+</head>
+
+<body>
+    <div class="row ml10 mr10 mt20 pd10">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="search-btn-wrap bborder-no pb15">
+                    <form class="navbar-left" action="" method="">
+                        <div class="w600">
+                            <div class="col-lg-6">
+                                <a class="btn btn-gray mr5" href="/Emailtask/saveTask">新增</a>
+                                <a class="btn btn-gray mr5 js-del-task" href="javascript:;">删除</a>
+                            </div>
+                            <div class="col-lg-6 pl0 pr0">
+                                <div class="input-group">
+                                    <input type="text" class="form-control h29" placeholder="名称" value="{$params.title}"
+                                        name="name">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary h29 search-btn search-task js-search-emailtask"
+                                            type="button">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table-basic table-padding table-hover task-edm-list">
+                    <thead>
+                        <tr>
+                            <th class="tcenter" width="50">
+                                <input type="checkbox" class="select-All js-select-All">
+                            </th>
+                            <th class="tleft" width="200">名称 / 标题</th>
+                            <th class="tleft" width="150">活动名称</th>
+                            <th class="tleft" width="120">发件人</th>
+                            <th class="tleft" width="120">收件人</th>
+                            <th class="tleft" width="120">状态</th>
+                            <th class="tleft" width="100">是否启用</th>
+                            <th class="tleft" width="150">发送时间</th>
+                            <th class="tleft" width="150">创建时间</th>
+                            <th class="tleft" >操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {volist name="list" id="val"}
+                        <tr>
+                            <td class="tcenter">
+                                <input value="{$val.id}" type="checkbox" class="single-checkbox js-single-checkbox">
+                            </td>
+                            <td align="left">
+                                <p class="mb5"><a href="/Emailtask/emailTaskDetails?id={$val.id}">{$val.TaskTitle}</a>
+                                </p>
+                            </td>
+                            <td align="left">{$val.ActivityName|default='非活动'}</td>
+                            <td align="left">{$val.SenderVale}</td>
+                            <td align="left">{$val.RecipientInfo}</td>
+                            <td align="left">{$task_Status[$val.Status]|default='-'}</td>
+                            <td align="left">{$val.IsEnable==1?"是":"否"}</td>
+                            <td align="left">{$val.SendingTime|default='-'}
+                            </td>
+                            <td align="left">{$val.CreateTime|default='-'}
+                            </td>
+                            <td align="left" class="item_link_box">
+                                {if condition="$val.Status == 2"}
+                             
+                                    {if condition="$val.is_send_test_email == 2"}
+                                    <a href="javascript:void(0)" id="test-email-{$val.id}" onclick="EdmSystem.SentTestEmail({$val.id})" style="color:#3300cc;">
+                                    已发送测试邮件
+                                </a>
+                                    {else /}
+                                    <a href="javascript:void(0)" id="test-email-{$val.id}" onclick="EdmSystem.SentTestEmail({$val.id})" style="color:#ff0066">
+                                    发送测试邮件
+                                    </a>
+                                    {/if}
+                               
+                                {/if}
+
+                                {if condition="$val.Status == 1"}
+                                <a href="/Emailtask/saveTask?id={$val.id}">编辑</a>
+                                {else /}
+                                <a href="/Emailtask/emailTaskDetails?id={$val.id}">详细</a>
+                                <a href="">数据报表</a>
+                                {/if}
+                                {if condition="$val.Status == 2"}
+                                    {if condition="$val.IsSender == 1"}
+                                    <a href="javascript:void(0)" onclick="EdmSystem.SentEmail({$val.id})">发送邮件</a>
+                                    {/if}
+                                {/if}
+                            </td>
+                        </tr>
+                        {/volist}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row row-no-mlr mt20 clearfix">
+            <div class="dataTables_paginate paging_bootstrap fr">
+                {$pageInfo}
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/edmSystem.js"></script>
+    <script>
+        $(function () {
+            EdmSystem.emailTaskIndex();
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>预览->卖家管理->卖家管理->商城管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body id="Order_List" class="page-header-fixed  page-sidebar-fixed">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="month6">
+                                        <!-- start add -->
+                                        <div class="info-pb10 c-h-dl-label100 mt10">
+                                            <form id="editSeller" class="f12_i form-horizontal" action="#" novalidate="novalidate"  enctype="multipart/form-data">
+                                                <input id="user_id" type="hidden" name="user_id"  value="{$seller['id']}">
+                                                 <input type="hidden" value="{$seller['id']}" />
+                                                <div class="form-body info-pb10 ml20">
+                                                <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130">供应商编码：</label>
+
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$seller['seller_code']}" name="seller_code" class="form-control input-medium fl" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>真实姓名：</label>
+                                                        </dd>
+
+                                                        <dd>
+                                                            <div class="input-icon right w250">
+                                                                <i class="fa"></i>
+					                                            <input value="{$seller['true_name']}" name="true_name" class="form-control input-medium fl" type="text">
+                                                            </div>
+                                                        </dd>
+
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130">密码：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                            </div>
+                                                            <div>****** <a class="bg-gray2" id="reset_password"  href="javascript:;">重置密码</a></div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>电话号码：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$seller['phone_num']?$seller['phone_num']:''}" id="input-color"
+                                                                name="phone_num" class="form-control input-medium fl" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>电子邮件：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$seller['email']?$seller['email']:''}" id="input-color"
+                                                                name="email" class="form-control input-medium input-email fl" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>所属区域：</label>
+                                                        </dd>
+                                                            <dd class="v-title w60">
+                                                                <label><em>*</em>省：</label>
+                                                            </dd>
+                                                          <dd>
+
+                                                            <div class="input-icon right">
+                                                            <select name="province" id="province" class="form-control input-small inline">
+                                                                <option value="">请选择</option>
+                                                                {volist name="seller['province_data']" id="vo"}
+                                                                <option {if condition="$vo['REGION_ID'] eq $seller['province']"} selected = "selected"{/if} value="{$vo['REGION_ID']}">{$vo['REGION_NAME']}</option>
+                                                                {/volist}
+                                                             </select>
+                                                            </div>
+                                                        </dd>
+                                                        <dd class="v-title w60">
+                                                                <label><em>*</em>市：</label>
+                                                        </dd>
+                                                         <dd>
+                                                           <div class="input-icon right">
+                                                            <select name="city" id="city" class="form-control input-small inline">
+                                                                <option value="">请选择</option>
+                                                                {volist name="seller['city_data']" id="vo"}
+                                                                <option value="{$vo['REGION_ID']}" {if condition="$vo['REGION_ID'] eq $seller['city']"} selected = "selected"{/if} >{$vo['REGION_NAME']}</option>
+                                                                {/volist}
+                                                             </select>
+                                                            </div>
+                                                        </dd>
+                                                        <dd class="v-title w80">
+                                                                <label><em>*</em>区、县：</label>
+                                                        </dd>
+                                                         <dd>
+                                                           <div class="input-icon right">
+                                                            <select name="country_town" id="country_town" class="form-control input-small inline">
+                                                                <option value="">请选择</option>
+                                                                {volist name="seller['country_town_data']" id="vo"}
+                                                                <option value="{$vo['REGION_ID']}" {if condition="$vo['REGION_ID'] eq $seller['country_town']"} selected = "selected"{/if}>{$vo['REGION_NAME']}</option>
+                                                                {/volist}
+                                                             </select>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                        <script>
+                                                           $("#province").change(function () {
+                                                               var catalogId = $("#province").val();
+                                                               $.get("{:url('Seller/NationalRecursion')}?province="+catalogId, function(result){
+                                                                    $("#city option").remove();
+                                                                    $("#country_town option").remove();
+                                                                    $("#city").append(result);
+                                                                    $("#country_town").append('<option value="">请选择</option>');
+
+                                                                });
+                                                            });
+                                                           $("#city").change(function () {
+                                                               var catalogId = $("#city").val();//console.log(catalogId);
+                                                               $.get("{:url('Seller/NationalRecursion')}?province="+catalogId, function(result){
+                                                                    // $("#city option").remove();
+                                                                    $("#country_town option").remove();
+                                                                    $("#country_town").append(result);
+                                                                    // $("#country_town").append('<option value="">请选择</option>');
+
+                                                                });
+                                                            });
+                                                        </script>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>详细地址：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$seller['address']?$seller['address']:''}"
+                                                                name="address" class="form-control input-medium fl" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+
+
+
+
+
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>经营模式：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                             <select name="management_model" id="management_model" class="form-control input-small inline">
+                                                                  <option value="">请选择</option>
+                                                                  <option {if condition="$seller.management_model eq '1'"} selected = "selected"{/if} value="1">个人及贸易SOHO</option>
+                                                                  <option {if condition="$seller.management_model eq '2'"} selected = "selected"{/if} value="2">贸易公司(小于10人)</option>
+                                                                  <option {if condition="$seller.management_model eq '3'"} selected = "selected"{/if} value="3">贸易公司(大于10人)</option>
+                                                                  <option {if condition="$seller.management_model eq '4'"} selected = "selected"{/if} value="4">工厂</option>
+                                                                  <option {if condition="$seller.management_model eq '5'"} selected = "selected"{/if} value="5">其他</option>
+                                                             </select>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+
+
+
+
+                                                  {if condition="$seller.management_model eq 1"}
+
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130">个人手持身份证照：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                正面：<a href="javascript:;"><img alt="" width="150" height="150" src="{$seller['idcard_facade']}" /></a><br>
+                                                                反面：<a href="javascript:;"><img alt="" width="150" height="150" src="{$seller['idcard_reverse']}" /></a><br>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    {else /}
+
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>公司名称：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$seller['company_name']?$seller['company_name']:''}" name="company_name" class="form-control input-medium fl" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>公司电话：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$seller['company_phone']?$seller['company_phone']:''}" 
+                                                                 name="company_phone" class="form-control input-medium fl" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+
+
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>法人姓名：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$seller['corporation_name']?$seller['corporation_name']:''}" 
+                                                                 name="corporation_name" class="form-control input-medium fl" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>公司联系人：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$seller['company_contact']?$seller['company_contact']:''}"
+                                                                 name="company_contact" class="form-control input-medium fl" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>公司联系人电话：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$seller['company_contact_phone']?$seller['company_contact_phone']:''}"
+                                                                 name="company_contact_phone" class="form-control input-medium fl" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>经营范围：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$seller['operation_scope']?$seller['operation_scope']:''}"
+                                                                 name="operation_scope" class="form-control input-medium fl" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>注册资金：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$seller['registered_capital']?$seller['registered_capital']:''}"
+                                                                 name="registered_capital" class="form-control input-medium fl" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>社会信用代码：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$seller['social_credit_code']?$seller['social_credit_code']:''}"
+                                                                 name="social_credit_code" class="form-control input-medium fl" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130"><em>*</em>公司地址：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$seller['company_address']?$seller['company_address']:''}"
+                                                                 name="company_address" class="form-control input-medium fl" type="text">
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+
+
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130">营业执照图片：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <a href="#"><img alt="" width="150" height="150" src="{$seller['business_license_pic']}" /></a>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+
+                                                     <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label class="w130">法人手持身份证照：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                正面：<a href="#"><img alt="" width="150" height="150" src="{$seller['corporation_idcard_facade']}" /></a><br>
+                                                                反面：<a href="#"><img alt="" width="150" height="150" src="{$seller['corporation_idcard_reverse']}" /></a><br>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+
+
+
+                                                    {/if}
+                                                    <fieldset class="layui-elem-field layui-field-title">
+                                            <legend>卖家状态</legend>
+                                                    <dl class="c-h-dl-validator form-group clearfix reason_add_delete">
+                                                        <dd class="v-title">
+                                                            <label class="w130">状态：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <div class="mt5">
+                                                                    {if condition="$seller.status eq 0"}
+                                                                    <input {if condition="$seller.status eq 0"} checked  {/if} class="reason_hide mg0 pd0" type="radio" name="status" value="0" /> 未认证审核
+                                                                    {/if}
+                                                                    <input {if condition="$seller.status eq 1"} checked  {/if} class="reason_hide mg0 pd0" type="radio" name="status" value="1"  /> 已认证审核
+                                                                    <input {if condition="$seller.status eq 2"} checked  {/if} class="reason_show mg0 pd0" data-opdec="{$seller.op_desc}"  type="radio" name="status" value="2" /> 冻结
+                                                                    <input {if condition="$seller.status eq 3"} checked  {/if} class="reason_show mg0 pd0" data-opdec="{$seller.op_desc}"  type="radio" name="status" value="3" /> 禁用
+                                                                </div>
+                                                            </div>
+                                                        </dd>
+                                                    </dl>
+
+
+                                                   {if condition="($seller.status == 2) OR ($seller.status == 3) "}
+                                                    <dl class="c-h-dl-validator form-group clearfix show_hide reason_show_hide">
+                                                        <dd class="v-title">
+                                                            <label class="w130">原因：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <div>
+                                                                    <textarea name="op_desc" maxlength="500"  rows="8" cols="80">{$seller['op_desc']}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    {/if}
+                                                    </fieldset>
+                                                    <dl class="c-h-dl-validator form-group clearfix mt20">
+                                                        <dd class="v-title"><label><em>&nbsp;</em>&nbsp;</label></dd>
+                                                        <dd class="layui-layer-btn pl0">
+                                                            <a data-sellerid="{$seller.id}"  class="btn btn-qing editor-seller-submit" href="javascript:;">提交</a>
+                                                            <a id="addressCancel" class="layui-layer-btn1" href="javascript:history.back(-1);">返回</a></dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                </div>
+                                            </form>
+                                        </div>
+                                         <!-- end add -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+                <div class="success_data"></div>
+           <!--  </div> -->
+    <!-- 日期插件 -->
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+     <script src="/static/js/seller.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+    $(function() {
+        App.init();
+        Seller.sellerEditor();
+    })
+
+
+
+    </script>
+    <!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+
+</html>

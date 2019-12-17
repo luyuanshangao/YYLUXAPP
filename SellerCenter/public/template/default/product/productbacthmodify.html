@@ -1,0 +1,205 @@
+{layout name="layout/main"/}
+{load href="/static/css/base.css" /}
+{load href="/static/js/plugin/umeditor/themes/default/css/umeditor.min.css" /}
+<!-- umeditor -->
+<!--{load href="/static/js/plugin/umeditor/umeditor.config.js" /}
+{load href="/static/js/plugin/umeditor/umeditor.js" /}
+{load href="/static/js/plugin/umeditor/lang/zh-cn/zh-cn.js" /}-->
+<script type="text/javascript" src="/static/js/plugin/umeditor/umeditor.config.js?v={$static_version_number|default='20181219'}"></script>
+<script type="text/javascript" src="/static/js/plugin/umeditor/umeditor.js?v={$static_version_number|default='20181219'}"></script>
+<script type="text/javascript" src="/static/js/plugin/umeditor/lang/zh-cn/zh-cn.js?v={$static_version_number|default='20181219'}"></script>
+<!-- umeditor end -->
+
+<style type="text/css">
+   .mr{width: 50px;} 
+   .center{text-align: center;}
+   .app{float:left;width:180px;line-height:55px; }
+   .mr5{margin-left:5px;}
+</style>
+<div class="main-box fl product-management">
+    <div class="box-white"style="width: 1220px !important;">
+        <form action="{:url('Product/productBacthModify')}" method="get" class="pb10" id="product-form">
+            <ul class="search-ul-layout">
+                <li>
+                   <textarea name="product_id" style="width:400px;line-height: 25px;height: 55px;overflow-y: auto;">{:input('product_id')}</textarea>
+                </li>
+                <li>
+                    <div class="app"><input type="radio" name="type" value="1" {if condition="$type eq 1" }checked="checked"{/if}>统一使用金额<input class="input-text small-input mr mr5 usage" type="text" name="usage_amount"  value="{:input('usage_amount')}"{if condition="$type neq 1" }disabled="disabled"{/if} /></div>
+                    <div class="app"><input type="radio" name="type" value="2" {if condition="$type eq 2" }checked="checked"{/if}>浮动金额<input class="input-text small-input mr mr5 added" type="text" name="amount"  value="{:input('amount')}"{if condition="$type neq 2" }disabled="disabled"{/if} /></div>
+                    <div class="app"><input type="radio" name="type" value="3" {if condition="$type eq 3" }checked="checked"{/if}>浮动百分比<input class="input-text small-input mr mr5 per" type="text" name="percent"  value="{$percent}" {if condition="$type neq 3" }disabled="disabled"{/if}/>%</div>
+                </li>
+                <li class="search-li" style="line-height:46px;">
+                    <input type="submit" value="应用" class="btn-orange">
+                </li>
+            </ul>
+        </form>
+    </div>
+    {notempty name="product_list"}
+    <div class="box-white box-white-m0"style="width: 1220px !important;overflow-y: auto;height:620px;">
+        <table class="table-gray w1200 mt10 tcenter">
+            <thead><tr class="center"><th>SPU</th><th style="width:180px;">标题</th><th>图片</th><th>价格调整</th><th>SKU</th><th class="center">原价/调整价</th></tr></thead>
+            <tbody>
+            {foreach name="product_list" item="val"}
+            {foreach name="$val['Skus']" item="v" key="k"}
+            {php}
+                $row =count($val['Skus']);
+                if($type ==3 &&!empty($percent)){
+                    $price = round($v['SalesPrice']*(1+$percent/100),2);
+                }else if($type ==2 &&!empty($amount)){
+                       $price = round($v['SalesPrice']+$amount,2);
+                }else if($type ==1){
+                       $price = round($usage_amount,2)?round($usage_amount,2):'';
+                }else{
+                    $price ='';
+                }   
+            {/php}
+            {if condition="$k eq 0"}
+                <tr class="js-chose-tr">
+                    <td rowspan="{$row}">{$val['_id']}</td>
+                    <td rowspan="{$row}"><a href="{php}echo config('mall_url_config').'p/'.$val['_id']{/php}">{$val['Title']}</a></td>
+                    <td rowspan="{$row}"><a href="{php}echo config('mall_url_config').'p/'.$val['_id']{/php}"><img src="{$product_images_url_config}{$val['ImageSet']['ProductImg'][0]|default=''}" width="50" height="50"></a></td>
+                    <td rowspan="{$row}"data-id="{$val['_id']}">
+                        <input type="text"class="mr usage mod" data-placeholder="使用金额"placeholder="使用金额" {if condition="($type == 2) OR ($type==3)" }disabled="disabled"{/if} value="{$usage_amount}">
+                        <input type="text"class="mr added mod" data-placeholder="浮动金额"placeholder="浮动金额" {if condition="($type == 1) OR ($type==3)"}disabled="disabled"{/if} value="{$amount}">
+                        
+                        <input type="text"class="mr per mod" data-placeholder="百分比"placeholder="百分比"{if condition="($type == 1) OR ($type==2)"}disabled="disabled"{/if} value="{$percent}">%</td>
+                    <td>{$v['Code']}</td>
+                    <td><span style="margin-right:15px;">{$v['SalesPrice']}</span>
+                        <input type="text" data-price="{$v['SalesPrice']}" data-spu ="{$val['_id']}" data-sku="{$v['_id']}" class="mr newprice product_{$val['_id']}"value="{$price}" style="margin-right:20px;float:right;" ></td>
+                </tr>
+            {else /}
+                <tr class="js-chose-tr">
+                <td>{$v['Code']}</td>
+                <td><span style="margin-right:15px;">{$v['SalesPrice']}</span>
+                        <input type="text" data-price="{$v['SalesPrice']}" data-spu ="{$val['_id']}" data-sku="{$v['_id']}" 
+                        class="mr newprice product_{$val['_id']}"value="{$price}" style="margin-right:20px;float:right;"></td>
+            </tr>
+            {/if}
+            {/foreach}
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+    <div class="submit-box" style="padding-top: 10px;">
+            <div class="tcenter">
+                <a class="btn-orange mr20 js-product-submit-btn" href="javascript:bacthModify();">确认</a>
+            </div>
+    </div>
+    {/notempty}
+</div>
+<script type="text/javascript">
+    function toFixed(num,s){
+        var times = Math.pow(10,s);
+        var des = num * times +0.5;
+        des = parseInt(des,10)/times;
+        return des.toFixed(2) +'';
+    }
+    $("input[name='type']").change(function(){
+        $(this).siblings("input").removeAttr("disabled");
+        $(this).parent().siblings().find("input[type='text']").attr("disabled","disabled");
+        $(this).parent().siblings().find("input[type='text']").val('');
+        $('.mod').attr("disabled","disabled");
+        $('.mod').val('');
+        if($(this).val()==1){
+            $('.usage').removeAttr("disabled");
+        }else if($(this).val()==2){
+            $('.added').removeAttr("disabled");
+        }else if($(this).val()==3){
+            $('.per').removeAttr("disabled");
+        }
+    });
+  $('.usage').blur(function(){
+    var temp_amount=$(this).val().replace(/[^0-9.]/g,'');
+    $(this).val(temp_amount);  
+    if(temp_amount!=''){
+        $(this).siblings("input[type='text']").attr("disabled","disabled");
+        var id =$(this).parent().attr("data-id");
+        $(".product_"+id).each(function(){
+            price = parseFloat(temp_amount);
+            $(this).val(toFixed(price,2));
+        });
+    }else{
+        $(this).siblings("input").removeAttr("disabled");
+    }
+  });
+  $('.added').blur(function(){
+    var temp_amount=$(this).val().replace(/[^-?0-9.]/g,'');
+    if(temp_amount=='-'){
+        temp_amount ='';
+    }  
+    $(this).val(temp_amount);  
+    if(temp_amount!=''){
+        $(this).siblings("input[type='text']").attr("disabled","disabled");
+        var id =$(this).parent().attr("data-id");
+        var type = $("input[name='type']:checked").val();
+        $(".product_"+id).each(function(){
+            var price = $(this).attr("data-price");
+            price = parseFloat(temp_amount)+parseFloat(price);
+            $(this).val(toFixed(price,2));
+        });
+    }else{
+        $(this).siblings("input").removeAttr("disabled");
+    }
+  });
+   $('.per').blur(function(){
+    var temp_amount=$(this).val().replace(/[^-?0-9.]/g,'');  
+    if(temp_amount=='-'){
+        temp_amount ='';
+    }
+    $(this).val(temp_amount);  
+    if(temp_amount!=''){
+        $(this).siblings("input[type='text']").attr("disabled","disabled");
+        var id =$(this).parent().attr("data-id");
+         $(".product_"+id).each(function(){
+            var price = $(this).attr("data-price");
+             var per_price = Number(price*temp_amount/100);
+             price = parseFloat(per_price)+parseFloat(price);
+             $(this).val(toFixed(price,2));
+        });
+    }else{
+        $(this).siblings("input").removeAttr("disabled");
+    }
+  });
+   $('.newprice').keyup(function(){
+    var temp_amount=$(this).val().replace(/[^0-9.]/g,'');  
+    $(this).val(temp_amount);
+   });
+   function bacthModify(){
+    var product =[];
+    var info = {},flag=true;
+    $('.newprice').each(function(index){
+        if($(this).val()<0){
+            flag =false; 
+            return false;
+        }
+        var info = {
+            product_id:$(this).attr('data-spu'),
+            sku_id:$(this).attr("data-sku"),
+            price:$(this).val()
+        };
+        product.push(info);
+    });
+    if(!flag){
+        layer.alert("调整价格必须大于0！");
+    }else{
+        var _string = JSON.stringify(product);
+        layer.confirm('您确定要提交吗？', {
+                btn: ['确定','取消']
+            }, function(){
+               layer.closeAll();
+               $.ajax({
+                    url: '/index/Product/bacthModify',
+                    type: 'POST',
+                    data:{data:_string},
+                    success:function(data){
+                       if(data.code==0){ 
+                         window.location.href="/index/product/productbacthmodify.html?product_id="+$("textarea[name='product_id']").val();
+                       }
+                    }
+                });
+        });
+    }
+    
+    
+   }
+</script>

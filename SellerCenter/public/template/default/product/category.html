@@ -1,0 +1,48 @@
+{layout name="layout/main"/}
+{load href="/static/css/product.css" /}
+<!--{load href="/static/js/module/product.js" /}-->
+<script type="text/javascript" src="/static/js/module/product.js?v={$static_version_number|default='20181219'}"></script>
+
+<div class="main-box fl product-release-page product-category-wrap">
+    <div class="box-white mt0">
+        <div class="main-cont-title">上传产品</div>
+        <div class="quick-box mt20">
+            <input class="w500 category-quick-search-input" type="text" placeholder="请输入产品的英文关键字"/>
+            <a href="javascript:void(0);" class="btn-red category-quick-search"><i class="iconfont icon-fangdajing mr5"></i>快速查找</a>
+            <span class="ml5 orange quick-box-tips"></span>
+        </div>
+        <div class="category-search-box mb20">
+            <span>与<b class="orange stips">--</b>相关的类目</span>
+            <a href="javascript:void(0);" class="js-show-hide fr">收起<i class="iconfont icon-iconfonticontrianglecopy ml5"></i></a>
+        </div>
+        <ul class="category-search-cont">
+        </ul>
+    	<div class="product-category-box clearfix">
+    		<ul class="product-category js-product-category leve1 mt10" data-leve="1">
+                {volist name="category_data" id="info"}
+                    <li category-id="{$info.id}" category-pid="{$info.pid}"  is-select="" title-cn="{$info.title_cn}"  title-en="{$info.title_en}" data-ischildren="{$info.is_children}">{$info.title_cn}</li>
+                {/volist}
+
+			</ul>
+    	</div>
+        <div class="waring mt20">
+            当前已经选择的类目：
+            <span class="category-tip">
+
+            </span>
+        </div>
+       <div class="tcenter">
+           <input type="hidden" name="selected_category_id" id="selected-category-id">
+           <a href="javascript:;" class="btn-disabled mt20 btn-product-release">立即去发布新产品</a>
+       </div>
+    </div>
+</div>
+<script>
+    var is_editor_pro = {$is_editor_pro|default=0};
+    var category_id = {$category_id|default=0};
+    var category_str = '{$category_str|default=""}';
+    var is_history =0;
+    var get_data = {$get_data|default=''};
+    dxseller.product.productReleasePage();
+    dxseller.product.productCategoryQuickSearch();
+</script>

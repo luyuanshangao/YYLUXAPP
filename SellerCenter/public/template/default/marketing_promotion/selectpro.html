@@ -1,0 +1,333 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/activity.js" /}
+<style>
+    /*分页CSS*/
+    .pagination  li {display: inline;padding: 0 2px;float: left;}
+    .pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+    .pagination .active span{color: red;}
+</style>
+<div class="main-box fl product-management">
+
+
+    <div class="box-white box-white-m0">
+        <h1 class="main-cont-title"><a href="{:url('MarketingPromotion/activityDetail', ['activity_id'=>$activity_info['id']])}">{$activity_info.activity_title}</a> 报名产品详情</h1>
+        <!--<div class="box-white box-white-m0">
+            <table>
+                <tr>
+                    <td>活动名称：</td>
+                    <td><a href="{:url('MarketingPromotion/activityDetail', ['activity_id'=>$activity_info['id']])}">{$activity_info.activity_title}</a></td>
+                </tr>
+            </table>
+        </div>-->
+
+        <ul class="main-cont-tabs pt20 mb20">
+            {if condition=" time() > $activity_info['registration_start_time'] && time() < $activity_info['registration_end_time'] "}
+                <li {if condition="$tab_type == 1"}class="curr"{/if}><a href="{:url('MarketingPromotion/selectPro', ['tab_type'=>1, 'activity_id'=>input('activity_id')])}">待添加商品</a></li>
+            {/if}
+
+            <li {if condition="$tab_type == 2"}class="curr"{/if}><a href="{:url('MarketingPromotion/selectPro', ['tab_type'=>2, 'activity_id'=>input('activity_id')])}">已添加</a></li>
+            <li {if condition="$tab_type == 3"}class="curr"{/if}><a href="{:url('MarketingPromotion/selectPro', ['tab_type'=>3, 'activity_id'=>input('activity_id')])}">已驳回</a></li>
+        </ul>
+
+
+        <!--<form action="" method="post" class="pb10" id="product-form">-->
+            <ul class="search-ul-layout">
+                {if condition="$tab_type == 1"}
+                    <li>
+                        <label class="search-label-title">产品名称(ID):</label>
+                        <input class="input-text small-input" type="text" name="Title" placeholder="产品名" value="{:input('Title')}"/>
+                    </li>
+                {/if}
+                <li>
+                    <label class="search-label-title">商品编码:</label>
+                    <input class="input-text small-input" type="text" name="Code" placeholder="输入商品编码"  value="{:input('Code')}"/>
+                </li>
+                <li class="search-li">
+                    <a href="javascript:;" class="search-btn">搜索</a>
+                </li>
+            </ul>
+            <input type="hidden" name="page_size" id="page_size">
+        <!--</form>-->
+        {if condition="$tab_type == 1"}
+            <table class="main-base-table mt20">
+                <tr class="tr-border">
+                    <th colspan="3" class="table-title">商品名称</th>
+                    <th>产品号</th>
+                    <th>价格 ($)</th>
+                    <th class="w400">活动价格和数量</th>
+                    <th>操作</th>
+                </tr>
+
+                <tr class="tr-edit">
+                    <td width="20px">
+                        <input name="checkAllProducts" type="checkbox">
+                    </td>
+                    <td colspan="6">
+                        <a href="javascript:viod(0);" class="mr20 selectAll">全选</a>
+                        <a href="javascript:;" class="mr5 ls-bottonTwo add-select-all-product">确定添加</a>
+                    </td>
+                </tr>
+                {if condition="count($product) gt 0"}
+                {foreach name="product" item="val"}
+                <tr class="j-mouse-hover colorfbf">
+                    <td class="padleft20 lspadleft20 ">
+                        <input class="j-check-group-id" name="prodAuditForm.itemcodeChecked" id="ckbox" value="{$val['_id']}" type="checkbox">
+                    </td>
+                    <td class="padimg"></td>
+                    <td class="padpro w150">
+                        <span class="langcont padright40 clearfix j-tip-container" style="z-index: auto;">
+                            <a class="j-multi-trigger-marketting-promotion-selectpro" href="javascript:void(0);" target="_blank">
+                                {$val['Title']}
+                            </a>
+                        </span>
+                        <div class="qualityGrade tipstion j-tip-container" style="z-index: auto;">
+                            <!--<span class="lsWrapOne">产品编号：{val['_id']}</span>-->
+                        </div>
+                    </td>
+                    <td class="productgroup prodThTwo">
+                        {$val['_id']}
+                    </td>
+                    <td>
+                        {$val['RangePrice']|default=""}
+                    </td>
+                    <td>
+                        {if condition='1 == 1'}
+
+                            <div class="mb10">
+                                <input type="radio" class="set_select" data-id="{$val['_id']}" name="set_select_{$val['_id']}" value="1" checked="checked"> 统一活动价
+                                <input type="radio" class="set_select" data-id="{$val['_id']}" name="set_select_{$val['_id']}" value="2"> 单个指定价
+                            </div>
+
+                            <div class="unified-set-box-{$val['_id']}">
+                            实际收款 <input name="activity_price_{$val['_id']}" type="text" placeholder="活动价格" title="活动价格" class="w50"> %，
+                            <input name="activity_inventory_{$val['_id']}" type="text" placeholder="活动数量" title="活动数量" class="w50"> 个
+                            </div>
+
+                            <div class="separate-set-box-{$val['_id']} none">
+                                {volist name='val.Skus' id='sku'}
+                                    <div class="mt5 activity-price-number-{$val['_id']}">
+                                        {notempty name="sku"}
+                                            {notempty name="sku.Code"}{$sku.Code}{else/}-{/notempty}：
+                                            <input name="activity_id" type="hidden" value="{$activity_id}">
+                                            <input name="product_id" type="hidden" value="{$val['_id']}">
+                                            <input name="sku" type="hidden" value="{notempty name='sku._id'}{$sku._id}{else/}0{/notempty}">
+                                            <input name="code" type="hidden" value="{notempty name='sku.Code'}{$sku.Code}{else/}0{/notempty}">
+                                            <input name="sales_price" type="hidden" value="{notempty name='sku.SalesPrice'}{$sku.SalesPrice}{else/}0{/notempty}">
+                                            <input name="activity_price" type="text" placeholder="活动价格" title="活动价格" class="w50"> %，
+                                            <input name="activity_inventory" type="text" placeholder="活动数量" title="活动数量" class="w50"> 个
+                                        {/notempty}
+                                    </div>
+                                {/volist}
+                            </div>
+                        {else /}
+                            {volist name='val.Skus' id='sku'}
+                                <div class="mt5 activity-price-number-{$val['_id']}">
+                                    {notempty name="sku"}
+                                    {notempty name="sku.Code"}{$sku.Code}{else/}-{/notempty}：
+                                    <input name="activity_id" type="hidden" value="{$activity_id}">
+                                    <input name="product_id" type="hidden" value="{$val['_id']}">
+                                    <input name="sku" type="hidden" value="{notempty name='sku._id'}{$sku._id}{else/}0{/notempty}">
+                                    <input name="code" type="hidden" value="{notempty name='sku.Code'}{$sku.Code}{else/}0{/notempty}">
+                                    <input name="sales_price" type="hidden" value="{notempty name='sku.SalesPrice'}{$sku.SalesPrice}{else/}0{/notempty}">
+                                    <input name="activity_price" type="text" placeholder="活动价格" title="活动价格" class="w50">
+                                    <input name="activity_inventory" type="text" placeholder="活动数量" title="活动数量" class="w50">
+                                    {/notempty}
+                                </div>
+                            {/volist}
+                        {/if}
+                    </td>
+                    <td>
+                        <a href="javascript:;" class="add-product add-product-{$val['_id']}" data-id="{$val['_id']}" data-skuPriceUnique="1">添加</a>
+                    </td>
+                </tr>
+                {/foreach}
+                {else/}
+                    <tr class="tr-zeroCenter">
+                        <td height="270" colspan="9" class="no-result">没有找到符合条件的信息。 </td>
+                    </tr>
+                {/if}
+                <tr class="tr-edit">
+                    <td width="20px">
+                        <input name="checkAllProducts" type="checkbox">
+                    </td>
+                    <td colspan="6">
+                        <span class="mr20 selectAll">全选</span>
+                        <a href="javascript:;" class="mr5 ls-bottonTwo add-select-all-product">确定添加</a>
+                    </td>
+                </tr>
+
+            </table>
+            <div class="page-wrap clearfix mg10">
+                <div class="fr mt10">
+                    {$page}
+                </div>
+            </div>
+        {/if}
+
+        {if condition="$tab_type == 2"}
+            <table class="main-base-table mt20">
+                <tr class="tr-border">
+                    <th class="table-title">商品名称</th>
+                    <th>产品号</th>
+                    <!--<th>商品编码</th>-->
+                    <th>价格 ($)</th>
+                    <th>活动价格和数量</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                {if condition="count($product) gt 0"}
+                {foreach name="product" item="val"}
+                    <tr class="j-mouse-hover">
+                        <td class="w100">{$val.pro_title}</td>
+                        <td>{$val.product_id}</td>
+                        <!--<td>{$val.code}</td>-->
+                        <td>{$val.range_price}</td>
+                        <td>
+                            <div class="mb10">
+                                <input type="radio" class="set_select" data-id="{$val['id']}" name="set_select_{$val['id']}" value="1" {if condition='$val.skus_data.0.set_type == 1'}checked="checked"{/if} {if condition="$val['status'] != 1"}disabled{/if}> 统一活动价
+                                <input type="radio" class="set_select" data-id="{$val['id']}" name="set_select_{$val['id']}" value="2" {if condition='$val.skus_data.0.set_type == 2'}checked="checked"{/if} {if condition="$val['status'] != 1"}disabled{/if}> 单个指定价
+                            </div>
+
+                            <div class="unified-set-box-{$val['id']} {if condition='$val.skus_data.0.set_type == 2'} none{/if}">
+                                实际收款 <input name="activity_price_{$val['id']}" type="text" placeholder="活动价格" title="活动价格" class="w50" value="{if condition='$val.skus_data.0.set_type == 1'}{$val.skus_data.0.discount}{/if}" {if condition="$val['status'] != 1"}disabled{/if}> %，
+                                <input name="activity_inventory_{$val['id']}" type="text" placeholder="活动数量" title="活动数量" class="w50" value="{if condition='$val.skus_data.0.set_type == 1'}{$val.skus_data.0.activity_inventory}{/if}" {if condition="$val['status'] != 1"}disabled{/if}> 个
+                            </div>
+
+                            <div class="separate-set-box-{$val['id']} {if condition='$val.skus_data.0.set_type == 1'} none{/if}">
+                                {volist name='val.skus_data' id='sku'}
+                                    <div class="mt5 activity-price-number-{$val['id']}">
+                                        {notempty name="sku"}
+                                            {notempty name="sku.code"}{$sku.code}{else/}-{/notempty}：
+                                            <input name="id" type="hidden" value="{$sku.id}">
+                                            <input name="sales_price" type="hidden" value="{$sku.sales_price}">
+                                            <input name="product_id" type="hidden" value="{$val.product_id}">
+                                            <input name="activity_price" type="text" placeholder="活动价格" title="活动价格" class="w50" value="{if condition='$sku.set_type == 2'}{$sku.discount}{/if}" {if condition="$val['status'] != 1"}disabled{/if}> %，
+                                            <input name="activity_inventory" type="text" placeholder="活动数量" title="活动数量" class="w50" value="{if condition='$sku.set_type == 2'}{$sku.activity_inventory}{/if}" {if condition="$val['status'] != 1"}disabled{/if}> 个
+                                        {/notempty}
+                                    </div>
+                                {/volist}
+                            </div>
+                        </td>
+                        <td>
+                            {if condition="$val['status'] == 2"}
+                                <span class="blue">{$val['status_str']|default=''}</span>
+                            {else/}
+                                {$val['status_str']|default=''}
+                            {/if}
+                        </td>
+                        <td>
+                            {if condition="$val['status'] == 1"}
+                                <a href="javascript:;" class="update-product update-product-{$val['id']}" data-id="{$val['id']}">修改</a>
+                            {else /}
+                            -
+                            {/if}
+                        </td>
+                    </tr>
+                {/foreach}
+
+                {else/}
+                <tr class="tr-zeroCenter">
+                    <td height="270" colspan="7" class="no-result">没有找到符合条件的信息。 </td>
+                </tr>
+                {/if}
+
+            </table>
+            <div class="page-wrap clearfix mg10">
+                <div class="fr mt10">
+                    {$page}
+                </div>
+            </div>
+        {/if}
+
+        {if condition="$tab_type == 3"}
+            <table class="main-base-table mt20">
+                <tr class="tr-border">
+                    <th class="table-title">商品名称</th>
+                    <th>产品号</th>
+                    <!--<th>商品编码</th>-->
+                    <th>价格 ($)</th>
+                    <th>活动价格和数量</th>
+                    <th>驳回原因</th>
+                    <!--<th>操作</th>-->
+                </tr>
+                {if condition="count($product) gt 0"}
+                {foreach name="product" item="val"}
+                    <tr class="j-mouse-hover">
+                        <td class="w100">{$val.pro_title}</td>
+                        <td>{$val.product_id}</td>
+                        <!--<td>{$val.code}</td>-->
+                        <td>{$val.range_price}</td>
+                        <td>
+                            <div class="mb10">
+                                <input type="radio" class="set_select" data-id="{$val['id']}" name="set_select_{$val['id']}" value="1" {if condition='$val.skus_data.0.set_type == 1'}checked="checked"{/if} disabled> 统一活动价
+                                <input type="radio" class="set_select" data-id="{$val['id']}" name="set_select_{$val['id']}" value="2" {if condition='$val.skus_data.0.set_type == 2'}checked="checked"{/if} disabled> 单个指定价
+                            </div>
+
+                            <div class="unified-set-box-{$val['id']} {if condition='$val.skus_data.0.set_type == 2'} none{/if}">
+                                实际收款 <input name="activity_price_{$val['id']}" type="text" placeholder="活动价格" title="活动价格" class="w50" value="{if condition='$val.skus_data.0.set_type == 1'}{$val.skus_data.0.discount}{/if}" disabled> %，
+                                <input name="activity_inventory_{$val['id']}" type="text" placeholder="活动数量" title="活动数量" class="w50" value="{if condition='$val.skus_data.0.set_type == 1'}{$val.skus_data.0.activity_inventory}{/if}" disabled> 个
+                            </div>
+
+                            <div class="separate-set-box-{$val['id']} {if condition='$val.skus_data.0.set_type == 1'} none{/if}">
+                                {volist name='val.skus_data' id='sku'}
+                                <div class="mt5 activity-price-number-{$val['id']}">
+                                    {notempty name="sku"}
+                                    {notempty name="sku.code"}{$sku.code}{else/}-{/notempty}：
+                                    <input name="id" type="hidden" value="{$sku.id}">
+                                    <input name="sales_price" type="hidden" value="{$sku.sales_price}">
+                                    <input name="product_id" type="hidden" value="{$val.product_id}">
+                                    <input name="activity_price" type="text" placeholder="活动价格" title="活动价格" class="w50" value="{if condition='$sku.set_type == 2'}{$sku.discount}{/if}" disabled> %，
+                                    <input name="activity_inventory" type="text" placeholder="活动数量" title="活动数量" class="w50" value="{if condition='$sku.set_type == 2'}{$sku.activity_inventory}{/if}" disabled> 个
+                                    {/notempty}
+                                </div>
+                                {/volist}
+                            </div>
+                        </td>
+                        <td class="w200">
+                            {$val.reason|default=''}
+                        </td>
+                        <!--<td>
+                            <a href="javascript:;" class="resubmit-product resubmit-product-{$val['id']}" data-id="{$val['id']}" data-activity-id="{$val['activity_id']}">重新提交</a>
+                        </td>-->
+                    </tr>
+                {/foreach}
+
+                {else/}
+                <tr class="tr-zeroCenter">
+                    <td height="270" colspan="7" class="no-result">没有找到符合条件的信息。 </td>
+                </tr>
+                {/if}
+
+            </table>
+            <div class="page-wrap clearfix mg10">
+                <div class="fr mt10">
+                    {$page}
+                </div>
+            </div>
+        {/if}
+            <div class="tcenter"><a href="javascript:void(0);" class="btn btn-orange" onclick="Common.goBack(-1)">返回</a></div>
+    </div>
+    
+</div>
+
+<script>
+    var ajax_url = {$url|default=''};
+    var activity_id = {$activity_id|default=''};
+
+    $('.set_select').click(function () {
+        var id = $(this).attr('data-id'),
+            set_type = $(this).val();
+
+        if (set_type == '1'){
+            $('.unified-set-box-'+id).show();
+            $('.separate-set-box-'+id).hide();
+        }else{
+            $('.unified-set-box-'+id).hide();
+            $('.separate-set-box-'+id).show();
+        }
+
+
+    });
+
+</script>

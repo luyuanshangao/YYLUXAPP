@@ -1,0 +1,149 @@
+{layout name="layout/main"/}
+{load href="/static/css/setAffiliateClass.css" /}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+{load href="/static/js/module/productMan.js" /}
+{load href="/static/js/module/setAffiliateClass.js" /}
+
+<style>
+    /** 分页 **/
+    .pagination  li {display: inline;padding: 0 2px;float: left;}
+    .pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+    .pagination .active span{color: red;}
+</style>
+
+<div class="main-box fl setAffiliateClass">
+    <div class="box-white box-white-m0" style="    overflow: hidden;">
+        <h1 class="main-cont-title">添加主推产品</h1>
+        <div class="panel">
+            <div class="content setAffiliateClass-instructions pb20">
+                <p>1.您可以为指定的产品设置独立的佣金比例。</p>
+                <p>2.相比其他产品，主推产品有机会获得更显著的流量和曝光。</p>
+                <p>3.了解更多联盟营销信息。<a href="" class="link">点击查看</a></p>
+            </div>
+            <div class="content setAffiliateClass-main mt20">
+                <span>主推产品数上限：<span style="color:#e62e04;">{$num_data.limit_num}</span></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>已添加主推产品：<span style="color:#0d89ff;">{$num_data.have_num}</span></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>还可以添加：<span style="color:#e62e04;">{$num_data.can_num}</span></span>
+            </div>
+
+            <form action="{:url('AffiliateManage/addMainProductList')}" method="get" class="mt10" id="product-form">
+                <ul class="search-ul-layout">
+                    <li>
+                        <label class="search-label-title">搜索我的在售产品：</label>
+                        <input class="input-text small-input" type="text" name="search_content" placeholder="产品名称或产品SPU,多个SPU用;分隔" value="{:input('search_content')}"/>
+                    </li>
+                    <li>
+                        <label class="search-label-title">一级分类：</label>
+                        <select name="FifthCategory">
+                            <option value="">--请选择--</option>
+                            {foreach name="class_data" item="vo"}
+                                <option value="{$vo['id']}" {if condition="input('FifthCategory') eq $vo['id']"}selected="selected"{/if}>{$vo['title_en']}</option>
+                            {/foreach}
+                        </select>
+                    </li>
+                    <li class="search-li">
+                        <a href="javascript:$('#product-form').submit();" class="search-btn">搜索</a>
+                    </li>
+                </ul>
+                <input id="page_size" name="page_size" value="20" type="hidden">
+            </form>
+        </div>
+        <table class="main-base-table mt20">
+            <tr class="tr-border">
+                <th colspan="3" class="table-title">产品标题</th>
+                <th>SPU</th>
+                <th>产品分类</th>
+                <th>售价(USD)</th>
+                <th>佣金比例（%）</th>
+                <th>生效日期</th>
+            </tr>
+            <tr class="tr-edit">
+                <td width="20px">
+                    <input name="checkAllProducts" type="checkbox">
+                </td>
+                <td colspan="5">
+                    <span class="mr20 selectAll">全选</span>
+                </td>
+                <td>
+                    <input type="text" placeholder="批量设置佣金比例" id="set-commission" class="w50" data-value="3.0">
+                </td>
+                <td>
+                     <input type="text" id="set-effective-time" class="effective-time" placeholder="批量设置生效时间"></td>
+                </td>
+            </tr>
+            {if condition="count($product_data['data']) gt 0"}
+            {volist name="product_data['data']" id="val"}
+                {php}
+                    $product_link = config('mall_url_config').'p/'.$val['_id'];
+                {/php}
+                <tr class="j-mouse-hover colorfbf">
+                    <td class="padleft20 lspadleft20 ">
+                        <input class="j-check-group-id" name="prodAuditForm.itemcodeChecked" id="ckbox{$val['_id']}" value="{$val['_id']}" type="checkbox">
+                     <td class="padimg">
+                        <span class="prolayout">
+                            <a target="_blank" href="{$product_link}">
+                                <img src="{$product_images_url_config}{$val['ImageSet']['ProductImg'][0]|default=''}" width="50">
+                            </a>
+                        </span>
+                    </td>
+                    <td class="padpro" width="150">
+                        <span class="langcont padright40 clearfix j-tip-container" style="z-index: auto;">
+                            <a class="j-multi-trigger-add-main-product" href="{$product_link}" target="_blank">
+                                {$val['Title']|default=''}
+                            </a>
+                        </span>
+                        <div class="qualityGrade tipstion j-tip-container" style="z-index: auto;">
+                        </div>
+                    </td>
+                    <td class="padpro" width="20">
+                        {$val['_id']}
+                    </td>
+                    <td class="productgroup prodThTwo">
+                        <span class="groupreline" title="{$val['FirstCategoryName_en']|default=''}">{$val['FirstCategoryName_cn']|default="-"}-{$val['FirstCategoryName_en']}</span>
+                    </td>
+                    <td class="right prodThThree">{$val['RangePrice']|default=""}</td>
+                    <td class="prodThFour">
+                        <input type="hidden" value="{$val.FirstCategory|default=''}" name="class_id_{$val._id}">
+                        <input type="text" placeholder="佣金比例" name="commission_{$val._id}" product-profit="{$spu_product_profit_data[$val._id]|default=0}" class="edit-commission-input w50" data-value="3.0" net-profit="5.0"><br>
+                        <span class="edit-err-tips red hide"></span>
+                    </td>
+                    <td class="prodThFive"><input type="text" name="effect_time_{$val._id}" class="effective-time" placeholder="生效时间"></td>
+                </tr>
+            {/volist}
+            {else/}
+                <tr class="tr-zeroCenter">
+                    <td height="270" colspan="9" class="no-result">没有找到符合条件的信息。 </td>
+                </tr>
+            {/if}
+            <tr class="tr-edit">
+                <td width="20px">
+                    <input name="checkAllProducts" type="checkbox">
+                </td>
+                <td colspan="5">
+                    <span class="mr20 selectAll">全选</span>
+                    <div class="fr">
+                        <span class="mr20">每页
+                            <select name="page_size" id="page-select">
+                                <option value="20" {if condition="input('page_size') eq 20"}selected="selected"{/if}>20</option>
+                                <option {if condition="input('page_size') eq 50"}selected="selected"{/if}>50</option>
+                                <option {if condition="input('page_size') eq 100"}selected="selected"{/if}>100</option>
+                            </select>
+                            条
+                        </span> <!--您已经选择 <span class="select-pro-nums">0</span> 个产品：-->
+                        <a href="javascript:;" class="batch-add-btn search-btn">添加为主推产品</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="fr mt10">
+        {$product_data.Page}
+        </div>
+
+    </div>
+</div>
+<script>
+    var ajax_url = {$ajax_url|default=''};
+</script>

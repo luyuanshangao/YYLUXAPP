@@ -1,0 +1,60 @@
+{include file="layout/c_style" /}
+{include file="layout/c_corejs" /}
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+		<form id="saveForm">
+			<dl class="c-h-dl-validator form-group clearfix">
+				<dd>
+					<label class="v-title w100 pt0 tmiddle tright"><em class="red">*</em>类型：</label></dd>
+				<dd>
+					<input type="radio"  name="type" value="1" class="tmiddle mt0"/>
+                    <label class="mb0">全额退款</label>
+                    <input type="radio"  name="type" value="2" class="tmiddle mt0"/>
+                    <label class="mb0">指定sku退款</label>
+                    <input type="radio"  name="type" value="3" class="tmiddle mt0"/>
+                    <label class="mb0">订单部分退款</label>
+				</dd>
+			</dl>
+		<!-- 	{/if} -->
+			<dl class="c-h-dl-validator form-group clearfix">
+				<dd class="v-title w100"><label>
+					<em>*</em><!-- 描述： --></label></dd>
+				<dd>
+					<textarea rows="18" cols="100" class="pd10 describe" name="OrderNumber"></textarea>
+					<div class="err red hide describe-err">必填</div>
+				</dd>
+				<dd class="ml10">
+					<p>描述：</p>
+				<p class="red ml10">全额退款格式：订单号,退款原因(多个请以“;”或换行隔开);
+				<br/>
+                         部分SKU退款格式：订单号,sku-数量|sku-数量,退款原因(多个请以“;”或换行隔开);
+                <br/>
+                         订单部分退款格式：订单号,退款金额,退款原因(多个请以“;”或换行隔开);
+				</p>
+				<p class="ml10 mt10">执行返回结果：</p>
+				<p class="refund-msg red ml10">
+
+				</p>
+			</dl>
+
+			<dl class="c-h-dl-validator form-group clearfix">
+				<dd class="v-title w100">
+					<label></label>
+				</dd>
+				<dd>
+					<a href="javascript:void(0);" class="saleafter-submit-btn btn btn-qing submit_refund">提交</a>
+				</dd>
+			</dl>
+		</form>
+	</div>
+</div>
+</body>
+</html>
+<script src="/static/js/order.js" type="text/javascript"></script>
+<script>
+    $(function() {
+
+        Order.batch_refund();
+
+    })
+</script>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>活动编辑页</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/plugins/layui/css/layui.css" type="text/css" />
+    <link rel="stylesheet" href="/static/css/edm_system.css" type="text/css" />
+</head>
+
+<body>
+    <div class="row ml10 mr10 mt10 pd10">
+        <div class="row">
+            <div class="col-md-12">
+                <form id="ad-index-top-form" method="post">
+                <div class="tb_box">
+                    <div class="tb_headline">主要</div>
+                    <table class="edit_tb cell4">
+                        <tr>
+                            <th>
+                                * <label for="TaskTitle">活动名称</label>：
+                            </th>
+                            <td>
+                                <input class="w400" data-val-length="最多允许128个中/英文字符" data-val-length-max="128" data-val-required="请输入任务名称" id="TaskTitle" name="TaskTitle" type="text" value="{$activity.ActivityTitle}" />
+                                <span class="error-tips red"></span>
+                                <p>格式为：20190617_ActiveName_LangCode(小写)</p>
+                            </td>
+                            <th>
+                                 *<label for="TaskTitle">邮件标题</label>：
+                            </th>
+                            <td>
+                                <input type="text" class="w400" name="EmailTitle" value="{$activity.EmailSubject}"/>
+                                <span class="error-tips red"></span>
+                                <p>发送邮件的标题</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="Banner">Banner</label>：
+                            </th>
+                            <td>
+                                <input data-val-length="最多允许128个中/英文字符" data-val-length-max="128" name="Banner" type="text" value="{$activity.Banner}" class="w400 upload-img-input" />
+                                <button type="button" class="layui-btn file-btn js-upload-img-btn">
+                                    <i class="layui-icon layui-icon-upload-drag"></i>上传图片
+                                </button>
+                                <i class="glyphicon glyphicon-search f14 gray js-preview-img"></i>
+                                <span class="error-tips red"></span>
+                            </td>
+                            <th>
+                                <label for="BannerUrl">Banner链接</label>：
+                            </th>
+                            <td>
+                                <input class="w400" data-val="true" data-val-length="最多允许200个中/英文字符" data-val-length-max="200" id="BannerUrl" name="BannerUrl" placeholder="输入Banner图片点击后跳转的链接地址" type="text" value="{$activity.BannerUrl}" />
+                                <a class="cursor-pointer" id="previewBannerUrl" target="_blank">预览链接</a>
+                                <span class="error-tips red" data-valmsg-for="BannerUrl" data-valmsg-replace="true"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="Banner2nd">Banner2nd</label>：
+                            </th>
+                            <td>
+                                <input data-oran-ui="image-uploader" data-val-length="最多允许128个中/英文字符" data-val-length-max="128" name="Banner2nd" type="text" value="{$activity.Banner2nd}" class="upload-img-input w400" />
+                                <button type="button" class="layui-btn file-btn js-upload-img-btn">
+                                    <i class="layui-icon layui-icon-upload-drag"></i>上传图片
+                                </button>
+                                <i class="glyphicon glyphicon-search f14 gray js-preview-img"></i>
+                                <span class="error-tips red"></span>
+                            </td>
+                            <th>
+                                <label for="Banner2Url">Banner2链接</label>：
+                            </th>
+                            <td>
+                                <input class="w400" data-val="true" data-val-length="最多允许200个中/英文字符" data-val-length-max="200" id="Banner2Url" name="Banner2Url" placeholder="输入Banner2图片点击后跳转的链接地址" type="text" value="{$activity.Banner2Url}" />
+                                <a class="cursor-pointer" id="previewBanner2Url" target="_blank">预览链接</a>
+                                <span class="error-tips red" data-valmsg-for="Banner2Url" data-valmsg-replace="true"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="Banners">Banners</label>：
+                            </th>
+                            <td colspan="3">
+                                <ul id="banners_ul" class="section banner_section">
+                                    {notempty name="activity.Banners"}
+                                    {volist name="activity.Banners" id="banners"}
+                                    <li data-id="{$i}" class="default-item">
+                                        <a class="del_section"></a>
+                                        <p class="mb5"><textarea class="z-banner-text" style="width:351px;" placeholder="主文案">{$banners.MainTitle}</textarea></p>
+                                        <p class="mb5"><textarea class="f-banner-text" style="width:351px;" placeholder="辅文案">{$banners.SubTitle}</textarea></p>
+                                        <p class="mb5"><span class="oui_image_uploader"><input value="{$banners.ImageUrl}" type="text" maxlength="128" class="banner-url ltxt w250 upload-img-input" placeholder="上传Banner图片或者输入Banner图片地址"><button type="button" id="testUpload{$i}" class="layui-btn file-btn js-upload-img-btn mr5"><i class="layui-icon layui-icon-upload-drag"></i>上传图片</button><i class="glyphicon glyphicon-search f14 gray js-preview-img"></i></span></p>
+                                        <div style="display:none;" class="oui_image_uploader_box "><p class="oui_image_uploader_close"><span></span></p><p class="oui_image_uploader_box_file">上传文件：<input type="file"></p><p class="oui_image_uploader_box_tips">允许上传jpg|png|gif，大小在1000KB以内。</p><p class="oui_image_uploader_box_button"><input class="btn_hl" type="button" value="上传"></p><p class="oui_image_uploader_box_message">正在上传，请稍候...</p></div>
+                                        <p></p>
+                                        <p class="mb5"><input class="banner-spu" type="text" style="width:351px;" placeholder="SPU+(赠品)SPU" value="{$banners.SPUList}"></p>
+                                    </li>
+                                    {/volist}
+                                    {/notempty}
+                                    <li id="banners_li" class="eliminating">
+                                        <img src="/static/images/add_72px.png" alt="">
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                * SPU：
+                            </th>
+                            <td colspan="3">
+                                <div>
+                                    <div class="fl" id="RecommendedSKUs">
+                                        <p class="gray mb5">
+                                            主推SPU：
+                                        </p>
+                                        <textarea class="w300 h150 mr10" data-val="true" data-val-length="最多允许4000个中/英文字符" data-val-length-max="4000" id="SKUText" name="SKUText" placeholder="每行输入一个SPU" rows="2">{$activity.SPUText}</textarea>
+                                        <span class="error-tips red" data-valmsg-for="SKUText" data-valmsg-replace="true"></span>
+                                    </div>
+                                    <div class="fl" id="OtherSKUs">
+                                        <p class="gray mb5">
+                                            其它SPU：
+                                        </p>
+                                        <textarea class="w300 h150 ml5" data-val="true" data-val-length="最多允许15000个中/英文字符" data-val-length-max="15000" id="OtherSKUText" name="OtherSKUText" placeholder="输入格式请参照右侧格式说明">{$activity.OtherSPUText}</textarea>
+                                        <span class="error-tips red" data-valmsg-for="OtherSKUText" data-valmsg-replace="true"></span>
+                                    </div>
+                                    <div class="fl ml30 color-3a">
+                                        <p class="mb5 red">
+                                            格式说明：</p>
+                                        <p class="mb5">
+                                            [ 主推SPU ] 每行输入一个SPU 如：<br />
+                                            123456<br />
+                                            456789<br />
+                                        </p>
+                                        <br />
+                                        <p class="mb5">
+                                            [ 其他SPU ] 输入时非数字表示类别名称，示例数据如下：<br />
+                                            IPhone<br />
+                                            123456<br />
+                                            456789<br />
+                                            Car Accessories<br />
+                                            303088<br />
+                                            404056<br />
+                                        </p>
+                                    </div>
+                                    <div class="clear">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                * <label for="LangCode">语言</label>：
+                            </th>
+                            <td>
+                                <select class="w200 select-h24" data-val="true" data-val-required="请选择 语言" id="ddlLang" name="LangCode">
+                                    <option value="" selected="selected">- 请选择 -</option>
+                                    {volist name="lang_data" id="cval"}
+                                    {if condition="$key == $activity.LangCode"}
+                                    <option value="{$key}" selected="selected">{$key} / {$cval}</option>
+                                    {else/}
+                                    <option value="{$key}" >{$key} / {$cval}</option>
+                                    {/if}
+                                    {/volist}
+                                </select>
+                                <span class="error-tips red" data-valmsg-for="LangCode" data-valmsg-replace="true"></span>
+                            </td>
+                            <th>
+                                * <label for="CurrencyCode">价钱货币</label>：
+                            </th>
+                            <td>
+                                <select class="w200 select-h24" data-val="true" data-val-length="最多允许8个中/英文字符" data-val-length-max="8" data-val-required="请选择 价钱货币" id="CurrencyCode" name="CurrencyCode">
+                                    <option value="" selected="selected">- 请选择 -</option>
+                                    {volist name="currency_data" id="cval"}
+                                    {if condition="$cval == $activity.CurrencyCode"}
+                                    <option value="{$cval}" selected="selected">{$cval}</option>
+                                    {else/}
+                                    <option value="{$cval}" >{$cval}</option>
+                                    {/if}
+                                    {/volist}
+                                </select>
+                                <span class="error-tips red" data-valmsg-for="CurrencyCode" data-valmsg-replace="true"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                * <label for="TemplateID">模板</label>：
+                            </th>
+                            <td colspan="3">
+                                <div id="selected_edm_tp_cntr"></div>
+                                <div>
+                                    <input data-val="true" data-val-number="The field 模板 must be a number." data-val-required="请选择 模板" id="TemplateID" name="TemplateID" type="hidden" value="{$activity.TemplateID}" />
+                                    <span class="error-tips red" data-valmsg-for="TemplateID" data-valmsg-replace="true"></span>
+                                    <div id="selected_tp_cntr" class="clearfix">
+                                        {notempty  name="$activity.TemplateID"}
+                                        <dl class="selected_task_tp_box"><dt><img src="{$activity.temp_url}"></dt><dd>{$activity.temp_title}</dd></dl>
+                                        {/notempty}
+                                    </div>
+                                    <input id="btnShowTemplateBox" alt="#TB_inline?height=500&width=750&inlineId=template_select_cntr" title="选择Landing Page模板" value="选择模板..." class="thickbox mr10"
+                                           type="button" {empty name="$activity.TemplateID"}disabled="disabled"{/empty} />
+                                    <input type="button" value="清除" id="btn_remove_main_tp" />
+                                    <div class="tb_tips" id="boxTemplateTips">
+                                        选择「语言」选项后，才能选择模板。</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                * <label for="PageTitle">网页标题</label>：
+                            </th>
+                            <td colspan="3">
+                                <input class="ltxt w500" data-val="true" data-val-length="最多允许256个中/英文字符" data-val-length-max="256"
+                                       data-val-required="请输入 网页标题" id="PageTitle" name="PageTitle" type="text" value="{$activity.PageTitle}" />
+                                <span class="error-tips red" data-valmsg-for="PageTitle" data-valmsg-replace="true"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                * <label for="UrlSnippet">URL链接</label>：
+                            </th>
+                            <td colspan="3">
+                                <input class="ltxt w500" data-val="true" data-val-length="最多允许128个中/英文字符" data-val-length-max="128" data-val-regex="只允许字符：英文字母、数字、中横线(-)" data-val-regex-pattern="[a-zA-Z0-9-]+" data-val-required="请输入 URL链接" id="UrlSnippet" name="UrlSnippet" type="text" value="{$activity.UrlSnippet}" />
+                                <span class="error-tips red" data-valmsg-for="UrlSnippet" data-valmsg-replace="true"></span>
+                                <div class="tb_tips">
+                                    输入专题页面文件名称，允许字符：英文字母、数字、中横线(-)。中横线不允许连续出现，比如abc--cde</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="tb_box">
+                    <div class="tb_headline">附加信息</div>
+                    <table class="edit_tb">
+                        <tr>
+                            <th><label for="GACode">GA跟踪代码</label>：
+                            </th>
+                            <td>
+                                <input class="ltxt w500" data-val="true" data-val-length="最多允许128个中/英文字符" data-val-length-max="128" id="GACode" name="GACode" type="text" value="{$activity.GACode}" />
+                                <span class="error-tips red" data-valmsg-for="GACode" data-valmsg-replace="true"></span>
+                                <div class="tb_tips">
+                                    输入Google 流量分析与跟踪代码的标识。<br />
+                                    <span class="red">格式说明：</span>utm_source=dx&utm_medium=homerotate&utm_campaign=en20161118demo</div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="tb_box">
+                    <div class="tb_headline">其它</div>
+                    <table class="edit_tb">
+                        <tr>
+                            <th>
+                                * <label for="Enabled">状态</label>：
+                            </th>
+                            <td>
+                                <label class="mr20"><input type="radio" name="status-isabled"
+                                                           {empty name="activity.Enabled"}checked="checked"{else /}{if condition="$activity.Enabled == 1"}checked="checked"{/if}{/empty} value="1">可用</label>
+                                <label><input type="radio" name="status-isabled" {if condition="$activity.Enabled == 2"}checked="checked"{/if} value="2">不可用</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="Remark">备注</label>：
+                            </th>
+                            <td>
+                                <textarea class="textarea_1" rows="5" cols="50" data-oran-ui="limited-input" data-val="true" data-val-length="最多允许512个中/英文字符" data-val-length-max="512" id="Remark" name="Remark" rows="2"></textarea>
+                                <span class="error-tips red" data-valmsg-for="Remark" data-valmsg-replace="true"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <input id="activityID" name="activityID" value="{$activity.id}" type="hidden"/>
+                </form>
+                <p class="tcenter btn-wrap">
+                    <a href="javacript:;" class="layui-btn btn-save save-active-btn-btn">保 存</a>
+                    <a href="/activity/index" class="layui-btn layui-btn-primary">取 消</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="TB_overlay" class="TB_overlayBG"></div>
+    <div id="TB_window">
+        <div id="TB_title">
+            <div id="TB_ajaxWindowTitle">选择Landing Page模板</div>
+            <div id="TB_closeAjaxWindow"><a href="#" id="TB_closeWindowButton">&nbsp;</a> &nbsp; &nbsp; &nbsp;</div>
+        </div>
+        <div id="TB_ajaxContent" style="width:750px;height:495px">
+            <div class="template_select_box">
+                <p class="tb_action mb10"><a href="" target="_blank">管理模板»</a></p>
+                <div class="js-img-cont">
+                    {notempty name="template"}
+                        {volist name="template" id="temp"}
+                            <dl data-tp-lang="{$temp.lang}" data-oran-para='{$temp.json}'>
+                            <dt>
+                                <img src="{$temp.thumb}">
+                            </dt>
+                            <dd>{$temp.title}</dd>
+                            </dl>
+                        {/volist}
+                    {/notempty}
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id='js-image-domain' value="{$admin_edm_url_config}">
+    <script src="/assets/plugins/layui/layui.js"></script>
+    <script src="/static/js/edmSystem.js"></script>
+    <script>
+    $(function(){
+        EdmSystem.saveActivity();
+    })
+    </script>
+</body>
+</html>

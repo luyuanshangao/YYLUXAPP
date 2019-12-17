@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>邮件任务编辑页</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/edm_system.css" type="text/css" />
+
+</head>
+
+<body>
+    <div class="row ml10 mr10 mt20 pd10">
+        <div class="row">
+            <div class="col-md-12">
+                <form action="">
+                    <div class="content_section">
+                        <div class="left">基础信息</div>
+                        <div class="right">
+                            <dl class="e_row">
+                                <dt>* <label for="TaskTitle">标题</label>：</dt>
+                                <dd>
+                                    <input data-val="true" data-val-length="最多允许128个中/英文字符" data-val-length-max="128"
+                                        data-val-required="请输入 名称" id="TaskTitle" name="TaskTitle" type="text"
+                                        value="{$activity.TaskTitle}" class="w200">
+                                    <span class="field-validation-valid" data-valmsg-for="TaskTitle"
+                                        data-valmsg-replace="true"></span>
+                                    <p class="form_tips">该名称仅用于本系统参阅，与EDM内容无关，此名称是系统上唯一的。</p>
+                                </dd>
+                            </dl>
+                            <dl class="e_row">
+                                <dt>* <label for="SendingTime">发送时间</label>：</dt>
+                                <dd>
+                                    <input type="text" name="startTime" id="orderstarttime" class="data-time"
+                                        value="{$activity.StartTime}" placeholder="" autocomplete="off">
+                                    <input data-val="true" data-val-required="The 立即发送 field is required." onchange="EdmSystem.CheckSendChange()"
+                                        id="ImmediatelySend" name="ImmediatelySend" type="checkbox"  {if
+                                        condition="$activity.IsRealTime == 1" }checked="true" {/if}> <input
+                                        name="ImmediatelySend" type="hidden" value="false">
+                                    <span class="field-validation-valid" data-valmsg-for="ImmediatelySend"
+                                        data-valmsg-replace="true"></span>
+                                    <label for="ImmediatelySend">立即发送</label><span class="gray">（系统自动设置发送时间为创建邮件任务后的30
+                                        分钟后）</span>
+                                    <p class="form_tips">北京时间标准，邮件将在此时间到达时，自动发出。若设定具体的发送时间，指定的时间必须是现在时间 30 分钟之后。</p>
+                                </dd>
+                            </dl>
+                            <dl class="e_row">
+                                <dt>* <label for="EmailService">收件人</label>：</dt>
+                                <dd>
+                                    {if condition="$activity.RecipientID>0"}
+                                    {$recipientInfo.title}
+                                    <input id="RecipientValveID" name="RecipientValveID" value="{$activity.RecipientID}"
+                                        type="hidden" />
+                                    {else/}
+                                    <select data-val="true" data-val-required="请选择 收件人" id="RecipientID"
+                                        name="RecipientID" class="select-h24">
+                                        <option value="">请选择</option>
+                                        {volist name="recipient_list" id="val"}
+                                        {if condition="$val.id == $activity.RecipientID"}
+                                        <option value="{$val.id}" selected="selected">{$val.title}</option>
+                                        {else/}
+                                        <option value="{$val.id}">{$val.title}</option>
+                                        {/if}
+                                        {/volist}
+                                    </select>
+                                    <span class="field-validation-valid" data-valmsg-for="EmailService"
+                                        data-valmsg-replace="true"></span>
+                                    {/if}
+                                </dd>
+                            </dl>
+                            <dl class="e_row">
+                                <dt>* <label for="SenderID">发件人</label>：</dt>
+                                <dd>
+                                    <select data-val="true" data-val-required="请选择 发件人" id="SenderID" name="SenderID"
+                                        class="valid select-h24">
+                                        <option value="">请选择</option>
+                                        <option value="1" {if condition="$activity.Sender == 1" }selected="selected"
+                                            {/if}>DX.com / news@e.dx.com</option> <option value="2" {if
+                                            condition="$activity.Sender == 2" }selected="selected" {/if}>DX.com /
+                                            news@edm.dx.com</option> </select> <span class="field-validation-valid"
+                                            data-valmsg-for="SenderID" data-valmsg-replace="true"></span>
+                                </dd>
+                            </dl>
+                            <dl class="e_row">
+                                <dt>*
+                                    <label for="SenderID">是否是活动</label>：</dt>
+                                <dd>
+                                    <label class="mr10">
+                                        <input type="radio" name='IsActivity' class="mt0" value="1" {if
+                                            condition="$activity.IsActivity == 1" }checked="checked" {/if}>是 </label>
+                                            <label>
+                                        <input type="radio" name='IsActivity' class="mt0" value="2" {if
+                                            condition="$activity.IsActivity == 2" }checked="checked" {/if}>否 </label>
+                                            </dd> </dl> <dl class="e_row">
+                                <dt>* <label for="ActivityId">活动名称</label>：</dt>
+                                <dd>
+                                    <input data-val="true" data-val-length="最多允许128个中/英文字符" data-val-length-max="128"
+                                        data-val-required="请输入 名称" id="ActivityName" name="ActivityName" type="text"
+                                        value="{$activity.ActivityName}" class="w200">
+                                    <span class="field-validation-valid" data-valmsg-for="ActivityId"
+                                        data-valmsg-replace="true"></span>
+                                    <p class="form_tips">该名称仅用于本系统参阅，与EDM内容无关，此名称是系统上唯一的。</p>
+                                </dd>
+                            </dl>
+                            <dl class="e_row">
+                                <dt>*
+                                    <label for="SenderID">是否启用</label>：</dt>
+                                <dd>
+                                    <label class="mr10">
+                                        <input type="radio" name='isEnable' class="mt0" value="1" {if
+                                            condition="$activity.IsEnable == 1" }checked="checked" {/if}>是 </label>
+                                            <label>
+                                        <input type="radio" name='isEnable' class="mt0" value="2" {if
+                                            condition="$activity.IsEnable == 2" }checked="checked" {/if}>否 </label>
+                                            </dd> </dl> <dl class="e_row">
+                                <dt>*
+                                    <label for="Followers">测试用户</label>：</dt>
+                                <dd>
+                                    <textarea cols="10" data-val="true" data-val-required="请输入 邮件内容" id="Followers"
+                                        name="Followers" rows="8" style="width: 60%;">{$activity.Followers}</textarea>
+                                    <p class="form_tips">用户邮箱使用;分开。</p>
+                                </dd>
+                            </dl>
+                            <dl class="e_row js-lang-dl ">
+                                <dt>*
+                                    <label for="SenderID">选择语种</label>：</dt>
+                                <dd>
+                                    <select class="js-lang-select w100" id="ddlLang" name="LangCode">
+                                        <option value="en">请选择</option>
+                                        {volist name="lang_data" id="cval"}
+                                        {if condition="$key == $activity.langage"}
+                                        <option value="{$key}" selected="selected">{$key} / {$cval}</option>
+                                        {else/}
+                                        <option value="{$key}">{$key} / {$cval}</option>
+                                        {/if}
+                                        {/volist}
+                                    </select>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="content_section">
+                        <div class="left">邮件设置</div>
+                        <div class="right">
+                            <dl class="e_row">
+                                <dt>* <label for="EmailSubject">邮件标题</label>：</dt>
+                                <dd>
+                                    <input data-val="true" data-val-length="最多允许128个中/英文字符" data-val-length-max="128"
+                                        data-val-required="请输入 邮件标题" id="MailSubject" name="MailSubject" type="text"
+                                        value="{$activity.EmailSubject}" class="percentage100">
+                                    <span class="field-validation-valid" data-valmsg-for="EmailSubject"
+                                        data-valmsg-replace="true"></span>
+                                </dd>
+                            </dl>
+                            <dl class="e_row">
+                                <dt>* <label for="MailBody">邮件内容</label>：</dt>
+                                <dd>
+                                    <textarea cols="20" data-val="true" data-val-required="请输入 邮件内容" id="MailBody"
+                                        name="MailBody" rows="20" class="percentage100">{$activity.EmailBody}</textarea>
+                                    <span class="field-validation-valid" data-valmsg-for="MailBody"
+                                        data-valmsg-replace="true"></span>
+                                    <p class="pt5 btn-wrap">
+                                        <a href="javacript:;" class="layui-btn btn-email-save btn btn-gray mr20">保 存</a>
+                                        <a href="/Emailtask/index" class="layui-btn btn-save btn btn-gray">取消</a>
+                                    </p>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <input id="emailTaskID" name="emailTaskID" value="{$activity.id}" type="hidden" />
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/edmSystem.js?v=20190786"></script>
+    <script>
+        $(function () {
+            EdmSystem.saveTask();
+           
+        })
+    </script>
+</body>
+
+</html>

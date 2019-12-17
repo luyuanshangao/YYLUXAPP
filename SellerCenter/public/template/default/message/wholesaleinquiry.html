@@ -1,0 +1,68 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/message.js" /}
+
+<div class="main-box fl message">
+    <div class="box-white mt0">
+        <h1 class="main-cont-title">Wholesale Inquiry</h1>
+        <form action="{:url('index/Message/wholesaleInquiry')}" method="get" class="">
+           	<div class="box-white">
+				<ul class="search-ul-layout">
+					<li>
+						<label class="search-label-title">是否阅读:</label>
+						<select name="shipping_method">
+							<option value="">全部</option>
+							{volist name='shipping_method_data' id='val'}
+								<option value="{$val.id}" {if condition="$val['id'] == input('shipping_method')"} selected="selected" {/if}>{$val.name}</option>
+							{/volist}
+						</select>
+					</li>
+					<li class="search-li">
+						<input type="submit" value="搜 索" class="search-btn" style="border: 0;cursor: pointer;">
+					</li>
+				</ul>
+			</div>
+        </form>
+
+		<table class="main-base-table mt20">
+			<tr>
+				<th>SKU</th>
+				<th>订货量</th>
+				<th>邮件地址</th>
+				<th>国家</th>
+				<th>送货方式</th>
+				<th>询价详情</th>
+				<th>添加时间</th>
+			</tr>
+
+			{volist name='list' id='info'}
+			<tr class="j-mouse-hover">
+				<td class="padimg">{$info.sku_id|default=''}</td>
+				<td class="padpro">{$info.order_quantity|default=''}</td>
+				<td>{$info.email_address|default=''}</td>
+				<td>{$info.country|default=''}</td>
+				<td>{$info.shipping_method_str|default=''}</td>
+				<td style="max-width: 350px; word-wrap:break-word">{$info.details|default=''}</td>
+				<td>{:date('Y-m-d H:i:s', $info['addtime'])}</td>
+			</tr>
+			{/volist}
+			{empty name='list'}
+			<tr>
+				<td colspan="6" class="no-result">暂时无消息</td>
+			</tr>
+			{/empty}
+		</table>
+
+		{notempty name='page'}
+		<div class="page-wrap clearfix mt20">
+			<!--<div class="page-range fl">
+				<span class="page-number">1</span>/<span class="page-count">2</span>
+				<span class="ml10">跳转至第几</span>
+				<input class="page-put ml5" type="text"> 页
+				<a href="" class="page-go ml5">确定</a>
+			</div>-->
+			{$page}
+		</div>
+		{/notempty}
+    </div>
+</div>

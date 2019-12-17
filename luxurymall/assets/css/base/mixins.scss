@@ -1,0 +1,49 @@
+@mixin clearfix {
+    *zoom: 1;
+ 	&:after {
+		display: block;
+		clear: both;
+		height: 0;
+		visibility: hidden;
+		content: '\20';
+	}
+}
+@mixin margin_normal {
+	margin: 0;
+}
+@mixin padding_normal {
+	padding:0;
+}
+@mixin border_no {
+	border: 0;
+}
+@mixin tleft {
+	text-align: left;
+}
+@mixin tcenter {
+	text-align: center;
+}
+@mixin tright {
+	text-align: right;
+}
+@mixin ttop{
+	vertical-align: top;
+}
+@mixin tbottom {
+	vertical-align: bottom;
+}
+@mixin tmiddle {
+	vertical-align: middle;
+}
+@mixin inlineblock {
+	display: inline-block;
+}
+@mixin floatleft {
+	float: left;
+}
+@mixin floatright {
+	float: right;
+}
+@mixin boxsizing {
+	box-sizing: border-box;
+}

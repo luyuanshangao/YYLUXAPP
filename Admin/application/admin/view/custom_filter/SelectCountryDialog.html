@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8" />
+    <title>筛选弹窗</title>
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/customFilter.css" type="text/css" />
+</head>
+
+<body>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+    <!-- BEGIN SIDEBAR -->
+    <!--#include file="layout/sidebar.html"-->
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content pt0 pl0 ml20">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                    <div>
+                        <div class="tab-content mt25">
+                            <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                <!-- start base table -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="webengine_dialog_Model" class="ui-dialog-content ui-widget-content pd10">
+                                            <div>
+                                                <div class="space_div">
+                                                    <div class="mb10 fb pb10">
+                                                        国家/地区：<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input id="txt_country" type="text" class="ui-autocomplete-input" autocomplete="off">(名称/简码)
+                                                        <span class="fr mr20 fbold"><label><input id="selAllCB" type="checkbox">全选/取消全选 </label></span>
+                                                    </div>
+                                                    <form method="post"  id="addUserForm">
+                                                        <div>
+                                                            <table class="ml20 mr10 mt10" border="0" cellpadding="0" cellspacing="0" width="98%">
+                                                                <tbody>
+                                                                {volist name="$list['country_short_code']" id="vo"}
+                                                                    <tr>
+                                                                        <td class="fb">
+                                                                            <b>语种：{$vo[0]}
+                                                                                <span>(<a class="more blue" href="javascript:;">收缩</a>)</span>
+                                                                                <span class="fr"><span class="allCB">
+                                                                                    <input id="ck_language_country_{$vo[0]}" type="checkbox">
+                                                                                    <label for="ck_language_country_{$vo[0]}">
+                                                                                        全选/取消全选</label>
+                                                                                </span></span>
+                                                                            </b>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr class="checkbox-tr-wrap">
+                                                                        <td>
+                                                                            <div data-height="1" class="c_list">
+                                                                            {volist name="$vo['ShortCode']" id="vi"}
+                                                                                <span class="oCB sub_cb">
+                                                                                    <input id="ck_country_{$vi.Code}" type="checkbox" value="{$vi.Code}" name='country-input'>
+                                                                                    <label for="ck_country_{$vi.Code}">
+                                                                                        {$vi.Name}({$vi.Code})</label>
+                                                                                </span>
+                                                                            {/volist}
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                {/volist}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="/static/js/SelectCountryDialog.js"></script>
+</body>
+</html>

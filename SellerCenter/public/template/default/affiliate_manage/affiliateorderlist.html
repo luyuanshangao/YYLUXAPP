@@ -1,0 +1,133 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/productMan.js" /}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+{load href="/static/js/module/setAffiliateClass.js" /}
+
+<style>
+    /** 分页 **/
+    .pagination  li {display: inline;padding: 0 2px;float: left;}
+    .pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+    .pagination .active span{color: red;}
+    .product-management .search-ul-layout input {
+        width: 130px;
+    }
+
+</style>
+
+<div class="main-box fl product-management">
+    <div class="box-white mt0" style="overflow: hidden;">
+        <h1 class="main-cont-title">{$title}</h1>
+        <form action="{:url('AffiliateManage/affiliateOrderList')}" method="get" class="pb10" id="product-form">
+            <ul class="search-ul-layout mt10">
+                <li>
+                    <label class="search-label-title">订单编号:</label>
+                    <input class="input-text small-input" type="text" name="order_number" placeholder="订单编号"  value="{:input('order_number')}"/>
+                </li>
+                <li>
+                    <label>订单状态：
+                        <select name="order_status" id="">
+                            <option value="">全部订单</option>
+                            {volist name="order_status_data" id="val"}
+                            {if condition="input('order_status') == $val['code']"}
+                            <option value="{$val.code}" selected="selected">{$val.name}</option>
+                            {else/}
+                            <option value="{$val.code}">{$val.name}</option>
+                            {/if}
+                            {/volist}
+                        </select>
+                    </label>
+                </li>
+                <li>
+                    <label>结算状态：
+                        <select name="settlement_status" id="">
+                            <option value="">全部</option>
+                            {volist name="settlement_status_data" id="val"}
+                                {if condition="input('settlement_status') == $val['id']"}
+                                    <option value="{$val.id}" selected="selected">{$val.name}</option>
+                                {else/}
+                                    <option value="{$val.id}">{$val.name}</option>
+                                {/if}
+                            {/volist}
+                        </select>
+                    </label>
+                </li>
+                <br><br><br>
+                <li>
+                    <label>提交时间：
+                        <input type="text" name="create_on_start" class="text Wdate start-time" placeholder="开始时间" value="{:input('create_on_start')}" autocomplete="off"> -
+                        <input type="text" name="create_on_end" class="text Wdate end-time" placeholder="结束时间" value="{:input('create_on_start')}" autocomplete="off">
+                    </label>
+                </li>
+                <li class="search-li">
+                    <a href="javascript:product_form_submit()" class="search-btn">搜索</a>
+                </li>
+                <li class="" style="float: right;">
+                    <a href="javascript:;" class="search-btn export-excel-btn" style=" width: auto;">导出订单</a>
+                </li>
+            </ul>
+        </form>
+        <table class="main-base-table mt20">
+            <tr class="tr-border">
+                <th>订单编号</th>
+                <th>订单金额($)</th>
+                <th>佣金金额（$）</th>
+                <th>结算金额($)</th>
+                <th>订单来源</th>
+                <th>订单状态</th>
+                <th>结算状态</th>
+                <th>提交时间</th>
+                <th>操作</th>
+            </tr>
+            {if condition="count($list) gt 0"}
+            {volist name="list" id="val"}
+            <tr class="j-mouse-hover colorfbf">
+                <td>{$val.order_number}</td>
+                <td>{$val.price}</td>
+                <td>{$val.commission_price}</td>
+                <td>{$val.settlement_price}</td>
+                <td>{$val.affiliate_id|default=''}</td>
+                <td>{$val.order_status_str}</td>
+                <td>{$val.settlement_status_str}</td>
+                <td>{notempty name='$val["add_time"]'}{:date('Y-m-d H:i:s', $val['add_time'])}{else /}-{/notempty}</td>
+                <td><a href="{:url('AffiliateManage/affiliateOrderDetail', ['affiliate_order_id'=>$val['affiliate_order_id']])}">查看订单</a></td>
+            </tr>
+            {/volist}
+            {else/}
+            <tr class="tr-zeroCenter">
+                <td height="270" colspan="11" class="no-result">没有找到符合条件的信息。 </td>
+            </tr>
+            {/if}
+        </table>
+        {notempty name="page"}
+        <div class="commonpage page-wrap mt20 fr">
+            {$page}
+        </div>
+        {/notempty}
+    </div>
+</div>
+
+<script>
+    var ajax_url = {$ajax_url|default='""'};
+    // 搜索开始及结束时间
+    $(".start-time").click(function(){
+        WdatePicker({
+            el:this,
+            dateFmt:'yyyy-MM-dd HH:mm:ss'
+        });
+    });
+    $(".end-time").click(function(event) {
+        WdatePicker({
+            el:this,
+            minDate:$(".end-time").siblings('.start-time').val(),
+            //maxDate:getMaxDate(),
+            dateFmt:'yyyy-MM-dd HH:mm:ss'
+        });
+    });
+    //导出订单excel数据
+    $('.export-excel-btn').click(function () {
+        var param = $('#product-form').serialize();
+        console.log(param);
+        window.location.href = ajax_url.async_exportAffiliateOrder+'?'+param;
+    });
+</script>

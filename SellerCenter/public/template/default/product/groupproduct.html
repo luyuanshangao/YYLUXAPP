@@ -1,0 +1,66 @@
+{layout name="layout/main"/}
+{load href="/static/css/product.css" /}
+<!--{load href="/static/js/module/product.js" /}--><script type="text/javascript" src="/static/js/module/product.js?v={$static_version_number|default='20181219'}"></script>
+
+<div class="main-box fl">
+    <div class="box-white box-white-m0">
+        <h1 class="main-cont-title">产品分组管理</h1>
+        <div class="mt10">
+        	<a href="javascript:void(0);" class="add-group-product orange">添加产品</a>
+        	<i class="gray ml10 mr10">|</i>
+        	<a href="javascript:void(0);" class="add-group-product orange">移出产品组</a>
+        	<i class="gray ml10 mr10">|</i>
+        	<a href="javascript:void(0);" class="add-group-product orange">移动到</a>
+        </div>
+        <table class="main-base-table mt20">
+			<tr>
+				<th class="w20">
+					<input id="checkboxAll" type="checkbox" class="checkebox-all mr10"/>
+				</th>
+				<th>图片</th>
+				<th>产品名称</th>
+				<th class="w100">负责人</th>
+			</tr>
+			{if condition="count($product['data']) gt 0"}
+			{foreach name="product['data']" item="val"}
+			<tr>
+				<td><input class="checkebox-single" type="checkbox" class="checkebox-all mr10" data-id="{$val['_id']}"/></td>
+				<td>
+					<img src="{$val['ImageSet']['ProductImg'][0]|default=''}" width="60px" height="60px" alt=""/>
+				</td>
+				<td>
+					{$val['Title']}
+				</td>
+				<td>{$val['UserName']|default=""}</td>
+			</tr>
+			{/foreach}
+			{else/}
+			<tr class="tr-zeroCenter">
+				<td height="270" colspan="9" class="no-result">没有找到符合条件的信息。 </td>
+			</tr>
+			{/if}
+        </table>
+        <div class="page-wrap mt20 clearfix">
+			{$product["Page"]}
+			<!--<div class="page-range fl">
+				<span>page</span>
+				<span class="page-number">1</span>
+				<span>of</span>
+				<span class="page-count">11</span>
+				<span class="ml10">Go to page</span>
+				<input class="page-put ml5" type="text"/>
+				<a href="javascript:void(0);" class="page-go ml5">Go</a>
+			</div>
+			<ul class="page mt5 fr">
+				<li><span class="pre"></span></li>
+				<li><span class="curr" href="#">1</span></li>
+				<li><a href="#">2</a></li>
+				<li><a href="#">3</a></li>
+				<li><a href="#">4</a></li>
+				<li><a href="#" class="next"></a></li>
+			</ul>-->
+		</div>
+        <div class="commonpage page-wrap mt20">
+     </div>
+    </div>
+</div>

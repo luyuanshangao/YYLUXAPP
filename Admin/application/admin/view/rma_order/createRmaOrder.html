@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>商城管理-订单管理-创建RMA订单</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/order-details.css" type="text/css" />
+
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="page-header-fixed page-sidebar-fixed ml20 mr20">
+    <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+        <div class="row bg-color-gray0 area_btn0 border-gray mt10 mg0">
+            <div class="col-md-8">
+                <form action="{:url('RmaOrder/createRmaOrder')}">
+                    <span class="gray">快速创建RMA订单:</span>
+                    <input name="order_number" type="text" value="{$OrderDetail['order_number']|default=''}"/>
+                    <input type="submit" value="GO" class="btn btn-qing">
+                </form>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="month6">
+                <!-- start add -->
+                <div class="info-pb10 c-h-dl-label100 mt10">
+                    <form id="create-rma-form" class="f12_i form-horizontal" action="#" novalidate="novalidate"  enctype="multipart/form-data" onsubmit="return false">
+                        <input id="user_id" type="hidden" name="order_number"  value="{$OrderDetail['order_number']|default=''}">
+                        <input type="hidden" value="{$seller['id']|default=''}" />
+                        <div class="form-body info-pb10 ml20">
+                            <dl class="c-h-dl-validator form-group clearfix">
+                                <dd class="v-title">
+                                    <label class="w130">币种：</label>
+                                </dd>
+                                <dd>
+                                    <select name="currency_code" id="currency_code" data-url="{:url('RmaOrder/getCurrencyRate')}" class="form-control input-small inline">
+                                        {volist name="currency" id="vo"}
+                                        <option {if condition="!empty($OrderDetail['currency_code']) && $vo['Name'] eq $OrderDetail['currency_code']"} selected = "selected"{/if} value="{$vo['Name']}">{$vo['Name']}</option>
+                                        {/volist}
+                                    </select>
+                                </dd>
+
+                                <dd class="v-title">
+                                    <label class="w130">用户ID：</label>
+                                </dd>
+                                <dd>
+                                    <input class="form-control input-medium fl w120" name="customer_id" id="customer_id" value="{$OrderDetail['customer_id']|default=''}">
+                                </dd>
+
+                                <dd class="v-title">
+                                    <label class="w130">SKU：</label>
+                                </dd>
+                                <dd>
+                                    <input class="form-control input-medium fl w120" name="sku_id" id="sku_code" value="">
+                                </dd>
+                                <dd>
+                                    <input type="button" value="添加" class="btn btn-qing" id="add_sku" url-data="{:url('RmaOrder/getProductInfo')}">
+                                </dd>
+                                <dt></dt>
+                            </dl>
+                            <div class="row col-md-12 border_bottom mt20 pr0 ml0 pb20">
+                                <strong>商品信息</strong>
+                                <table class="table-ex tcenter mt10" id="product_table">
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox" class="selectAll"/></th>
+                                        <th>商品名称</th>
+                                        <th>单价</th>
+                                        <th>属性</th>
+                                        <th>数量</th>
+                                        <th>SKU</th>
+                                        <th>总金额</th>
+                                       <!-- <th>重寄说明</th>-->
+                                    </tr>
+                                    </thead>
+                                    <tbody id="product-data-list">
+                                    {if condition="!empty($OrderDetail['itemList'])"}
+                                        {foreach name="OrderDetail['itemList']" item="vo"}
+                                        <tr>
+                                            <td><input type="checkbox" class="single-checkbox js-sku-id" name="goods[{$vo['sku_id']}][sku_id]" data-sku="{$vo['sku_id']}" value="{$vo['sku_id']}"></td>
+                                            <td>{$vo['product_name']}</td>
+                                            <td><span class="js-sales-price-span" data-sku="{$vo['sku_id']}">{$vo['product_price']}</span></td>
+                                            <td>{$vo['product_attr_desc']}</td>
+                                            <td><input type="number" class="form-control input-medium w50 center-block js-number" data-sku="{$vo['sku_id']}"  name="goods[{$vo['sku_id']}][product_nums]" value="{$vo['product_nums']}"></td>
+                                            <td>{$vo['sku_num']}</td>
+                                            <td><input type="number" class="form-control input-medium w80 center-block js-captured-price" data-sku="{$vo['sku_id']}"  name="goods[{$vo['sku_id']}][product_price]" value="{$vo['product_price']}"></td>
+                                            <!--<td><input type="text" class="form-control input-medium w150 center-block js-remark" data-sku="{$vo['sku_id']}" name="goods[{$vo['sku_id']}][sku_remark]" value=""></td>-->
+                                            <input type="hidden" class="js-sales-price" name="goods[{$vo['sku_id']}][SalesPrice]" data-sku="{$vo['sku_id']}" value="{$vo['product_price']}">
+                                            <input type="hidden" class="js-usd-sales-price" name="goods[{$vo['sku_id']}][UsdSalesPrice]" data-sku="{$vo['sku_id']}" value="{$vo['captured_price_usd']}">
+                                            <input type="hidden" class="js-product-id" name="goods[{$vo['sku_id']}][product_id]" data-sku="{$vo['product_id']}" value="{$vo['product_id']}">
+                                            <input type="hidden" class="js-product-id" name="goods[{$vo['sku_id']}][sku_num]" data-sku="{$vo['sku_num']}" value="{$vo['sku_num']}">
+                                        </tr>
+                                        {/foreach}
+                                    {/if}
+                                    </tbody>
+                                    <tfoot>
+                                    <tr id="product-count-data">
+                                        <td colspan="7" class="bg-gray tright">
+                                            <span>合计：</span>
+                                            <strong class="red TotalPrice">0.00</strong>
+                                            <input type="hidden" name="goods_total" id="goods_total">
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                                <dl class="c-h-dl-validator form-group mt10">
+                                    <dd class="v-title">
+                                        <label class="w80">补发说明：</label>
+                                    </dd>
+                                    <dd>
+                                        <input class="form-control input-medium fl w300" name="remark" id="remark" value="">
+                                    </dd>
+                                    <dt></dt>
+                                </dl>
+                            </div>
+                            <div class="row col-md-12 border_bottom mt20 pr0 ml0 pb20 shipping-address-div">
+                                <strong>收货地址</strong>
+                                <dl class="c-h-dl-validator form-group mt10">
+                                    <dd class="v-title">
+                                        <label class="w80">名：</label>
+                                    </dd>
+                                    <dd>
+                                        <input class="form-control input-medium fl w100" name="first_name" id="first_name" value="{$OrderDetail['address']['first_name']|default=''}">
+                                    </dd>
+                                    <dd class="v-title">
+                                        <label class="w80">姓：</label>
+                                    </dd>
+                                    <dd>
+                                        <input class="form-control input-medium fl w100" name="last_name" id="last_name" value="{$OrderDetail['address']['last_name']|default=''}">
+                                    </dd>
+                                    <dd class="v-title">
+                                        <label class="w80">手机：</label>
+                                    </dd>
+                                    <dd>
+                                        <input class="form-control input-medium fl w150" name="mobile" id="mobile" value="{$OrderDetail['address']['mobile']|default=''}">
+                                    </dd>
+                                    <dd class="v-title">
+                                        <label class="w80">电话：</label>
+                                    </dd>
+                                    <dd>
+                                        <input class="form-control input-medium fl w150" name="phone_number" id="phone_number" value="{$OrderDetail['address']['phone_number']|default=''}">
+                                    </dd>
+                                    <dt></dt>
+                                </dl>
+                                <dl class="c-h-dl-validator form-group mt10">
+                                    <dd class="v-title">
+                                        <label class="w80">国家：</label>
+                                    </dd>
+                                    <dd>
+                                        <select class="form-control input-small inline" name="country_code" id="country_code" data-url="{:url('RmaOrder/getRegionList')}">
+                                            <option value="">请选择</option>
+                                            {foreach name="country" item="vo"}
+                                            <option {if condition="!empty($OrderDetail['address']['country_code']) && $OrderDetail['address']['country_code'] eq $vo['Value']"}selected="selected"{/if}value="{$vo['Value']}">{$vo['Text']}</option>
+                                            {/foreach}
+                                        </select>
+                                        <input type="hidden" class="form-control input-medium fl w100" name="country" id="country" value="{$OrderDetail['address']['country']|default=''}">
+                                    </dd>
+                                    <dd class="v-title">
+                                        <label class="w80">州/省：</label>
+                                    </dd>
+                                    <dd class="state-dd">
+                                        <input type="hidden" name="state_code" id="state_code" value="{$OrderDetail['address']['state_code']|default=''}">
+                                        <input  type="text" class="form-control input-medium fl w100" name="state" id="state" value="{$OrderDetail['address']['state']|default=''}">
+                                    </dd>
+                                    <dt></dt>
+                                </dl>
+                                <dl class="c-h-dl-validator form-group mt10">
+                                    <dd class="v-title">
+                                        <label class="w80">城市：</label>
+                                    </dd>
+                                    <dd class="city-dd">
+                                        <input type="hidden" name="city_code" id="city_code" value="{$OrderDetail['address']['city_code']|default=''}">
+                                        <input type="text" class="form-control input-medium fl w100" name="city" id="city" value="{$OrderDetail['address']['city']|default=''}">
+                                    </dd>
+                                    <dd class="v-title">
+                                        <label class="w80">邮编：</label>
+                                    </dd>
+                                    <dd>
+                                        <input class="form-control input-medium fl w100" name="postal_code" id="postal_code" value="{$OrderDetail['address']['postal_code']|default=''}">
+                                    </dd>
+                                    <dt></dt>
+                                </dl>
+                                <dl class="c-h-dl-validator form-group mt10">
+                                    <dd class="v-title">
+                                        <label class="w80">街道1：</label>
+                                    </dd>
+                                    <dd>
+                                        <input class="form-control input-medium fl w300" name="street1" id="street1" value="{$OrderDetail['address']['street1']|default=''}">
+                                    </dd>
+                                    <dt></dt>
+                                </dl>
+                                <dl class="c-h-dl-validator form-group mt10">
+                                    <dd class="v-title">
+                                        <label class="w80">街道2：</label>
+                                    </dd>
+                                    <dd>
+                                        <input class="form-control input-medium fl w300" name="street2" id="street2" value="{$OrderDetail['address']['street2']|default=''}">
+                                    </dd>
+                                    <dt></dt>
+                                </dl>
+                                <dl class="c-h-dl-validator form-group mt10">
+                                    <dd class="v-title">
+                                        <label class="w80">CPF：</label>
+                                    </dd>
+                                    <dd>
+                                        <input class="form-control input-medium fl w300" name="cpf" id="cpf" value="{$OrderDetail['address']['cpf']|default=''}">
+                                    </dd>
+                                    <dt></dt>
+                                </dl>
+                                <!--<input type="hidden" name="country_code">
+                                <input type="hidden" name="state_code">
+                                <input type="hidden" name="city_code">-->
+                            </div>
+
+                            <div class="row col-md-12 border_bottom mt20 pr0 ml0 pb20">
+                                <strong>物流信息</strong>
+                                <dl class="c-h-dl-validator form-group mt10">
+                                    <dd class="v-title">
+                                        <label class="w80">运输方式：</label>
+                                    </dd>
+                                    <dd>
+                                        <select name="ShippingMethod" class="form-control input-small inline">
+                                            {foreach name="ShippingServiceMethod" item="vo"}
+                                            <option value="{$vo['en']}">{$vo[1]}</option>
+                                            {/foreach}
+                                        </select>
+                                    </dd>
+                                    <dt></dt>
+                                </dl>
+                                <dl class="c-h-dl-validator form-group mt10">
+                                    <dd class="v-title">
+                                        <label class="w80">ShippingFee：</label>
+                                    </dd>
+                                    <dd class="v-title">
+                                        <label class="w30 shipping_currency_code">{$currency_code}：</label>
+                                    </dd>
+                                    <dd>
+                                        <input  type="number" class="form-control input-medium  w100" name="shipping_fee" id="shipping_fee" value="0">
+                                    </dd>
+                                    <dt></dt>
+                                </dl>
+                            </div>
+
+                            <div class="row col-md-12 mt20 pr0 ml0 pb20">
+                                <dl class="c-h-dl-validator form-group mt10">
+                                    <dd class="v-title">
+                                        <label class="w80">处理费：</label>
+                                    </dd>
+                                    <dd>
+                                        <input  type="number" class="form-control input-medium  w100" name="handling_fee" id="handling_fee" value="0">
+                                    </dd>
+                                    <dt></dt>
+                                </dl>
+                            </div>
+                            <!--隐藏变量-->
+                            <input type="hidden" name="currency_rate" id="currency_rate" value="{$OrderDetail['exchange_rate']|default=''}">
+                            <input type="hidden" name="store_id" id="store_id" value="{$OrderDetail['store_id']|default=''}">
+                            <input type="hidden" name="store_name" id="store_name" value="{$OrderDetail['store_name']|default=''}">
+                            <dl class="c-h-dl-validator form-group clearfix mt20 ">
+                                <dd class="v-title"><label><em>&nbsp;</em>&nbsp;</label></dd>
+                                <dd class="layui-layer-btn pl0">
+                                    <button class="btn btn-qing create-submit" href="{:url('RmaOrder/createRmaOrder')}">提交</button>
+                                    <!--<a class="btn btn-qing create-submit" href="{:url('RmaOrder/createRmaOrder')}">提交</a>-->
+                                    <a id="addressCancel" class="layui-layer-btn1" href="javascript:history.back(-1);">返回</a></dd>
+                                <dt></dt>
+                            </dl>
+                        </div>
+                        <!--<div class="row col-md-12 mt20 pr0 ml0 pl0 pb20">
+
+                        </div>-->
+                    </form>
+                </div>
+                <!-- end add -->
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script src="/static/js/rma_order.js" type="text/javascript"></script>
+    <script>
+    $(function() {
+        rma.CreateRma();
+    });
+    Common.AllSelect($('.selectAll'),$('.single-checkbox'));
+    </script>
+    <!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+
+</html>

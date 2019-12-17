@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>商城管理->商城设置->商城业务数据配置</title>
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END GLOBAL MANDATORY STYLES --> 
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+        <!-- BEGIN SIDEBAR -->
+        <!--#include file="layout/sidebar.html"-->
+        <!-- END SIDEBAR -->
+        <!-- BEGIN CONTENT -->
+<div class="page-content pt0 ml20 pl0">
+ <!--内容 begin -->
+<div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap bborder-no">
+                                            <form id="navbar" class="navbar-left" action="index" method="post">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">配置KEY：</label>
+                                                        <input name="key" class="form-control input-small" type="text" value="{:input('key')}" />
+                                                    </li>
+                                                    <li class="w300">
+                                                        <label class="c-h-ul-li-title w130">配置值：</label>
+                                                        <input name="configValue" class="form-control input-small" type="text" value='{:input('configValue')}' />
+                                                     <!-- 多行请使用逗号隔开',' -->  
+                                                    </li>
+                                                     <li class="w440">
+                                                        <label class="c-h-ul-li-title" for="reservationtime">添加时间：</label>
+                                                        <input type="text" name="startTime" id="reservationtime" class="form-control input-small startTime" autocomplete="off" value="{:input("startTime")}" />
+                                                        <span class="time-text">至</span>
+                                                        <input type="text" name="endTime" id="canceltime" class="form-control input-small endTime" autocomplete="off" value="{:input("endTime")}"/>
+                                                    </li>
+                                                    <li class="w260">
+                                                        <label class="c-h-ul-li-title w60"></label>
+                                                        <a onclick="javascript:document:navbar.submit();"
+                                                        class="btn btn-gray" href="javascript:;">查 询</a>
+                                                        <a class="btn btn-gray classadd" onclick=addDataConfig('{:url("DataConfig/addDataConfig")}') href="#">添 加</a>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <!-- start base table -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-padding">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th class="tleft">配置KEY</th>
+                                                        <th class="tleft">备注</th>
+                                                        <th class="w100">添加时间</th>
+                                                        <th class="w100">修改时间</th>
+                                                        <th class="w150">操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {volist name="list" id="vo"}
+                                                            <tr>
+                                                                <td>{$vo._id}</td>
+                                                                <td align="left">{$vo.key}</td>
+                                                                <td align="left" class="w600" title="{$vo.remark}">
+                                                                    <div class="w600 exceed">{$vo.remark}</div>
+                                                                </td>
+                                                                <td>{$vo.addTime|date="Y-m-d H:i:s",###}</td>
+                                                                <td>{$vo.updateTime|date="Y-m-d H:i:s",###}</td>
+                                                                <td>
+                                                                   <a href="#"  onclick="importData('{:url("DataConfig/importData",'id='.$vo._id)}')" class="Qing">导入 | </a>
+                                                                   <a href="#"  onclick="edit_public('{:url("DataConfig/editConfig",'id='.$vo._id)}')" class="Qing">查看/修改 | </a>
+                                                                   <a href="#"  onclick="public_delete('{$vo._id}','{:url("DataConfig/deleteDataConfig")}')" class="Qing">删除</a>
+                                                                </td>
+                                                            </tr>
+                                                        {/volist}
+                                                    </tbody>
+                                                </table>
+                                                  <div class="row row16 pd15 mt10">
+                                                      <div class="dataTables_paginate paging_bootstrap fr">
+                                                       {$list->render()}
+                                                     </div>
+                                                   </div>
+                                            </div>
+                             </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+      </div>
+   </div>
+ <script type="text/javascript">
+ //导入数据
+ function importData(e){
+	 //console.log(e);
+       $.get(e, function (data) {
+            layer.open({
+                title: "数据导入",
+                content: data,
+                type: 1,
+                area: ['680px', '300px'],
+                offset: '10px',
+                btn: ["保存", "取消"],
+                yes: function (index) {
+                        var formData = new FormData($( "#importDataPost" )[0]);
+                        //:nth-child(3)
+                        $.ajax({
+                            type:"POST",
+                            url:'/DataConfig/importDataPost',
+                            dataType: 'json',
+                            data:formData,
+                            async: false,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            // data:JsonData,
+                            success:function(msg){
+                                if(msg.code == 200){
+                                       layer.msg(msg.result, {icon: 1});
+                                          setTimeout(function(){
+                                            window.location.reload();
+                                       },1500);
+                                }else{
+                                       layer.msg(msg.result, {icon: 2});
+                                }
+                            }
+                        });
+                },
+                cancel: function () {
+                }
+            });
+        });
+      // console.log(2);
+  }
+ 
+//新增
+ function addDataConfig(e){
+	 //console.log(e);
+       $.get(e, function (data) {
+            layer.open({
+                title: "增加配置节点",
+                content: data,
+                type: 1,
+                area: ['480px', '400px'],
+                offset: '10px',
+                btn: ["保存", "取消"],
+                yes: function (index) {
+                        var formData = new FormData($("#addDataConfig")[0]);
+                        //:nth-child(3)
+                        $.ajax({
+                            type:"POST",
+                            url:e,
+                            dataType: 'json',
+                            data:formData,
+                            async: false,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            // data:JsonData,
+                            success:function(msg){
+                                if(msg.code == 200){
+                                       layer.msg(msg.result, {icon: 1});
+                                          setTimeout(function(){
+                                            window.location.reload();
+                                       },1500);
+                                }else{
+                                       layer.msg(msg.result, {icon: 2});
+                                }
+                            }
+                        });
+                },
+                cancel: function () {
+                }
+            });
+        });
+      // console.log(2);
+  }
+  
+//开始时间
+function startingTime(obj) {
+  WdatePicker({
+    readOnly:true,
+    maxDate:$(obj).siblings('.endTime').val() || '%y-%M-%d %H:%m:%s',
+    dateFmt:'yyyy-MM-dd HH:mm:ss'
+  })
+}
+//结束时间
+function endingTime(obj) {
+  WdatePicker({
+    readOnly:true,
+    minDate:$(obj).siblings('.startTime').val(),
+    maxDate:'%y-%M-%d %H:%m:%s',
+    dateFmt:'yyyy-MM-dd HH:mm:ss'
+  })
+}
+
+$(".startTime").click(function(){
+  var _this = $(this);
+  startingTime(_this);
+})
+
+$(".endTime").click(function(){
+  var _this = $(this);
+  endingTime(_this);
+})
+ </script>
+</body>
+</html>

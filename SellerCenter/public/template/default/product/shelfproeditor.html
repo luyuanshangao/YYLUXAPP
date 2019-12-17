@@ -1,0 +1,698 @@
+{layout name="layout/main"/}
+{load href="/static/js/plugin/webuploader/webuploader.css" /}
+{load href="/static/css/jquery.searchableSelect.css" /}
+{load href="/static/css/product.css" /}
+{load href="/static/js/plugin/umeditor/themes/default/css/umeditor.min.css" /}
+{load href="/static/js/plugin/dragula/dragula.css" /}
+{load href="/static/js/plugin/webuploader/webuploader.js" /}
+{load href="/static/js/plugin/dragula/dragula.js" /}
+<!--{load href="/static/js/plugin/ueditor/ueditor.config.js" /}
+{load href="/static/js/plugin/ueditor/ueditor.all.min.js" /}-->
+
+<!-- umeditor -->
+<!--{load href="/static/js/plugin/umeditor/umeditor.config.js" /}
+{load href="/static/js/plugin/umeditor/umeditor.js" /}
+{load href="/static/js/plugin/umeditor/lang/zh-cn/zh-cn.js" /}-->
+<script type="text/javascript" src="/static/js/plugin/umeditor/umeditor.config.js?v={$static_version_number|default='20181219'}"></script>
+<script type="text/javascript" src="/static/js/plugin/umeditor/umeditor.js?v={$static_version_number|default='20181219'}"></script>
+<script type="text/javascript" src="/static/js/plugin/umeditor/lang/zh-cn/zh-cn.js?v={$static_version_number|default='20181219'}"></script>
+<!-- umeditor end -->
+
+{load href="/static/js/jquery.searchableSelect.js" /}
+<!--{load href="/static/js/module/product.js" /}--><script type="text/javascript" src="/static/js/module/product.js?v={$static_version_number|default='20181219'}"></script>
+<div class=" fl shelf-product-page">
+    <div class="editor-top-alert-msg"></div>
+
+    <div class="panel">
+        <div class="type-title">编辑商品</div>
+        <div class="content mt20 relative">
+            <div class="pl10">
+            	<input type="hidden" name="product_status" id="ProductStatus" value="">
+            	<input type="hidden" name="category_select" id="category_select" value="{$category_id_str|default=''}" re-select="{$category_id_str|default=''}">
+	            您当前选择的类目是:<span class="js-curr-categpry">{$category_str|default=''}</span>
+	             <a href="{$reselect_category_url}" class="btn btn-orange-light">重选类目</a><div class="err-tip mt10"></div>
+            </div>
+            <div class="disable-box activity-flag multi-language-flag none"></div>
+        </div>
+    </div>
+    <div class="panel">
+        <div id="formSubmitError" class="danger mb20 panel hide"></div>
+        <div class="type-title">产品基本属性</div>
+        <div class="content mt20 js-chose-table">
+            <dl class="dl-layout relative">
+                <dt class="w120 tright"><span class="orange">*</span>产品品牌 <i data-helpid="1" class="js-help-icon iconfont icon-wenhao mr5 green"></i></dt>
+                <dd>
+                    <div id="productBrand" class="drop-menu w200" data-ajaxdata="true">
+                        <!-- <a href="javascript:void(0);" class="drop-text w140" data-id="0">
+                            请选择
+                            <i class="iconfont icon-xiajiantou fr"></i>
+                        </a>
+                        <ul class="drop-list hide w150">
+                            <li>请选择</li>
+                        </ul> -->
+                        <select id="select-person" class="form-control">
+                            <option value="">
+                                请选择
+                            </option>
+                        </select>
+                    </div>
+                    <div class="err-tip mt10"></div>
+                </dd>
+                <div class="disable-box multi-language-flag none"></div>
+            </dl>
+            <dl class="dl-layout">
+                <dt class="w120 tright"><span class="orange">*</span>产品标题 <i data-helpid="2" class="js-help-icon iconfont icon-wenhao mr5 green"></i></dt>
+                <dd>
+                    <input id="productTitle" type="text" name="product_title" maxlength="128" data-placeholder="最长不超过128个英文字符，只能输入英文字符" placeholder="最长不超过128个英文字符，只能输入英文字符" class="w600">
+                        <span class="ml5 gray tip">您还可以输入 <a href="javascript:void(0 );" class="num red">128</a> 个字符</span>
+                        <div class="err-tip mt10"></div>
+                </dd>
+            </dl>
+            <dl class="dl-layout relative">
+                <dt class="w120 tright"><span class="orange">*</span>产品图片<i data-helpid="3" class="js-help-icon iconfont icon-wenhao mr5 green"></i></dt>
+                <dd>
+                    <div class="gray mb5">图片格式
+                        <span class="orange">JPEG</span>，文件大小
+                        <span class="orange">5M以内</span>；图片像素建议大于
+                        <span class="orange">800*800</span>；横向和纵向比例建议
+                        <span class="orange">1:1到1:1.3之间</span>；
+                    </div>
+                    <div class="gray mb5">图片中产品主体占比建议大于
+                        <span class="ff5b20">70%</span>；背景色
+                        <span class="orange">白色或纯色</span>，风格统一；如果有LOGO，建议放置在左上角，不宜多大。
+                    </div>
+                    <div class="img-onload-wrap">
+                        <div class="title">
+                            <a href="javascript:void(0);" class="my-computer-btn js-my-computer">从我的电脑选择</a>
+                            <a href="javascript:void(0);" class="blue mr10 js-my-album">从我的相册选择</a>
+                            <a class="remove-img-onload blue mr10" href="javascript:void(0);">删除全部</a>
+                            <a class="add-img-btn js-add-img-btn blue" href="javascript:void(0);">新增图片</a>
+                        </div>
+                        <ul id="imgOnloadBox" class="img-onload-box mt10 mb10">
+                            {if condition="isset($ImageSet['ProductImg'])"}
+                                {foreach name="ImageSet['ProductImg']" item="vo"}
+                                    <li>
+                                        <div class="uploader-list"></div>
+                                        <div class="file-picker-btn">+点击上传</div>
+                                        <div class="pro-remove-img-btn red hide">删除</div>
+                                    </li>
+                                {/foreach}
+                            {else/}
+                            <li>
+                                <div class="uploader-list"></div>
+                                <div class="file-picker-btn">+点击上传</div>
+                                <div class="pro-remove-img-btn red hide">删除</div>
+                            </li>
+                            <li>
+                                <div class="uploader-list"></div>
+                                <div class="file-picker-btn">+点击上传</div>
+                                <div class="pro-remove-img-btn red hide">删除</div>
+                            </li>
+                            <li>
+                                <div class="uploader-list"></div>
+                                <div class="file-picker-btn">+点击上传</div>
+                                <div class="pro-remove-img-btn red hide">删除</div>
+                            </li>
+                            <li>
+                                <div class="uploader-list"></div>
+                                <div class="file-picker-btn">+点击上传</div>
+                                <div class="pro-remove-img-btn red hide">删除</div>
+                            </li>
+                            <li>
+                                <div class="uploader-list"></div>
+                                <div class="file-picker-btn">+点击上传</div>
+                                <div class="pro-remove-img-btn red hide">删除</div>
+                            </li>
+                            <li>
+                                <div class="uploader-list"></div>
+                                <div class="file-picker-btn">+点击上传</div>
+                                <div class="pro-remove-img-btn red hide">删除</div>
+                            </li>
+                            {/if}
+                        </ul>
+                    </div>
+                    <div class="err-tip mt10"></div>
+                </dd>
+                <div class="disable-box multi-language-flag none"></div>
+            </dl>
+            <dl class="dl-layout">
+                <dt class="w120 mt5 tright"><span class="orange">*</span>产品关键字 <i data-helpid="4" class="js-help-icon iconfont icon-wenhao mr5 green"></i></dt>
+                <dd>
+                    <input type="text" name="product_keywords" id="product_keywords" class="js-product-keywords-text w100" data-placeholder="请输入产品关键字" placeholder="请输入产品关键字" class="w400">
+                    <input type="text" name="product_keywords1" class="js-product-keywords-text w100 ml10 hide" data-placeholder="请输入产品关键字" placeholder="请输入产品关键字" class="w400">
+                    <input type="text" name="product_keywords2" class="js-product-keywords-text w100 ml10 hide" data-placeholder="请输入产品关键字" placeholder="请输入产品关键字" class="w400">
+                    <a href="javascript:void(0);" class="btn-orange js-add-product-keyword">添加多个关键字</a>
+                    <span class="gray">不能包含除英文、数字、&、-、'、"、*之外的字符</span>
+                    <div class="err-tip mt10"></div>
+                </dd>
+            </dl>
+            <dl class="dl-layout relative">
+                <dt class="w120 tright">
+                	<span class="orange">*</span>计量单位<!--TODO--><i data-helpid="5" class="js-help-icon iconfont icon-wenhao mr5 green"></i>
+                	<div class="disable-box activity-flag multi-language-flag none"></div>
+                </dt>
+                <dd>
+                    <select name="measurement_unit" id="measurementUnit" class="js-measurement-unit">
+                        <option data-text="" value="">请选择</option>
+                        <!--ai-repeat-start-->
+                        <option data-text="袋" value="bag">袋 (bag/bags)</option>
+                        <option data-text="桶" value="barrel">桶 (barrel/barrels)</option>
+                        <option data-text="蒲式耳" value="bushel">蒲式耳 (bushel/bushels)</option>
+                        <option data-text="箱" value="carton">箱 (carton)</option>
+                        <option data-text="厘米" value="centimeter">厘米 (centimeter)</option>
+                        <option data-text="组合" value="combo">组合 (combo)</option>
+                        <option data-text="立方米" value="cubic meter">立方米 (cubic meter)</option>
+                        <option data-text="打" value="dozen">打 (dozen)</option>
+                        <option data-text="英尺" value="feet">英尺 (feet)</option>
+                        <option data-text="加仑" value="gallon">加仑 (gallon)</option>
+                        <option data-text="克" value="gram">克 (gram)</option>
+                        <option data-text="英寸" value="inch">英寸 (inch)</option>
+                        <option data-text="千克" value="kilogram">千克 (kilogram)</option>
+                        <option data-text="千升" value="kiloliter">千升 (kiloliter)</option>
+                        <option data-text="千米" value="kilometer">千米 (kilometer)</option>
+                        <option data-text="升" value="liter">升 (liter/liters)</option>
+                        <option data-text="英吨" value="long ton">英吨 (long ton)</option>
+                        <option data-text="米" value="meter">米 (meter)</option>
+                        <option data-text="公吨" value="metric ton">公吨 (metric ton)</option>
+                        <option data-text="毫克" value="milligram">毫克 (milligram)</option>
+                        <option data-text="毫升" value="milliliter">毫升 (milliliter)</option>
+                        <option data-text="毫米" value="millimeter">毫米 (millimeter)</option>
+                        <option data-text="盎司" value="ounce">盎司 (ounce)</option>
+                        <option data-text="包" value="pack">包 (pack/packs)</option>
+                        <option data-text="双" value="pair">双 (pair)</option>
+                        <option data-text="件/个" value="piece">件/个 (piece/pieces)</option>
+                        <option data-text="磅" value="pound">磅 (pound)</option>
+                        <option data-text="夸脱" value="quart">夸脱 (quart)</option>
+                        <option data-text="套" value="set">套 (set/sets)</option>
+                        <option data-text="美吨" value="short ton">美吨 (short ton)</option>
+                        <option data-text="平方英尺" value="square feet">平方英尺 (square feet)</option>
+                        <option data-text="平方英寸" value="square inch">平方英寸 (square inch)</option>
+                        <option data-text="平方米" value="square meter">平方米 (square meter)</option>
+                        <option data-text="平方码" value="square yard">平方码 (square yard)</option>
+                        <option data-text="吨" value="ton">吨 (ton)</option>
+                        <option data-text="码" value="yard">码 (yard/yards)</option>
+                        <!--ai-repeat-end-->
+                        <option data-text="None" value="0">None</option>
+                    </select>
+                    <div class="err-tip mt10"></div>
+                </dd>
+            </dl>
+            <dl class="dl-layout relative">
+                <dt class="w120 tright">
+                	<span class="orange">*</span>销售方式 <i data-helpid="6" class="js-help-icon iconfont icon-wenhao mr5 green"></i>
+                	<div class="disable-box activity-flag multi-language-flag none"></div>
+                </dt>
+                <dd>
+                    <label>
+                        <input type="radio" name="sell_type" value="1" checked>
+                        按<span class="pl5 pr5 js-unit-text">件</span>出售
+                    </label>
+              
+                    <label class="ml20">
+                        <input type="radio" name="sell_type" value="2">
+                        打<span class="js-pack-unit ml5 mr5">包</span>出售（价格按包计算）
+                    </label>
+                    
+                </dd>
+            </dl>
+            <dl class="dl-layout relative hide proattr"style="font-weight:bold;color:red;">
+                <dt class="w120 tright">
+                    <span class="orange" >*</span>原销售属性<i data-helpid="6" class="js-help-icon iconfont icon-wenhao mr5 green"></i>
+                    <div class="disable-box activity-flag multi-language-flag none"></div>
+                </dt>
+                <dd style="min-width: 400px;border: 1px solid #e8e8e8;min-height:20px;line-height:20px;">
+                    <label >
+                       <span class="js_sku" data-sku="0" data-val=""></span>
+                    </label>
+              
+                    
+                </dd>
+            </dl>
+            <dl class="dl-layout relative"style="font-weight:bold;color:red;">
+                <dt class="w120 tright">
+                    <span class="orange" ></span>当前最大SKU<i data-helpid="6" class="js-help-icon iconfont icon-wenhao mr5 green"></i>
+                    <div class="disable-box activity-flag multi-language-flag none"></div>
+                </dt>
+                <dd>
+                    <label >
+                       <span class="js_max_sku"></span>
+                    </label>
+              
+                    
+                </dd>
+            </dl>
+             <dl class="dl-layout js-productAttr-onload mt10 relative">
+                 <div class="disable-box activity-flag multi-language-flag none"></div>
+                <dt class="w120 tright"><span class="orange">*</span>零售价 <i data-helpid="7" class="js-help-icon iconfont icon-wenhao green"></i></dt>
+                <dd>
+                    <div class="clearfix">
+                        <div class="retail-mode-box js-single-retail fl">
+                            USD
+                            <input type="text" min="1" class="js-retail-price js-price text w100" name="retail_price" value="" data-placeholder="请输入零售价" placeholder="请输入零售价">
+                            <span class="ml5 gray js-unit">/件</span>
+                             <div class="err-tip mt10"></div>
+                        </div>
+                        <div class="retail-mode-box js-batch-retail fl">
+                           <span>批量设置零售价：</span>
+                           <span>USD</span>
+                           <input class="js-usd-text js-price w50" type="text"/>
+                           <a href="javascript:void(0);" class="btn-orange btn-retail-price js-btn-usd">确定</a>
+                           <span class="ml10">批量设置库存：</span>
+                           <input class="js-stock-text js-number w50" maxlength="6" type="text"/>
+                           <a href="javascript:void(0);" class="btn-orange btn-retail-price js-btn-stock">确定</a>
+                        </div>
+                       
+                    </div>
+                    <div class="js-chooseAttrBox-combination">
+                        
+                    </div>
+                    <div class="err-tip mt10"></div>
+                </dd>
+            </dl>
+            <dl class="dl-layout mb10 relative">
+                <div class="disable-box activity-flag multi-language-flag none"></div>
+                <dt class="w120 tright">批发价</dt>
+                <dd>
+                    <div class="radio mg0">
+                        <label>
+                            <input type="checkbox" class="js-trade-input" name="trade-input" id="" value="1">
+                            支持
+                        </label>
+                    </div>
+                    <!-- 是否展示批发价格设置表格 -->
+                    <div class="js-trade-price-box">
+                        <div class="bg-f8f8f8 pt5 pl5 pr5 pb5">
+                            购买数量<input type="text" maxlength="6" class="w50 mr5 ml5 js-purchase-num-text js-number"/>
+                            及以上时，每<span class="pl5 pr5 js-unit">件</span>价格在零售价的
+                            基础上减免<input type="text" class="js-discount js-number w50 mr5 ml5" maxlength="2" value="">%，即 <span class="js-discount-count"></span> 折。
+                            <div class="err-tip mt10"></div>
+                        </div>
+                        <div class="js-tradePrice-combination">
+                            
+                        </div>
+                        <div class="err-tip mt10"></div>
+                    </div>
+                </dd>
+            </dl>
+            <dl class="dl-layout js-stock-tr relative">
+                <div class="disable-box activity-flag multi-language-flag none"></div>
+                <dt class="w120 tright"><span class="orange">*</span>库存 <i class="icon-question-sign mr5 green f16"></i></dt>
+                <dd>
+                    <input type="text" name="stock_num" data-placeholder="库存" placeholder="库存" class="js-single-stock js-number w200" maxlength="6"/>
+                    <div class="err-tip mt10"></div>
+                </dd>
+            </dl>
+            <dl class="dl-layout js-product-code-tr relative">
+                <div class="disable-box activity-flag multi-language-flag none"></div>
+                <dt class="w120 tright"><span class="orange">*</span>商品编码</dt>
+                <dd>
+                   <input maxlength="20" type="text" name="product_code" data-placeholder="商品编码" placeholder="商品编码" class="js-single-product-code {if condition='$is_self_support == 1'}js-all-number{else/}js-enter-num-letter{/if} w200"/>
+                    <div class="err-tip mt10"></div>
+                </dd>
+            </dl>
+            <dl class="dl-layout relative">
+                <dt class="w120 tright">产品视频</dt>
+                <dd>
+                    <div class="gray mb5 w900">使用视频介绍产品功能或使用方法。建议视频时长不超过4分钟
+                        ，画面长宽比16:9，尺寸必须大于400×300。暂不支持wmv、H264格式。视频出需审核通过后展示，产品视频为点击弹iframe展示，需设置全屏视频格式，如：https://www.youtube.com/embed/-gXuyCRFJHg。产品详情视频展示为详细描述顶部页面内展示。需设置页面视频格式，如：https://www.youtube.com/v/-gXuyCRFJHg</div>
+                        <div><input type="text" name="product_video" class="w600" data-placeholder="视频地址,格式如：https://www.youtube.com/embed/-gXuyCRFJHg" placeholder="视频地址,格式如：https://www.youtube.com/embed/-gXuyCRFJHg"></div>
+                </dd>
+                <div class="disable-box multi-language-flag none"></div>
+            </dl>
+            <dl class="dl-layout">
+                <dt class="w120 tright"><span class="orange">*</span>产品详细描述 <i data-helpid="8" class="js-help-icon iconfont icon-wenhao mr5 green"></i></dt>
+                <dd>
+                    <div id="descBoxt"></div>
+                    <script id="product-desc-container" name="product_desc_content" type="text/plain"></script>
+                    <div class="err-tip mt10"></div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="type-title">包装信息</div>
+        <div class="content relative mt20">
+        	<div class="disable-box activity-flag multi-language-flag none"></div>
+            <dl class="dl-layout">
+                <dt><span class="orange">*</span>产品包装后的重量<!--TODO--><i data-helpid="9" class="js-help-icon iconfont icon-wenhao mr5 green"></i></dt>
+                <dd>
+                    <div>
+                        <input id="productPackageWeight" type="text" name="product_package_weight" maxlength="20" data-placeholder="产品包装后的重量" placeholder="产品包装后的重量" class="js-weight-limit w150 mr5">
+                        <span>公斤/</span>
+                        <span class="js-unit">公斤/件</span>
+                        <div class="err-tip mt10"></div>
+                    </div>
+                    <div>
+                        <div class="radio">
+                            <label>
+                                <input type="checkbox" name="" id="packageInformation" value="1">
+                                自定义计重量<i data-helpid="10" class="js-help-icon iconfont icon-wenhao ml5 green"></i>
+                            </label>
+                        </div>
+                        <div class="box-gray js-package-information-box mt10">
+                            买家购买<input type="text" class="js-buy-num js-buy-limit-number w50 mr5 ml5" maxlength="4"><span class="pr5 js-unit">件</span>产品以内，按照产品重量
+                            计算运费。<br>在此基础上，买家每多买<input type="text" class="js-buy-multi-num js-buy-limit-number w50 mr5 ml5" maxlength="4"><span class="js-unit">件</span>,重量增加
+                            <input type="text" class="js-weight-add-num js-add-weight-limit w50 mr5 ml5">kg
+                        </div>
+                        <div class="err-tip mt10"></div>
+                    </div>
+                </dd>
+            </dl>
+            <dl class="dl-layout">
+                <dt><span class="orange">*</span>产品包装后的尺寸<!--TODO--><i data-helpid="11" class="js-help-icon iconfont icon-wenhao mr5 green"></i></dt>
+                <dd>
+                    <div>
+                        <div class="">
+                            <input type="text" id="packageLength" name="product_package_long" maxlength="10" class="js-package-size js-price w50 mr5 ml5" data-placeholder="长" placeholder="长">X
+                            <input type="text" id="packageWidth" name="product_package_width" maxlength="10" class="js-package-size w50 mr5 ml5 js-price" data-placeholder="宽" placeholder="宽">X
+                            <input type="text" id="packageHeight" name="product_package_height" maxlength="10" class="js-package-size w50 mr5 ml5 js-price" data-placeholder="高" placeholder="高">（单位：厘米，每<span class="pl5 pr5 js-unit">件</span> <span class="js-volume-count"></span> cm3）
+                            <div class="err-tip mt10"></div>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="type-title">物流设置<!--TODO--></div>
+        <div class="content relative mt20">
+        	<div class="disable-box activity-flag multi-language-flag none"></div>
+           <dl class="dl-layout">
+                <dt class="w100"><span class="orange">*</span>产品运费模板</dt>
+                <dd>
+                    <select name="" id="freightFormwork">
+                        <option value="">请选择</option>
+                        <!--<option value="1">产品运费模板测试</option>-->
+                        {volist name='template_data' id='template_info'}
+                            <option value="{$template_info.template_id}">{$template_info.template_name}</option>
+                        {/volist}
+                        <!--<option value="">None</option>-->
+                    </select>
+                    <div class="err-tip mt10"></div>
+                    <div class="js-freight-formwork hide">
+                        <p class="mt10">发货运费参考：以 1 <span class="js-unit mr5 ml5"></span>为列</p>
+                        <div class="mt10">
+                            <span>从</span>
+                            <select>
+                                <option value="">China</option>
+                            </select>
+                            <span>发往国家/地区</span>
+                             <select class="js-freigh-country" name="" id="">
+                               
+                            </select>
+                        </div>
+                        <table class="js-freight-table table-gray w700 mt10">
+                            <thead>
+                                <tr>
+                                    <th>物流公司</th>
+                                    <th>设置</th>
+                                    <th>价格</th>
+                                    <th>运达时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </dd>
+            </dl>
+            <dl class="dl-layout">
+                <dt class="w100"><span class="orange">*</span>物流属性</dt>
+                <dd>
+                    <label for="logisticsProperty1"><input id="logisticsProperty1" name="logistics_property" type="radio" value="1" checked="checked" />普货</label>
+                    <label for="logisticsProperty2" class="ml10"><input id="logisticsProperty2" name="logistics_property" type="radio" value="3"/>带电</label>
+                    <label for="logisticsProperty3" class="ml10"><input id="logisticsProperty3" name="logistics_property" type="radio" value="2"/>纯电</label>
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="type-title">其他信息</div>
+        <div class="content mt20 relative">
+            <div class="disable-box multi-language-flag none"></div>
+            <dl class="dl-layout">
+                <dt class="w100 tright">产品组<!--TODO--><i data-helpid="12" class="js-help-icon iconfont icon-wenhao mr5 green"></i></dt>
+                <dd>
+                    <select name="" id="productGroupSelect">
+                        <option value="">请选择</option>
+                        {volist name='product_group' id='group_info'}
+                            <option value="{$group_info._id}">{$group_info.group_name}</option>
+                            {notempty name="group_info.child"}
+                                {volist name='group_info.child' id='child_info'}
+                                    <option value="{$child_info._id}">--{$child_info.group_name}</option>
+                                {/volist}
+                            {/empty}
+                        {/volist}
+                        <option value="0">None</option>
+                    </select>
+                </dd>
+            </dl>
+            <dl class="dl-layout">
+                <dt class="w100 tright">产品有效期 <i data-helpid="13" class="js-help-icon iconfont icon-wenhao mr5 green"></i></dt>
+                <dd>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="product_expiration_dt" value="14" checked="checked">
+                            14天
+                        </label>
+                        <label class="ml10">
+                            <input type="radio" name="product_expiration_dt" value="30">
+                            30天
+                        </label>
+                    </div>
+                </dd>
+            </dl>
+
+            <dl class="dl-layout">
+                <dt class="w100 tright"></dt>
+                <dd>
+                    <label for=""><input type="radio" checked="checked"> VAT</label>
+
+                </dd>
+            </dl>
+
+            <dl class="dl-layout">
+                <dt class="w100 tright"></dt>
+                <dd>
+                    <label for="gtins"><input id="gtins" type="checkbox"> GTINS</label>
+                </dd>
+            </dl>
+            <dl class="dl-layout">
+                <dt class="w100 tright"></dt>
+                <dd>
+                    <div class="box-gray js-gtins-cont hide">
+                        <label for="GoogleAd"><input id="GoogleAd"  class="js-ad-spread" name="adSpread" type="checkbox"/> Google AdWords免费推广</label>
+                        <label class="ml20" for="faceBookAd"><input id="faceBookAd" class="js-ad-spread" name="adSpread" type="checkbox"/> FaceBook免费推广</label>
+                        <div class="mt10">
+                            <span>
+                                <labele>UPC:</labele>
+                                <input type="text" name="google_upc"  class="js-number js-ad-spread-num w50" maxlength="12"/>
+                                <a href="javascript:void(0);" class="btn-orange btn-retail-price">12位数字</a>
+                            </span>
+                             <span class="ml20">
+                                <labele>EAN:</labele>
+                                <input type="text" name="google_ean"  class="js-number js-ad-spread-num w50" maxlength="13"/>
+                                <a href="javascript:void(0);" class="btn-orange btn-retail-price">13位数字</a>
+                            </span>
+                             <span class="ml20">
+                                <labele>JAN:</labele>
+                                <input type="text" name="google_jan"  class="js-number js-ad-spread-num w50" maxlength="13"/>
+                                <a href="javascript:void(0);" class="btn-orange btn-retail-price">8位数字或13位</a>
+                            </span>
+                        </div>
+                        <div class="err-tip mt10"></div>
+                    </div>
+                    
+                    
+                </dd>
+            </dl>
+
+            <dl class="dl-layout">
+                <dt class="w100 tright">产品发布条款：</dt>
+                <dd>
+                    <div><input type="checkbox" name="" id="" value="1" checked="">在提交发布此产品之前，我已阅读并同意了</div>
+                    <div>-<a class="orange" href="#">DX seller协议</a></div>
+                </dd>
+            </dl>
+        </div>
+
+        <div class="submit-box">
+            <div class="mb10 tleft">提交前，请认真核对您填写的信息，您只能在审核后才可再次对此产品进行编辑。
+            </div>
+            <div class="tcenter">
+                <a class="product-submit-btn btn-orange js-product-submit-btn" href="javascript:void(0);" data-id="2">提交</a>
+                <!--<a class="btn-orange-light" href="javascript:void(0);">提交并预览</a>-->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- start my album dialog -->
+<div id="myAlbumDialog" class="my-album-dialog hide">
+    <ul class="mt10 my-album-list">
+        <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li> <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li> <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+         <li>
+            <div class="album-img-box mb5">
+                <img src="../../../static/img/sku_512105_1_270x270.jpg" alt="">
+            </div>
+            <lable for=""><input type="checkbox"/>1111.jpg</lable>
+        </li>
+    </ul>
+    <div class="page-wrap clearfix mg10">
+        <ul class="page mt5 fr">
+            <li><span class="pre"></span></li>
+            <li><span class="curr" href="#">1</span></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#" class="next"></a></li>
+        </ul>
+    </div>
+</div>
+<div class="help-box">
+    <h1>帮助中心</h1>
+    <div class="help-cont">
+        <h2 class="title">1.产品品牌</h2>
+        <div class="help-explain">
+            产品品牌说明
+        </div>
+    </div>
+</div>
+<input type="hidden" name="shel_proEditor_page" value="shelfProEditor"/>
+<!-- end my album dialog -->
+<script type="text/javascript">
+    //编辑的产品ID
+    var product_init_id = {$product_id|default=''};
+    var is_self_support = {$is_self_support|default=0};
+    var category_id_str = "{$category_id_str|default=''}";
+    /**
+     * GET数据，格式：
+     * {"product_id":"38","category_id":"5","language":"en"}
+     */
+    var get_data = {$get_data|default=''};
+    var is_history =0;
+    /*实例化编辑器*/
+    var um = UM.getEditor('product-desc-container');
+     $(function(){
+        /**
+         * param1 user_id:用户id
+         * param2 category_id:产品分类id
+         * param3 product_id:产品id(编辑页面需要传值，新增页面不需要)
+         */
+        dxseller.product.productShelfPage({$login_user_data.user_id},{$category_id},{$product_id});
+    });
+</script>

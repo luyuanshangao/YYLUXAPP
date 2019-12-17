@@ -1,0 +1,38 @@
+{layout name="layout/registerLayout"/}
+{load href="/static/css/login-register.css" /}
+{load href="/static/css/login-index.css" /}
+{load href="/static/js/module/module.login.js" /}
+<div class="login-regist-bg">
+    <div class="w1200 clearfix">
+        <div class="login-regist-box fr">
+            <form id="login-form">
+                <h1 class="login-header orange">DX账号登录</h1>
+                <div class="mb10 relative">
+                    <label class="login-label label-user">
+                    </label>
+                    <input class="user login-input" type="email" name="user_name" id="exampleInputEmail1" placeholder="邮箱/手机号">
+                    <span class="login-err mg10 red"></span>
+                </div>
+                <div class="mb10 relative">
+                    <label class="login-label label-pass">
+                    </label>
+                    <input class="pass login-input" type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="密码">
+                    
+                </div>
+                <a href="javascript:void(0);" class="login-in-btn">登录</a>
+            </form>
+
+            <div class="clearfix mt20">
+                 <a class="fl gray" href="{$passwordfind_url}">忘记密码?</a>
+                <div class="fr"><a href="{$register_url}" class="mb5 gray">免费注册</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var referer_url = '{$referer_url}';
+    var login = new Login();
+    $(function(){
+        login.init();
+    });
+</script>

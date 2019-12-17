@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>DX_属性添加</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    {include file="layout/c_global_style" /}
+    {include file="layout/c_style" /}
+    {load href="/static/css/productManagement.css" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+
+<body id="Order_List" class="page-header-fixed  page-sidebar-fixed">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="month6">
+                                        <!-- start add -->
+                                        <div class="info-pb10 c-h-dl-label100 mt10">
+                                            <form id="form_send_address" class="f12_i form-horizontal" action="#" novalidate="novalidate">
+                                                <input type="hidden" name="id"  value="{$list_find['_id']?$list_find['_id']:''}">
+                                                <div class="form-body info-pb10 ml20">
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>中文名称：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$list_find['title_cn']?$list_find['title_cn']:''}"
+                                                                       id="input-color" name="title_cn" class="form-control input-medium fl" type="text"
+                                                                       {$list_find?'readonly="readonly"':''}
+                                                                >
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>英文姓名：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input value="{$list_find['title_en']?$list_find['title_en']:''}" name="title_en"
+                                                                       id="input-color-en" class="form-control input-medium fl" type="text"
+                                                                       {$list_find?'readonly="readonly"':''}
+                                                                >
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd>
+                                                            <input class="custom-attribute" type="checkbox" value="1" {$list_find['customized_name']?$list_find['customized_name'] == 1?'checked="checked"':'':''} name="customized_name" />是否自定义销售属性
+                                                            <input class="custom-attribute" type="checkbox" name="customized_pic" {$list_find['customized_pic']?$list_find['customized_pic'] == 1?'checked="checked"':'':''} value="1" />是否自定义销售属性图片
+                                                             <input class="custom-attribute" type="checkbox" {$list_find['is_color']?$list_find['is_color'] == 1?'checked="checked"':'':''} name="is_color" value="1" />是否默认颜色选项
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>显示类型：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <select name="show_type" class="form-control input-small inline cursor-pointer">
+                                                                    <option value="">请选择</option>
+                                                                    <option {$list_find['show_type']?$list_find['show_type'] == 'text'?'selected = "selected"':'':''} value="text">text</option>
+                                                                    <option {$list_find['show_type']?$list_find['show_type'] == 'checkbox'?'selected = "selected"':'':''} value="checkbox">checkbox</option>
+                                                                    <option {$list_find['show_type']?$list_find['show_type'] == 'submit'?'selected = "selected"':'':''} value="submit">submit</option>
+                                                                    <option {$list_find['show_type']?$list_find['show_type'] == 'reset'?'selected = "selected"':'':''} value="reset">reset</option>
+                                                                    <option {$list_find['show_type']?$list_find['show_type'] == 'radio'?'selected = "selected"':'':''} value="radio">radio</option>
+                                                                    <option {$list_find['show_type']?$list_find['show_type'] == 'password'?'selected = "selected"':'':''} value="password">password</option>
+                                                                    <option {$list_find['show_type']?$list_find['show_type'] == 'image'?'selected = "selected"':'':''} value="image">image</option>
+                                                                    <option {$list_find['show_type']?$list_find['show_type'] == 'hidden'?'selected = "selected"':'':''} value="hidden">hidden</option>
+                                                                    <option {$list_find['show_type']?$list_find['show_type'] == 'file'?'selected = "selected"':'':''} value="file">file</option>
+                                                                    <option {$list_find['show_type']?$list_find['show_type'] == 'button'?'selected = "selected"':'':''} value="button">button</option>
+                                                                </select>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label><em>*</em>输入方式：</label>
+                                                        </dd>
+                                                        <dd>
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <select name="input_type"  class="form-control input-small inline cursor-pointer">
+                                                                    <option value="">请选择</option>
+                                                                    <option {$list_find['input_type']?$list_find['input_type'] == 'STRING'?'selected = "selected"':'':''} value="STRING">STRING</option>
+                                                                    <option {$list_find['input_type']?$list_find['input_type'] == 'INT'?'selected = "selected"':'':''} value="INT">INT</option>
+                                                                    <option {$list_find['input_type']?$list_find['input_type'] == 'VARCHAR'?'selected = "selected"':'':''} value="VARCHAR">VARCHAR</option>
+                                                                    <option {$list_find['input_type']?$list_find['input_type'] == 'TEXT'?'selected = "selected"':'':''} value="TEXT">TEXT</option>
+                                                                </select>
+                                                            </div>
+                                                        </dd>
+                                                        <dt></dt>
+                                                    </dl>
+
+                                                     <dl id="color_view" {$list_find['title_cn']?$list_find["title_cn"]=="颜色"?'style="display:black"':'style="display:none"':'style="display:none"'}  class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="v-title">
+                                                            <label>颜色：</label>
+                                                        </dd>
+
+                                                            <div class="color-wrap"></div>
+                                                        <dt></dt>
+
+                                                    </dl>
+
+                                                    <div class="behind">
+                                                    <label for="male">属性值</label>
+                                                    <input type="hidden" class="hidden_name" value="value">
+
+                                                    {if condition="!empty($list_find['html']) neq ''"}
+                                                        {$list_find['html']}
+                                                    {else /}
+                                                        <dl class="c-h-dl-validator form-group clearfix add-attribute1 delect_dl">
+                                                            <dd class="v-title">
+                                                                <label><em>*</em>中文名：</label>
+                                                            </dd>
+                                                            <dd>
+                                                                <div class="input-icon right inline-block">
+                                                                    <i class="fa"></i>
+                                                                    <input name="where[1][title_cn]"  class="form-control input-medium input-1" type="text">
+                                                                </div>
+                                                                英文名：
+                                                                <div class="input-icon right inline-block">
+                                                                    <input name="where[1][title_en]" class="form-control " type="text">
+                                                                </div>
+                                                                选项值：
+                                                                <div class="input-icon right inline-block ">
+                                                                    <input name="where[1][value]" class="form-control input-val-1" type="text">
+                                                                </div>
+                                                                排序：<div class="input-icon right inline-block inline_block">
+                                                                    <input name="where[1][sort]" class="form-control input-val-1 w100" type="text">
+                                                                </div><a class="delect add-attr-btn eliminate-btn2" data-total="1" href="javascript:;">添加新项</a>
+                                                            </dd>
+                                                            <dt></dt>
+                                                        </dl>
+                                                    {/if}
+
+                                                </div>
+                                                    <dl class="c-h-dl-validator form-group clearfix">
+                                                        <dd class="layui-layer-btn">
+                                                            <a  class="btn btn-qing add-editor-attribute-btn layui-layer-btn0" href="javascript:;">提交</a>
+                                                            <a id="addressCancel" class="btn Qing layui-layer-btn1" href="javascript:history.back(-1);">取消</a></dd>
+                                                        <dt></dt>
+                                                    </dl>
+                                                </div>
+                                            </form>
+                                        </div>
+                                         <!-- end add -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+                <div class="success_data"></div>
+           <!--  </div> -->
+    <!--#include file="layout/footer.html"-->
+    <!-- 日期插件 -->
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script src="/static/js/product.js" type="text/javascript"></script>
+    <!-- END JAVASCRIPTS -->
+    <script>
+        $(function() {
+            App.init();
+            Product.addAttribute();
+        })
+    </script>
+    <!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+
+</html>

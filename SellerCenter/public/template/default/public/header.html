@@ -1,0 +1,19 @@
+<div id="header-top">
+    <div class="container w1200 clearfix">
+        <div id="seller-logo" class="fl">
+            <a href="{:url('index/index/index')}"><img src="/static/img/logo_DX_en.png" alt=""></a>
+        </div>
+
+        <div class="fr">
+            <div class="text-right">欢迎您，<span id="sellerName" class="mr5 hide">{$login_user_data.user_name}</span><span id="" class="mr5">{$real_login_user_data.user_name}</span><a href="{:url('ProductQa/index')}">消息中心</a><span class="badge ml5 mr5 bg-orange">20</span>| <a href="javascript:;" onclick="Common.logOut()">退出系统</a></div>
+        </div>
+    </div>
+</div>
+
+<div class="nav-box">
+    <ul class="nav w1200">
+        {volist name="menu_info" id="menu"}
+            <li {if condition="$menu['parent_menu']['flag'] == $top_menu_flag"}class="curr"{/if}><a href="{$menu.parent_menu.url}">{$menu.parent_menu.name}</a></li>
+        {/volist}
+    </ul>
+</div>

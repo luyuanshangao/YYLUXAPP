@@ -1,0 +1,62 @@
+.container {
+    /*width: 1366px;*/
+}
+
+.container h2{
+    font-size: 14px;
+}
+
+.row {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#components, .propertyBox {
+    min-height: 510px;
+}
+
+.rightPanel{
+    min-height: 625px;
+    padding-bottom: 15px;
+}
+
+#target {
+    min-height: 550px;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+#target .component {
+    /*border: 1px solid #fff;*/
+}
+
+.component:hover{
+    background-color: #f5f5f5;
+}
+
+#temp {
+    width: 500px;
+    padding: 5px;
+    background: white;
+    border: 1px dashed #04a2b3;
+    /*border-radius: 10px;*/
+}
+
+.popover-content form {
+    margin: 0 auto;
+    width: 213px;
+}
+
+.popover-content form .btn {
+    margin-right: 10px
+}
+
+#source {
+    min-height: 500px;
+    width: 100%;
+}
+.radio, .checkbox{
+    padding: 0 !important;
+
+}

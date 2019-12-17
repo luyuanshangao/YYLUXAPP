@@ -1,0 +1,160 @@
+/* 按钮 */
+.btn-gray{
+  .btn-bby(@c_black,@c_gray_0,@c_gray_1,@c_white,@c_qing_2,@c_qing_2);
+}
+.btn-gray2{
+  .btn-bby(@c_black,@c_gray_0,@c_gray_1,@c_black,@c_gray_0,@c_gray_1);
+}
+.btn-primary,.btn-qing{
+  .btn-bby(@c_white,@c_qing_1,@c_qing_1,@c_white,@c_qing_2,@c_qing_2);
+}
+
+.btn-white{
+  .btn-bby(@c_black,@c_white,@c_gray_1,@c_black,@c_gray_1,@c_gray_1);
+}
+
+.btn-whiteqing{
+  .btn-bby(@c_qing_1,@c_white,@c_qing_1,@c_white,@c_qing_1,@c_qing_1);
+}
+
+.btn-whiteqing2{
+  .btn-bby(@c_qing_1,@c_white,@c_qing_1,@c_qing_1,@c_white,@c_qing_1);
+  cursor: default;
+}
+
+.btn-lg {
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  vertical-align: middle;
+  > i {
+    font-size: 18px;
+  }
+}
+
+.btn{
+  font-family: @font-family-songti;
+  font-size: @body_font_size;
+  line-height: 1.5em;
+  padding: 4px 13px;
+  & > i {
+  font-size: 14px;
+}
+}
+.btn-sm,
+.btn-xs {
+  padding: 4px 13px 5px 13px;
+  font-size: @body_font_size;
+  line-height: 1.5em;
+  & > i {
+    font-size: @body_font_size;
+  }
+}
+
+.btn-xs {
+  padding: 1px 5px;
+}
+
+/*.btn-block {
+  display: block;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}*/
+
+.btnAndAdefault(@color:@c_qing_5, @fcolor:@c_red_2, @dfcolor:@c_gray_1) {
+  color: @color;
+  font-weight: normal;
+  border-radius: 0;
+
+  &,
+  &:active,
+  &.active,
+  &[disabled],
+  fieldset[disabled] & {
+    background-color: transparent;
+    .box-shadow(none);
+  }
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    border-color: transparent;
+  }
+  &:hover,
+  &:focus {
+    color: @fcolor;
+    text-decoration: underline;
+    background-color: transparent;
+    text-decoration: none;
+  }
+  &[disabled],
+  fieldset[disabled] & {
+    &:hover,
+    &:focus {
+      color: @dfcolor;
+      text-decoration: none;
+    }
+  }
+}
+
+a{
+  .btnAndAdefault(@c_black,@c_black,@c_black);
+}
+a.Qing,.btn-link{
+  .btnAndAdefault(@c_qing_5);
+}
+
+// Block button
+// --------------------------------------------------
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.btn-default{
+  border-color:@c_gray_1;
+  &:hover, &:focus, &:active, &.active, .open .dropdown-toggle&{
+    background-color: @c_white;
+    border-color:@c_gray_1;
+  }
+}
+
+
+// Vertically space out multiple block buttons
+.btn-block + .btn-block {
+  margin-top: 5px;
+}
+
+// Specificity overrides
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  &.btn-block {
+    width: 100%;
+  }
+}
+
+//table-ex contract button
+.btn-tbody-contract{
+  font-family: "微软雅黑";
+  font-size:@f14;
+}
+
+.btns-link{
+  a.Qing{
+    &:link{
+      color: @c_qing_1;
+    }
+    &:visited{
+      color: @c_qing_7;
+    }
+    &:hover{
+      color: @c_red_2;
+    }
+    &:active{
+      color: @c_qing_1;
+    }
+  }
+}

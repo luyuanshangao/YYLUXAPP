@@ -1,0 +1,488 @@
+{layout name="layout/main"/}
+{load href="/static/css/coupon.css" /}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+{load href="/static/js/module/addCoupon.js" /}
+<style>
+	/*分页CSS*/
+	.pagination  li {display: inline;padding: 0 2px;float: left;}
+	.pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+	.pagination .active span{color: red;}
+	.main-base-table tr{border: 0px red solid;}
+	.main-base-table tr td{padding: 5px;}
+</style>
+
+<div class="main-box fl">
+	<ul class="main-cont-tabs coupon-tab">
+		<li class="curr">设置格则</li>
+		<!-- <li>多语言</li> -->
+	</ul>
+	<div class="box-white">
+		<!-- ***************************基本设置********************* -->
+		<h1 class="f16 fb">
+			基本设置
+		</h1>
+		<dl class="dl-layout relative mt20">
+			<dt class="w120 tright">
+				<span class="red">*</span>优惠券图片：
+			</dt>
+			<dd>
+				<input type="text" class="w300 img-url" placeholder="优惠券图片">
+				<span>录入图片URL地址</span>
+				<label class="ml20">
+					<input type="checkbox" name="" id="" class="use-default-pic">
+					<span>使用默认图片</span>
+				</label>
+				<div class="err-tip mt5 hide red"></div>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>优惠券名称：
+			</dt>
+			<dd>
+				<input type="text" class="w300 coupon-name" placeholder="优惠券名称" maxlength="1000">
+				<span class="err-tip mt5 hide red"></span>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>优惠级别：
+			</dt>
+			<dd>
+				<select name="" id="" class="coupon-level">
+					<option value="" data-id="1">单品级别优惠</option>
+					<option value="" data-id="2">订单级别优惠</option>
+				</select>
+				<p class="mt5">该折扣包括固定金额折扣、按商品单价比列折扣.<br>折扣指定金额：成交价=商品的单价-折扣金额.<br>按商品单价比列折扣：成交价=商品单价*折扣比列</p>
+				<p class="mt5 hide">该折扣是对订单商品总金额（GoodsTotal）进行折扣，也分为固定金额折扣和按比例折扣。<br>固定金额折扣：订单商品总金额GoodsTotal=原GoodsTotal-折扣金额.<br>比列折扣：订单商品总金额GoodsTotal=原GoodsTotal*折扣比列</p>
+				<div class="err-tip mt5 hide red"></div>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>优惠券类型：
+			</dt>
+			<dd class="coupon-type">
+				<label><input type="radio" name="type" class="coupon-type-radio" checked="checked" value='1'><span>代金券</span></label>
+				<label><input type="radio" name="type" class="coupon-type-radio" value="2"><span>赠送券</span></label>
+				<label><input type="radio" name="type" class="coupon-type-radio" value="3"><span>折扣券</span></label>
+				<label><input type="radio" name="type" class="coupon-type-radio" value="4"><span>指定售价</span></label>
+				<div class="err-tip mt5 hide red"></div>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0 coupon-type-edit">
+			<dt class="w120 tright">
+				<span class="red">*</span>优惠券面值：
+			</dt>
+			<dd>
+				<input type="number" name="" class="coupon-denomination mr5">$
+				<span class="err-tip mt5 hide red"></span>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0 coupon-type-edit hide">
+			<dt class="w120 tright">
+				<span class="red">*</span>赠送商品：
+			</dt>
+			<dd>
+				<textarea cols="30" rows="10" placeholder="SpuId:23;SkuId:1138;Qty:1" class="free-gift-textarea"></textarea>
+				<span class="format ml10 w400" style="display: inline-block;">(格式：SpuId:23;SkuId:1138;Qty:1)<br>若勾选“是否按随机赠品赠送”，则赠送商品随机选择；<br>例如：配置SpuId:23;SkuId:1138;Qty:1,SpuId:23;SkuId:1139;Qty:1,<br>赠送商品时随机条件一个1138或一个1139；</span>
+				<div class="format err-tip ml5 hide red"></div>
+				<p>
+					<label><input type="checkbox" name="free-gift" data-id="0" class="give-in-number">是否按倍数赠送</label>
+					<label><input type="checkbox" name="free-gift" data-id="1" class="give-in-random">是否按随机赠品赠送</label>
+				</p>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0 coupon-type-edit hide">
+			<dt class="w120 tright">
+				<span class="red">*</span>按比例折扣：
+			</dt>
+			<dd>
+				<input type="number" name="" class="discount-coupon-percentage mr5">%
+				<span class="err-tip mt5 hide red"></span>
+				<p class="gray">折扣比例为0-100%；示例：80%即为8折，即100美金的产品活动价为80美金；</p>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0 coupon-type-edit hide">
+			<dt class="w120 tright">
+				<span class="red">*</span>指定售价：
+			</dt>
+			<dd>
+				<input type="text" name="" class="specified-price mr5">$
+				<span class="err-tip mt5 hide red"></span>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>优惠券有效期：
+			</dt>
+			<dd>
+				<input type="text" name="create_on_start" class="text Wdate start-time" placeholder="开始时间" readonly="value" value=""/> -
+				<input type="text" name="create_on_end" class="text Wdate end-time" placeholder="结束时间" readonly="value" value=""/>
+				<span class="err-tip mt5 hide red"></span>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>优惠券总量：
+			</dt>
+			<dd>
+				<label class="limit-label"><input type="radio" name="total-coupons" checked="checked" data-id="1">不限</label>
+				<label class="limit-label"><input type="radio" name="total-coupons" data-id="2">限量</label>
+				<input type="number" class="w50 limit-input total-coupons-input" disabled="disabled">
+				<span class="err-tip mt5 hide red"></span>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>购买金额限制：
+			</dt>
+			<dd>
+				<label class="limit-label"><input type="radio" name="buy-amount-limit" checked="checked" data-id="1">不限</label>
+				<label class="limit-label"><input type="radio" name="buy-amount-limit" data-id="2">限制</label>
+				<input type="number" class="w50 limit-input buy-amount-limit-mini" disabled="disabled"> -
+				<input type="number" class="w50 limit-input buy-amount-limit-max" disabled="disabled"> $
+				<span class="err-tip mt5 hide red"></span>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>购买商品数量限制：
+			</dt>
+			<dd>
+				<label class="limit-label"><input type="radio" name="buy-number-limit" data-id="1" checked="checked">不限</label>
+				<label class="limit-label"><input type="radio" name="buy-number-limit" data-id="2">限制</label>
+				<input type="text" class="w50 limit-input buy-number-limit-mini" disabled="disabled"> -
+				<input type="text" class="w50 limit-input buy-number-limit-max" disabled="disabled"> 件
+				<span class="err-tip mt5 hide red"></span>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>优惠渠道：
+			</dt>
+			<dd>
+				<label><input type="checkbox" name="channel" class="" checked="checked" data-id="1"><span>全站</span></label>
+				<label><input type="checkbox" name="channel" class="" checked="checked" data-id="2"><span>Web站</span></label>
+				<label><input type="checkbox" name="channel" class="" checked="checked" data-id="3"><span>APP</span></label>
+				<label><input type="checkbox" name="channel" class="" checked="checked" data-id="4"><span>移动端</span></label>
+				<span class="err-tip mt5 hide red"></span>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>领取限制：
+			</dt>
+			<dd>
+				<label><input type="radio" name="requisition-restrictions" checked="checked" data-id="1"><span>不限</span></label>
+				<label><input type="radio" name="requisition-restrictions" class="" data-id="2"><span>每人一次</span></label>
+				<label><input type="radio" name="requisition-restrictions" class="" data-id="3"><span>每人每天一次</span></label>
+				<span class="err-tip mt5 hide red"></span>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>优惠券简要描述：
+			</dt>
+			<dd>
+				<input type="text" name="" maxlength="1000" class="coupon-brief-description">
+				<span class="err-tip mt5 hide red ml5"></span>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>优惠券描述：
+			</dt>
+			<dd>
+				<textarea name="" id="" cols="30" rows="10" class="pl10 pr10 coupon-description mr5"></textarea>
+				<span class="err-tip mt5 hide red align-top"></span>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>LP链接：
+			</dt>
+			<dd>
+				<input type="text" class="LP-link">
+				<span class="err-tip mt5 hide red"></span>
+				<div class="mt5">（*链接以http://或者https://开头）</div>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>优惠券策略：
+			</dt>
+			<dd>
+				<label><input type="radio" name="coupon-strategy" checked="checked" data-id="1">手工活动</label>
+				<label><input type="radio" name="coupon-strategy" data-id="2">自动活动</label>
+				<span class="err-tip mt5 hide red"></span>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt0">
+			<dt class="w120 tright">
+				<span class="red">*</span>活动策略：
+			</dt>
+			<dd>
+				<label><input type="radio" name="activity-strategy" checked="checked" data-id="1">线上活动</label>
+				<label><input type="radio" name="activity-strategy" data-id="2">线下活动</label>
+				<span class="err-tip mt5 hide red"></span>
+			</dd>
+		</dl>
+	</div>
+	<div class="box-white">
+		<!-- ***************************规则设置********************* -->
+		<h1 class="f16 fb">
+			规则设置
+		</h1>
+		<dl class="dl-layout relative mt20">
+			<dt class="w120 tright">
+				优惠券规则：
+			</dt>
+			<dd>
+				<label class="coupon-rules-label"><input type="radio" name="coupon-rules" checked="checked" data-id="1">全店铺使用</label>
+				<label class="coupon-rules-label specify-restriction-rules"><input type="radio" name="coupon-rules" data-id="2">指定限制规则</label>
+				<label class="coupon-rules-label"><input type="radio" name="coupon-rules" data-id="3">全站使用</label>
+				<div class="err-tip mt5 hide red"></div>
+			</dd>
+		</dl>
+		<dl class="dl-layout relative mt20 specify-restriction-rules-edit-wrap hide">
+			<dt class="w120 tright">
+				指定类型：
+			</dt>
+			<dd>
+				<div>
+					<select name="" id="designated-type-select" class="designated-type-select">
+						<option value="" data-id="1">指定商品</option>
+						<option value="" data-id="2">指定分类</option>
+						<option value="" data-id="3">指定品牌</option>
+						<!-- <option value="" data-id="4">指定产品类型</option> -->
+						<option value="" data-id="5">指定国家</option>
+						<!--<option value="" data-id="6">指定店铺</option>-->
+					</select>
+				</div>
+				<div class="specify-restriction-rules-edit-item">
+					<div class="mt10">
+						<textarea class="fl seller-product-ID desig-type-descr-text" name="" id="" cols="30" rows="10" placeholder="Seller上架的商品编号"></textarea>
+						<div class="fl ml10 mt50">
+							<p>1.设置商品编号；</p>
+							<p>2.若设置取反，则设置的商品排除不参加活动，未设置的参加活动</p>
+							<p>3.批量用逗号或换行隔开</p>
+						</div>
+						<div class="err-tip red hide text-ind10"></div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="mt10">
+						<label>
+							<input type="checkbox" class="negate">是否取反
+						</label>
+					</div>
+					<div class="err-tip mt5 hide red"></div>
+				</div>
+				<div class="specify-restriction-rules-edit-item hide">
+					<div class="mt10">
+						<textarea class="fl desig-class-id desig-type-descr-text" name="" id="" cols="30" rows="10" placeholder="分类"></textarea>
+						<div class="fl ml10 mt50">
+							<p>1.若设置的分类节点为父分类，则该父分类节点下的所有子分类也参加活动；</p>
+							<p>2.若设置取反，则设置分类排除不参加活动，未设置的参加活动；</p>
+							<p>3.只能按级别单独配置分配，不能同时配置一级、二级。这样取反出错我们不负责。</p>
+						</div>
+						<div class="err-tip red hide text-ind10"></div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="mt10">
+						<label>
+							<input type="checkbox" class="negate">是否取反
+						</label>
+					</div>
+				</div>
+				<div class="specify-restriction-rules-edit-item hide">
+					<div class="mt10">
+						<textarea class="fl brand-textarea desig-type-descr-text" name="" id="" cols="30" rows="10" placeholder="指定品牌"></textarea>
+						<div class="fl ml10 mt50 w100">
+							<p>1.指定品牌</p>
+						</div>
+						<div class="err-tip red hide text-ind10"></div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="mt10">
+						<label>
+							<input type="checkbox" class="negate">是否取反
+						</label>
+					</div>
+					<div class="err-tip mt5 hide red"></div>
+				</div>
+				<div class="specify-restriction-rules-edit-item hide">
+					<textarea class="fl country-id desig-type-descr-text mr5 mt10" name="" id="" cols="30" rows="10" placeholder="国家简码"></textarea>
+					<div class="fl err-tip mt5 hide red"></div>
+					<div class="clearfix"></div>
+					<div class="mt10">
+						<label>
+							<input type="checkbox" class="negate">是否取反
+						</label>
+					</div>
+				</div>
+				<div class="specify-restriction-rules-edit-item hide">
+					<div class="mt10">
+						<textarea class="fl seller-store-ID desig-type-descr-text" name="" id="" cols="30" rows="10" placeholder="Seller店铺ID"></textarea>
+						<div class="fl ml10 mt50">
+							<p>1.设置店铺ID；</p>
+							<p>2.若设置为空，则为本店铺参加活动</p>
+							<p>3.批量用逗号或换行隔开</p>
+						</div>
+						<div class="err-tip red hide text-ind10"></div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="mt10">
+						<label>
+							<input type="checkbox" class="negate">是否取反
+						</label>
+					</div>
+					<div class="err-tip mt5 hide red"></div>
+				</div>
+			</dd>
+		</dl>
+		{if condition="$SellerCouponAllowStore eq true"}
+		<dl class="dl-layout relative mt20">
+			<dt class="w120 tright">
+				指定店铺：
+			</dt>
+			<dd>
+				<div>
+					<div class="mt10">
+						<textarea class="fl seller-store-ID coupon-store-setting-text" name="" id="" cols="30" rows="10" placeholder="Seller店铺ID"></textarea>
+						<div class="fl ml10 mt50">
+							<p>1.设置店铺ID；</p>
+							<p>2.若设置为空，则为本店铺参加活动</p>
+							<p>3.批量用逗号或换行隔开</p>
+						</div>
+						<div class="err-tip red hide text-ind10"></div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="err-tip mt5 hide red"></div>
+				</div>
+			</dd>
+		</dl>
+		{/if}
+		<!-- <div class="box-white mt10"> -->
+		<dl class="dl-layout relative ">
+			<!-- <dt class="w120 tright">
+			</dt> -->
+			<dd>
+				<p class="cancel-save mt30 ml30">
+					<a href="javascript:void(0);" class="save btn-orange mr20 ml30">保存</a>
+					<a href="javascript:void(0);" class="cancel btn-default">取消</a>
+				</p>
+			</dd>
+		</dl>
+		<!-- </div> -->
+	</div>
+	<div class="language-wrap tab-main hide">
+		<div class="add-multi-language box-white panel mt0 hide">
+			<h3 class="language-title main-cont-title">添加多语言</h3>
+			<div class="language-item no-border-top">
+				<dl class="dl-layout relative mt20">
+					<dt class="w120 tright">
+						<span class="red">*</span>语种：
+					</dt>
+					<dd>
+						<select class="language-item-simpte" class="w300">
+							<option>de</option>
+							<option>en</option>
+							<option>es</option>
+						</select>
+						<span class="err-tip mt5 hide red"></span>
+						<a href="javascript:void(0);" class="ml10 add-other-language"><i class="iconfont icon-jiahao green"></i></a>
+					</dd>
+				</dl>
+				<dl class="dl-layout relative mt0">
+					<dt class="w120 tright">
+						<span class="red">*</span>优惠券简要描述：
+					</dt>
+					<dd>
+						<input type="text" name="" maxlength="1000" class="coupon-brief-description-language w300 mr5">
+						<span class="err-tip mt5 hide red"></span>
+					</dd>
+				</dl>
+				<dl class="dl-layout relative mt0">
+					<dt class="w120 tright">
+						<span class="red">*</span>优惠券描述：
+					</dt>
+					<dd>
+						<textarea name="" id="" cols="30" rows="10" class="pl10 pr10 coupon-description-language w300 mr5"></textarea>
+						<span class="err-tip mt5 hide red align-top"></span>
+					</dd>
+				</dl>
+			</div>
+			<dl class="dl-layout relative mt0">
+				<dt class="w120 tright">
+				</dt>
+				<dd>
+					<p class="cancel-save mt30">
+						<a href="javascript:void(0);" class="language-save btn-orange mr30">保存</a>
+						<a href="javascript:void(0);" class="language-cancel btn-default">取消</a>
+					</p>
+				</dd>
+			</dl>
+		</div>
+		<div class="language-list-wrap">
+			<a href="javascript:void(0);" data-couponId="1" class="btn-red ml20 js-add-language-btn">多语言添加</a>
+			<div class="language-mian-wrap mt10">
+				<div class="language-mian">
+					<h3 class="language-title-top mb10">语言：(<span class="language-simpte">cs</span>)</h3>
+					<p><strong>优惠券简要描述:</strong><span class="coupon-language-simple-descript">优惠券简要描述1</span></p>
+					<p><strong>优惠券描述:</strong><span class="coupon-language-descript">优惠券简要描述1</span></p>
+					<div class="mt10">
+						<a href="javascript:void(0);" class="edit-language language-btn">编辑</a>
+						<a href="javascript:void(0);" class="remove-language language-btn">删除</a>
+					</div>
+				</div>
+				<div class="language-mian">
+					<h3 class="language-title-top mb10">语言：(<span class="language-simpte">de</span>)</h3>
+					<p><strong>优惠券简要描述:</strong><span class="coupon-language-simple-descript">优惠券简要描述de</span></p>
+					<p><strong>优惠券描述:</strong><span class="coupon-language-descript">优惠券简要描述de</span></p>
+					<div class="mt10">
+						<a href="javascript:void(0);" class="edit-language language-btn">编辑</a>
+						<a href="javascript:void(0);" class="remove-language language-btn">删除</a>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+	<div class="dialog-box editor-language-dialog hide">
+        <div class="dialog-bg"></div>
+        <div class="dialog-cont">
+            <h3 class="dialog-title absolute clearfix">编辑多语言</h3>
+            <div class="close-dialog clearfix"><i class="iconfont icon-cha"></i></div>
+            <form class="dialog-form mt20">
+                <dl class="clearfix">
+                    <dt>语种</dt>
+                    <dd class="editor-language-simpte"></dd>
+                </dl>
+                <dl class="clearfix">
+                    <dt>优惠券简要描述:</dt>
+                    <dd>
+                        <textarea class="dialog-brief-description"></textarea>
+                        <p class="dialog-err-tips red hide"></p>
+                    </dd>
+                </dl>
+                <dl class="clearfix">
+                    <dt>优惠券描述</dt>
+                    <dd>
+                        <textarea class="dialog-description"></textarea>
+                        <p class="dialog-err-tips red hide"></p>
+                    </dd>
+                </dl>
+                <dl class="clearfix mt20">
+                    <dt>&nbsp;</dt>
+                    <dd>
+                        <a class="btn-default js-editor-dialog-language-btn">保存</a>
+                        <a class="btn-default editor-dialog-btn-cancel">取消</a>
+                    </dd>
+                </dl>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- <script>
+	var ajax_url = {$ajax_url|default=''};
+</script> -->

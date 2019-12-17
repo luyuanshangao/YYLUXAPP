@@ -1,0 +1,38 @@
+<link rel="stylesheet" type="text/css" href="/assets/plugins/bootstrap-select/bootstrap-select.min.css"/>
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="saveUserForm" action="{url('admin/Article/saveCategory')}" enctype="multipart/form-data">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>上级类别：</label>
+                </dd>
+                <dd>
+                <ul class="c-h-ul search-ul query-ul">
+                   <li>
+                            <select class="bs-select input-small" data-live-search="true" multiple>
+                                <option value="">请选择</option>
+                            </select>
+                            <input class="country_val" type="hidden" name="country"  value="">
+                    </li>
+                </ul>
+                </dd>
+                <dt></dt>
+            </dl>
+
+             <dl class="c-h-dl-validator form-group clearfix mt15">
+                <dd class="v-title">
+                    <label>备注：</label>
+                </dd>
+                <dd>
+                    <textarea name="remarks" cols="66" rows="8" ></textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>
+<script src="/static/js/dx_cs_common.js"></script>
+<script type="text/javascript" src="/js/custom.js"></script>
+<script type="text/javascript">
+
+</script>

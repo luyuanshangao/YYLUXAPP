@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>汇率管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/edm_system.css" type="text/css" />
+</head>
+
+<body>
+    <div class="row ml10 mr10 mt20 pd10">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="search-btn-wrap bborder-no pb15">
+                    汇率名称:{$currency_name[$data.From]}兑{$currency_name[$data.To]}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table-basic table-padding table-hover edm-list">
+                    <thead>
+                        <tr>
+                            <th class="tleft">原值</th>
+                            <th class="tleft">新值</th>
+                            <th class="tleft">操作类型</th>
+                            <th class="tleft">操作人</th>
+                            <th class="tleft">修改时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="list" id="val"}
+                        <tr>
+                            <td>{$val.operation_before|default='-'}</td>
+                            <td>{$val.operation_after|default='-'}</td>
+                            <td>{$val.operation_type|default='-'}</td>
+                            <td>{$val.operation|default='-'}</td>
+                            <td>{$val.add_time|default='-'}</td>
+                        </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row row-no-mlr mt20 clearfix mb20">
+            <div class="dataTables_paginate paging_bootstrap fr">
+                {$list->render()}
+            </div>
+        </div>
+    </div>
+    <script>
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+{layout name="layout/main"/}
+{load href="/static/css/product.css" /}
+<div class="main-box fl shelf-success-page">
+	<div class="success">
+		<h1 class="f16 pt20"><i class="iconfont icon-iconcorrect green f24 mr10 tmiddle"></i><span class="tmiddle">恭喜您，您的产品已成功提交!</span></h1>
+		<div class="mt20 pl30">
+			<b class="red ">重要提醒：</b>
+			<p class="mt5">您的个人身份认证还没有完成，点击此完成<a href="#" class="red">身份认证</a>，您的信息才能被买家看到。</p>
+		</div>
+		
+		<div class="mt20 success-operation-wrap">
+			<span class="mb10">现在您可以：</span>
+			<ul class="success-operation">
+				<li><a href="{:url('index/Product/category')}">添加新产品</a><span class="gray">发布一个全新的产品</span></li>
+				<!--<li><a href="#">添加类似产品</a><span class="gray">附带刚提交的产品信息，只需修改差异内容，操作更便捷。</span></li>-->
+				<li><a href="{:url('index/Product/shelfProEditor', ['product_id'=>input('product_id'),'category_id'=>input('category_id'),'language'=>input('language'),])}">修改产品</a><span class="gray">修改刚刚发布的产品购买页面</span></li>
+			</ul>
+		</div>
+	</div>
+</div>

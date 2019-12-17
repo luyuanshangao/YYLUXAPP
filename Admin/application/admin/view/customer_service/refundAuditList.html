@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>平台管理--客服相关---退款审核</title>
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+    {load href="/static/css/productManagement.css" /}
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<!-- BEGIN CONTAINER -->
+<!-- BEGIN SIDEBAR -->
+<!--#include file="layout/sidebar.html"-->
+<!-- END SIDEBAR -->
+<!-- BEGIN CONTENT -->
+<div class="page-content pt0 ml20 pl0">
+    <!-- 订单内容 begin -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                <div>
+                    <div class="tab-content mt25">
+                        <div class="tab-pane active d-element-bind btns-link" id="month6">
+                            <div class="search-btn-wrap bborder-no">
+                                <form id="navbar" class="navbar-left" action="" method="post">
+                                    <ul class="c-h-ul search-ul query-ul">
+                                        <li style="width: 380px;">
+                                            <label class="c-h-ul-li-title" style="width: 90px;">订单号：</label>
+                                            <textarea style="width: 290px;" id="order_number" name="order_number" class="form-control fr"  placeholder='输入框只允许以",",";"或换行隔开'  rows="5" cols="110">{:input('order_number')}</textarea>
+                                        </li>
+                                        <li style="width: 380px;">
+                                            <label class="c-h-ul-li-title" style="width: 90px;">用户名称：</label>
+                                            <textarea style="width: 290px;" id="customer_name" name="customer_name" class="form-control fr"  placeholder='输入框只允许以",",";"或换行隔开'  rows="5" cols="110">{:input('customer_name')}</textarea>
+                                        </li>
+                                        <li class="w440">
+                                            <label class="c-h-ul-li-title" for="reservationtime">申请时间：</label>
+                                            <input type="text" name="startTime" id="reservationtime" class="form-control input-small startTime" value="{:input('startTime')}" autocomplete="off"/>
+                                            <span class="time-text w20">至</span>
+                                            <input type="text" name="endTime" id="canceltime" class="form-control input-small endTime"  value="{:input('endTime')}" autocomplete="off"/>
+                                        </li>
+                                        <li class="pb6">
+                                            <label class="c-h-ul-li-title w100">状态：</label>
+                                            <select name="status" class="form-control input-small currency_code">
+                                                <option value="">请选择</option>
+                                                {foreach name="status_data" item="vo" key="key"}
+                                                    <option value="{$key}" {if condition="input('status') eq $key"}selected="selected"{/if}>{$vo}</option>
+                                                {/foreach}
+                                            </select>
+                                        </li>
+                                        <li class="w240">
+                                            <input type="hidden" name="is_export" id="is_export" value="0">
+                                            <label class="c-h-ul-li-title w60"></label>
+                                            <a class="btn btn-gray query-refund-order" href="javascript:;">查 询</a>
+                                            <!--<a class="btn btn-gray export-refund-order" href="javascript:;">导出</a>-->
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                            <div id="enlarge_images" style="display: none; top: 244px; left: 170px;"></div>
+                            <!-- start base table -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table-basic table-hover table-padding">
+                                        <thead>
+                                        <tr>
+                                            <th><input type="checkbox" class="selectAll"/> 全选</th>
+                                            <th>操作</th>
+                                            <th>流水号</th>
+                                            <th>订单号</th>
+                                            <th>退款金额</th>
+                                            <th>退款申请状态</th>
+                                            <th>付款TxnID</th>
+                                            <th>发送邮件</th>
+                                            <th>退款类型</th>
+                                            <th>退款路径</th>
+                                            <th>申请人</th>
+                                            <th>申请备注</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {notempty name="$OrderRefundList['data']"}
+                                        {volist name="$OrderRefundList['data']"  key = 'k' id="v"}
+                                        <tr>
+                                            <td>{if condition="$v['status'] eq 1"}<input type="checkbox" class="single-checkbox" name="single-checkbox" value="{$v.refund_id}"/>{/if}</td>
+                                            <td>
+                                                {if condition="$v['status'] eq 1"}
+                                                <button type="button" class="btn btn-success btn-sm audit-status" data-status="2" data-from-status="1" data-id="{$v['refund_id']}" data-order-number="{$v['order_number']}">审核通过</button>
+                                                <button type="button" class="btn btn-danger btn-sm audit-status" data-status="4" data-from-status="1" data-id="{$v['refund_id']}" data-order-number="{$v['order_number']}">审核拒绝</button>
+                                                {elseif condition="$v['status'] eq 3"}
+                                                <button type="button" class="btn btn-success btn-sm audit-status" data-status="2" data-from-status="3" data-id="{$v['refund_id']}" data-order-number="{$v['order_number']}">重新退款</button>
+                                                {/if}
+                                            </td>
+                                            <td>{$v['refund_id']}</td>
+                                            <td><a target="_blank" href="{:url('order/edit',array('id'=>$v['order_number']))}">{$v['order_number']}</a></td>
+                                            <td>{$v['refunded_fee']}</td>
+                                            <td>{$status_data[$v['status']]}</td>
+                                            <td>{$v['payment_txn_id']}</td>
+                                            <td></td>
+                                            <td>{$type_data[$v['type']]}</td>
+                                            <td>原渠道退款</td>
+                                            <td>{$v['applicant_admin']}</td>
+                                            <td>{$v['remarks']}</td>
+                                        </tr>
+                                        {/volist}
+                                        {else/}
+                                        <tr>
+                                            <td colspan="13">数据为空！</td>
+                                        </tr>
+                                        {/notempty}
+                                        <tr>
+                                            <td>
+                                                <a onclick="javascript:void(0)" class="btn btn-gray relative audit-pass" href="javascript:;" post-url="{:url('CustomerService/refundAudit')}">审核通过</a>
+                                            </td>
+                                            <td colspan="11" align="left">
+                                                <a onclick="javascript:void(0);" class="btn btn-gray relative audit-reject" href="javascript:;" post-url="{:url('CustomerService/refundAudit')}">审核拒绝</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- end base table -->
+                            <div class="row row16 pd15 mt10">
+                                <div class="dataTables_paginate paging_bootstrap fr">
+                                    {notempty name="$OrderRefundList['Page']"}{$OrderRefundList['Page']}{/notempty}
+                                </div>
+                            </div>
+                            <!-- 订单内容 end -->
+                        </div>
+                    </div>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+<script src="/static/js/orderRefund.js" type="text/javascript"></script>
+<!-- END JAVASCRIPTS -->
+<script>
+    Common.AllSelect($('.selectAll'),$('.single-checkbox'));
+</script>
+
+</body>
+</html>
+<script>
+
+</script>

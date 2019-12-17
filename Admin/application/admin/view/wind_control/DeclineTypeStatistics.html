@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8" />
+    <title>平台管理--客服相关---风控凭证</title>
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+    {load href="/static/css/productManagement.css" /}
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+        <!-- BEGIN SIDEBAR -->
+        <!--#include file="layout/sidebar.html"-->
+        <!-- END SIDEBAR -->
+        <!-- BEGIN CONTENT -->
+            <div class="page-content pt0 ml20 pl0">
+                <!-- 订单内容 begin -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt25">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap bborder-no">
+                                            <form id="navbar" class="navbar-left" action="DeclineTypeStatistics" method="post">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li>
+                                                            <label class="c-h-ul-li-title">AnalyzeType：</label>
+                                                            <select name="AnalyzeType"  class="form-control input-small inline">
+                                                               <option value="">全部</option>
+                                                               <option {if condition="!empty($data['AnalyzeType']) && $data['AnalyzeType'] == '1'"} selected = "selected" {/if}  value="1">Day</option>
+                                                               <option {if condition="!empty($data['AnalyzeType']) && $data['AnalyzeType'] == '2'"} selected = "selected" {/if}  value="2">Month</option>
+                                                            </select>
+
+                                                    </li>
+                                                    <li>
+                                                            <label class="c-h-ul-li-title">渠道：</label>
+                                                            <select name="channel"  class="form-control input-small inline">
+                                                               <option value="">全部</option>
+
+                                                               {volist name="ChannelDisbursement"  id="Channel"}
+                                                               <option {if condition="!empty($data['channel']) && $data['channel'] == $Channel[0]"} selected = "selected" {/if}  value="{$Channel[0]}">{$Channel[1]}</option>
+                                                               {/volist}
+                                                              <!--  <option {if condition="!empty($data['AnalyzeType']) && $data['AnalyzeType'] == '2'"} selected = "selected" {/if}  value="2">Month</option> -->
+                                                            </select>
+
+                                                    </li>
+                                                    <li class="w440">
+                                                            <label class="c-h-ul-li-title">Time Duration：</label>
+                                                            <input type="text" name="startTime" id="reservationtime" class="form-control input-small startTime" value="{:input('startTime')}" autocomplete="off"/>
+                                                            <span class="time-text w10">至</span>
+                                                            <input type="text" name="endTime" id="canceltime" class="form-control input-small endTime"  value="{:input('endTime')}" autocomplete="off"/>
+                                                    </li>
+                                                    <li class="w240">
+                                                        <label class="c-h-ul-li-title w60"></label>
+                                                        <a onclick="javascript:document:navbar.submit();"
+                                                        class="btn btn-gray" href="javascript:;">查 询</a>
+                                                       <!--  <a onclick="javascript:;" class="btn btn-gray add-special-list" href="javascript:;">新增</a> -->
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <div id="enlarge_images" ></div>
+                                        <!-- start base table -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-hover table-padding">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>客户ID</th>
+                                                        <th>订单号</th>
+                                                        <th>金额</th>
+                                                        <th>PmtTxnID</th>
+                                                        <th>Risk Description</th>
+                                                        <th>提交时间</th>
+                                                        <th>分配状态</th>
+
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {volist name="list" key = 'k' id="vo"}
+                                                            <tr>
+                                                                <td>{$vo.id}</td>
+                                                                <td>{$vo.site}</td>
+                                                                <td>{$vo.OrderNumber?$vo.OrderNumber:'0'}</td>
+                                                                <td>{$vo.ThirdPartyTxnID?$vo.ThirdPartyTxnID:''}</td>
+                                                                <td>{$vo.captured_amount_usd?$vo.captured_amount_usd:''}</td>
+                                                                <td>{$vo.browser_ip?$vo.browser_ip:''}</td>
+                                                                <td>{$vo.sa_country?$vo.sa_country:''}</td>
+                                                                <td>{$vo.ba_country?$vo.ba_country:''}</td>
+                                                                <td>
+                                                                   <?php if(!empty($vo['add_time'])){ echo date("Y-m-d H:i:s",$vo['add_time']);}  ?>
+
+                                                                </td>
+
+
+                                                            </tr>
+                                                        {/volist}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row16 pd15 mt10">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                                {$page?$page:''}
+                                            </div>
+                                        </div>
+                                        <!-- 订单内容 end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="show-copy-pop hide"></div>
+     <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+     <script type="text/javascript" src="/js/custom.js"></script>
+    <!--  <script src="/static/js/system.js" type="text/javascript"></script> -->
+    <!-- END JAVASCRIPTS -->
+    <!-- <script>
+        $(function(){
+            System.SpecialList();
+        });
+    </script> -->
+
+</body>
+</html>
+<script>
+
+</script>

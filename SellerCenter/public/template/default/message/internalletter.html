@@ -1,0 +1,137 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/message.js" /}
+
+<style>
+	/*分页CSS*/
+	.pagination  li {display: inline;padding: 0 2px;float: left;}
+	.pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+	.pagination .active span{color: red;}
+	.main-base-table tr td{padding: 5px;}
+</style>
+
+<div class="main-box fl message" >
+    <div class="box-white mt0" style="overflow: auto">
+        <h1 class="main-cont-title">站内信</h1>
+        <form action="{:url('Message/internalLetter')}" method="get" class="" id="search_form">
+           	<div class="box-white">
+				<ul class="search-ul-layout">
+					<li>
+						<label class="search-label-title">主题:</label>
+						<input class="input-text" type="text" name="title" autocomplete="off" placeholder="输入主题" value="{:input('title')}"/>
+					</li>
+					<li>
+						<label class="search-label-title">是否阅读:</label>
+						<select name="read_status">
+							<option value="">全部</option>
+							<option value="2" {if condition="input('read_status') == 2"}selected="selected"{/if}>未读</option>
+							<option value="1" {if condition="input('read_status') == 1"}selected="selected"{/if}>已读</option>
+						</select>
+					</li>
+					<li>
+						<label class="search-label-title">是否标记:</label>
+						<select name="mark">
+							<option value="">全部</option>
+							<option value="2" {if condition="input('mark') == 2"}selected="selected"{/if}>未标记</option>
+							<option value="1" {if condition="input('mark') == 1"}selected="selected"{/if}>已标记</option>
+						</select>
+					</li>
+					<li>
+						<label class="search-label-title">发送时间:</label>
+						<select name="month_time">
+							<option value="">全部</option>
+							<option value="1" {if condition="input('month_time') == 1"}selected="selected"{/if}>最近1个月</option>
+							<option value="2" {if condition="input('month_time') == 2"}selected="selected"{/if}>最近2个月</option>
+							<option value="3" {if condition="input('month_time') == 3"}selected="selected"{/if}>最近3个月</option>
+							<option value="6" {if condition="input('month_time') == 6"}selected="selected"{/if}>最近6个月</option>
+							<option value="9" {if condition="input('month_time') == 9"}selected="selected"{/if}>最近9个月</option>
+							<option value="12" {if condition="input('month_time') == 12"}selected="selected"{/if}>最近12个月</option>
+						</select>
+					</li>					
+					<li class="search-li">
+						<a href="javascript:$('#search_form').submit();" class="search-btn">搜 索</a>
+					</li>
+				</ul>
+			</div>
+        </form>
+        <div class="mt10">
+			<table class="main-base-table">
+	            <tr>
+	                <th><input name="checkAllMessage" value="" type="checkbox"></th>
+	                <th>状态</th>
+	                <th>标记</th>
+	                <th>类型</th>
+	                <th width="250">主题</th>
+	                <th width="150">发送时间</th>
+	            </tr>
+	            <tr>
+	                <td colspan="6" class="pl30">
+	            		<a href="javascript:void(0);" class="mr10 inb-setup">设置<i class="inb-narr"></i></a>
+	            		<div class="inb-setuplist">
+							<div class="inb-setreadcon">
+								<a href="javascript:void(0)" class="inb-setread" data-flag="1"><span></span>设置为已读</a>
+								<a href="javascript:void(0)" class="inb-setunread" data-flag="2"><span></span>设置为未读</a>
+								<a href="javascript:void(0)" class="inb-setmarked" data-flag="3"><span></span>设置标记</a>
+								<a href="javascript:void(0)" class="inb-setdel" data-flag="4"><span></span>取消标记</a>
+							</div>
+						</div>
+	            		<a href="javascript:void(0);" class="inb-del">删除</a>
+					</td>
+	            </tr>
+
+				{volist name='data.data' id='val'}
+	            <tr class="j-mouse-hover">
+	                <td>
+						<input class="j-check-group-id" name="prodAuditForm.itemcodeChecked" type="checkbox" value="{$val.message_recive_id}">
+	                </td>
+	                <td class="padimg">
+	                    {$val.read_status_str|default=''}
+
+	                </td>
+	                <td class="padpro">
+						{$val.mark_str|default=''}
+	                </td>
+	                <td>
+						{$val.type_str|default=''}
+
+	                </td>
+	                <td>
+						{$val.title|default=''}
+	                 </td>
+					<td>{:date('Y-m-d H:i:s', $val['addtime'])}</td>
+	            </tr>
+				{/volist}
+
+				{empty name='data.data'}
+				<tr>
+					<td colspan="6" class="no-result">暂时无消息</td>
+				</tr>
+				{/empty}
+           </table>
+		</div>
+
+		{notempty name='data.Page'}
+		<div class="page-wrap clearfix mt20 fr">
+			<!--<div class="page-range fl">
+				<span class="page-number">1</span>/<span class="page-count">2</span>
+				<span class="ml10">跳转至第几</span>
+				<input class="page-put ml5" type="text"> 页
+				<a href="" class="page-go ml5">确定</a>
+			</div>-->
+			<!--<ul class="page mt5 fr">
+                <li><span class="pre"></span></li>
+                <li><span class="curr" href="#">1</span></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#" class="next"></a></li>
+            </ul>-->
+			{$data.Page}
+		</div>
+		{/notempty}
+    </div>
+</div>
+
+<script>
+	var ajax_url = {$ajax_url|default=''};
+</script>

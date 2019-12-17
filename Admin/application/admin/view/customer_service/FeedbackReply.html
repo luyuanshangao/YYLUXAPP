@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>DX_用户反馈详情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+{load href="/assets/plugins/kindeditor/kindeditor.js" /}
+{load href="/assets/plugins/kindeditor/lang/zh_CN.js" /}
+<!--{load href="/assets/plugins/umeditor/themes/default/css/umeditor.min.css" /}
+{load href="/assets/plugins/umeditor/umeditor.config.js" /}
+{load href="/assets/plugins/umeditor/umeditor.js" /}
+{load href="/assets/plugins/umeditor/lang/zh-cn/zh-cn.js" /}-->
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="saveForm" action="{url('/Article/saveArticle')}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="feedback_id"  value="{$data['feedback_id']}">
+            <dl class="c-h-dl-validator form-group clearfix">
+
+                <dd class="v-title">
+                    <label>用户ID/名称：</label>
+                </dd>
+                <dd>
+                    <div class="input-icon right">
+                        <label class="form-control input-medium">{$data.customer_id}-{$data.customer_name}</label>
+                    </div>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+
+                <dd class="v-title">
+                    <label>反馈标题：</label>
+                </dd>
+                <dd>
+                    <div class="input-icon right">
+                        <p class="pd5 bborder w240" style="word-wrap:break-word;">
+                            {$data['subject']}
+                        </p>
+                    </div>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+
+                <dd class="v-title">
+                    <label>反馈类型：</label>
+                </dd>
+                <dd>
+                    <div class="input-icon right">
+                            {foreach name="HelpQuestionType['data']" item="vi" key="key"}
+                            {if condition="$key eq $data.question_type"}
+                            <label class="form-control input-medium">{$vi}</label>
+                            {/if}
+                            {/foreach}
+                    </div>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>订单编号：</label>
+                </dd>
+                <dd>
+                    <div class="input-icon right">
+                        <label class="form-control input-medium">{$data['order_number']}</label>
+                    </div>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>反馈详情：</label>
+                </dd>
+                <dd>
+                    <div class="input-icon right">
+                       <!-- <textarea name="" id="" cols="50" rows="6" disabled>{$data.description}</textarea>-->
+                        <p class="pd5 bborder w500" style="word-wrap:break-word;">
+                            {$data.description}
+                        </p>
+                    </div>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>图片：</label>
+                </dd>
+                <dd id="demo">
+                    {notempty name="$data['enclosure']"}<img width="150px" src="{:config('dx_mall_img_url')}/{$data.enclosure}">{/notempty}
+                    <script>
+                        var demo = document.getElementById("demo");
+                        var gg = demo.getElementsByTagName("img");
+                        var ei = document.getElementById("enlarge_images");//console.log(ei);
+                        for(i=0; i<gg.length; i++){
+                            var ts = gg[i];
+                            ts.onmousemove = function(event){
+                                event = event || window.event;
+                                ei.style.display = "block";
+                                ei.innerHTML = '<img width="400" height="400" src="' + this.src + '" />';
+                                ei.style.top  = document.body.scrollTop + event.clientY + 10 + "px";
+                                ei.style.left = document.body.scrollLeft + event.clientX + 10 + "px";
+                            }
+                            ts.onmouseout = function(){
+                                ei.innerHTML = "";
+                                ei.style.display = "none";
+                            }
+                            ts.onclick = function(){
+                                window.open( this.src );
+                            }
+                        }
+                    </script>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>是否回复：</label>
+                </dd>
+                <dd>
+                    <div class="input-icon right">
+                        <label class="form-control input-medium">
+                            {if condition="$data.is_reply eq 1"}
+                            未回复
+                            {else}
+                            已回复
+                            {/if}
+                        </label>
+                    </div>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>提交时间：</label>
+                </dd>
+                <dd>
+                    <div class="input-icon right">
+                        <label class="form-control input-medium">
+                            {$data.addtime |date="Y-m-d H:i:s",###}
+                        </label>
+                    </div>
+                </dd>
+                <dt></dt>
+            </dl>
+
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>回复内容：</label>
+                </dd>
+                <dd>
+                    <div class="input-icon right">
+                        {if condition="$data['is_reply'] eq 1"}
+                        <textarea name="reply_content" rows="10" cols="60"></textarea>
+                        {else}
+                        <textarea name="reply_content" rows="10" cols="60" disabled="disabled">{$data['reply_content']}</textarea>
+                        {/if}
+                    </div>
+                </dd>
+                <dt></dt>
+            </dl>
+            <input name="feedback_id" id="feedback_id" value="{$data['feedback_id']}" type="hidden">
+            {if condition="$data['is_reply'] eq 1"}
+            <div class="layui-layer-btn layui-layer-btn-tleft pl100 mt20"><a href="javascript:void (0);" onclick="SubmitFeedbackReply()" class="layui-layer-btn0">回复</a><a class="layui-layer-btn1" href="javascript:window.close();">取消</a></div>
+            {/if}
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/js/custom.js"></script>
+<script type="text/javascript">
+    /*实例化编辑器*/
+    KindEditor.ready(function(K) {
+        window.editor = K.create('#content',{
+            afterBlur: function () { this.sync();},
+            uploadJson : '/Article/remoteUpload',
+            fileManagerJson : '/Article/remoteUpload.php',
+            imgFile:'file',
+            allowFileManager : true
+        });
+    });
+    function SubmitFeedbackReply() {
+        var reply_content = $("textarea[name='reply_content']").val();
+        var feedback_id = $("#feedback_id").val();
+        $.post('',{"feedback_id":feedback_id,'reply_content':reply_content},function (data) {
+            if(data.code == 200){
+                layer.msg(data.result, {icon: 1});
+                setTimeout(function(){
+                    window.location.reload()
+                },2000);
+            }else{
+                layer.msg(data.result, {icon: 2});
+            }
+        })
+    }
+    $(function(){
+
+    });
+</script>

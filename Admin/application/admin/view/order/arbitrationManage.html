@@ -1,0 +1,40 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addUserForm"  enctype="multipart/form-data">
+            <input type="hidden" name="id"  value="{$id}">
+            <input type="hidden" name="user_type"  value="{$user_type}">
+            <input type="hidden" name="user_id"  value="{$user_id}">
+            <input type="hidden" name="user_name"  value="{$user_name}">
+            <input type="hidden" name="type"  value="{$type}">
+             <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>仲裁结果选择：</label>
+                </dd>
+                <dd>
+                    <select name="status">
+                        <option>请选择</option>
+                        {volist name="after_sale_status" id="vo"}
+                           {if condition="($vo.code eq 7) OR ($vo.code eq 10)"}
+                              <option value="{$vo.code}"> {$vo.name}</option>
+                           {/if}
+                        {/volist}
+                       <!-- <option value="7" >仲裁驳回</option> -->
+                    </select>
+                </dd>
+                <dt></dt>
+             </dl>
+             <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>仲裁原因：</label>
+                </dd>
+                <dd>
+                    <textarea name="content" cols="37" rows="8" ></textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/js/custom.js"></script>
+<script type="text/javascript">
+</script>

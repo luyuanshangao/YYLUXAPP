@@ -1,0 +1,130 @@
+.first-tabs{
+    display: flex;
+    justify-content: space-around;
+    padding:10px;
+    font-size: $f14;
+    font-weight: bold;
+    li{
+        border-bottom: 2px solid $white;
+        &.curr{
+            border-color: $black;
+        }
+    }
+}
+.first-category-list{
+    li{
+        a{
+            padding: 10px;
+            background: $white-3;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            span{
+                display: inline-block;
+                font-size: $f14;
+            }
+        }
+    }
+}
+.second-category-list{
+    li{
+        a{
+            padding: 10px;
+            background: $white-3;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            .left-box{
+                width: 90%;
+                display: flex;
+                align-items: center;
+                span{
+                    display: inline-block;
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+}
+.list-page{
+    background: $gray-1;
+}
+.brand-list{
+    background: $white;
+    .li{
+        padding: 5px;
+        border:1px solid $border-color;
+        margin:0 5px;
+        @include tcenter();
+    }
+}
+.fiter-list{
+    background: $white;
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+    li{
+        .item-box{
+            color: $black-6;
+            font-size: $f14;;
+            &.curr{
+                color: $black;
+            }
+        }
+        &.price{
+            .item-box{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                color: $black-6;
+                .icon-box{
+                    margin-left:5px;
+                    display: flex;
+                    flex-direction:column;
+                    align-items: center;
+                    height:20px;
+                    .iconfont{
+                        font-size: 1rem !important;
+                        &:first-child{
+                            margin-bottom: -4px;
+                        }
+                        &:last-child{
+                            margin-top: -4px;
+                        }
+                    }
+                }
+                &.curr{
+                    color: $black;
+                    .icon-box{
+                        color: $black-6;
+                        .iconfont{
+                            &.curr{
+                                color: $black;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        &.filter{
+            .item-box{
+                display: flex;
+                justify-content: space-between;
+                align-items:center;
+                span{
+                    margin-right:5px;
+                }
+            }
+            
+        }
+    }
+}

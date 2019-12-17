@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>商城管理--订单管理--订单管理</title>
+    {include file="layout/c_style" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<!-- BEGIN CONTAINER -->
+<!-- BEGIN SIDEBAR -->
+<!--#include file="layout/sidebar.html"-->
+<!-- END SIDEBAR -->
+<!-- BEGIN CONTENT -->
+<div class="page-content pt0 ml20 pl0">
+    <!-- 订单内容 begin -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                <div>
+                    <div class="tab-content mt25">
+                        <h3><a href="/image/add">图片添加</a> </h3>
+                        <div class="tab-pane active d-element-bind btns-link" id="month6">
+                            <!-- start base table -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table-basic table-hover table-padding">
+                                        <thead>
+                                        <tr>
+                                            <th>编号</th>
+                                            <th>图片</th>
+                                            <th>操作人</th>
+                                            <th class="w160">添加时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {volist name="orderList" id="vo"}
+                                        <tr>
+                                            <td>{$vo.id}</td>
+                                            <td><img width="50" src="{$vo.url}"/></td>
+                                            <td>{$vo.username}</td>
+                                            <td>{$vo.add_time |date="Y-m-d H:i:s",###}</td>
+                                            <td> <a href="javascript:void(0);"  onclick="public_delete('{$vo.id}','{:url("Image/del")}')" class="Qing">删除</a>
+                                            </td>
+                                        </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- end base table -->
+                            <div class="row row16 pd15 mt10">
+
+                                <div class="dataTables_paginate paging_bootstrap fr">
+                                    {$page}
+                                </div>
+                                <div style="float: right;height: 27px;margin: 4px 12px 0px 0px;" >总条数 {$total?$total:'0'}条</div>
+                            </div>
+                            <!-- 订单内容 end -->
+                        </div>
+                    </div>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+<script type="text/javascript" src="/js/custom.js"></script>
+<script src="/static/js/order.js" type="text/javascript"></script>
+<!-- END JAVASCRIPTS -->
+<script>
+    $(function(){
+        Order.Index();
+    });
+</script>
+</body>
+</html>
+<script>
+</script>

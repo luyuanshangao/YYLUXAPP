@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>筛选用户</title>
+    {include file="layout/c_style" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/customFilter.css" type="text/css" />
+
+</head>
+
+<body>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+    <!-- BEGIN SIDEBAR -->
+    <!--#include file="layout/sidebar.html"-->
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content pt0 pl0 ml20">
+        <!-- 订单内容 begin -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                    <div>
+                        <div class="tab-content mt25">
+                            <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                <!-- start base table -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table id="tb1" class="filter-users" border="0" cellpadding="2" cellspacing="6" width="1100">
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <span class="red f12 pl20">无查询条件默认是所有用户数据</span>
+                                                    </td>
+                                                </tr>
+                                                <tr height="4">
+                                                    <td></td>
+                                                </tr>
+                                                <tr class="tr-title" height="20">
+                                                    <td colspan="2" class="pl20">
+                                                        基础信息
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="w150">
+                                                        <span class="fr">主题：</span>
+                                                    </td>
+                                                    <td class="w700">
+                                                        <input type="text" id="txtTopic" name="txtTopic" value="{$screening_management[0]['TopicName']?$screening_management[0]['TopicName']:''}" {if condition="!empty($screening_management[0]['TopicName'])"}disabled="disabled"{/if} size="50">
+                                                        <input name="hdTopicId" type="hidden" id="hdTopicId" value="{$id}">
+                                                        <input name="hdTopicName" type="hidden" id="hdTopicName">
+                                                        <input name="hdTopicDataType" type="hidden" id="hdTopicDataType">
+                                                        <input name="hdTopicStatus" type="hidden" id="hdTopicStatus" value="0">
+                                                        <input name="id" type="hidden" id="TopicName_id" value="{$id}">
+                                                        <span class="error" id="spTNError"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="fr">用户类型：</span>
+                                                    </td>
+                                                    <td>
+                                                        <input type="radio" id="rdSubscribeCustomer" name="rdCustomer" value="true" checked="checked"><label for="rdSubscribeCustomer">订阅用户</label>
+                                                    </td>
+                                                </tr>
+                                                <tr class="tr-title">
+                                                    <td colspan="2" class="pl20">
+                                                        <span class="fl">订阅用户信息筛选 </span><span class="fl pr20 red f12"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr height="10">
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="fr">订阅的分类：</span>
+                                                    </td>
+                                                    <td class="fl border-inset">
+
+                                                    {volist name="$class_name" id="vo"}
+                                                        <input class="sc ready-checkbox" type="checkbox" value="{$vo.id}" id="Checkbox1-{$vo.id}" name="class_id[]['id']">
+                                                        <label for="Checkbox1-{$vo.id}">
+                                                        <span class="">{$vo["title_en"]}</span></label>
+                                                    {/volist}
+                                                        <input type="hidden" id="hdSubscribeCategories" name="hdSubscribeCategories">
+                                                    </td>
+                                                </tr>
+                                                <tr height="10">
+                                                    <td></td>
+                                                </tr>
+                                                <tr class="tr-title">
+                                                    <td colspan="2" class="pl20">
+                                                        <span class="fl">注册登录信息筛选 </span><span class="fl pr20 red f12"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="fr">是否注册：</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="w200 fl">
+                                                            <label class="mr5"><input type="radio" name="rdregister" value="1" checked="checked">不限制</label>
+                                                            <label class="mr5"><input type="radio" name="rdregister" value="2">是</label>
+                                                           <!--  <label class="mr5"><input type="radio" name="rdregister" value="3">否</label> -->
+                                                        </div>
+                                                        <div class="ml10">
+                                                            <span>注册时间：</span>
+                                                            <input type="text" id="txtRegisterTimeStart" name="txtRegisterTimeStart" disabled="disabled" class="startTime">
+                                                            --
+                                                            <input type="text" id="txtRegisterTimeEnd" name="txtRegisterTimeEnd" disabled="disabled" class="endTime">
+                                                            <span class="error" id="spRtError"></span>
+                                                            <span class="error" id="spRtsError"></span>
+                                                            <span class="error" id="spRteError"></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                 <tr class="tr-title">
+                                                    <td style="background: white" class="pl20">
+                                                     <!--    <span class="fl">用户注册所在国家 </span><span class="fl pr20 red f12"></span> -->
+                                                    </td>
+                                                     <td class="pl20">
+                                                        <span class="fl">用户注册所在国家 </span><span class="fl pr20 red f12"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+
+                                                    <td>
+                                                        <span class="fr">用户注册所在国家：</span>
+                                                    </td>
+                                                    <td class="border-inset">
+                                                        <div>
+                                                            <table id="register_countryCheck" class="percent98">
+                                                                <tbody>
+                                                                 <?php for($i=0;$i<$sum;$i++){
+                                                                    $j = $i;
+                                                                    if($i == 0){
+                                                                            $b = 0;
+                                                                        }else{
+                                                                            $b = $b + 4;
+                                                                        }
+                                                                 ?>
+                                                                    <tr>
+                                                                    <?php $__LIST__ = is_array($list) ? array_slice($list,$b,4, true):$list->slice(0,4, true);
+                                                                          if( count($__LIST__)!=0 ){
+                                                                            foreach ($__LIST__ as $ky => $vy) {
+                                                                     ?>
+                                                                        <td>
+                                                                            <input type="checkbox" id="register_group_{$vy.id}" groupregisterid="{$vy.id}" allregistercountry="{$vy.country_code_string}" selectregistercountry="" onclick="registerCountryCode(this)" disabled="disabled">
+                                                                            <label title="{$vy.shortCutShowName}" for="register_group_{$vy.id}" class="pointer">
+                                                                                {$vy.shortCutShowName}
+                                                                            </label>
+                                                                            <br>
+                                                                            <input type="button" id="Register_filer_{$vy.id}" onclick="OpenRegisterCountryDialog({$vy.id},&quot;{$vy.shortCutShowName}&quot;)" value="筛选" disabled="disabled">
+                                                                            <label id="register_total_{$vy.id}">0/{$vy.country_code_sum}</label>
+                                                                        </td>
+                                                                      <!--   <?php if($j == ($sum-1) && $vy == end($__LIST__) ){ ?>
+                                                                                <td>
+                                                                                    <input name="whether_country" type="checkbox" id="whether_country" value="2" >
+                                                                                    <label title="无国家用户"  class="pointer">
+                                                                                        无国家用户
+                                                                                    </label>
+                                                                                    <br>
+                                                                                    <input class="whether_country" type="button" value="筛选">
+                                                                                    <script type="text/javascript">
+                                                                                          $('.whether_country').click(function(event) {
+                                                                                                 $("#whether_country").prop('checked','true');
+                                                                                               // alert($('#whether_country').checked = true);
+                                                                                          });
+                                                                                    </script>
+                                                                                </td>
+                                                                        <?php   }  ?> -->
+                                                                       <?php }} ?>
+
+                                                                    </tr>
+                                                                    <?php } ?>
+
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="selected-country">
+                                                                <span class="pt5">您选择的国家/地区情况</span>
+                                                                <span class="re f12">(注：简码 UKN代表未识别的国家)</span>
+                                                                <hr class="mb5">
+                                                                <div id="registerCountryCode" class="registerCountryCode"></div>
+                                                                <span class="error" id="spCountryCodeError"></span>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <script type="text/javascript">
+                                                        $(function() {
+                                                            $("#registerCountryCode").text("");
+                                                        });
+
+                                                        function registerCountryCode(cont) {
+                                                            if ($(cont).attr("selectregistercountry") != "" &&
+                                                                RegisterCountryCount($(cont).attr("selectregistercountry")) != RegisterCountryCount($(cont).attr("allregistercountry"))) {
+                                                                if (!confirm("将重新分配您以前的选择，确认这样吗？")) {
+                                                                    if (!$(cont).is(":checked")) {
+                                                                        $(cont).attr("checked", "checked");
+                                                                    } else {
+                                                                        $(cont).prop("checked", false);
+                                                                        // $(cont).removeAttr('checked');
+                                                                    }
+                                                                    return
+                                                                }
+                                                            }
+                                                            if ($(cont).is(":checked")) {
+                                                                $(cont).attr("selectregistercountry", $(cont).attr("allregistercountry"));
+                                                            } else {
+                                                                $(cont).removeAttr('checked');
+                                                                $(cont).attr("selectregistercountry", "");
+                                                            }
+                                                            RegisterSelectCountryCount($(cont).attr("groupregisterID"));
+                                                            RepeatRegisterCountry();
+                                                        }
+
+                                                        function RepeatRegisterCountry() {
+                                                            var codeArray = [];
+                                                            var codeArrayLength = 0;
+                                                            $("#register_countryCheck").find(":checkbox:checked").each(function() {
+                                                                var itemArray = $(this).attr("selectregistercountry").split(',');
+                                                                for (var i = 0; i < itemArray.length; i++) {
+                                                                    if (!Contains(codeArray, itemArray[i])) {
+                                                                        codeArray[codeArrayLength] = itemArray[i];
+                                                                        codeArrayLength++;
+                                                                    }
+                                                                }
+                                                            });
+                                                            $("#registerCountryCode").text(codeArray.sort().join(", "));
+                                                        }
+
+                                                        function SelectRegisterCountry(groupID, countriesStr) {
+                                                            countriesStr = $.trim(countriesStr);
+                                                            var ck = $("#register_group_" + groupID);
+                                                            ck.attr("selectregistercountry", countriesStr);
+
+                                                            if (countriesStr == "") {
+                                                                ck.prop("checked", false);
+                                                            } else {
+                                                                if (!ck.is(":checked")) {
+                                                                    ck.prop("checked", true);
+                                                                }
+                                                            }
+                                                            RegisterSelectCountryCount(groupID);
+                                                            RepeatRegisterCountry();
+                                                        }
+
+                                                        function RegisterSelectCountryCount(groupID) {
+                                                            $("#register_total_" + groupID).text(RegisterCountryCount($("#register_group_" + groupID).attr("selectregistercountry")) + "/" +
+                                                                RegisterCountryCount($("#register_group_" + groupID).attr("allregistercountry")));
+                                                        }
+
+                                                        // function Contains(array, value) {
+                                                        //     for (var _index = 0; _index < array.length; _index++) {
+                                                        //         if (array[_index] == value)
+                                                        //             return true;
+                                                        //     }
+                                                        //     return false;
+                                                        // }
+
+                                                        function RegisterCountryCount(countryStr) {
+                                                            countryStr = $.trim(countryStr);
+                                                            if ($.trim(countryStr) == "")
+                                                                return 0;
+                                                            return countryStr.split(',').length;
+                                                        }
+
+                                                        function OpenRegisterCountryDialog(groupID, groupName) {
+                                                            var selectCountries = $("#register_group_" + groupID).attr("selectregistercountry");
+                                                            OpenRegisterShowSelect(groupID,"#register_group_" + groupID,selectCountries);
+                                                            // OpenShowSelectCountryPage(groupID, selectCountries, "请选择国家-" + groupName, SelectCountry);
+                                                        }
+                                                        function OpenRegisterShowSelect(groupID,id,selectCountriesArray){
+
+                                                             $.get('/CustomFilter/SelectCountryDialog/id/'+groupID, function (data) {
+                                                                        layer.open({
+                                                                            title: "国家筛选",
+                                                                            content: data,
+                                                                            type: 1,
+                                                                            area: ['680px', '600px'],
+                                                                            offset: '10px',
+                                                                            btn: ["保存", "取消"],
+                                                                            yes: function (index) {
+
+                                                                                var readyCheckbox = $('.em');
+                                                                                _readyCheckboxArr = [];
+                                                                                var CountryString = '';
+                                                                                readyCheckbox.each(function(index,ele){
+                                                                                    // _readyCheckboxArr.push($(ele).attr("for"));
+                                                                                    CountryString += $(ele).attr("for")+',';
+                                                                                });
+                                                                                re = new RegExp("ck_country_","g");
+                                                                                CountryString = CountryString.substring(0, CountryString.lastIndexOf(','));
+                                                                                var CountryString = CountryString.replace(re, "");
+                                                                                $(id).attr('selectregistercountry',CountryString);
+                                                                                var allcountry = $('#register_group_'+groupID).attr('allregistercountry');
+                                                                                var _allcountry_quantity = allcountry.split(",");
+                                                                                var _selected_quantity =  CountryString.split(",");
+                                                                                // console.log(_selected_quantity.length);
+                                                                                // console.log(_allcountry_quantity.length);
+                                                                                // $('#register_total_'+groupID).attr('selectregistercountry',CountryString);
+                                                                                // $('#lb_total_'+groupID).attr('selectcountry',CountryString);
+                                                                                // alert(_selected_quantity.length+'/'+_allcountry_quantity.length);
+                                                                                if(_selected_quantity[0] == ''){
+                                                                                    $('#register_total_'+groupID).html('0'+'/'+_allcountry_quantity.length);
+                                                                                }else{
+                                                                                    $('#register_total_'+groupID).html(_selected_quantity.length+'/'+_allcountry_quantity.length);
+                                                                                    $('#register_group_'+groupID).prop('checked','true');
+                                                                                }
+                                                                                // $('#register_group_'+groupID).attr("checked", 'checked');
+                                                                                
+                                                                                RepeatRegisterCountry();
+                                                                                $('.layui-layer-close1').click();
+
+
+                                                                                return;
+                                                                            },
+                                                                            cancel: function () {
+
+                                                                            }
+                                                                        });
+                                                                        if (selectCountriesArray) {
+                                                                            var newArr = selectCountriesArray.split(',');
+                                                                            var countryInput = $('input[name="country-input"]');
+                                                                            for(var i=0;i<newArr.length;i++){
+                                                                                for(var k=0;k<countryInput.length;k++){
+                                                                                    if(countryInput.eq(k).val() == newArr[i]){
+                                                                                        countryInput.eq(k).prop('checked',true);
+                                                                                        countryInput.eq(k).siblings('label').addClass('em');
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            if(newArr.length == countryInput.length){
+                                                                                $('#webengine_dialog_Model input').prop('checked',true);
+                                                                            }
+                                                                            var checkboxTrWrap = $('.checkbox-tr-wrap');
+                                                                            for(var j=0;j<checkboxTrWrap.length;j++){
+                                                                                var ins = checkboxTrWrap.eq(j).find('input');
+                                                                                var checkedIn = checkboxTrWrap.eq(j).find('input:checked');
+                                                                                if(ins.length == checkedIn.length){
+                                                                                    checkboxTrWrap.eq(j).prev().find('input').prop('checked',true);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    });
+                                                            
+                                                        }
+
+
+
+                                                        </script>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="fr">是否登录：</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="w200 fl">
+                                                            <label class="mr5"><input type="radio" name="rdlogin" value="1" checked="checked">不限制</label>
+                                                            <label class="mr5"><input type="radio" name="rdlogin" value="2">是</label>
+                                                           <!--  <label class="mr5"><input type="radio" name="rdlogin" value="3">否</label> -->
+                                                        </div>
+                                                        <div class="ml10">
+                                                            <span>登录时间：</span>
+                                                            <input type="text" id="txtLoginTimeStart" name="txtLoginTimeStart" disabled="disabled" class="startTime">
+                                                            --
+                                                            <input type="text" id="txtLoginTimeEnd" name="txtLoginTimeEnd" disabled="disabled" class="endTime">
+                                                            <span class="error" id="spLtError"></span>
+                                                            <span class="error" id="spLtsError"></span>
+                                                            <span class="error" id="spLteError"></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="tr-title">
+                                                    <td colspan="2" class="pl20">
+                                                        <span class="fl">订单信息筛选 </span><span class="fr pr20 red f12"></span>
+                                                    </td>
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>
+                                                        <span class="fr">是否有订单记录：</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="w200 fl">
+                                                            <label class="mr5"><input type="radio" name="rdorder" value="1">不限制</label>
+                                                            <label class="mr5"><input type="radio" name="rdorder" value="2" checked="checked">有订单</label>
+                                                            <label class="mr5"><input type="radio" name="rdorder" value="3">无订单</label>
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr class="tr-title">
+                                                    <td style="background: white" class="pl20">
+                                                       <!--  <span class="fl">国家/地区信息筛选 </span><span class="fr pr20 red f12"></span> -->
+                                                    </td>
+                                                     <td  class="pl20">
+                                                        <span class="fl">国家/地区信息筛选 </span><span class="fr pr20 red f12"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="fr">下单时间：</span>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="txtOrderTimeOfStart" name="txtOrderTimeOfStart" class="startTime">
+                                                        --
+                                                        <input type="text" id="txtOrderTimeOfEnd" name="txtOrderTimeOfEnd" class="endTime">
+                                                        <span class="error" id="spOtsError"></span><span class="error" id="spOteError"></span>
+                                                        <span class="error" id="spOtError"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="fr">订单相关：</span>
+                                                    </td>
+                                                    <td>
+                                                        订单金额：$
+                                                        <input type="text" id="txtOrderAmountOfStart" name="txtOrderAmountOfStart" size="8">
+                                                        -
+                                                        <input type="text" id="txtOrderAmountOfEnd" name="txtOrderAmountOfEnd" size="8">&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        购买次数：
+                                                        <select id="slOrdersOfLimit">
+                                                            <option value="">不限制</option>
+                                                            <option value="1">小于</option>
+                                                            <option value="2">大于等于</option>
+                                                        </select>
+                                                        <select id="slOrders" class="hide">
+                                                            <option value="1">1 </option>
+                                                            <option value="2">2 </option>
+                                                            <option value="3">3 </option>
+                                                            <option value="4">4 </option>
+                                                            <option value="5">5 </option>
+                                                            <option value="6">6 </option>
+                                                            <option value="7">7 </option>
+                                                            <option value="8">8 </option>
+                                                            <option value="9">9 </option>
+                                                            <option value="10">10 </option>
+                                                        </select>
+                                                        <span class="error" id="spOasError"></span><span class="error" id="spOaeError"></span>
+                                                        <span class="error" id="spOaError"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="fr">支付方式：</span>
+                                                    </td>
+                                                    <td>
+                                                        {volist name="$PaymentMethod" id="vi"}
+                                                           <input type="checkbox"  class="PaymentMethod" id="chkPayModeOfPayPal" name="chkPayModeOfPayPal" value="{$vi[1]}"><label for="chkPayModeOfPayPal">{$vi[1]}</label>
+                                                        {/volist}
+                                                    </td>
+                                                </tr>
+
+
+                                                <tr height="10">
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="fr">国家/地区：</span>
+                                                    </td>
+                                                    <td class="border-inset">
+                                                        <div>
+                                                            <table id="t_countryCheck" class="percent98">
+                                                                <tbody>
+                                                                 <?php for($i=0;$i<$sum;$i++){
+                                                                    $j = $i;
+                                                                    if($i == 0){
+                                                                            $b = 0;
+                                                                        }else{
+                                                                            $b = $b + 4;
+                                                                        }
+                                                                 ?>
+                                                                    <tr>
+                                                                    <?php $__LIST__ = is_array($list) ? array_slice($list,$b,4, true):$list->slice(0,4, true);
+                                                                          if( count($__LIST__)!=0 ){
+                                                                            foreach ($__LIST__ as $ky => $vy) {
+                                                                     ?>
+                                                                        <td>
+                                                                            <input type="checkbox" id="ck_group_{$vy.id}" groupid="{$vy.id}" allcountry="{$vy.country_code_string}" selectcountry="" onclick="SetCountryCode(this)">
+                                                                            <label title="{$vy.shortCutShowName}" for="ck_group_{$vy.id}" class="pointer">
+                                                                                {$vy.shortCutShowName}
+                                                                            </label>
+                                                                            <br>
+                                                                            <input type="button" id="bt_filer_{$vy.id}" onclick="OpenSelectCountryDialog({$vy.id},&quot;{$vy.shortCutShowName}&quot;)" value="筛选">
+                                                                            <label id="lb_total_{$vy.id}">0/{$vy.country_code_sum}</label>
+                                                                        </td>
+                                                                        <?php if($j == ($sum-1) && $vy == end($__LIST__) ){ ?>
+                                                                                <td>
+                                                                                    <input name="whether_country" type="checkbox" id="whether_country" value="2">
+                                                                                    <label title="无国家用户"  class="pointer">
+                                                                                        无国家用户
+                                                                                    </label>
+                                                                                    <br>
+                                                                                    <input class="whether_country" type="button" value="筛选">
+                                                                                    <script type="text/javascript">
+                                                                                          $('.whether_country').click(function(event) {
+                                                                                                 $("#whether_country").prop('checked','true');
+                                                                                               // alert($('#whether_country').checked = true);
+                                                                                          });
+                                                                                    </script>
+                                                                                </td>
+                                                                        <?php   }  ?>
+                                                                       <?php }} ?>
+
+                                                                    </tr>
+                                                                    <?php } ?>
+
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="selected-country">
+                                                                <span class="pt5">您选择的国家/地区情况</span>
+                                                                <span class="re f12">(注：简码 UKN代表未识别的国家)</span>
+                                                                <hr class="mb5">
+                                                                <div id="txtCountryCode" class="txtCountryCode"></div>
+                                                                <span class="error" id="spCountryCodeError"></span>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        <script type="text/javascript">
+                                                        $(function() {
+                                                            $("#txtCountryCode").text("");
+                                                        });
+
+                                                        function SetCountryCode(cont) {
+                                                            if ($(cont).attr("selectcountry") != "" &&
+                                                                GetCountryCount($(cont).attr("selectcountry")) != GetCountryCount($(cont).attr("allcountry"))) {
+                                                                if (!confirm("将重新分配您以前的选择，确认这样吗？")) {
+                                                                    if (!$(cont).is(":checked")) {
+                                                                        $(cont).attr("checked", "checked");
+                                                                    } else {
+                                                                        $(cont).prop("checked", false);
+                                                                    }
+                                                                    return
+                                                                }
+                                                            }
+                                                            if ($(cont).is(":checked")) {
+                                                                $(cont).attr("selectcountry", $(cont).attr("allcountry"));
+                                                            } else {
+                                                                $(cont).removeAttr('checked');
+                                                                $(cont).attr("selectcountry", "");
+                                                            }
+                                                            CalcSelectCountryCount($(cont).attr("groupID"));
+                                                            RepeatSetCountry();
+                                                        }
+
+                                                        function RepeatSetCountry() {
+                                                            var codeArray = [];
+                                                            var codeArrayLength = 0;
+                                                            $("#t_countryCheck").find(":checkbox:checked").each(function() {
+                                                                var itemArray = $(this).attr("selectcountry").split(',');
+                                                                for (var i = 0; i < itemArray.length; i++) {
+                                                                    if (!Contains(codeArray, itemArray[i])) {
+                                                                        codeArray[codeArrayLength] = itemArray[i];
+                                                                        codeArrayLength++;
+                                                                    }
+                                                                }
+                                                            });
+                                                            $("#txtCountryCode").text(codeArray.sort().join(", "));
+                                                        }
+
+                                                        function SelectCountry(groupID, countriesStr) {
+                                                            countriesStr = $.trim(countriesStr);
+                                                            var ck = $("#ck_group_" + groupID);
+                                                            ck.attr("selectcountry", countriesStr);
+
+                                                            if (countriesStr == "") {
+                                                                ck.prop("checked", false);
+                                                            } else {
+                                                                if (!ck.is(":checked")) {
+                                                                    ck.prop("checked", true);
+                                                                }
+                                                            }
+                                                            CalcSelectCountryCount(groupID);
+                                                            RepeatSetCountry();
+                                                        }
+
+                                                        function CalcSelectCountryCount(groupID) {
+                                                            $("#lb_total_" + groupID).text(GetCountryCount($("#ck_group_" + groupID).attr("selectcountry")) + "/" +
+                                                                GetCountryCount($("#ck_group_" + groupID).attr("allcountry")));
+                                                        }
+
+                                                        function Contains(array, value) {
+                                                            for (var _index = 0; _index < array.length; _index++) {
+                                                                if (array[_index] == value)
+                                                                    return true;
+                                                            }
+                                                            return false;
+                                                        }
+
+                                                        function GetCountryCount(countryStr) {
+                                                            countryStr = $.trim(countryStr);
+                                                            if ($.trim(countryStr) == "")
+                                                                return 0;
+                                                            return countryStr.split(',').length;
+                                                        }
+
+                                                        function OpenSelectCountryDialog(groupID, groupName) {
+                                                            var selectCountries = $("#ck_group_" + groupID).attr("selectcountry");
+                                                            OpenShowSelect(groupID,"#ck_group_" + groupID,selectCountries);
+                                                            // OpenShowSelectCountryPage(groupID, selectCountries, "请选择国家-" + groupName, SelectCountry);
+                                                        }
+                                                        function OpenShowSelect(groupID,id,selectCountriesArray){
+
+                                                             $.get('/CustomFilter/SelectCountryDialog/id/'+groupID, function (data) {
+                                                                        layer.open({
+                                                                            title: "国家筛选",
+                                                                            content: data,
+                                                                            type: 1,
+                                                                            area: ['680px', '600px'],
+                                                                            offset: '10px',
+                                                                            btn: ["保存", "取消"],
+                                                                            yes: function (index) {
+
+                                                                                var readyCheckbox = $('.em');
+                                                                                _readyCheckboxArr = [];
+                                                                                var CountryString = '';
+                                                                                readyCheckbox.each(function(index,ele){
+                                                                                    // _readyCheckboxArr.push($(ele).attr("for"));
+                                                                                    CountryString += $(ele).attr("for")+',';
+                                                                                });
+                                                                                re = new RegExp("ck_country_","g");
+                                                                                CountryString = CountryString.substring(0, CountryString.lastIndexOf(','));
+                                                                                var CountryString = CountryString.replace(re, "");
+                                                                                $(id).attr('selectcountry',CountryString);
+                                                                                var allcountry = $('#ck_group_'+groupID).attr('allcountry');
+                                                                                var _allcountry_quantity = allcountry.split(",");
+                                                                                var _selected_quantity =  CountryString.split(",");
+                                                                                // console.log(_selected_quantity.length);
+                                                                                // console.log(_allcountry_quantity.length);
+                                                                                // $('#lb_total_'+groupID).attr('selectcountry',CountryString);
+                                                                                // $('#lb_total_'+groupID).attr('selectcountry',CountryString);
+                                                                                if(_selected_quantity[0] == ''){
+                                                                                    $('#lb_total_'+groupID).html('0'+'/'+_allcountry_quantity.length);
+                                                                                }else{
+                                                                                    $('#lb_total_'+groupID).html(_selected_quantity.length+'/'+_allcountry_quantity.length);
+                                                                                    $('#ck_group_'+groupID).prop('checked','true');
+                                                                                }
+                                                                                
+                                                                                
+                                                                                // $('#ck_group_'+groupID).attr("checked", 'checked');
+                                                                                RepeatSetCountry();
+                                                                                $('.layui-layer-close1').click();
+
+
+                                                                                return;
+                                                                            },
+                                                                            cancel: function () {
+
+                                                                            }
+                                                                        });
+                                                                        if (selectCountriesArray) {
+                                                                            var newArr = selectCountriesArray.split(',');
+                                                                            var countryInput = $('input[name="country-input"]');
+                                                                            for(var i=0;i<newArr.length;i++){
+                                                                                for(var k=0;k<countryInput.length;k++){
+                                                                                    if(countryInput.eq(k).val() == newArr[i]){
+                                                                                        countryInput.eq(k).prop('checked',true);
+                                                                                        countryInput.eq(k).siblings('label').addClass('em');
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            if(newArr.length == countryInput.length){
+                                                                                $('#webengine_dialog_Model input').prop('checked',true);
+                                                                            }
+                                                                            var checkboxTrWrap = $('.checkbox-tr-wrap');
+                                                                            for(var j=0;j<checkboxTrWrap.length;j++){
+                                                                                var ins = checkboxTrWrap.eq(j).find('input');
+                                                                                var checkedIn = checkboxTrWrap.eq(j).find('input:checked');
+                                                                                if(ins.length == checkedIn.length){
+                                                                                    checkboxTrWrap.eq(j).prev().find('input').prop('checked',true);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    });
+                                                        }
+
+
+
+                                                        </script>
+                                                    </td>
+                                                </tr>
+
+                                                <tr class="tr-title">
+                                                    <td colspan="2" class="pl20">
+                                                        <span class="fl">结果(文本框内输入与邮件模板对应的变量标记)</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" class="pl100">
+                                                        <table id="tb2" border="0" width="300">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="ml30">
+                                                                            <input type="radio" id="rdCicid" name="rdDataField" value="1" checked="checked"><label for="rdCicid">导出CICId</label></div>
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="ml30">
+                                                                            <input {if condition="!empty($screening_management[0]['TopicName'])"}disabled="disabled"{/if} type="checkbox" id="chkFirstName" name="chkFirstName" value="4"><label for="chkFirstName">导出FirstName</label></div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input {if condition="!empty($screening_management[0]['TopicName'])"}disabled="disabled"{/if} type="text" id="txtFirstNameVariableName" name="txtFirstNameVariableName" size="12"> <span class="error" id="spFirstName"></span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="ml30">
+                                                                            <input  {if condition="!empty($screening_management[0]['TopicName'])"}disabled="disabled"{/if}  type="checkbox" id="chkMiddleName" name="chkMiddleName" value="5"><label for="chkMiddleName">导出MiddleName</label></div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input {if condition="!empty($screening_management[0]['TopicName'])"}disabled="disabled"{/if} type="text" id="txtMiddleNameVariableName" name="txtMiddleNameVariableName" size="12">
+                                                                        <span class="error" id="spMiddleName"></span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="ml30">
+                                                                            <input {if condition="!empty($screening_management[0]['TopicName'])"}disabled="disabled"{/if} type="checkbox" id="chkLastName" name="chkLastName" value="6"><label for="chkLastName">导出LastName</label></div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input {if condition="!empty($screening_management[0]['TopicName'])"}disabled="disabled"{/if} type="text" id="txtLastNameVariableName" name="txtLastNameVariableName" size="12">
+                                                                        <span class="error" id="spLastName"></span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="ml30">
+                                                                            <input {if condition="!empty($screening_management[0]['TopicName'])"}disabled="disabled"{/if} type="checkbox" id="chkUserName" name="chkUserName" value="7"><label for="chkUserName">导出UserName</label></div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input {if condition="!empty($screening_management[0]['TopicName'])"}disabled="disabled"{/if} type="text" id="txtUserNameVariableName" name="txtUserNameVariableName" size="12">
+                                                                        <span class="error" id="spUserName"></span>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" align="center">
+                                                        <input type="button" id="btnQuery" name="btnQuery" value="创建筛选任务" class="btn"><br>
+                                                        <span id="spQueryError" class="error"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        &nbsp;
+                                                    </td>
+                                                </tr>
+                                                <tr class="tr-title">
+                                                    <td colspan="2">
+                                                        <span class="fl pl20">你的选择</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <span class="delmsg red"></span>
+                                                        <div>
+                                                            <table cellspacing="0" rules="all" border="1" id="gvFilter" width="900" class="border-collapse">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td colspan="5">
+                                                                            <table class="percent98">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <th width="6%" style="text-align:center !important;" ></th>
+                                                                                        <th  style="text-align:center !important;">任务序号</th>
+                                                                                        <th style="text-align:center !important;">用户数量</th>
+                                                                                        <th style="text-align:center !important;">状态</th>
+                                                                                        <th style="text-align:center !important;">操作</th>
+                                                                                    </tr>
+                                                                                    {if condition="!empty($screening_management)"}
+                                                                                        {volist name="screening_management" id="vo"}
+                                                                                            <tr >
+                                                                                                <td align="center" width="6%">
+                                                                                                <input type="checkbox" id="chkCustomerAmount_{$vo.id}" name="chkCustomerAmount" checked="" data-status="{$vo['status']}" value="{$vo.id}">
+                                                                                                    <input type="hidden" id="chkcount_{$vo.id}" name="chkcount" value="{$vo.count?$vo.count:'0'}">
+                                                                                                </td>
+                                                                                                <td align="center" style="width:50px;">{$i}</td>
+                                                                                                <td align="center" style="width:50px;">{$vo.count?$vo.count:'0'}</td>
+                                                                                                <td align="center" style="width:200px;">
+                                                                                                    {switch $vo['status']}
+                                                                                                        {case 1}未开始查询{/case}
+                                                                                                        {case 2}已完成{/case}
+                                                                                                        {case 3}查询中{/case}
+                                                                                                    {/switch}
+                                                                                                  <!--   <input type="hidden" value="{$vo['status']}">
+                                                                                                    <input type="hidden" value=" "> -->
+                                                                                                </td>
+                                                                                                <td align="center" style="width:250px;">
+                                                                                                    <a href="/CustomFilter/FilterDetails/id/{$vo.id}" target="_blank">查看详细条件</a> | <a class="del" href="javascript:void(0);" onclick="DelFilter(this, {$vo['id']})">删除</a>|<a href="{:url('CustomFilter/export',array('id'=>$vo['id'],'is_merge'=>0))}"  class="Qing">导出</a>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        {/volist}
+                                                                                    {else /}
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                &nbsp;
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                &nbsp;
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                &nbsp;
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                &nbsp;
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                &nbsp;
+                                                                                            </td>
+                                                                                         </tr>
+                                                                                    {/if}
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <input name="hdFilters" type="hidden" id="hdFilters">
+                                                        <table class="percent98">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td align="right" width="85%">
+                                                                        <span class="mr5">用户合计</span>
+                                                                    </td>
+                                                                    <td align="left">
+                                                                        <span class="ml5">
+                                                                            <label id="lblCustomerTotal">{$user_sum?$user_sum:'0'}</label>
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class="fr mr30">
+                                                            <span id="spMergerData">
+                                                            <input type="button" id="btnMergerData" name="btnMergerData" value="合并数据" class="btn"></span>
+                                                            <!--<span id="spExport">{$screening_management[0]['TopicName']?$screening_management[0]['TopicName']:''}<span id="spTopicName"></span>主题 一共选择了 <span id="spTotal"></span>
+                                                            位用户-->
+                                                            <br>
+                                                            <!--lixiaodong添加div -->
+                                                            <div id="uploadEDM" class="hide">
+                                                                <input name="btnSubmit" type="submit" id="btnSubmit" class="btn" value="上传至EDM" disabled="disabled">
+                                                                <input id="rbEDM" type="radio" name="EDM" value="rbEDM"><label for="rbEDM">EDM</label>
+                                                                <input id="rbNewEDM" type="radio" name="EDM" value="rbNewEDM" checked="checked"><label for="rbNewEDM">NewEDM(BroadCast)</label>
+                                                            </div>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/static/js/customFilter.js"></script>
+
+</body>
+
+</html>
+<script>
+$("#province").change(function() {
+    var catalogId = $("#province").val(); //console.log(catalogId);
+    $.get("{:url('Seller/NationalSubordinate')}?province=" + catalogId, function(result) {
+        $("#city option").remove();
+        $("#country_town option").remove();
+        $("#city").append(result);
+        $("#country_town").append('<option value="">请选择</option>');
+
+    });
+});
+$("#city").change(function() {
+    var catalogId = $("#city").val(); //console.log(catalogId);
+    $.get("{:url('Seller/NationalSubordinate')}?province=" + catalogId, function(result) {
+        // $("#city option").remove();
+        $("#country_town option").remove();
+        $("#country_town").append(result);
+        // $("#country_town").append('<option value="">请选择</option>');
+
+    });
+});
+
+function Delete(e) {
+    layer.open({
+        title: '删除理由',
+        type: 1,
+        skin: 'layui-layer-rim', //加上边框
+        area: ['450px', '340px'], //宽高
+        content: '<div class="pl60"><input type="hidden" class="classification" value="' + e + '"><div class="mt20"><textarea class="reason" name="op_desc" maxlength="300"  rows="8" cols="50"></textarea></div><div class="mt20"><div class="mt30"><a href="javascript:;" onclick = "MerchantDelete(' + e + ')" class = "submit btn btn-qing">提交</a></div></div>'
+    });
+}
+
+function MerchantDelete(e) {
+    var op_desc = $('.reason').val();
+    $.ajax({
+        type: "POST",
+        url: "{:url('Seller/MerchantDelete')}",
+        data: { user_id: e, op_desc: op_desc },
+        dataType: "json",
+        cache: false,
+        success: function(msg) {
+            if (msg.code == 200) {
+                layer.msg(msg.msg, { icon: 1 });
+                setTimeout(function() {
+                    window.location.reload();
+                }, 1500);
+
+            } else {
+                layer.msg(msg.msg, { icon: 2 });
+            }
+        },
+        error: function(error) {}
+    });
+}
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+    function GetUrlParam(u, v) {
+        var reg = new RegExp("(^|&)" + v + "=([^&]*)(&|$)", "i");
+        var r = u.match(reg);
+        if (r != null)
+            return unescape(r[2]);
+        return "";
+    }
+
+    function GetChild(v, c) {
+        var reVal = "";
+        if (v.hasChildren) {
+            for (var i in v.ChildNodes) {
+                if (v.ChildNodes[i].hasChildren) {
+                    reVal = GetChild(v.ChildNodes[i], c);
+                    c = reVal;
+                } else {
+                    c += v.ChildNodes[i].value + ",";
+                }
+            }
+        } else {
+            c = v.value + ",";
+        }
+
+        return c;
+    }
+
+    function MergerStr(v1, v2, op) {
+        var result = new Array();
+        if (op == 1) {
+            var v1Array = v1.split(",");
+            var v2Array = v2.split(",");
+            for (var i in v1Array) {
+                for (var j in v2Array) {
+                    if (v1Array[i] == v2Array[j] && v1Array[i].length > 0) {
+                        v1 = v1.replace(v1Array[i] + ",", "");
+                    }
+                }
+            }
+            result = v1;
+        } else {
+            var str = (v1.length == 0 ? v2 : v1 + v2);
+            var strArray = str.split(",");
+            strArray.sort();
+            var result = new Array();
+            var tempStr = "";
+            for (var s in strArray) {
+                if (strArray[s] != tempStr) {
+                    result.push(strArray[s]);
+                    tempStr = strArray[s];
+                } else {
+                    continue;
+                }
+            }
+        }
+        return result;
+    }
+
+    function GetTopic(val) {
+        $.ajax({
+            url: 'GetTopic.aspx',
+            type: 'Post',
+            data: { TopicName: val },
+            dataType: null,
+            error: function(data) { window.location.reload(); },
+            success: function(data) {
+                if (data > 0) {
+                    $("#hdTopicId").val(data);
+                    $("#txtTopic").attr("disabled", "disabled");
+                    $("input[name='rdDataField']").attr("disabled", "disabled");
+                    $("#chkFirstName").attr("disabled", "disabled");
+                    $("#chkMiddleName").attr("disabled", "disabled");
+                    $("#chkLastName").attr("disabled", "disabled");
+                    $("#chkUserName").attr("disabled", "disabled");
+
+                    $("#txtFirstNameVariableName").attr("disabled", "disabled");
+                    $("#txtMiddleNameVariableName").attr("disabled", "disabled");
+                    $("#txtLastNameVariableName").attr("disabled", "disabled");
+                    $("#txtUserNameVariableName").attr("disabled", "disabled");
+
+                }
+            }
+        });
+    }
+
+    var tId = GetUrlParam(window.location.search.substr(1), "topicId");
+    if (tId.length > 0) {
+        //如果不是主题下第一次筛选
+        $("#txtTopic").attr("disabled", "disabled");
+        $("#txtTopic").val($("#hdTopicName").val());
+        $("input[name='rdDataField']").attr("disabled", "disabled");
+        $("#chkFirstName").attr("disabled", "disabled");
+        $("#chkMiddleName").attr("disabled", "disabled");
+        $("#chkLastName").attr("disabled", "disabled");
+        $("#chkUserName").attr("disabled", "disabled");
+
+        $("#txtFirstNameVariableName").attr("disabled", "disabled");
+        $("#txtMiddleNameVariableName").attr("disabled", "disabled");
+        $("#txtLastNameVariableName").attr("disabled", "disabled");
+        $("#txtUserNameVariableName").attr("disabled", "disabled");
+
+        //设置导出结果类型为第一次筛选时设置的
+        var dataType = $("#hdTopicDataType").val();
+        var dtSplit = dataType.split(',');
+        for (var i = 0; i < dtSplit.length; i++) {
+            switch (dtSplit[i].split('|')[0]) {
+                case "1":
+                    $("#rdCicid").prop("checked", true);
+                    break;
+                case "2":
+                    $("#rdEMail").prop("checked", true);
+                    break;
+                case "4":
+                    $("#chkFirstName").prop("checked", true);
+                    $("#txtFirstNameVariableName").val(dtSplit[i].split('|')[1]);
+                    break;
+                case "5":
+                    $("#chkMiddleName").prop("checked", true);
+                    $("#txtMiddleNameVariableName").val(dtSplit[i].split('|')[1]);
+                    break;
+                case "6":
+                    $("#chkLastName").prop("checked", true);
+                    $("#txtLastNameVariableName").val(dtSplit[i].split('|')[1]);
+                    break; //此处为lixiaodong 添加,最初开发人员或者二次开发人员没有对此注意!三次开发人员才对此仔细发现
+                case "7":
+                    $("#chkUserName").prop("checked", true);
+                    $("#txtUserNameVariableName").val(dtSplit[i].split('|')[1]);
+                    break;
+            }
+        }
+
+        //如果已经确定
+        var topicStatus = $("#hdTopicStatus").val();
+        if (topicStatus > 0) {
+            $("#btnQuery").attr("disabled", "disabled");
+            $("input[name='chkCustomerAmount']").attr("disabled", "disabled");
+            $(".del").attr("disabled", "disabled");
+            $("#spTopicName").text($("#txtTopic").val());
+            $("#spTotal").text($("#lblCustomerTotal").text());
+            $("#spOk").hide();
+            $("#spExport").show();
+        }
+    }
+
+    $("#slOrdersOfLimit").click(function() {
+        if ($("#slOrdersOfLimit").val() > 0) {
+            $("#slOrders").removeClass('hide');
+        } else {
+            $("#slOrders").addClass('hide');
+        }
+    });
+
+    $("#slMemberGradeOfLimit").click(function() {
+        if ($("#slMemberGradeOfLimit").val() > 0) {
+            $("#slMemberGrade").show();
+        } else {
+            $("#slMemberGrade").hide();
+        }
+    });
+
+    $("input[name='chkCustomerAmount']").click(function() {
+        var cTotal = $("#lblCustomerTotal").text();
+        var filters = $("#hdFilters").val();
+        var total = 0;
+        if (this.checked) {
+            total = parseInt(cTotal) + parseInt($('#chkcount_'+this.value).val());
+            //filters += this.value.split(',')[0] + ",";
+        } else {
+            total = parseInt(cTotal) - parseInt($('#chkcount_'+this.value).val());
+            //filters = filters.replace((this.value.split(',')[0] + ","), "");
+        }
+        console.log(total);
+        $("#lblCustomerTotal").text(total);
+        $("#hdFilters").val(filters);
+    });
+
+    $("input[name='CheckedItems']").click(function() {
+        var sc = $("#hdSubscribeCategories").val();
+        if ($(this).is(":checked")) {
+            sc += $(this).val() + ",";
+        } else {
+            sc = sc.replace($(this).val() + ",", "");
+        }
+        $("#hdSubscribeCategories").val(sc);
+    });
+
+    //            $("#btnOK").click(function () {
+    //                var total = $("#lblCustomerTotal").text();
+    //                if (total > 0) {
+    //                    if (confirm("确定您所需要的数据吗？")) {
+    //                        var filterIds = $("#hdFilters").val();
+    //                        $.ajax({
+    //                            url: '/FixFilter.aspx',
+    //                            type: 'Post',
+    //                            data: {
+    //                                TopicId: tId
+    //                            },
+    //                            dataType: null,
+    //                            error:
+    //                                function (data) { alert(data); },
+    //                            success:
+    //                                function (data) {
+    //                                    if (data == 1) {
+    //                                        $("#btnQuery").attr("disabled", "disabled");
+    //                                        $("input[name='chkCustomerAmount']").attr("disabled", "disabled");
+    //                                        $(".del").attr("disabled", "disabled");
+    //                                        $("#spTopicName").text($("#txtTopic").val());
+    //                                        $("#spOk").hide();
+    //                                        $("#spTotal").text($("#lblActualCustomers").text());
+    //                                        $("#spExport").show();
+    //                                        $("#spMergerData").hide();
+    //                                    }
+    //                                }
+    //                        });
+    //                    }
+    //                } else {
+    //                    alert("请先确定您所需要的筛选数据");
+    //                }
+    //            });
+
+    $("#btnMergerData").click(function() {
+        var n = 0;
+        var topicId = $("#hdTopicId").val();
+        var filters = "";
+        var status_result = true;
+        $("input[name='chkCustomerAmount']").each(function() {
+            if ($(this).is(":checked") == true) {
+                n++;
+                var status = $(this).data('status');
+                if(status != 2){
+                     status_result = false;
+                }
+                // console.log(status);
+                if(filters == ""){
+                     filters += $(this).val();
+                }else{
+                     filters += ','+$(this).val();
+                }
+
+            }
+        });
+// console.log(status);
+        if(status_result == false){
+             alert("只有查询完的才能信息合并");
+             return ;
+        }
+        if (n == 0) {
+            alert("请先确定您所需要的合并的数据");
+        } else {
+            $.ajax({
+                url: '/CustomFilter/DataMerge',
+                type: 'Post',
+                data: {
+                    TopicId: topicId,
+                    Filters: filters
+                },
+                dataType: null,
+                error: function(data) { alert(data.responseText); },
+                success: function(data) {
+
+                    var result = jQuery.parseJSON(data);//console.log(result.code);return;
+                    if (result.code == 200) {
+                        alert("筛选的数据已提交至主题下");
+                        // if (n > 1) {
+                        //     alert("合并数据的任务已创建,将由后台执行");
+                        // } else {
+                        //     alert("筛选的数据已提交至主题下，请去合并任务菜单里查看");
+                        //     //$("#lblActualCustomers").text($("#lblCustomerTotal").text());
+                        // }
+                        //$("#btnOK").attr("disabled", "");
+                    } else {
+                        alert(result.Error);
+                    }
+                }
+            });
+        }
+    });
+
+
+    $("#btnQuery").click(function() {
+        //查询主题
+        var topicId = $("#hdTopicId").val();
+        var topic = $("#txtTopic").val();
+        //用户类型
+        var isSubscribe = $("input[name='rdCustomer']:checked").val();
+        //下单时间开始匹配值
+        var ots = $("#txtOrderTimeOfStart").val();
+        //下单时间结束匹配值
+        var ote = $("#txtOrderTimeOfEnd").val();
+        //shipping address所属国家
+        var countrys = $("#txtCountryCode").text().replace(/ /g, "");
+        var register_countrys = $("#registerCountryCode").text().replace(/ /g, "");
+        //订阅分类
+        var sc = $("#hdSubscribeCategories").val();
+        //产品分类
+        //var pc = $("#hdProductCategories").val();
+        //订单金额开始匹配值
+        var oas = $("#txtOrderAmountOfStart").val();
+        //订单金额结束匹配值
+        var oae = $("#txtOrderAmountOfEnd").val();
+        //购买次数限制条件
+        var ol = $("#slOrdersOfLimit").val();
+        //购买次数匹配值
+        var os = $("#slOrders").val();
+        var readyCheckbox = $('.ready-checkbox:checked');
+            _readyCheckboxArr = [];
+        var PaymentMethod = $('.PaymentMethod:checked');
+            _PaymentMethod = [];
+        //支付方式
+        // var pm = "";
+        // if (!!$("#chkPayModeOfPayPal").is(":checked")) {
+        //     pm += $("#chkPayModeOfPayPal").val() + ",";
+        // }
+        // if (!!$("#chkPayModeOfCredit").is(":checked")) {
+        //     pm += $("#chkPayModeOfCredit").val() + ",";
+        // }
+        // if (!!$("#chkPayModeOfWebMoney").is(":checked")) {
+        //     pm += $("#chkPayModeOfWebMoney").val() + ",";
+        // }
+        //会员等级限制条件
+        var mgl = $("#slMemberGradeOfLimit").val();
+        //是否注册
+        var isRegister = $('input:radio[name="rdregister"]:checked').val();
+        var rdorder = $('input:radio[name="rdorder"]:checked').val();
+        var registerTimeStart = $("#txtRegisterTimeStart").val();
+        var registerTimeEnd = $("#txtRegisterTimeEnd").val();
+        //是否登录
+        var isLogin = $('input:radio[name="rdlogin"]:checked').val();
+        var loginTimeStart = $("#txtLoginTimeStart").val();
+        var loginTimeEnd = $("#txtLoginTimeEnd").val();
+        //是否选择无国家用户
+        var whether_country = $('input:checkbox[name="whether_country"]:checked').val();
+        //会员等级匹配值
+        var mg = $("#slMemberGrade").val();
+        var id = $("#TopicName_id").val();
+
+        //导出结果
+        var df = $("input[name='rdDataField']:checked").val() + ",";
+
+        if (!!$("#chkFirstName").is(":checked")) {
+            df += $("#chkFirstName").val() + "|" + $("#txtFirstNameVariableName").val() + ",";
+        }
+        if (!!$("#chkMiddleName").is(":checked")) {
+            df += $("#chkMiddleName").val() + "|" + $("#txtMiddleNameVariableName").val() + ",";
+        }
+        if (!!$("#chkLastName").is(":checked")) {
+            df += $("#chkLastName").val() + "|" + $("#txtLastNameVariableName").val() + ",";
+        }
+        if (!!$("#chkUserName").is(":checked")) {
+            df += $("#chkUserName").val() + "|" + $("#txtUserNameVariableName").val() + ",";
+        }
+        readyCheckbox.each(function(index,ele){
+            _readyCheckboxArr.push($(ele).val());
+        });
+        PaymentMethod.each(function(index,ele){
+            _PaymentMethod.push($(ele).val());
+        });
+        $.ajax({
+            url: '/CustomFilter/UserSelection',
+            type: 'Post',
+            data: {
+                TopicId: (tId == 0 ? topicId : tId),
+                Topic: topic,
+                IsSubscribe: isSubscribe,
+                OrderTimeOfStart: ots,
+                OrderTimeOfEnd: ote,
+                Countrys: countrys,
+                SubscribeCategories: sc,
+                //ProductCategories: pc,
+                OrderAmountOfStart: oas,
+                OrderAmountOfEnd: oae,
+                OrdersOfLimit: ol,
+                Orders: os,
+                // PayMethod: pm,
+                MemberGradeOfLimit: mgl,
+                MemberGrade: mg,
+                IsRegister: isRegister,
+                RegisterTimeStart: registerTimeStart,
+                RegisterTimeEnd: registerTimeEnd,
+                IsLogin: isLogin,
+                LoginTimeStart: loginTimeStart,
+                LoginTimeEnd: loginTimeEnd,
+                readyCheckbox: _readyCheckboxArr,
+                PaymentMethod:_PaymentMethod,
+                id:id,
+                whether_country:whether_country,
+                register_countrys:register_countrys,
+                rdorder:rdorder,
+                //MailsOfTimeRange: mtr,
+                //MailsOfLimit: ml,
+                //Mails: m
+                DataField: df //1:CicId;2:Email
+            },
+            dataType: null,
+            //                    beforeSend:
+            //                        function () { $(".error").text(""); $("body").append(Overlay.create()); },
+            //                    complete:
+            //                        function () { $(".pattaya_modal").remove(); },
+            error: function(data) {
+                // $("#spQueryError").text(data.responseText);
+                // GetTopic(topic);
+                layer.msg('数据异常', {icon: 2});
+            },
+            success: function(data) {
+                var result = jQuery.parseJSON(data);
+                if(result.code == 200){
+                    alert(result.result);
+                    window.location.href = "/CustomFilter/filterUsers?id=" + result.id;
+                }else{
+                    alert(result.result);
+                }
+                // console.log(result.result);
+                // layer.msg(result.result, {icon: 1});
+
+                return;
+                var result = jQuery.parseJSON(data);
+                if (result.Success) {
+                    //$("#spQueryError").text("用户数据生成成功，请在下表中查看具体用户数量");
+                    //setTimeout(function () { $("#spQueryResult").hide(); }, 5000);
+                    alert("筛选任务已创建,将由后台执行查询");
+                    window.location.href = "/CustomFilter/filterUsers?id=" + result.TopicId;
+                } else {
+                    $("#spQueryError").text("");
+                    $("#spTNError").text("");
+                    $("#spOtsError").text("");
+                    $("#spOteError").text("");
+                    $("#spOtError").text("");
+                    $("#spCountryCodeError").text("");
+                    $("#spOasError").text("");
+                    $("#spOaeError").text("");
+                    $("#spOaError").text("");
+                    $("#spFirstName").text("");
+                    $("#spMiddleName").text("");
+                    $("#spLastName").text("");
+                    $("#spUserName").text("");
+                    $("#spRtError").text("");
+                    $("#spRtsError").text("");
+                    $("#spRteError").text("");
+                    $("#spLtError").text("");
+                    $("#spLtsError").text("");
+                    $("#spLteError").text("");
+
+                    if (result.Error != null) {
+                        $("#spQueryError").text(result.Error);
+                        $("#hdTopicId").val(result.TopicId);
+                        $("#txtTopic").attr("disabled", "disabled");
+                        $("input[name='rdDataField']").attr("disabled", "disabled");
+                        $("#chkFirstName").attr("disabled", "disabled");
+                        $("#chkMiddleName").attr("disabled", "disabled");
+                        $("#chkLastName").attr("disabled", "disabled");
+                        $("#chkUserName").attr("disabled", "disabled");
+
+                        $("#txtFirstNameVariableName").attr("disabled", "disabled");
+                        $("#txtMiddleNameVariableName").attr("disabled", "disabled");
+                        $("#txtLastNameVariableName").attr("disabled", "disabled");
+                        $("#txtUserNameVariableName").attr("disabled", "disabled");
+
+                        //$("#btnQuery").attr("disabled", "disabled");
+                    }
+                    if (result.TNError != null) {
+                        $("#spTNError").text(result.TNError);
+                        $("#txtTopic").focus();
+                    }
+                    if (result.OtsError != null) {
+                        $("#spOtsError").text(result.OtsError);
+                        $("#txtOrderTimeOfStart").focus();
+                    }
+                    if (result.OteError != null) {
+                        $("#spOteError").text(result.OteError);
+                        $("#txtOrderTimeOfEnd").focus();
+                    }
+                    if (result.OtError != null) {
+                        $("#spOtError").text(result.OtError);
+                        $("#txtOrderTimeOfStart").focus();
+                    }
+                    if (result.CError != null) {
+                        $("#spCountryCodeError").text(result.CError);
+                        //$("#txtCountryCode").focus();
+                    }
+                    if (result.OasError != null) {
+                        $("#spOasError").text(result.OasError);
+                        $("#txtOrderAmountOfStart").focus();
+                    }
+                    if (result.OaeError != null) {
+                        $("#spOaeError").text(result.OaeError);
+                        $("#txtOrderAmountOfEnd").focus();
+                    }
+                    if (result.OaError != null) {
+                        $("#spOaError").text(result.OaError);
+                        $("#txtOrderAmountOfStart").focus();
+                    }
+                    if (result.DT4Error != null) {
+                        $("#spFirstName").text(result.DT4Error);
+                        $("#txtFirstNameVariableName").focus();
+                    }
+                    if (result.DT5Error != null) {
+                        $("#spMiddleName").text(result.DT5Error);
+                        $("#txtMiddleNameVariableName").focus();
+                    }
+                    if (result.DT6Error != null) {
+                        $("#spLastName").text(result.DT6Error);
+                        $("#txtLastNameVariableName").focus();
+                    }
+                    if (result.DT7Error != null) {
+                        $("#spUserName").text(result.DT7Error);
+                        $("#txtUserNameVariableName").focus();
+                    }
+
+
+                    if (result.RTError != null) {
+                        $("#spRtError").text(result.RTError);
+                    }
+                    if (result.RTSError != null) {
+                        $("#spRtsError").text(result.RTSError);
+                        $("#txtRegisterTimeStart").focus();
+                    }
+                    if (result.RTEError != null) {
+                        $("#spRteError").text(result.RTEError);
+                        $("#txtRegisterTimeEnd").focus();
+                    }
+                    if (result.LTError != null) {
+                        $("#spLtError").text(result.LTError);
+                    }
+                    if (result.LTSError != null) {
+                        $("#spLtsError").text(result.LTSError);
+                        $("#txtLoginTimeStart").focus();
+                    }
+                    if (result.LTEError != null) {
+                        $("#spLteError").text(result.LTEError);
+                        $("#txtLoginTimeEnd").focus();
+                    }
+                }
+            }
+        });
+    });
+
+    var Overlay = {
+        create: function() {
+            var $el = $("<div><div class='fixedT42L35'>查询数据中,请稍候<img src='Scripts/loading_detail.gif' /></div></div>").addClass('pattaya_modal')
+                .appendTo(document.body)
+                .css({
+                    width: this.width(),
+                    height: this.height()
+                });
+            return $el;
+        },
+        width: function() {
+            var scrollWidth,
+                offsetWidth;
+            // handle IE
+            if ($.browser.msie) {
+                scrollWidth = Math.max(
+                    document.documentElement.scrollWidth,
+                    document.body.scrollWidth
+                );
+                offsetWidth = Math.max(
+                    document.documentElement.offsetWidth,
+                    document.body.offsetWidth
+                );
+
+                if (scrollWidth < offsetWidth) {
+                    return $(window).width() + 'px';
+                } else {
+                    return scrollWidth + 'px';
+                }
+                // handle "good" browsers
+            } else {
+                return $(document).width() + 'px';
+            }
+        },
+        height: function() {
+            var scrollHeight,
+                offsetHeight;
+            // handle IE 6
+            if ($.browser.msie) {
+                scrollHeight = Math.max(
+                    document.documentElement.scrollHeight,
+                    document.body.scrollHeight
+                );
+                offsetHeight = Math.max(
+                    document.documentElement.offsetHeight,
+                    document.body.offsetHeight
+                );
+
+                if (scrollHeight < offsetHeight) {
+                    return $(window).height() + 'px';
+                } else {
+                    return scrollHeight + 'px';
+                }
+                // handle "good" browsers
+            } else {
+                return $(document).height() + 'px';
+            }
+        }
+    }
+
+    //是否注册-注册时间文本框可用状态控制
+    $("input[name='rdregister']").change(function() {
+        var selectV = $(this).val();
+        var register_input = $('#register_countryCheck').find('input');
+        if (selectV != "2") {
+            $("#txtRegisterTimeStart").val("");
+            $("#txtRegisterTimeEnd").val("");
+
+            $("#txtRegisterTimeStart").attr("disabled", true);
+            $("#txtRegisterTimeEnd").attr("disabled", true);
+            for(var i=0;i<register_input.length;i++){
+                register_input.eq(i).prop('checked',false);
+                register_input.eq(i).prop('disabled','disabled');
+                registerCountryCode($(register_input).eq(i))
+            }
+        } else {
+            $("#txtRegisterTimeStart").attr("disabled", false);
+            $("#txtRegisterTimeEnd").attr("disabled", false);
+            for(var i=0;i<register_input.length;i++){
+                register_input.eq(i).prop('disabled',false)
+            }
+        }
+    });
+    //是否有订单记录
+    $("input[name='rdorder']").change(function() {
+        var selectV = $(this).val();
+        var countryCheck_input = $('#t_countryCheck').find('input');
+        if (selectV == "1" || selectV == "3") {
+            for(var i=0;i<countryCheck_input.length;i++){
+                countryCheck_input.eq(i).prop('checked',false);
+                countryCheck_input.eq(i).prop('disabled','disabled');
+                SetCountryCode($(countryCheck_input).eq(i))
+            }
+        } else {
+            for(var i=0;i<countryCheck_input.length;i++){
+                countryCheck_input.eq(i).prop('disabled',false)
+            }
+        }
+    });
+
+    //是否登录-登录时间文本框可用状态控制
+    $("input[name='rdlogin']").change(function() {
+        var selectV = $(this).val();
+        if (selectV != "2") {
+            $("#txtLoginTimeStart").val("");
+            $("#txtLoginTimeEnd").val("");
+
+            $("#txtLoginTimeStart").attr("disabled", true);
+            $("#txtLoginTimeEnd").attr("disabled", true);
+        } else {
+            $("#txtLoginTimeStart").attr("disabled", false);
+            $("#txtLoginTimeEnd").attr("disabled", false);
+        }
+    });
+});
+
+function DelFilter(o, val) {
+    if (confirm("确定删除吗？")) {
+        $.ajax({
+            url: '/CustomFilter/filterDel',
+            type: 'Post',
+            data: { fId: val },
+            dataType: null,
+            error: function(data) { window.location.reload(); },
+            success: function(data) {
+                if (data == 1) {
+                    $(".delmsg").text("删除成功");
+                    $(o).parent().parent().hide();
+                    $(".delmsg").show();
+                    setTimeout(function() { $(".delmsg").hide(); }, 2000);
+                } else if (data == -99) {
+                    $(".delmsg").text("删除失败,当前数据可能已被合并任务占用");
+                    $(".delmsg").show();
+                    setTimeout(function() { $(".delmsg").hide(); }, 2000);
+                } else if(data == -100) {
+                    $(".delmsg").text("删除失败,当前数据可能正处于查询中");
+                    $(".delmsg").show();
+                    setTimeout(function() { $(".delmsg").hide(); }, 10000);
+                }else {
+                    $(".delmsg").text("删除失败");
+                    $(".delmsg").show();
+                    setTimeout(function() { $(".delmsg").hide(); }, 10000);
+                }
+            }
+        });
+    }
+}
+</script>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>汇率管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/edm_system.css" type="text/css" />
+</head>
+
+<body>
+    <div class="row ml10 mr10 mt20 pd10">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="search-btn-wrap bborder-no pb15">
+                    <form class="navbar-left" action="" method="">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table-basic table-padding table-hover edm-list">
+                    <thead>
+                        <tr>
+                            <th class="tleft" width="160">汇率名称</th>
+                            <th class="tleft" >原币种</th>
+                            <th class="tleft">兑换币种</th>
+                            <th class="tleft" >国际汇率</th>
+                            <th class="tleft" >DX基础汇率</th>
+                            <th class="tleft" >上浮率</th>
+                            <th class="tleft" >DX汇率</th>
+                            <th class="tleft" >报警阀值</th>
+                            <th class="tleft" width="180">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="list" id="val"}
+                        <tr>
+                            <td>{$currency_name[$val.From]}兑{$currency_name[$val.To]}</td>
+                            <td>{$currency_name[$val.From]|default='-'}</td>
+                            <td>{$currency_name[$val.To]|default='-'}</td>
+                            <td>{$val.InternationalRate|default='-'}</td>
+                            <td>{$val.BaseRate|default='-'}</td>
+                            <td>{$val.Ratio|default='-'}</td>
+                            <td>{$val.Rate|default='-'}</td>
+                            <td>{$val.Alarm|default='-'}</td>
+                            <td>
+                                <a href="#" class="mr5 add-attr-color" data-id="{$val.id}">更改</a>
+                                <a href="/ExchangeRate/logList?id={$val.id}" class="mr5">操作历史</a>
+                            </td>
+                        </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row row-no-mlr mt20 clearfix mb20">
+            <div class="dataTables_paginate paging_bootstrap fr">
+                {$list->render()}
+            </div>
+        </div>
+    </div>
+    <script>
+    $(function(){
+        $('.add-attr-color').click(function(){
+            var that = $(this),
+                    _id = that.data('id') ? that.data('id'):0;
+            $.get('/ExchangeRate/update/id/'+_id, function (data) {
+                layer.open({
+                    title: "修改汇率",
+                    content: data,
+                    type: 1,
+                    area: ['500px', '450px'],
+                    offset: '10px',
+                    btn: ["保存", "取消"],
+                    yes: function (index) {
+                        var formData = new FormData($( "#addForm" )[0]);
+                        $.ajax({
+                            type:"POST",
+                            url:"/ExchangeRate/updateAjax",
+                            dataType: 'json',
+                            data:formData,
+                            async: false,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success:function(msg){
+                                if(msg.code == 200){
+                                    layer.msg(msg.result, {icon: 1});
+                                    setTimeout(function(){
+                                        window.location.reload();
+                                    },1500);
+                                }else{
+                                    layer.msg(msg.result, {icon: 2});
+                                }
+                            }
+                        });
+                    },
+                    cancel: function () {
+                    }
+                });
+            });
+        });
+    })
+    </script>
+</body>
+
+</html>

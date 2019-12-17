@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>收件人列表页</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+
+</head>
+
+<body>
+    <div class="row ml10 mr10 mt20 pd10">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="search-btn-wrap bborder-no pb15">
+                    <form class="navbar-left" action="" method="">
+                        <div class="w600">
+                                <div class="col-lg-6">
+                                    <a class="btn btn-gray mr5" href="/Emailtask/recipientListSave">新增</a>
+                                    <a class="btn btn-gray mr5 js-del-task" href="javascript:;">删除</a>
+                                </div>
+                            <div class="col-lg-6 pl0 pr0">
+                                <div class="input-group">
+                                        <input type="text" class="form-control h29" placeholder="名称" name="name" value="{$params.title}">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary h29 search-btn search-active js-search-recipientTitle" type="button">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table-basic table-padding table-hover task-edm-list">
+                    <thead>
+                        <tr>
+                            <th class="tcenter" width="50">
+                                <input type="checkbox" class="select-All js-select-All">
+                            </th>
+                            <th class="tleft" width="80">编号</th>
+                            <th class="tleft" width="260">主题名称</th>
+                            <th class="tleft" width="100">筛选任务标题</th>
+                            <th class="tleft" width="100">邮件服务商</th>
+                            <th class="tleft" width="100">邮件语言</th>
+                            <th class="tleft" width="80">是否拆分</th>
+                            <th class="tleft" width="80">是否启用</th>
+                            <th class="tleft" width="80">状态</th>
+                            <th class="tleft" width="120">创建时间</th>
+                            <th class="tleft" width="80">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {volist name="list" id="val"}
+                        <tr>
+                            <td class="tcenter">
+                                <input value="{$val.id}" type="checkbox" class="single-checkbox js-single-checkbox">
+                            </td>
+                            <td align="left">{$val.id}</td>
+                            <td align="left"><a class="Qing mr5" href="/Emailtask/recipientListDetail?id={$val.id}"> {$val.title}</a></td>
+                            <td align="left">{$val.ScreeningText}</td>
+                            <td align="left">{$val.EmailService}</td>
+                              <td align="left">{$val.langage}</td>
+                            <td align="left">{$val.IsSplit==1?"是":"否"}</td>
+                            <td align="left">{$val.IsEnable==1?"是":"否"}</td>
+                            <td align="left">{$val.StatusText}</td>
+                            <td align="left">{$val.createtime}</td>
+                            <td align="left" class="item_link_box">
+                                {if condition="($val.status == 1) OR ($val.status == 0)"}
+                                <a href="/Emailtask/recipientListSave?id={$val.id}">编辑</a>
+                                {else /}
+                                -
+                                {/if}
+                            </td>
+                        </tr>
+                        {/volist}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mr0 mt20 clearfix">
+            <div class="dataTables_paginate paging_bootstrap fr">
+                {$pageInfo}
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/edmSystem.js"></script>
+    <script>
+        $(function(){
+            EdmSystem.recipientListIndex();
+        })
+    </script>
+</body>
+
+</html>

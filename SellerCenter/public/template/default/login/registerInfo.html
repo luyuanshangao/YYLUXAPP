@@ -1,0 +1,138 @@
+{layout name="layout/registerLayout"/}
+{load href="/static/css/login-register.css" /}
+{load href="/static/js/module/module.login.js" /}
+<div class="login-regist-bg">
+    <div class="w1200">
+        <div class="reg-wrap">
+            <ul class="steps-ul">
+                <li><span class="circle"><i>1</i></span><span class="pl10">设置邮箱</span></li>
+                <li class="active"><span class="circle"><i>2</i></span><span class="pl10">填写账号信息</span></li>
+                <li><span class="circle"><i>3</i></span><span class="pl10">注册成功</span></li>
+            </ul>
+            <div class="register-box">
+                <form id="register-form">
+                    <input type="hidden" name="flag" value="2">
+                    <input type="hidden" name="id" value="{$user_info.id}">
+                    <dl class="dl-layout relative">
+                        <dt>用户名</dt>
+                       <dd>
+                           {$user_info.email}
+                       </dd>
+                    </dl>
+                    <dl class="dl-layout relative">
+                        <dt>登录密码</dt>
+                       <dd>
+                            <input type="password" name="password" class="form-control" id="password" minlength="6" maxlength="20" placeholder="登录密码">
+                            <div class="err-tip hide"></div>
+                       </dd>
+                    </dl>
+                    <dl class="dl-layout relative">
+                        <dt></dt>
+                       <dd>
+                            <ul class="pass-strength">
+                                <li class="low">LOW</li>
+                                <li class="medium">MEDIUM</li>
+                                <li class="high">HIGH</li>
+                            </ul>
+                       </dd>
+                    </dl>
+                   
+                    <dl class="dl-layout relative">
+                        <dt>密码确认</dt>
+                       <dd>
+                            <input type="password" name="confirm_password" class="form-control" id="confirm-password" placeholder="密码确认"/>
+                            <div class="err-tip hide"></div>
+                       </dd>
+                    </dl>
+                    <!--<dl class="dl-layout relative">
+                        <dt>英文姓名</dt>
+                       <dd>
+                            <input type="text" name="first_name" class="w100 " id="firstName" placeholder="">
+                            <input type="text" name="last_name" class="w100 ml20" id="lastName" placeholder="">
+                            <div class="err-tip hide"></div>
+                       </dd>
+                    </dl>-->
+                    <dl class="dl-layout relative">
+                        <dt>真实姓名</dt>
+                        <dd>
+                            <input type="text" name="true_name" class=" " id="trueName" placeholder="真实姓名">
+                            <div class="err-tip hide"></div>
+                        </dd>
+                    </dl>
+                    <dl class="dl-layout relative">
+                        <dt>手机号码</dt>
+                       <dd>
+                            <input type="text" name="phone_num" class="form-control" id="phone_num" placeholder="手机号码">
+                            <div class="err-tip hide"></div>
+                       </dd>
+                    </dl>
+                    <dl class="dl-layout relative">
+                        <dt>联系地址</dt>
+                       <dd>
+                            <select class="form-control input-sm pull-left w100" name="province" id="province">
+                                <option value="-1">--请选择省--</option>
+                                {volist name="province_info.data" id="p"}
+                                    <option value="{$p.REGION_ID}">{$p.REGION_NAME}</option>
+                                {/volist}
+                            </select>
+                            <select class="form-control input-sm pull-left w100 ml10 mr10" name="city" id="city">
+                                <option value="">--请选择市--</option>
+                            </select>
+                            <select class="form-control input-sm pull-left w100" name="country_town" id="country-town">
+                                <option value="">--请选择县城--</option>
+                            </select>
+                       </dd>
+                    </dl>
+                    <dl class="dl-layout relative">
+                        <dt>经营模式</dt>
+                       <dd>
+                            <select class="form-control input-sm pull-left w200" name="management_model" id="<management-model></management-model>">
+                                <option value="">--请选择--</option>
+                                {volist name="management_model" id="mm"}
+                                    <option value="{$mm.id}">{$mm.name}</option>
+                                {/volist}
+                            </select>
+                       </dd>
+                    </dl>
+                    <dl class="dl-layout relative pb20">
+                        <dt></dt>
+                       <dd>
+                            <a href="javascript:void(0);" class="btn btn-orange registerinfo-confirm">确定</a>
+                       </dd>
+                    </dl>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="smsSendDialog" class="sms-send-dialog" style="display: none;">
+    <dl class="dl-layout mb10">
+        <dt class="w120 tright pr10">手机号码</dt>
+        <dd class="phone_num_box">13825645823</dd>
+    </dl>
+    <dl class="dl-layout">
+        <dt class="w120 tright pr10">验证码</dt>
+        <dd>
+            <input class="w100" type="text" name="sms_code" id="sms_code"/>
+            <a href="javascript:void(0);" class="btn-code-send">点击发送验证码！</a>
+            <div class="sms-send-error-tip mt10 hide">
+                <i class="iconfont icon-iconcorrect green"></i>
+                校验码已经发送到你的手机请查收！
+            </div>
+        </dd>
+    </dl>
+</div>
+<script>
+    var login = new Login();
+    $(function(){
+        login.registInit();
+    });
+    $(function(){
+        $('#province').on('change',function () {
+            login.getRegionInfo(1);
+        });
+        $('#city').on('change',function () {
+            login.getRegionInfo(2);
+        });
+    });
+</script>

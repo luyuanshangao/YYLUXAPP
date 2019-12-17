@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>邮件任务列表详情页</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /} {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+
+</head>
+
+<body>
+    <div class="page-content pt0 ml20 pl0">
+        <div class="bg-color-gray0 area_btn0 border-gray ml0 mr0">
+            <a href="/Emailtask/index/id/206" class="btn btn-qing">返回</a>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mt20 f14 pb10">邮件任务信息：</div>
+                <div class="border-gray pd10">
+                    <ul class="ul-base-col-3 clearfix">
+                        <li>标题:{$activity.TaskTitle}</li>
+                        <li>发送时间:{$activity.SendingTime}</li>
+                        <li>是否启用:{if condition="$activity.IsRealTime == 1"}是{else /}否{/if}</li>
+                        <li>收件人列表标题:{$activity.RecipientTitle}</li>
+                        <li>活动名称:{$activity.ActivityName}</li>
+                        <li>邮件标题:{$activity.EmailSubject}</li>
+                        <li>发件人:{$activity.Sender=="1"?"DX.com / news@e.dx.com":"DX.com / news@edm.dx.com"}</li>
+                    </ul>
+                </div>
+                <div class="mt20 f14 pb10">邮件任务列表详情：</div>
+                <table class="table-basic table-padding table-hover">
+                    <thead>
+                        <tr>
+                            <th class="tcenter">收件人编号</th>
+                            <th class="tcenter">收件人详情编号</th>
+                            <th class="tcenter">国家</th>
+                            <th class="tcenter">语种</th>
+                            <th class="tcenter">邮件标题</th>
+                            <th class="tcenter">备注</th>
+                            <th class="tcenter">状态</th>
+                            <th class="tcenter">时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="list" id="item"}
+                        <tr>
+                            <td>{$item.recipientID}</td>
+                            <td>{$item.recipientlineID}</td>
+                            <td>{$item.CountryCode}</td>
+                            <td>{$item.langage}</td>
+                            <td>{$item.EmailSubject}</td>
+                            <td>{$item.Remark}</td>
+                            <td>{$taskLineStatus[$item.Status]}</td>
+                            <td>{$item.CreateTime}</td>
+                        </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

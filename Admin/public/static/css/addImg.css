@@ -1,0 +1,99 @@
+.item{
+  position: relative;
+  margin-bottom: 25px;
+}
+.title{
+  display: inline-block;  
+  width: 130px;
+  font-size: 16px;
+  font-weight: bolder;
+  text-align: right;
+}
+.preview-list,
+.done-img-list,
+.done-img-link-list{
+  display: inline-block;
+  width: 400px;
+  margin-left: 20px;
+  max-height: 300px;
+  overflow: auto;
+}
+.preview-list p{
+  margin-bottom: 10px;
+}
+.title,
+.addImg,
+img{
+  vertical-align: top;
+}
+.done-img-list{
+  max-height: 400px;
+  overflow: auto;
+}
+.done-img-list img{
+  width: 50px;
+  cursor: pointer;
+}
+.done-img-list img.active{
+  border: 1px solid red;
+}
+.done-img-link-list{
+  width: 690px;
+}
+.get-url{
+  float: right;
+}
+.img-link-item{
+  margin-bottom: 20px;
+}
+.link-a{
+  float: left;
+  display: inline-block;
+  width: 550px;
+  line-height: 30px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+.link-a.active{
+  color: red;
+  text-decoration: underline;
+}
+.get-url,
+.del-url{
+  float: left;
+  display: inline-block;
+  margin-right: 10px;
+  width: 50px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  vertical-align: top;
+  color: #fff;
+  background-color: #009688;
+}
+.get-url:hover,
+.del-url:hover,
+.get-all-url:hover{
+  color: #fff;
+  background-color: #009688;
+}
+.show-pic{
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+.get-all-url{
+  position: absolute;
+  left: 160px;
+  bottom: -40px;
+  display: inline-block;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 150px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  vertical-align: middle;
+  color: #fff;
+  background-color: #009688;
+}

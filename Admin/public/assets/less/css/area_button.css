@@ -1,0 +1,36 @@
+.area_btn {
+  margin-left: 180px;
+  padding-left: 30px;
+  line-height: 40px;
+}
+.area_btn .fa-download {
+  margin-right: 5px;
+}
+.area_btn a.btn {
+  margin-right: 5px;
+}
+.area_btn0 {
+  padding-left: 30px;
+  height: 40px;
+  line-height: 35px;
+  margin-left: -30px;
+  margin-right: -30px;
+}
+.area_btn0 .fa-download {
+  margin-right: 5px;
+}
+.area_btn0 a.btn {
+  margin-right: 5px;
+}
+.area-btn-fixed-top {
+  width: 100%;
+  position: fixed;
+  z-index: 999;
+}
+.area-btn-fixed-bottom {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  z-index: 999;
+}
+/*# sourceMappingURL=../less/area_button.css.map */

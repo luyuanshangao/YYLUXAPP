@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {php}
+        if(empty($title)){
+        echo "DX Seller中心";
+        }else{
+        echo $title." - DX";
+        }
+        {/php}
+    </title>
+    {include file="public/load" /}
+    <script>
+        var product_images_url_config = "{$product_images_url_config}";
+    </script>
+</head>
+<body>
+
+<!--根据父级ID找到顶级菜单ID-->
+{php}
+    $top_menu_flag = '';
+    foreach($menu_info as $menu){
+        foreach($menu['child_menu'] as $two_menu){
+            if($two_menu['parent_two_menu']['flag'] == $parent_menu){
+                $top_menu_flag = $menu['parent_menu']['flag'];
+                break;
+            }
+        }
+    }
+{/php}
+
+{include file="public/header" /}
+{if condition="$is_shelfpro == 0"}
+    <div class="container w1200 pd0 clearfix ">
+{else/}
+    <div class="container pd0 clearfix ">
+{/if}
+    {if condition="$is_shelfpro == 0 && $show_view_flag == 0"}
+        {include file="public/sidebar" /}
+    {/if}
+    {__CONTENT__}
+</div>
+{include file="public/footer" /}
+</body>
+</html>

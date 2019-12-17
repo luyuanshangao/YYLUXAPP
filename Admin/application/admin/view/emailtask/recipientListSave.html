@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>收件人列表编辑页</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+
+</head>
+
+<body>
+    <div class="row ml10 mr10 mt20 pd10">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="search-btn-wrap pb15">
+                    <form id="saveForm" class="navbar-left" action="/Emailtask/saveRecipient" method="post"
+                        enctype="multipart/form-data">
+
+                        <input type="hidden" name="id" value="{$params['id']}">
+                        <div class="w1200 ml10">
+                            <p class="mb20">
+                                <span class="inline-block w100 tcenter">名称:</span>
+                                <input name='title' value="{$params['title']}" type="text" placeholder="名称"
+                                    class="w200">
+                            </p>
+                            <p class="mb20">
+                                <span class="inline-block w100 tcenter">筛选任务：</span>
+                                <select name="ScreeningId" id="ScreeningId" class="w100">
+                                    <option value="">请选择</option>
+                                    {volist name="ScreeningList" id="val"}
+                                    {if condition="$val.id == $params.ScreeningId"}
+                                    <option value="{$val.id}" selected="selected">{$val.TopicName}</option>
+                                    {else/}
+                                    <option value="{$val.id}">{$val.TopicName}</option>
+                                    {/if}
+                                    {/volist}
+                                </select>
+                            </p>
+                            <p class="mb20">
+                                <span class="inline-block w100 tcenter">是否拆分：</span>
+                                {if condition="$params['id']>0"}
+                                <input type="checkbox" value="1" name="IsSplit" {if condition="$params['IsSplit'] eq 1"
+                                    } checked="checked" {/if} /> 是
+                                {else/}
+                                <input type="checkbox" value="1" name="IsSplit" checked="checked" /> 是
+                                {/if}
+                            </p>
+                            <p class="mb20">
+                                <span class="inline-block w100 tcenter"> 邮件语言：</span>
+                                <select id="langage" name="langage">
+                                    <option value="">请选择...</option>
+                                    <option value="en" {if condition="$params.langage =='en'"} selected="selected"  {/if} >en / 英语</option>
+                                    <option value="fr" {if condition="$params.langage =='fr'"} selected="selected"  {/if} >fr / 法语</option>
+                                    <option value="es" {if condition="$params.langage =='es'"} selected="selected"  {/if}  >es / 西班牙语</option>
+                                    <option value="pt" {if condition="$params.langage =='pt'"} selected="selected"  {/if} >pt / 葡萄牙语</option>
+                                    <option value="de" {if condition="$params.langage =='de'"} selected="selected"  {/if} >de / 德语</option>
+                                    <option value="ru" {if condition="$params.langage =='ru'"} selected="selected"  {/if} >ru / 俄语</option>
+                                    <option value="nl" {if condition="$params.langage =='nl'"} selected="selected"  {/if} >nl / 荷兰语</option>
+                                    <option value="cs" {if condition="$params.langage =='cs'"} selected="selected"  {/if} >cs / 捷克语</option>
+                                    <option value="fi" {if condition="$params.langage =='if'"} selected="selected"  {/if} >fi / 芬兰语</option>
+                                    <option value="it" {if condition="$params.langage =='it'"} selected="selected"  {/if} >it / 意大利语</option>
+                                    <option value="sv" {if condition="$params.langage =='sv'"} selected="selected"  {/if} >sv / 瑞典语</option>
+                                    <option value="no" {if condition="$params.langage =='no'"} selected="selected"  {/if} >no / 挪威语</option>
+                                    <option value="id" {if condition="$params.langage =='id'"} selected="selected"  {/if} >id / 印尼语</option>
+                                    <option value="ja" {if condition="$params.langage =='ja'"} selected="selected"  {/if} >ja / 日本语</option>
+                                    <option value="ar" {if condition="$params.langage =='ar'"} selected="selected"  {/if} >ar / 阿拉伯语</option>
+                                </select>
+                                <span class="tcenter float-left"> 注意：邮件语音在不拆分情况下，采用此语言；如果不拆分，针对为找到国家的语言，将采用此语言</span>
+                            </p>
+                            <p class="mb20">
+                                <span class="inline-block w100 tcenter">邮件服务商：</span>
+                                <select name="EmailService" id="EmailService" class="w100">
+                                    <option value="">请选择</option>
+                                    {volist name="EmailService" id="val"}
+                                    {if condition="$val == $params.EmailService"}
+                                    <option value="{$val}" selected="selected">{$val}</option>
+                                    {else/}
+                                    <option value="{$val}">{$val}</option>
+                                    {/if}
+                                    {/volist}
+                                </select>
+                            </p>
+                            <p class="mb20">
+                                <span class="inline-block w100 tcenter">是否启用：</span>
+                                {if condition="$params['id']>0"}
+                                <input type="checkbox" value="1" id="IsEnable" name="IsEnable" {if
+                                    condition="$params['IsEnable'] eq 1" } checked="checked" {/if} /> 是
+                                {else/}
+                                <input type="checkbox" value="1" id="IsEnable" name="IsEnable" checked="checked" /> 是
+                                {/if}
+
+                            </p>
+
+                            <div class="layui-layer-btn layui-layer-btn-tleft pl100 mt20">
+                                <a href="javascript:void (0);" onclick="document.getElementById('saveForm').submit();"
+                                    class="layui-layer-btn0">保存</a>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

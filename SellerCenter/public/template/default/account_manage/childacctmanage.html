@@ -1,0 +1,77 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/productMan.js" /}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+{load href="/static/js/module/setAffiliateClass.js" /}
+
+<style>
+	/** 分页 **/
+	.pagination  li {display: inline;padding: 0 2px;float: left;}
+	.pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+	.pagination .active span{color: red;}
+
+</style>
+
+<div class="main-box fl product-management">
+	<div class="box-white box-white-m0" style="overflow: hidden;">
+
+
+		<h1 class="main-cont-title order-title">
+			子账号列表
+			<a href="{:url('index/AccountManage/addChildAcct')}" class="fr btn-red f12 mt5">添加子账号</a>
+		</h1>
+
+		<table class="main-base-table mt20">
+			<tr class="tr-border">
+				<th>子账号ID</th>
+				<th>真实姓名</th>
+				<th>性别</th>
+				<th>邮箱</th>
+				<th>手机</th>
+				<th>状态</th>
+			</tr>
+			{if condition="count($data['data']) gt 0"}
+
+			{volist name="data.data" id="val"}
+				<tr>
+					<td>{$val.id}</td>
+					<td>{$val.true_name|default='无'}</td>
+					<td>
+						{switch name="val.sex" }
+						{case value="1" break="1"}男{/case}
+						{case value="2" break="1"}女{/case}
+						{default /} 无
+						{/switch}
+
+					</td>
+					<td>{$val.email|default='无'}</td>
+					<td>{$val.phone_num|default='无'}</td>
+					<td>
+						{switch name="val.status" }
+						{case value="0" break="1"}未认证{/case}
+						{case value="1" break="1"}<span class="blue"><b>已认证</b></span>{/case}
+						{case value="2" break="1"}冻结{/case}
+						{case value="3" break="1"}禁用{/case}
+						{default /} 无
+						{/switch}
+					</td>
+				</tr>
+			{/volist}
+			{else/}
+			<tr class="tr-zeroCenter">
+				<td height="270" colspan="11" class="no-result">没有找到符合条件的信息。 </td>
+			</tr>
+			{/if}
+
+		</table>
+		{notempty name='data.page'}
+		<div class="commonpage page-wrap mt20 fr">
+			{$data.page}
+		</div>
+		{/notempty}
+	</div>
+</div>
+
+<script>
+    var ajax_url = {$ajax_url|default=''};
+</script>

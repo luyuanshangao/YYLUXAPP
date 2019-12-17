@@ -1,0 +1,47 @@
+{include file="layout/c_style" /}
+
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+		<form>
+			<dl class="c-h-dl-validator form-group clearfix">
+				<dd class="v-title w100"><label><em>*</em>订单编号：</label></dd>
+				<dd id="order" class="mt7" data-id="{$order_info.order_id}" data-store-id="{$order_info.store_id}" data-store-name="{$order_info.store_name}" data-transaction-id="{$order_info.transaction_id}" data-customer-id="{$order_info.customer_id}" data-customer-name="{$order_info.customer_name}" data-order-number="{$order_info.order_number|default=''}">{$order_info.order_number|default=''}</dd>
+			</dl>
+			<dl class="c-h-dl-validator form-group clearfix">
+				<dd class="v-title w100"><label><em>*</em>订单金额：</label></dd>
+				<dd class="tright mt7">
+					{$order_info.currency_code_str}{$order_info.captured_amount|default=0}
+				</dd>
+			</dl>
+			<input type="hidden" name="captured_refunded_fee" max="{$order_info.captured_amount|default=0}" min="0" class="w100" value="{$order_info.captured_amount}" onkeyup="num(this)" size="10">
+			<dl class="c-h-dl-validator form-group clearfix">
+				<dd class="v-title w100"><label>
+					<em>*</em>描述：</label></dd>
+				<dd>
+					<textarea rows="6" cols="30" class="pd10 describe"></textarea>
+					<div class="err red hide describe-err">必填</div>
+				</dd>
+			</dl>
+			<dl class="c-h-dl-validator form-group clearfix">
+				<dd class="v-title w100">
+					<label></label>
+				</dd>
+				<dd>
+					<a href="javascript:void(0);" class="saleafter-submit-btn btn btn-qing">提交</a>
+				</dd>
+			</dl>
+		</form>
+	</div>
+</div>
+		<!-- <div class="box-white mt10">
+			<a href="/OrderAfterSaleApply/index.html" class="back-to-list">Back</a>
+		</div> -->
+
+{load href="/static/js/afterSaleApply.js" /}
+<script type="text/javascript">
+	var upload_url = '/OrderAfterSaleApply/uploadImgs';
+	var ajax_url = {$ajax_url|default=""};
+	var photopath = '';
+</script>
+</body>
+</html>

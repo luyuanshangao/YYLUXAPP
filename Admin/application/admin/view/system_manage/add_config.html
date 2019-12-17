@@ -1,0 +1,33 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addUserForm" enctype="multipart/form-data">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>配置名称：</label>
+                </dd>
+                <dd>
+                    <input name="ConfigName" value="{$list.ConfigName}" class="form-control input-medium inline w384" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>配置值：</label>
+                </dd>
+                <dd>
+                    <textarea name="ConfigValue" cols="59" rows="6" class="pd5">{$list.ConfigValue}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+             <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>配置说明：</label>
+                </dd>
+                <dd>
+                    <textarea name="Remark" cols="59" rows="6" class="pd5">{$list.Remark}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>

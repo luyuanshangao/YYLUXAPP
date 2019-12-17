@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>商城管理--订单管理--订单管理</title>
+    {include file="layout/c_style" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+        <!-- BEGIN SIDEBAR -->
+        <!--#include file="layout/sidebar.html"-->
+        <!-- END SIDEBAR -->
+        <!-- BEGIN CONTENT -->
+            <div class="page-content pt0 ml20 pl0">
+                <!-- 订单内容 begin -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt25">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap bborder-no">
+                                            <form id="navbar" class="navbar-left" action="index" method="post">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">订单号：</label>
+                                                        <input name="OrderNumber" value="{:input('OrderNumber')}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">物流跟踪号：</label>
+                                                        <input name="TrackingNumber" value="{:input('TrackingNumber')}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                     <li>
+                                                        <label class="c-h-ul-li-title">交易TxnID：</label>
+                                                        <input name="ThirdPartyTxnID" value="{:input('ThirdPartyTxnID')}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                    <li class="w440">
+                                                        <label class="c-h-ul-li-title" for="orderstarttime">下单时间：</label>
+                                                        <input type="text" name="startTime" id="orderstarttime" class="form-control input-small startTime" value="{:input('startTime')}"  placeholder="{$startTime|default=''}"  autocomplete="off" />
+                                                        <span class="time-text">至</span>
+                                                        <input type="text" name="endTime" id="orderendtime" class="form-control input-small endTime"  value="{:input('endTime')}" placeholder="{$endTime|default=''}" autocomplete="off"/><span class="time-text"></span>
+                                                    </li>
+                                                     <li>
+                                                        <label class="c-h-ul-li-title">用户ID：</label>
+                                                        <input name="UserID" value="{:input('UserID')}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                    <li class="pb6">
+                                                        <label class="c-h-ul-li-title">订单状态：</label>
+                                                            {$orderStautsHtml}
+                                                    </li>
+                                                    <li class="pb6">
+                                                        <label class="c-h-ul-li-title">订单类型：</label>
+                                                               {$orderTypeHtml}
+                                                          <!-- {$businessTypeHtml} -->
+                                                    </li>
+                                                     <li class="pb6">
+                                                        <label class="c-h-ul-li-title">支付方式：</label>
+                                                         <!--  <input type="hidden" id="paymentMethod_name" name="paymentMethod_name" value="{$paymentMethod_name}"> -->
+                                                          {$paymentMethodHtml}
+                                                    </li>
+                                                    <li class="pb6">
+                                                        <label class="c-h-ul-li-title">物流方式：</label>
+                                                        <select name="ShippingMethod" class="form-control input-small inline">
+                                                            <option value="">请选择</option>
+                                                            {foreach name="ShippingServiceMethod" item="vo"}
+                                                            <option value="{$vo['en']}" {if condition="input('ShippingMethod') eq $vo['en']"}selected="selected"{/if}>{$vo[1]}</option>
+                                                            {/foreach}
+                                                        </select>
+                                                    </li>
+                                                      <li class="pb6">
+                                                        <label class="c-h-ul-li-title">收货国家：</label>
+                                                        {$shippingCountrySelectHtml}
+                                                      </li>
+                                                      <li class="pb6">
+                                                        <label class="c-h-ul-li-title">是否是COD订单：</label>
+                                                          {$COD_orderHtml}
+                                                       </li>
+                                                       <li class="pb6">
+                                                        <label class="c-h-ul-li-title">锁：</label>
+                                                          {$Lock_orderHtml}
+                                                       </li>
+                                                       <li>
+                                                           <label class="c-h-ul-li-title">商铺名：</label>
+                                                           <input name="store_name" value="{:input('store_name')}" class="form-control input-small" type="text" />
+                                                       </li>
+                                                      <li>
+                                                            <label class="c-h-ul-li-title">商铺ID：</label>
+                                                            <input name="store_id" value="{:input('store_id')}" class="form-control input-small" type="text" />
+                                                      </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">订单来源：</label>
+                                                        <select name="order_from" class="form-control input-small order_from">
+                                                            <option value="">请选择</option>
+                                                            <option value="10" {if condition="input('order_from') eq 10"}selected="selected"{/if}>PC</option>
+                                                            <option value="20" {if condition="input('order_from') eq 20"}selected="selected"{/if}>Android</option>
+                                                            <option value="30" {if condition="input('order_from') eq 30"}selected="selected"{/if}>IOS</option>
+                                                            <option value="40" {if condition="input('order_from') eq 40"}selected="selected"{/if}>Pad</option>
+                                                            <option value="50" {if condition="input('order_from') eq 50"}selected="selected"{/if}>Mobile</option>
+                                                        </select>
+                                                    </li>
+
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">新支付系统：</label>
+                                                        <select name="payment_system" class="form-control input-small order_from">
+                                                            <option value="">请选择</option>
+                                                            <option value="2" {if condition="input('payment_system') eq 2"}selected="selected"{/if}>是</option>
+                                                            <option value="1" {if condition="input('payment_system') eq 1"}selected="selected"{/if}>否</option>
+
+                                                        </select>
+                                                    </li>
+
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">币种：</label>
+                                                        <select name="currency_code" class="form-control input-small order_from">
+                                                            <option value="">请选择</option>
+                                                            {foreach name="currency_info_data" item="vo"}
+                                                                <option value="{$vo['Name']}" {if condition="input('currency_code') eq $vo['Name']"}selected="selected"{/if}>{$vo['Name']}({$vo['Code']})</option>
+                                                            {/foreach}
+                                                        </select>
+                                                    </li>
+
+                                                    <li class="w260">
+                                                        <label class="c-h-ul-li-title w60"></label>
+                                                        <a onclick="javascript:document:navbar.submit();"
+                                                        class="btn btn-gray" href="javascript:;">查 询</a>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                            <!-- start base table -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-hover table-padding">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>订单号</th>
+                                                        <th class="w160">下单时间</th>
+                                                        <th>订单状态</th>
+                                                        <th class="w140">订单类型/是否主订单</th>
+                                                        <th class="w120">所属店铺</th>
+                                                        <th>用户ID</th>
+                                                        <th class="w60">支付方式</th>
+                                                        <th class="w60">支付渠道</th>
+                                                        <th class="w120">收货国家</th>
+                                                        <th class="w60">商品总额</th>
+                                                        <th class="w60">应付金额</th>
+                                                        <th class="w60">实收金额</th>
+                                                        <th class="w60">运费金额</th>
+                                                        <th class="w60">退款金额</th>
+                                                        <th class="w30">币种</th>
+                                                        <th class="w100">兑美元的汇率</th>
+                                                        <th class="w80">新支付系统</th>
+                                                        <th class="w60">订单来源</th>
+                                                        <th class="w60">操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {if condition="isset($error) && $error != '' "}
+                                                    <tr><td colspan = "16">{$error}</td></tr>
+                                                    {/if}
+                                                        {volist name="orderList" id="vo"}
+                                                            <tr>
+                                                                <td><a href="{:url('order/edit',array('id'=>$vo.order_number))}" target='_blank'>
+                                                                        {$vo.order_number}
+                                                                     </a>
+                                                                </td>
+                                                                <td>{$vo.create_on |date="Y-m-d H:i:s",###}</td>
+                                                                <td>
+                                                                 {volist name="orderStautsDict" id="vt"}
+                                                                   {if condition="$vt[0] == $vo.order_status"}
+                                                                        {$vt[1]}
+																   {/if}
+                                                                 {/volist}
+                                                                </td>
+
+                                                                <td>
+                                                                {volist name="orderTypeDict" id="vb"}
+                                                                   {if condition="$vb[0] == $vo.order_type"}
+                                                                        {$vb[1]}
+																   {/if}
+                                                                {/volist}/
+                                                                {if condition="$vo.order_master_number == $vo.order_number"}
+                                                                        是
+                                                                        {else /}
+                                                                        否
+                                                                {/if}
+                                                                </td>
+                                                                <td><a href="#{$vo.store_id}" target="_blank" title="点击查看店铺信息">{$vo.store_name}</a></td>
+                                                                <td><a href="/MemberManagement/edit/id/{$vo.customer_id}" target="_blank" title="点击查看用户信息">{$vo.customer_id}({$vo.customer_name})</a></td>
+                                                                <td>{$vo.pay_type}</td>
+                                                                <td>{$vo.pay_channel}</td>
+                                                                <td>{$vo.country}</td>
+                                                                <td>{$vo.goods_total}</td>
+                                                                <td>{$vo.total_amount}</td>
+                                                                <td>{$vo.captured_amount}({$vo.captured_amount/$vo.exchange_rate|round=###,"2"})</td>
+                                                                <td>{$vo.receivable_shipping_fee}</td>
+                                                                <td>{$vo.refunded_amount}</td>
+                                                                <td>{$vo.currency_code}</td>
+                                                                <td>{$vo.exchange_rate}</td>
+                                                                <td>
+                                                                    {switch name="vo.payment_system" }
+                                                                        {case value="1" break="1"}否{/case}
+                                                                        {case value="2" break="1"}是{/case}
+                                                                        {default /}-
+                                                                    {/switch}
+                                                                </td>
+                                                                <td>{$order_from[$vo.order_from]}</td>
+                                                                <td>
+                                                                  <a href="{:url('order/edit',array('id'=>$vo.order_number))}" target='_blank' class="Qing">
+                                                                         <i class="glyphicon glyphicon-edit f16" title="查看详情"></i>
+                                                                       </a>&nbsp;&nbsp;
+                                                                  <!--  {if condition="$vo.order_master_number == 0"}
+                                                                       <a href="{:url('order/edit',array('id'=>$vo.order_number))}" target='_blank' class="Qing">
+                                                                         <i class="glyphicon glyphicon-edit f16" title="查看详情"></i>
+                                                                       </a>&nbsp;&nbsp;
+                                                                       {else /}
+                                                                       <a href="{:url('order/subset',array('id'=>$vo.order_number))}" target='_blank' class="Qing">
+                                                                         <i class="glyphicon glyphicon-edit f16" title="查看详情"></i>
+                                                                       </a>&nbsp;&nbsp;
+                                                                   {/if} -->
+
+
+                                                                   <!-- <a href="{:url('order/edit',array('id'=>$vo.order_number))}" target='_blank' class="Qing">
+                                                                     <i class="glyphicon glyphicon-edit f16" title="查看详情"></i>
+                                                                   </a>&nbsp;&nbsp; -->
+                                                                   <!--  <a href="#" class="Qing">
+                                                                        <i class="glyphicon glyphicon-lock f16" title="锁定订单"></i>
+                                                                   </a> -->
+                                                                </td>
+                                                            </tr>
+                                                        {/volist}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row16 pd15 mt10">
+
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                               {$page}
+                                            </div>
+                                            <div style="float: right;height: 27px;margin: 4px 12px 0px 0px;" >总条数 {$total?$total:'0'}条</div>
+                                        </div>
+                                        <!-- 订单内容 end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <!--<script type="text/javascript" src="/js/custom.js"></script>-->
+    <script src="/static/js/order.js" type="text/javascript"></script>
+    <!-- END JAVASCRIPTS -->
+    <script>
+        $(function(){
+            Order.Index();
+        });
+    </script>
+</body>
+</html>
+<script>
+</script>

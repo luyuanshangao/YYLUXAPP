@@ -1,0 +1,200 @@
+{include file="layout/main" /}
+<link rel="stylesheet" href="{$css}/module/myAccount.css"/>
+	<div class="main-box fl after-sale-apply-details">
+		<div class="waring">
+			<div class="fb f14">
+				<span>{:lang('status')}:</span>
+				<span>{$data.status_str|default=''}</span>
+			</div>
+			<ul class="mt20">
+				<li>
+					<span>1.{:lang('customer_service_type')}:</span>
+					<span>{$data.type_str|default=''}</span>
+				</li>
+				<li class="pt5">
+					<span>2.{:lang('reason')}:</span>
+					<span>{$data.after_sale_reason_str|default=''}</span>
+				</li>
+			</ul>
+			
+		</div>
+		<div class="box-white mt10">
+			<h3 class="pb10">{:lang('order_information')}</h3>
+			<div class="pt10 pb10 bb-gray">
+				<span class="fb">{:lang('receiving_address')}:</span>
+				<span class="pl10">
+					{$order_info.shipping_address.first_name|default=''}
+					{$order_info.shipping_address.last_name|default=''},
+					{$order_info.shipping_address.phone_number|default=''},
+					{$order_info.shipping_address.country|default=''},
+					{$order_info.shipping_address.state|default=''},
+					{$order_info.shipping_address.city|default=''},
+					{$order_info.shipping_address.street1|default=''},
+					{$order_info.shipping_address.street2|default=''}
+					<!--xxx,86-1356256984,guangdong shenzhen nanshang xili,0000--></span>
+			</div>
+			<div class="pt10 pb10 bb-gray">
+				<span class="fb">{:lang('buyer_information')}</span>
+				<div class="clearfix mt10">
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('name')}:</dt>
+						<dd>{$order_info.customer_name|default=''}</dd>
+					</dl>
+					<!--<dl class="dl-layout fl w300">
+						<dt class="w150 tright">Real name:</dt>
+						<dd>wang XXX</dd>
+					</dl>-->
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('city')}:</dt>
+						<dd>{$order_info.shipping_address.city|default=''}</dd>
+					</dl>
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('contact_number')}:</dt>
+						<dd>{$order_info.shipping_address.phone_number|default=''}</dd>
+					</dl>
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('email')}:</dt>
+						<dd>{$order_info.shipping_address.email|default=''}</dd>
+					</dl>
+				</div>
+			</div>
+
+			<div class="pt10 bb-gray pb10">
+				<span class="fb">{:lang('information')}:</span>
+				<div class="clearfix mt10">
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('after_sale_number')}:</dt>
+						<dd>{$data.after_sale_number|default=''}</dd>
+					</dl>
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('order_number')}:</dt>
+						<dd>{$order_info.order_number|default=''}</dd>
+					</dl>
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">{:lang('creation_time')}:</dt>
+						<dd>{notempty name='data.add_time'}{:date('Y-m-d H:i:s', $data['add_time'])}{else/}-{/notempty}</dd>
+					</dl>
+				</div>
+				<table class="table-gray mt10">
+					<tr>
+						<th>{:lang('goods')}</th>
+						<th>{:lang('attribute')}</th>
+						<th>{:lang('price')}</th>
+						<th>{:lang('quantity')}</th>
+						<th>{:lang('total_price')}</th>
+					</tr>
+					{volist name='data.item' id='val'}
+						<tr>
+							<td>
+								<div class="fl w50">
+									<img src="{:PHOTOPATH}{$val.product_img|default=''}" alt="img" width="50px" height="50px" alt="">
+								</div>
+								<div class="fl w200 ml10">
+									<a href="#">{$val.product_name|default=''}</a>
+								</div>
+							</td>
+							<td class="gray">
+								{$val.product_attr_desc|default=''}
+							</td>
+							<td>{$val.product_price|default=''}</td>
+							<td>{$val.product_nums|default=''}</td>
+							<td>
+								{php}echo round($val['product_price'] * $val['product_nums'],2){/php}
+							</td>
+						</tr>
+					{/volist}
+				</table>
+				<div class="tright mt20 f14 pr20">
+					{:lang('total_amount_of_order')}:
+					<b class="red">{$data.total_price|default=''}</b>
+				</div>
+			</div>
+			{if condition="$data['status'] == 2"}
+			<div class="pt10 pb10">
+				<a id="returnLogistics" href="javascript:void(0);" class="btn-orange">{:lang('return_logistics')}</a>
+				<a href="{:url('OrderAfterSaleApply/index')}" class="back-to-list ml20">{:lang('give_up_return')}</a>
+			</div>
+			{else/}
+			<div class="pt10 pb10">
+				<a href="{:url('OrderAfterSaleApply/index')}" class="back-to-list ml20">{:lang('return')}</a>
+			</div>
+			{/if}
+			<div class="dialog-box logistics-message-dialog hide">
+				<div class="dialog-bg"></div>
+				<div class="dialog-cont">
+					<i class="close-dialog iconfontmy icon-cha"></i>
+					<div class="dialog-main">
+						<dl class="dl-layout w500">
+							<dt class="w100 tright mt5">{:lang('logistics')}:</dt>
+							<dd>
+								<select id="Logistics" class="w200">
+									<option value="Stand">{:lang('stand')}</option>
+								</select>
+							</dd>
+						</dl>
+						<dl class="dl-layout w500">
+							<dt class="w100 tright mt5">{:lang('logistics_order')}:</dt>
+							<dd>
+								<input id="LogisticsOrder" type="text" class="w200" maxlength="100" />
+								<div class="err-tips red mt5 hide">{:lang('the_field_logistics_order_required')}.</div>
+							</dd>
+						</dl>
+						<dl class="dl-layout w500">
+							<dt class="w100 tright mt5">{:lang('contact_number')}:</dt>
+							<dd>
+								<input id="ContactNumber" type="text" class="w200" maxlength="100"/>
+								<div class="err-tips red mt5 hide">{:lang('the_field_contact_number_required')}.</div>
+							</dd>
+						</dl>
+						<dl class="dl-layout w500">
+							<dt class="w100 tright pt15">{:lang('upload_voucher')}:</dt>
+							<dd class="w350">
+								<a id="uploadLogisicVoucher" href="javascript:void(0);" class="btn-orange-light">{:lang('upload')}</a>
+								<ul id="uploadLogisicVoucherList" class='upload-list'>
+								
+								</ul>
+								<p class="gray mt10 mb10">{:lang('picture_maximum_5M')} <span class="red">6</span>{:lang('fix_support')}</p>
+							</dd>
+						</dl>
+						<dl class="dl-layout w500">
+							<dt class="w100 tright mt5">{:lang('explain')}:</dt>
+							<dd>
+								<textarea id="Explain" class="pd10" name="" id="" cols="35" rows="10" maxlength="1000"></textarea>
+								<div class="err-tips red mt5 hide">{:lang('the_field_explain_required')}.</div>
+								<p class="gray mt10">{:lang('enter_within_1000_characters')}</p>
+							</dd>
+						</dl>
+						<dl class="dl-layout w500">
+							<dt class="w100 tright mt5"></dt>
+							<dd>
+								<a id="logisicDialogtYes" href="javascript:void(0);" class="btn-orange-light">{:lang('yes')}</a>
+								<a id="logisictDialogNo" href="javascript:void(0);" class="btn-default ml10">{:lang('cancel')}</a>
+							</dd>
+						</dl>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="pop-box hide afterSaleApplyDetails-pop">
+			<div class="pop-bg"></div>
+			<div class="pop-cont">
+				<div class="colse gray">
+					<i class="iconfontmy icon-icon_wrong f14"></i>
+				</div>
+				<div class="cont tcenter f16">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{include file="layout/footer"/}
+<script type="text/javascript">
+	var ajax_url = {$ajax_url|default=""},
+		upload_url = ajax_url.uploadImgs,
+        after_sale_id = {:input('after_sale_id')},
+        photopath = '{:PHOTOPATH}';
+</script>
+<script src="{$js}/module/afterSaleApplyDetails.js"></script>
+</body>
+</html>

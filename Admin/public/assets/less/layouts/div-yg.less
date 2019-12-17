@@ -1,0 +1,43 @@
+@import "../tool/tools.less";
+.c-h-div {
+  .margin_normal();
+  .padding_normal();
+  .c-h-div-hd {
+    font-weight: normal;
+    float: left;
+    width: 90px;
+    margin-right: -100%;
+    padding: 10px 0;
+  }
+  .c-h-div-bd {
+    float: left;
+    .border-solid(left);
+    margin-left: 100px;
+    padding: 10px 0;
+  }
+  &.div-basic {
+    .c-h-div-hd {
+      .padding_normal();
+      font-size: 24px;
+      color: @c_qing_1;
+      width: 30px;
+    }
+    .c-h-div-bd {
+      .padding_normal();
+      .border_no();
+      width: 97%;
+      margin-left: 40px;
+    }
+    .clearfix();
+  }
+}
+
+.remark-box{
+  .border-solid(top);
+  background-color: @c_gray_0;
+  padding:20px 30px;
+  line-height: 25px;
+  p{
+    .margin_normal();
+  }
+}

@@ -1,0 +1,242 @@
+{include file="layout/main" /}
+<link rel="stylesheet" href="{$css}/module/myAccount.css"/>
+<script src="{$js}/module/module.order.js"></script>
+<div class="main-box fl order-after-sale-apply-index">
+    <div class="box-white">
+        <h1 class="main-cont-title">{:lang('after_sale_apply')}</h1>
+        <div class="tabs-panel mt20">
+            <form id="query_form">
+                <ul class="search-ul-layout">
+                    <li>
+                        <label class="search-label-title">{:lang('order_number')}:</label>
+                        <input class="input-text" type="text" name="order_number" value="{:input('order_number')}"/>
+                    </li>
+                    <!--<li>
+                        <label class="search-label-title">product name:</label>
+                        <input class="input-text" type="text" name="product_name" value="{:input('product_name')}"/>
+                    </li>-->
+                    <li>
+                        <label class="search-label-title">{:lang('type')}:</label>
+                        <select name="type" id="">
+                            <option value="">{:lang('select')}</option>
+                            {volist name='after_config' id='config'}
+                                <option value="{$config.code}" {if condition="input('type') == $config['code']"}selected="selected"{/if}>{$config.en_name}</option>
+                            {/volist}
+                        </select>
+                    </li>
+
+                    <li class="senior-query">
+                        <label class="search-label-title">{:lang('date')}:</label>
+                        <input class="text Wdate start-time" type="text" readonly="readonly" name="create_on_start" value="{:input('create_on_start')}"/> -
+                        <input class="text Wdate end-time" type="text" readonly="readonly" name="create_on_end" value="{:input('create_on_end')}"/>
+                    </li>
+                    <li class="search-li">
+                        <a href="javascript:document:query_form.submit();" class="search-btn">{:lang('searh')}</a>
+                        <!--<a href="javascript:void(0);" class="more-filter js-more-filter down ml10">more filters</a>-->
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <!--<div class="mt10">
+            <table class="main-base-table">
+                <tr>
+                    <th width="410" align="center">Order Details</th>
+                    <th width="80">Unit Price</th>
+                    <th width="">Number</th>
+                </tr>
+            </table>
+            <div class="mg10">
+            </div>
+            {notempty name="$data['data']"}
+            {foreach name="data['data']" item="vo"}
+            <table class="main-base-table order-base-table mt20">
+                <tr>
+                    <th colspan = "5">
+                        <div class="w400 fl">
+                            <span class="gray">{$vo['add_time']|date="Y-m-d H:i:s",###}</span>
+                            <span class="ml20 gray">Order Number: </span>
+                            &lt;!&ndash;<a href="{:url('OrderAfterSaleApply/afterSaleApplyDetails', ['after_sale_id'=>$vo['after_sale_id']])}" class="">{$vo['order_number']}</a>&ndash;&gt;
+                            {eq name='vo.status' value='6'}
+                                <a href="{:url('OrderAfterSaleApply/arbitration', ['after_sale_id'=>$vo['after_sale_id']])}" class="">{$vo['order_number']}</a>
+                            {else/}
+                                <a href="{:url('OrderAfterSaleApply/afterSaleApplyDetails', ['after_sale_id'=>$vo['after_sale_id']])}" class="">{$vo['order_number']}</a>
+                            {/eq}
+                        </div>
+                        <div class="w200 fl">Seller Name: {$vo['store_name']}  </div>
+                        <div class="w200 fl">Type: {$vo['type_str']|default=''}  </div>
+                    </th>
+                </tr>
+                {foreach name="$vo['item']" key="key1" item="vo1"}
+                <tr>
+                    <td class="bborder" width="424">
+                        <div class="product-box clearfix">
+                            <div class="photo fl">
+                                <img src="{:PHOTOPATH}{$vo1['product_img']}" alt="" width="50" height="50"/>
+                            </div>
+                            <div class="message fl ml10 w350    ">
+                                <div class="title">{$vo1['product_name']}</div>
+                                <div class="gray mt10">{$vo1['product_attr_desc']|default=''}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="bborder" width="80">
+                        {$vo['currency_value']|default=''}{$vo1['product_price']|default=''}
+                    </td>
+                    <td class="bborder" width="60">{$vo1['product_nums']|default=''}</td>
+                    {eq name="key1" value="0"}
+                        <td class="lborder ttop tcenter" rowspan="{:count($vo['item'])+2}" width="120">
+                            <div><a href="javascript:void(0)" class="orange">{$vo.status_str}</a></div>
+                            <div>
+                                {eq name='vo.status' value='6'}
+                                <a href="{:url('OrderAfterSaleApply/arbitration', ['after_sale_id'=>$vo['after_sale_id']])}" class="blue">Details</a>
+                                {else/}
+                                <a href="{:url('OrderAfterSaleApply/afterSaleApplyDetails', ['after_sale_id'=>$vo['after_sale_id']])}" class="blue">Details</a>
+                                {/eq}
+
+                            </div>
+                        </td>
+                        <td class="lborder ttop tcenter" rowspan="{:count($vo['item'])+2}" width="120">
+                            {switch name="$vo['status']" }
+                                {case value="7" break="1"}
+                                    <a href="{:url('OrderAfterSaleApply/arbitration',array('after_sale_id'=>$vo['after_sale_id']))}" class="btn-red-border red mt10">Apply Arbitration</a>
+                                {/case}
+                                {case value="2" break="1"}
+                                    <a href="{:url('OrderAfterSaleApply/afterSaleApplyDetails',array('after_sale_id'=>$vo['after_sale_id']))}" class="btn-red-border red mt10">Logistics Infor</a>
+                                {/case}
+                                {default /}-
+                            {/switch}
+                        </td>
+                    {/eq}
+                </tr>
+                {/foreach}
+            </table>
+            {/foreach}
+            {else/}
+            <div class="none-data">Empty data.</div>
+
+            {/notempty}
+        </div>-->
+
+
+        {if condition="$data['total'] gt 0"}
+        {foreach name="data['data']" item="vo"}
+        <table class="main-base-table order-base-table mt20">
+            <tr>
+                <th colspan = "4">
+                    <div class="w400 fl">
+                        <span class="gray">{$vo['add_time']|date="Y-m-d H:i:s",###}</span>
+                        <span class="ml20 gray">{:lang('order_number')}: </span>
+
+                        <!--<a href="{:url('orders/orderInfo',array('order_id'=>$vo['order_id']))}" class=" mt5">{$vo['order_number']} </a>-->
+
+                        {eq name='vo.status' value='6'}
+                        <a href="{:url('OrderAfterSaleApply/arbitration', ['after_sale_id'=>$vo['after_sale_id']])}" target="_blank" class=" mt5">{$vo['order_number']} </a>
+                        {else/}
+                        <a href="{:url('OrderAfterSaleApply/afterSaleApplyDetails', ['after_sale_id'=>$vo['after_sale_id']])}" target="_blank" class=" mt5">{$vo['order_number']} </a>
+                        {/eq}
+
+                    </div>
+                    <div class="fl ml20"><a href="{:url('message/sendMessageSeller',['seller_id'=>$vo['store_id']])}" target="_blank" class="store-name"> <i class="iconfontmy icon-lianxi2 yellow mr5 tmiddle"></i>Contact Now</a></a></div>
+                </th>
+            </tr>
+            {foreach name="vo['item']" key="key1" item="vo1"}
+            <tr>
+                <td {neq name="key1" value=":count($vo['item'])-1"} class="bborder" {/neq}>
+                <div class="product-box clearfix w400">
+                    <div class="photo fl">
+                        <a href="{:MALLDOMAIN}/p/{$vo1['product_id']}"><img src="{:PHOTOPATH}{$vo1['product_img']}" alt="" /></a>
+                    </div>
+                    <div class="message ml10 fl">
+                        <div class="title"><a href="{:MALLDOMAIN}/p/{$vo1['product_id']}" target="_blank">{$vo1['product_name']}</a></div>
+                        <!--<div class="gray mt10">{$vo1['product_attr_desc']}</div>-->
+                        <div class="gray"><span class="mr10">{$vo.currency_value}{$vo1['product_price']}</span>x {$vo1['product_nums']}</div>
+                        <div class="gray mt10 mb5">
+                            {if condition="$vo1['product_attr_desc'] != '' and $vo1['product_attr_desc'] != 0"}
+                                Product properties：<span class="mr10">{$vo1['product_attr_desc']}</span>
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+                </td>
+                {eq name="key1" value="0"}
+                <td class="lborder ttop w200" rowspan="{:count($vo['item'])}">
+                    <div class="fbold">{$vo.currency_value}{$vo.captured_refunded_fee}</div>
+                    <!--<div class="gray mt5">(Shipping：shipping_fee)</div>-->
+                </td>
+                <td class="lborder ttop w150 status-list" rowspan="{:count($vo['item'])}">
+
+                    <div><span class="">{$vo.type_str}</span></div>
+                    <div><span class="orange">{$vo.status_str}</span></div>
+                    <div>
+                        {eq name='vo.status' value='6'}
+                        <a href="{:url('OrderAfterSaleApply/arbitration', ['after_sale_id'=>$vo['after_sale_id']])}" target="_blank" class="blue">{:lang('details')}</a>
+                        {else/}
+                        <a href="{:url('OrderAfterSaleApply/afterSaleApplyDetails', ['after_sale_id'=>$vo['after_sale_id']])}" target="_blank" class="blue">{:lang('details')}</a>
+                        {/eq}
+                    </div>
+                    <div>
+                        {if condition="$vo['status'] eq 3 || $vo['status'] eq 4"}
+                            <a href="{:url('OrderAfterSaleApply/downloadReturnAddress', ['after_sale_id'=>$vo['after_sale_id']])}" class="blue">{:lang('download_return_address')}</a>
+                        {/if}
+                    </div>
+
+                </td>
+                <td class="lborder ttop tcenter" rowspan="{:count($vo['item'])}" width="130">
+                    {switch name="$vo['status']" }
+                        {case value="7" break="1"}
+                            <a href="{:url('OrderAfterSaleApply/arbitration',array('after_sale_id'=>$vo['after_sale_id']))}" class="btn-red-border mt10">{:lang('apply_arbitration')}</a>
+                        {/case}
+                        {case value="2" break="1"}
+                            <a href="{:url('OrderAfterSaleApply/afterSaleApplyDetails',array('after_sale_id'=>$vo['after_sale_id']))}" target="_blank" class="mt5">{:lang('track_order')}</a>
+                        {/case}
+                    {/switch}
+                </td>
+                {/eq}
+            </tr>
+            {/foreach}
+        </table>
+        {/foreach}
+        {else/}
+        <div class="none-data">{:lang('empty_data')}</div>
+
+        {/if}
+    </div>
+
+        {notempty name='data.Page'}
+        <div class="page-wrap clearfix mt20">
+            <div class="page-range fl">
+                <span>{:lang('page')}</span>
+                <span class="page-number">{$data['current_page']}</span>
+                <span>{:lang('of')}</span>
+                <span class="page-count">{$data['last_page']}</span>
+                <span class="ml10">{:lang('go_to_page')}</span>
+                <input class="page-put ml5" type="text" value="{$data['current_page']}"/>
+                <a href="javascript:Global.pagegGo();" class="page-go ml5">{:lang('go')}</a>
+            </div>
+            <ul class="page mt5 fr">
+                {$data['Page']}
+            </ul>
+        </div>
+        {/notempty}
+    </div>
+</div>
+<div class="order-pop hide">
+    <div class="pop-content absolute">
+        <a href="javascript:void(0);" class="pop-colse"><i class="iconfontmy icon-cuowu"></i></a>
+        <div class="pop-title">
+            {:lang('pop_title')}
+        </div>
+        <div class="pop-main-content mt20">
+            {:lang('main_content')}
+        </div>
+        <div class="pop-btn mt20">
+            <a href="javascript:void(0);" class="pop-determine">{:lang('determine')}</a>
+            <a href="javascript:void(0);" class="pop-cancel">{:lang('cancel')}</a>
+        </div>
+    </div>
+</div>
+</div>
+
+{include file="layout/footer" /}
+</body>
+</html>

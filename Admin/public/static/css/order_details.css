@@ -1,0 +1,70 @@
+/* 默认颜色 */
+/*分页颜色*/
+/* 字体颜色 */
+/* 文字大小 */
+.Violet {
+  color: #6a08af;
+}
+.order-main-menu {
+  display: block;
+  float: left;
+  line-height: 25px;
+  padding: 5px 15px;
+  background: #e5e5e5;
+}
+.tabs-below-qing.tabbable-custom .nav-tabs {
+  padding-top: 10px;
+  background: #e5e5e5;
+}
+.tabs-below-qing.tabbable-custom .nav-tabs > li.active {
+  border-top-color: #2a9fe1;
+  border-color: #2a9fe1;
+}
+.tabs-below-qing.tabbable-custom .nav-tabs > li.active > a {
+  background: #2a9fe1;
+  color: #ffffff;
+  border-color: #2a9fe1;
+}
+.tabs-below-qing.tabbable-custom .nav-tabs > li.active > a:hover {
+  background: #2a9fe1;
+  color: #ffffff;
+}
+.tabs-below-qing.tabbable-custom .tab-content {
+  border-top: 2px solid #2a9fe1;
+}
+.title-hr {
+  position: relative;
+  border-top: 1px solid #e5ebf1;
+}
+.title-hr > .rectangle-blue {
+  position: absolute;
+  top: -13px;
+  left: 0;
+  display: block;
+  width: 10px;
+  height: 25px;
+  background: #2a9fe1;
+}
+.title-hr > strong {
+  position: absolute;
+  top: -15px;
+  left: 10px;
+  background: #ffffff;
+}
+.title-hr > strong.first-title {
+  top: -22px;
+  left: 0;
+}
+.table-ex > thead {
+  background: #e1f2f9;
+}
+.table-ex > tfoot tr td {
+  background: #e1f2f9;
+}
+.table-basic thead {
+  background: #e1f2f9;
+}
+.table-basic thead > tr > th {
+  color: #999999;
+}
+/*# sourceMappingURL=order_details.css.map */

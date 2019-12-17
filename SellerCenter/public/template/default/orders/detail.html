@@ -1,0 +1,1032 @@
+{layout name="layout/main"/}
+{load href="/static/css/allOrder.css" /}
+{load href="/static/js/global.js" /}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+{load href="/static/js/module/allOrder.js" /}
+{load href="/static/js/plugin/clipboard/dist/clipboard.min.js" /}
+
+{load href="/static/js/plugin/webuploader/webuploader.css" /}
+{load href="/static/js/plugin/webuploader/webuploader.js" /}
+{load href="/static/css/ordersDetail.css" /}
+{load href="/static/js/plugin/kindeditor/kindeditor.js" /}
+{load href="/static/js/plugin/kindeditor/lang/zh_CN.js" /}
+<!-- <style>
+	.ui-step-normal .col4 li {width: 33.3%;}
+	.ui-step .col4 li {width: 24.9%;}
+	.ui-step .col4 li span.curr {    background-position-y: -20px;}
+	.ui-step-normal li {list-style: none;float: left;margin: 0;}
+	.ui-step-normal li.current span {background-color: #F90;color: #FFF;}
+	.ui-step-normal li span {background: #E8E8E8 url(/static/img/sprite-step.9a13befc.png) no-repeat 100% 0;color: #666;}
+	.ui-step-normal li span {font-size: 12px;font-weight: 700;height: 20px;line-height: 20px;overflow: hidden;padding: 0 15px 0 0;text-align: center;display: block;}
+	.ui-step-normal li span.last, .ui-step-normal li.last span {background-position: 100% -200px;}
+	.clearfloat{clear:both}
+	.main-base-table tr{border: 0px red solid;}
+	.main-base-table tr td{padding: 5px;}
+	.detail-tab{overflow: hidden;}
+	.detail-tab ul li{float: left; padding: 0 5px;}
+	a{color: #337ab7;}
+	.webuploader-pick {position: absolute;width: 114px;height: 114px;background: transparent;color: #fff;text-align: center;line-height: 114px;padding: 0;}
+	.alert-photos img{cursor: pointer;}
+</style> -->
+<style>
+	.sales_attr_box img{width: 25px; height: 25px;}
+</style>
+<div class="main-box fl order">
+    <div class="box-white mt0">
+		<!-- <h1 class="main-cont-title order-title">订单详情</h1> -->
+		<h1 class="main-cont-title order-title "><a href="{:url('index/orders/all')}">我的</a> &gt; <a href="{:url('index/orders/all')}">订单列表</a> &gt; 订单详情</h1>
+
+			<div class="process-min mt20 clearfix">
+				<div class="ui-step ui-step-normal">
+					<ol class="col4">
+						{switch name="order_info.order_show_status"}
+							{case value="1"}
+								<li class="current"><span class="">买家下单</span></li>
+								<li class=""><span class="state">买家付款</span></li>
+								<li class=""><span class="state">卖家发货</span></li>
+								<li class="last"><span class="state">订单完成</span></li>
+							{/case}
+							{case value="2"}
+								<li class="current"><span class="curr">买家下单</span></li>
+								<li class="current"><span class="state">买家付款</span></li>
+								<li class=""><span class="state">卖家发货</span></li>
+								<li class="last"><span class="state">订单完成</span></li>
+							{/case}
+							{case value="3"}
+								<li class="current"><span class="curr">买家下单</span></li>
+								<li class="current"><span class="state curr">买家付款</span></li>
+								<li class="current"><span class="state">卖家发货</span></li>
+								<li class="last"><span class="state">订单完成</span></li>
+							{/case}
+							{case value="4"}
+								<li class="current"><span class="curr">买家下单</span></li>
+								<li class="current"><span class="state curr">买家付款</span></li>
+								<li class="current"><span class="state curr">卖家发货</span></li>
+								<li class="last current"><span class="state">订单完成</span></li>
+							{/case}
+							{default /}
+						{/switch}
+
+					</ol>
+				</div>
+			</div>
+		<div class="list mt20">
+
+			<div class="box-white mt10">
+				<dl class="dl-layout relative">
+					<dt class="w120 tright fbold">订单号：</dt>
+					<dd><input name="order_number" class="text" value="{$order_info.order_number}"> <button id="jump_order" jump-url="{:url('orders/detail','',false)}" class="fr btn-orange">跳转订单</button></dd>
+				</dl>
+				<dl class="dl-layout relative">
+					<dt class="w120 tright fbold">状态：</dt>
+					<dd {eq name="order_info.is_after" value="1"}class="green red"{else}class="green"{/eq}>{$order_info.order_status_str}</dd>
+				</dl>
+				<dl class="dl-layout relative">
+					<dt class="w120 tright fbold">备注：</dt>
+					<dd>
+						<div>{$order_info.remark|default='无'}</div>
+						<a href="javascript:;" class="operating-btn editor-order-remark" data-id="{$order_info.order_id}">编辑</a>
+					</dd>
+					<!-- 备注box start -->
+					<div id="editor-order-remark-box-{$order_info.order_id}" class="none mt10">
+						<table class="main-base-table">
+							<tr>
+								<td class="tright">备注：</td>
+								<td><textarea class="order_remark_{$order_info.order_id} pl10" cols="30" rows="10" placeholder="不超过250个字符">{$order_info.remark}</textarea></td>
+							</tr>
+						</table>
+					</div>
+					<!-- 备注box end -->
+				</dl>
+
+				<!-- 买家下单 表头信息 -->
+				{if condition="$order_info['order_show_status'] == 1"}
+					<dl class="dl-layout relative">
+						<dt class="w120 tright fbold">提醒：</dt>
+						<dd>
+							买家还有 <i class="iconfont icon-icon18 icon-time"></i><span class="red amount djs-box" data-time="{$order_info.count_down_time}">-天-小时-分钟-秒</span> 完成对本订单的付款，如果到时未操作，订单将自动关闭。
+						</dd>
+					</dl>
+					{if condition="$order_info['order_status'] == 100"}
+						<dl class="dl-layout relative">
+							<dt class="w120 tright"></dt>
+							<dd>
+								<a href="javascript:;" class="operating-btn blues change-price-box" data-id="{$order_info.order_id}">调整价格</a>
+							</dd>
+							<!-- 调整价格box start -->
+							<div id="alert-change-price-box-{$order_info.order_id}" class="none">
+								<table class="main-base-table">
+									<tr>
+										<td class="w120 tright">
+											<input type="hidden" value="{$order_info.exchange_rate}" name="exchange_rate_{$order_info.order_id}">
+											<input type="hidden" value="{$order_info.currency_code}" name="currency_code_{$order_info.order_id}">
+											<input type="hidden" value="{$order_info.currency_code_str}" name="currency_code_str_{$order_info.order_id}">
+											<input type="hidden" value="{$order_info.grand_total}" name="change_before_true_price_{$order_info.order_id}">
+											<input type="hidden" value="{$order_info.captured_amount_usd}" name="change_before_usd_price_{$order_info.order_id}">
+											调整前金额：
+										</td>
+										<td>
+											{if condition="$order_info['currency_code'] == 'USD' || $order_info['currency_code'] == 'usd'"}
+											US{$order_info.currency_code_str}{$order_info.captured_amount_usd}
+											{else /}
+											US${$order_info.captured_amount_usd}({$order_info.currency_code_str}{$order_info.grand_total})
+											{/if}
+
+										</td>
+									</tr>
+
+									<tr>
+										<td class="tright">涨价或折扣：</td>
+										<td>
+											<!-- US$<input type="text" name="change_value_{$order_info.order_id}" placeholder="涨价或折扣" class="change-box-value" data-id="{$order_info.order_id}" onkeyup="this.value=this.value.replace(/[^\-?\d.]/g,'')"> -->
+											US$<input type="text" name="change_value_{$order_info.order_id}" placeholder="涨价或折扣" class="change-box-value" data-id="{$order_info.order_id}"> <!-- 抽离键盘输入事件 -->
+											<div class="mt5 gray">例如：要给买家便宜10，则输入"-10";要提高价格10，则输入"10"</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="tright">买家应付：</td>
+										<td>
+											<input type="hidden" class="buy-price-usd-{$order_info.order_id}">
+											<input type="hidden" class="change-value-{$order_info.order_id}">
+											<input type="hidden" class="buy-price-other-{$order_info.order_id}">
+											<span class="changed-price-{$order_info.order_id}">
+															{if condition="$order_info['currency_code'] == 'USD' || $order_info['currency_code'] == 'usd'"}
+																US{$order_info.currency_code_str}{$order_info.captured_amount_usd}
+															{else /}
+																US${$order_info.captured_amount_usd}({$order_info.currency_code_str}{$order_info.grand_total})
+															{/if}
+														</span>
+										</td>
+									</tr>
+									<!--<tr>
+										<td class="tright">交易手续费：</td>
+										<td>US${php}echo round($order_info['handling_fee']*$order_info['exchange_rate'], 2); {/php}</td>
+									</tr>-->
+									<tr>
+										<td class="tright">原因：</td>
+										<td><textarea class="change_reason_{$order_info.order_id} pl10" cols="30" rows="10" placeholder="请使用英文。不超过512个字符"></textarea></td>
+									</tr>
+								</table>
+							</div>
+							<!-- 调整价格box end -->
+						</dl>
+					{/if}
+				{/if}
+
+				<!-- 买家付款 表头信息 -->
+				{if condition="$order_info['order_show_status'] == 2"}
+					<dl class="dl-layout relative">
+						<dt class="w120 tright fbold">提醒：</dt>
+						<dd>
+							您仍有 <i class="iconfont icon-icon18 icon-time"></i><span class="red amount djs-box" data-time="{$order_info.count_down_time}">-天-小时-分钟-秒</span> 可以对本订单发货，如果逾期未发货，订单将会自动关闭，款项将会退回。
+						</dd>
+					</dl>
+
+					<dl class="dl-layout relative">
+						<dt class="w120 tright"></dt>
+						<dd>
+							<a href="#" class="mr10 fill-in-delivery-notice">填写发货通知</a>
+							<a href="#" class="online-delivery">线上发货</a>
+						</dd>
+					</dl>
+				{/if}
+
+				<!-- 卖家发货 表头信息 有物流信息 -->
+				{if condition="$order_info['order_show_status'] == 3"}
+					<dl class="dl-layout relative">
+						<dt class="w120 tright fbold">提醒：</dt>
+						<dd class="w700">
+							<div>您已发货，请耐心等待买家确认收货。请关注物流状态，有货物已被签收，可以联系买家确认收货。如果物流出现状况将导致买家延迟收到货，您可以和卖家协商延长收货时间。请确保填写有效的运单号，如果有转单号，请在发货后5天内及时更新您的运单号信息。买家还有 <i class="iconfont icon-icon18 icon-time"></i><span class="red amount djs-box" data-time="{$order_info.count_down_time}">-天-小时-分钟-秒</span> 进行确认收货。</div>
+						</dd>
+					</dl>
+				{/if}
+
+				<!-- 订单完成 表头信息 有物流信息 -->
+				{if condition="$order_info['order_show_status'] == 4"}
+					{lt name='$order_info["order_status"]' value='1300'}
+						<dl class="dl-layout relative">
+							<dt class="w120 tright fbold">提醒：</dt>
+							<dd>
+								{switch name="order_info.count_down_finish_flag"}
+									{case value="1"}
+										<!--待评价，但在评价期内的倒计时-->
+										<div><!--/** 未评价 **/-->
+											订单已完成，可及时对订单进行评价。买家还有 <i class="iconfont icon-icon18 icon-time"></i><span class="red amount djs-box" data-time="{$order_info.count_down_time}">-天-小时-分钟-秒</span> 进行评价。</div>
+									{/case}
+									{case value="2"}
+										<!--待评价，超过评价期但在追评期内的倒计时-->
+										<div><!--/** 若订单已过评价期，但未过追评期 **/-->
+											订单已过评价期，仍可进行追评。买家还有 <i class="iconfont icon-icon18 icon-time"></i><span class="red amount djs-box" data-time="{$order_info.count_down_time}">-天-小时-分钟-秒</span> 进行追评。</div>
+									{/case}
+									{case value="3"}
+										<!--已评价，追评倒计时-->
+										<div><!--/** 已评价 **/-->
+											订单已评价，仍可进行追评。买家还有 <i class="iconfont icon-icon18 icon-time"></i><span class="red amount djs-box" data-time="{$order_info.count_down_time}">-天-小时-分钟-秒</span> 进行追评。</div>
+									{/case}
+									{default /}
+								{/switch}
+							</dd>
+						</dl>
+					{/lt}
+
+					{if condition="$order_info['order_status'] == 1100 || $order_info['order_status'] == 1200"}
+						<dl class="dl-layout relative">
+							<dt class="w120 tright"></dt>
+							<dd>
+								<a href="{:url('index/Orders/evaluate', ['order_number'=>$order_info['order_number']])}">回复评价</a>
+							</dd>
+						</dl>
+					{/if}
+				{/if}
+
+			</div>
+
+			<!-- 卖家发货 有物流信息 -->
+			{if condition="$order_info['order_show_status'] == 3 || $order_info['order_show_status'] == 4"}
+				<div class="box-white mt10 message-box">
+					<h4 class="mb10">物流信息</h4>
+					<table class="main-base-table">
+						<tr>
+							<th><!--国际物流方式-->物流服务</th>
+							<th>货运跟踪号</th>
+							<!--<th>备注</th>-->
+							<th width="440">详情</th>
+						</tr>
+
+						{volist name='order_info.package_data' id='pval'}
+						{eq name='i' value='1'}
+						<tr>
+							<td rowspan="{:count($order_info['package_data'])}" style="vertical-align: middle;">{$order_info.item_data.0.shipping_model|default=''}</td>
+							<td>{$pval.tracking_number|default=''}</td>
+							<!--<td>TODO</td>-->
+							<td width="440">
+								<!--<ul class="logistics-etails-ul">
+									<li>2018.03.05（GMT-18)：货物已到达目的地物流集散地</li>
+									<li>2018.03.03（GMT-20)：货物已发往目的地</li>
+									<li>2018.03.03（GMT-03)：货物已到达物流集散地</li>
+									<li>2018.03.02（GMT-12)：物流公司已接收</li>
+									<li>2018.03.02（GMT-7)：卖家已发货，等待物流公司接收</li>
+								</ul>-->
+								<!--<a href="javascript:void(0);" class="expand-logistics-etails logistics-btn hide">展开详情</a>
+								<a href="javascript:void(0);" class="refresh-logistics-etails logistics-btn">刷新TODO</a>-->
+								<!-- 如果有物流信息展示该信息 -->
+								<!--<div class="channel-provider-tips relative">
+									<i class="iconfont icon-xinxitishi absolute"></i>The seller is using Standard shipping.You also go to <a href="">EMS</a> check the tracking information
+								</div>-->
+								<!-- 如果没有物流信息展示该信息 -->
+								<!--<div class="channel-provider-tips relative hide">
+									<i class="iconfont icon-xinxitishi absolute"></i>物流跟踪该信息将在5-10天内生成，若有需要，您可以点击这里<a href="">Supersaver</a>查询
+								</div>-->
+								<a href="{:url('Orders/logisticsDetail', ['package_id'=>$pval['package_id'],'order_id'=>$order_info['order_id']])}">查看物流详情</a>
+							</td>
+						</tr>
+						{else/}
+						<tr>
+							<td>{$pval.tracking_number|default=''}</td>
+							<!--<td>TODO</td>-->
+							<td width="440">
+								<!--<ul class="logistics-etails-ul">
+									<li>2018.03.05（GMT-18)：货物已到达目的地物流集散地</li>
+									<li>2018.03.03（GMT-20)：货物已发往目的地</li>
+									<li>2018.03.03（GMT-03)：货物已到达物流集散地</li>
+									<li>2018.03.02（GMT-12)：物流公司已接收</li>
+									<li>2018.03.02（GMT-7)：卖家已发货，等待物流公司接收</li>
+								</ul>-->
+								<!--<a href="javascript:void(0);" class="expand-logistics-etails logistics-btn hide">展开详情</a>
+								<a href="javascript:void(0);" class="refresh-logistics-etails logistics-btn">刷新TODO</a>-->
+								<!-- 如果有物流信息展示该信息 -->
+								<!--<div class="channel-provider-tips relative">
+									<i class="iconfont icon-xinxitishi absolute"></i>The seller is using Standard shipping.You also go to <a href="">EMS</a> check the tracking information
+								</div>-->
+								<!-- 如果没有物流信息展示该信息 -->
+								<!--<div class="channel-provider-tips relative hide">
+									<i class="iconfont icon-xinxitishi absolute"></i>物流跟踪该信息将在5-10天内生成，若有需要，您可以点击这里<a href="">Supersaver</a>查询
+								</div>-->
+								<a href="{:url('Orders/logisticsDetail', ['tracking_number'=>$pval['tracking_number'],'order_id'=>$order_info['order_id']])}">查看物流详情</a>
+							</td>
+						</tr>
+						{/eq}
+						{/volist}
+					</table>
+
+					<!--<div class="view-logistics-details">
+						<a href="{:url('Orders/logisticsDetail', ['order_id'=>$order_info['order_id']])}">查看物流详情</a>
+					</div>-->
+				</div>
+
+			{/if}
+
+			<!-- 订单完成 有物流信息 -->
+			{if condition="$order_info['order_show_status'] == 4"}
+
+
+			{/if}
+
+			<!--详情信息-->
+			<div class="box-white mt10 detail-tab-box">
+				<div class="detail-tab">
+					<ul class="">
+						<li class="curr"><a href="javascript:;" class="" data-id="order-detail-box">订单详情</a></li>
+						<li class=""><a href="javascript:;" class="" data-id="funds-detail-box">资金详情</a></li>
+						<li class=""><a href="javascript:;" class="" data-id="time-detail-box">时间记录</a></li>
+					</ul>
+				</div>
+				<!--订单详情-->
+				<div class="detail-tab-list order-detail-box">
+					<div class="box-white buyer-info mt10">
+						<h4 class="mb10">买家收货地址<button id="btn-copy-address" data-clipboard-target="#copy-textarea" class="fr btn-orange">复制地址</button></h4>
+
+						<dl class="dl-layout relative">
+							<dt class="tright" style="font-weight:bold">买家ID：</dt>
+							<dd>{$order_info.customer_name|default="-"}</dd>
+						</dl>
+						{notempty name="order_info.shipping_data"}
+						<dl class="dl-layout relative">
+							<dt class="tright" style="font-weight:bold">姓：</dt>
+							<dd>{$order_info.shipping_data.last_name}   &nbsp;&nbsp;&nbsp;&nbsp;<span  style="font-weight:bold">名：</span>{$order_info.shipping_data.first_name}</dd>
+						</dl>
+						<dl class="dl-layout relative">
+							<dt class="tright" style="font-weight:bold">国家：</dt>
+							<dd>{$order_info.shipping_data.country} &nbsp;&nbsp;&nbsp;&nbsp;<span  style="font-weight:bold">省、州：</span>{$order_info.shipping_data.state}&nbsp;&nbsp;&nbsp;&nbsp;<span  style="font-weight:bold">市：</span> {$order_info.shipping_data.city}&nbsp;&nbsp;&nbsp;&nbsp;<span  style="font-weight:bold">街道一：</span>{$order_info.shipping_data.street1} &nbsp;&nbsp;&nbsp;&nbsp;<span  style="font-weight:bold">街道二：</span>{$order_info.shipping_data.street2}</dd>
+						</dl>
+						<dl class="dl-layout relative">
+							<dt class="tright"style="font-weight:bold">邮编：</dt>
+							<dd>{$order_info.shipping_data.postal_code}</dd>
+						</dl>
+						<!--<dl class="dl-layout relative">
+							<dt class="tright">手机：</dt>
+							<dd></dd>
+						</dl>-->
+						<dl class="dl-layout relative">
+							<dt class="tright"style="font-weight:bold">电话：</dt>
+							<dd>{$order_info.shipping_data.mobile|default=''}</dd>
+						</dl>
+						<!--<dl class="dl-layout relative">
+							<dt class="tright">传真：</dt>
+							<dd></dd>
+						</dl>-->
+						{/notempty}
+						<textarea id="copy-textarea" class="js-copy hide" row="10" cols="50">&#10;FirstName: {$order_info.shipping_data.first_name}
+							&#10;LastName:{$order_info.shipping_data.last_name}
+							&#10;Phone Number: {$order_info.shipping_data.mobile|default=''}
+							&#10;Country/Region: {$order_info.shipping_data.country}
+							&#10;State/Province:{$order_info.shipping_data.state}
+							&#10;City: {$order_info.shipping_data.city}
+							&#10;Street1: {$order_info.shipping_data.street1}
+							&#10;Street2:{$order_info.shipping_data.street2}
+							&#10;Postal Code: {$order_info.shipping_data.postal_code}
+						</textarea>
+
+
+					</div>
+					<div class="clearfix mt10">
+						<button id="btn-copy-sku" data-clipboard-target="#copy-textarea-sku" class="fr btn-orange mr15">复制SKU</button>
+					</div>
+					<div class="product-info box-white mt0">
+						<table class="main-base-table">
+
+							<tr>
+								<th>产品信息</th>
+								<th>单价</th>
+								<th>数量</th>
+								<th>订单金额</th>
+								<th>发货数量</th>
+								<th></th>
+								<th width="150">备注</th>
+							</tr>
+
+							{notempty name="order_info.item_data"}
+						<textarea id="copy-textarea-sku" class="js-copy hide" row="10" cols="10">{volist name="order_info.item_data" id="item"}&#10;{$item.sku_num}{/volist}</textarea>
+							{php} $order_info_exchange_rate = !empty($order_info['exchange_rate']) && $order_info['exchange_rate'] != 0?$order_info['exchange_rate']:1;
+							{/php}
+							{volist name="order_info.item_data" id="item"}
+							<tr>
+								<td width="320">
+									<div class="thum-wrap">
+										<a href="{php}echo config('mall_url_config').'p/'.$item['product_id'];{/php}" target="_blank">
+											<img src="{$product_images_url_config}{$item.product_img}" width="50" height="50" data-img="{$product_images_url_config}{$item.product_img}">
+										</a>
+									</div>
+									<div class="desc-wrap w240">
+										<h3 class="title">
+											<a href="{php}echo config('mall_url_config').'p/'.$item['product_id'];{/php}" target="_blank" title="{$item.product_name}">
+												{$item.product_name}
+											</a>
+										</h3>
+										<p class="sales_attr_box">销售属性：{$item.product_attr_desc}</p>
+										<p>商品编码：{$item.sku_num}</p>
+										<!--<p class="logistics-vehicle mt20">
+											<i class="iconfont icon-che-tianchong" title="预估航运时间：{$item.delivery_time}天"></i>
+										</p>-->
+									</div>
+								</td>
+								<td>{$order_info.currency_code_str}{$item.product_price}</td>
+								<td>{$item.product_nums}</td>
+								<td>{$order_info.currency_code_str}{php}echo round($item['product_price']*$item['product_nums'], 2);{/php}</td>
+								<td>{$item.sku_qty}</td>
+								<td>
+									<div>{$item.shipping_model}</div>
+
+									{if condition="$item['is_nocnoc'] == 0"}
+									<div>
+										{if condition="$item['shipping_fee'] == 0 || $item['shipping_fee'] == 0.00"}
+										免运费
+										{else /}
+										运费：{$order_info.currency_code_str}{$item.shipping_fee}
+										{/if}
+									</div>
+									{/if}
+
+									<div>预估运输时间：{$item.delivery_time}</div>
+									{if condition="$order_info['order_show_status'] == 3 || $order_info['order_show_status'] == 4"}
+									<div>
+										货运跟踪号：
+										{volist name='item.tracking_number_data' id='tn_val'}
+											<div><a href="{:url('Orders/logisticsDetail', ['tracking_number'=>$tn_val,'order_id'=>$order_info['order_id']])}" class="cargo-tracking-number">{$tn_val}</a></div>
+										{/volist}
+									</div>
+									{/if}
+								</td>
+								<td><div style="max-height: 240px; overflow: hidden" title="{$item.message|default=''}">{$item.message|default=''}</div></td>
+							</tr>
+							{/volist}
+							{/notempty}
+						</table>
+						<div>
+							<div class="product-freight-orders-total clearfix">
+								<div>
+									<span class="total-title">实付金额：</span>
+
+									<div>{$order_info.currency_code} {$order_info.captured_amount}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+									<div>
+										(${php} echo round($order_info['captured_amount'] / $order_info_exchange_rate, 2); {/php})
+									</div>
+									{/if}
+									<!--US ${$order_info.goods_total}-->
+								</div>
+								<div>
+									<span class="total-title">产品总额：</span>
+
+									<div>{$order_info.currency_code} {$order_info.goods_total}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+										<div>
+											(${php} echo round($order_info['goods_total'] / $order_info_exchange_rate, 2); {/php})
+										</div>
+									{/if}
+									<!--US ${$order_info.goods_total}-->
+								</div>
+								<div>
+									<span class="total-title">运费总额：</span>
+
+									<div>{$order_info.currency_code} {$order_info.shipping_fee}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+									<div>
+										(${php} echo round($order_info['shipping_fee'] / $order_info_exchange_rate, 2); {/php})
+									</div>
+									{/if}
+									<!--US ${$order_info.shipping_fee}-->
+								</div>
+								<div>
+									<span class="total-title">关税陪保：</span>
+
+									<div>{$order_info.currency_code} {$order_info.tariff_insurance}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+									<div>
+										(${php} echo round($order_info['tariff_insurance'] / $order_info_exchange_rate, 2); {/php})
+									</div>
+									{/if}
+									<!--US ${$order_info.shipping_fee}-->
+								</div>
+								<div>
+									<span class="total-title">订单总额：</span>
+
+									<div>{$order_info.currency_code} {$order_info.grand_total_new}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+									<div>
+										<!--(${php} echo round($order_info['grand_total'] / $order_info_exchange_rate, 2); {/php})-->
+										(${$order_info.captured_amount_usd_new})
+									</div>
+									{/if}
+									<!--US ${$order_info.grand_total}-->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!--资金详情-->
+				<div class="detail-tab-list funds-detail-box none">
+					<div class="box-white mt10">
+						<h4 class="mb10">订单总额</h4>
+						<table class="main-base-table">
+							<tr>
+								<th>产品价格</th>
+								<th>运费</th>
+								<th>价格调整</th>
+								<th>优惠金额</th>
+								<th>关税赔保</th>
+								<th>订单总额</th>
+								<th>交易手续费</th>
+							</tr>
+							<tr>
+								<!-- 资金详情中添加多币种展示 -->
+								<td>
+
+									<div>{$order_info.currency_code} {$order_info.goods_total}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+									<div>
+										(${php} echo round($order_info['goods_total'] / $order_info_exchange_rate, 2); {/php})
+									</div>
+									{/if}
+
+									<!--US${$order_info.goods_total}-->
+								</td>
+								<td>
+
+									<div>{$order_info.currency_code} {$order_info.shipping_fee}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+									<div>
+										(${php} echo round($order_info['shipping_fee'] / $order_info_exchange_rate, 2); {/php})
+									</div>
+									{/if}
+
+									<!--US${$order_info.shipping_fee}-->
+								</td>
+								<td><!--//TODO 待确认-->
+									<div>{$order_info.currency_code} {$order_info.adjust_price}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+									<div>
+										(${php} echo round($order_info['adjust_price'] / $order_info_exchange_rate, 2); {/php})
+									</div>
+									{/if}
+								</td>
+								<td><!--//TODO-->
+
+									<div>{$order_info.currency_code} {$order_info.discount_total}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+									<div>
+										(${php} echo round($order_info['discount_total'] / $order_info_exchange_rate, 2); {/php})
+									</div>
+									{/if}
+								</td>
+								<td><!--//TODO-->
+
+									<div>{$order_info.currency_code} {$order_info.tariff_insurance}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+									<div>
+										(${php} echo round($order_info['tariff_insurance'] / $order_info_exchange_rate, 2); {/php})
+									</div>
+									{/if}
+								</td>
+								<td>
+
+									<div>{$order_info.currency_code} {$order_info.grand_total_new}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+									<div>
+										<!--(${php} echo round($order_info['grand_total'] / $order_info_exchange_rate, 2); {/php})-->
+										(${$order_info.captured_amount_usd_new})
+									</div>
+									{/if}
+
+									<!--US${$order_info.grand_total}-->
+								</td>
+								<td>
+									<!--{if condition="$order_info['currency_code'] == 'USD' || $order_info['currency_code'] == 'usd'"}
+										<div>US ${$order_info.handling_fee}</div>
+									{else /}
+										<div>US ${php}echo round($order_info['handling_fee'] / $order_info_exchange_rate, 2); {/php}</div>
+										<div>({$order_info.currency_code_str}{$order_info.handling_fee})</div>
+									{/if}-->
+									<!--US ${$order_info.handling_fee}-->
+
+
+									<div>{$order_info.currency_code} {$order_info.handling_fee}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+									<div>
+										(${php} echo round($order_info['handling_fee'] / $order_info_exchange_rate, 2); {/php})
+									</div>
+									{/if}
+
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="box-white mt10">
+						<h4 class="mb10">收款总额</h4>
+						<table class="main-base-table">
+							<tr>
+								<th>买家应付</th>
+								<th>已付款</th>
+								<th>支付方式</th>
+								<th>收款日期</th>
+							</tr>
+							<tr>
+								<!-- 资金详情中添加多币种展示 -->
+								<td>
+									<div>{$order_info.currency_code} {$order_info.grand_total_new}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+									<div>
+										<!--(${php} echo round($order_info['grand_total'] / $order_info_exchange_rate, 2); {/php})-->
+										(${$order_info.captured_amount_usd_new})
+									</div>
+									{/if}
+
+									<!--{$order_info.grand_total}-->
+								</td>
+								{if condition="$order_info['order_show_status'] > 1"}
+								<td>
+
+
+									<div>{$order_info.currency_code} {$order_info.captured_amount}</div>
+
+									{if condition="$order_info['currency_code'] != 'USD' && $order_info['currency_code'] != 'usd'"}
+									<div>
+										(${php} echo round($order_info['captured_amount'] / $order_info_exchange_rate, 2); {/php})
+									</div>
+									{/if}
+
+									<!--{$order_info.captured_amount}//TODO-->
+								</td>
+								<td>{$order_info.pay_type|default=''}</td>
+								<td>
+									{notempty name="$order_info['pay_time']"}
+									{:date('Y-m-d H:i:s', $order_info['pay_time'])}
+									{else /}
+
+									{/notempty}
+								</td>
+								{else/}
+								<td>0</td>
+								<td></td>
+								<td></td>
+								{/if}
+							</tr>
+						</table>
+					</div>
+					{if condition="isset($order_info['after_sale_apply']) && !empty($order_info['after_sale_apply'])"}
+					<div class="box-white mt10">
+						<h4 class="mb10">售后信息</h4>
+						<table class="main-base-table">
+							<tr>
+								<th>售后类型</th>
+								<th>退货金额</th>
+								<th>退款TxnID</th>
+								<th>退款状态</th>
+								<th>退款类型</th>
+								<th>操作时间</th>
+								<th>备注</th>
+							</tr>
+							{volist name="$order_info['after_sale_apply']" id="as"}
+							<tr>
+								<td>{if condition="$as['type'] eq 1"}换货{elseif condition="$as['type'] eq 2"}退货{elseif condition="$as['type'] eq 3"}退款{/if}</td>
+								<td>{$order_info.currency_code_str}{$as['captured_refunded_fee']}</td>
+								<td>{$as['payment_txn_id']}</td>
+								<td>{$as['status_name']}</td>
+								<td>{if condition="$as['refunded_type'] eq 1"}仅退款{elseif condition="$as['refunded_type'] eq 2"}退货并退款{elseif condition="$as['refunded_type'] eq 3"}不退货退款{/if}</td>
+								<td>{$as['add_time']|date="Y-m-d H:i:s",###}</td>
+								<td>
+									<div>{$as['remarks']}</div>
+								</td>
+							</tr>
+							{/volist}
+						</table>
+					</div>
+					{/if}
+				</div>
+
+				<!--时间记录-->
+				<div class="detail-tab-list time-detail-box none">
+					<div class="box-white mt10">
+
+						{switch name="order_info.order_show_status"}
+							{case value="1"}
+								<div>
+									订单创建时间：
+									{notempty name="$order_info['create_on']"}
+										{:date('Y-m-d H:i:s', $order_info['create_on'])}
+									{else /}
+
+									{/notempty}
+								</div>
+							{/case}
+							{case value="2"}
+								<div>
+									付款时间：
+									{notempty name="$order_info['pay_time']"}
+										{:date('Y-m-d H:i:s', $order_info['pay_time'])}
+									{else /}
+
+									{/notempty}
+								</div>
+								<div>
+									订单创建时间：
+									{notempty name="$order_info['create_on']"}
+										{:date('Y-m-d H:i:s', $order_info['create_on'])}
+									{else /}
+
+									{/notempty}
+								</div>
+							{/case}
+							{case value="3"}
+								<div>
+									发货时间：
+									{notempty name="$order_info['shipments_time']"}
+										{:date('Y-m-d H:i:s', $order_info['shipments_time'])}
+									{else /}
+
+									{/notempty}
+								</div>
+								<div>
+									付款时间：
+									{notempty name="$order_info['pay_time']"}
+										{:date('Y-m-d H:i:s', $order_info['pay_time'])}
+									{else /}
+
+									{/notempty}
+								</div>
+								<div>
+									订单创建时间：
+									{notempty name="$order_info['create_on']"}
+										{:date('Y-m-d H:i:s', $order_info['create_on'])}
+									{else /}
+
+									{/notempty}
+								</div>
+							{/case}
+							{case value="4"}
+								<div>
+									完成时间：
+									{notempty name="$order_info['complete_on']"}
+										{:date('Y-m-d H:i:s', $order_info['complete_on'])}
+									{else /}
+
+									{/notempty}
+								</div>
+								<div>
+									到货时间：
+									{notempty name="$order_info['shipments_complete_time']"}
+										{:date('Y-m-d H:i:s', $order_info['shipments_complete_time'])}
+									{else /}
+
+									{/notempty}
+								</div>
+								<div>
+									发货时间：
+									{notempty name="$order_info['shipments_time']"}
+										{:date('Y-m-d H:i:s', $order_info['shipments_time'])}
+									{else /}
+
+									{/notempty}
+								</div>
+								<div>
+									付款时间：
+									{notempty name="$order_info['pay_time']"}
+										{:date('Y-m-d H:i:s', $order_info['pay_time'])}
+									{else /}
+
+									{/notempty}
+								</div>
+								<div>
+									订单创建时间：
+									{notempty name="$order_info['create_on']"}
+										{:date('Y-m-d H:i:s', $order_info['create_on'])}
+									{else /}
+
+									{/notempty}
+								</div>
+							{/case}
+							{default /}
+						{/switch}
+						<!--是否有一个时间记录表-->
+						<!--<div>
+							完成时间：
+							{notempty name="$order_info['complete_on']"}
+								{:date('Y-m-d H:i:s', $order_info['complete_on'])}
+							{else /}
+								-
+							{/notempty}
+						</div>
+						<div>
+							到货时间：
+							{notempty name="$order_info['shipments_complete_time']"}
+								{:date('Y-m-d H:i:s', $order_info['shipments_complete_time'])}
+							{else /}
+								-
+							{/notempty}
+						</div>
+						<div>
+							发货时间：
+							{notempty name="$order_info['shipments_time']"}
+								{:date('Y-m-d H:i:s', $order_info['shipments_time'])}
+							{else /}
+								-
+							{/notempty}
+						</div>
+						<div>
+							付款时间：
+							{notempty name="$order_info['pay_time']"}
+								{:date('Y-m-d H:i:s', $order_info['pay_time'])}
+							{else /}
+								-
+							{/notempty}
+						</div>
+						<div>
+							订单创建时间：
+							{notempty name="$order_info['create_on']"}
+								{:date('Y-m-d H:i:s', $order_info['create_on'])}
+							{else /}
+								-
+							{/notempty}
+						</div>-->
+					</div>
+				</div>
+			</div>
+			<!--订单留言-->
+			<div class="clearfix mt10 mr15">
+			{if condition="$order_info['order_status'] >= 200 && $order_info['order_status'] != 1400 && $order_info['order_status'] != 1900 && $order_info['order_status'] != 920 && $order_info['order_master_number']>0"}
+				<a href="{:url('index/OrderRefund/orderRefund', ['order_id'=>$order_info['order_id']])}" class="operating-btn fr btn-orange">申请退款</a>
+			{/if}
+			</div>
+			<div class="box-white mt0 message-box">
+				<a name="messageinfo"></a>
+				<h4>订单留言</h4>
+				<div class="box-white mt10">
+					<form id="order-message-form">
+						<dl class="dl-layout relative">
+							<dt class="w80 tright">消息内容：</dt>
+							<dd>
+								<input type="hidden" name="order_id" value="{$order_info.order_id}">
+								<input type="hidden" name="file_url" value="" id="message-file-url">
+								<textarea id="message" name="message" style="width:800px;height:500px;"></textarea>
+							</dd>
+						</dl>
+						<dl class="dl-layout relative">
+							<dt class="w120 tright">上传图片：</dt>
+							<dd>
+								<div class="uploader-list"></div>
+								<div class="relative pb20">
+									<a href="JavaScript:;" class="add-files">添加文件</a>
+									<a href="JavaScript:;" class="file-picker-btn">添加文件</a>
+								</div>
+								<p class="gray">最多上传1个文件，单个不超过5MB，支持JPG、JPEG、GIF、PNG、BMP格式</p>
+							</dd>
+						</dl>
+						<dl class="dl-layout relative mt20">
+							<dt class="w120 tright"></dt>
+							<dd>
+								<a href="javascript:;" class="search btn-orange order-message-submit">发送</a>
+							</dd>
+						</dl>
+					</form>
+				</div>
+			</div>
+				<div class="box-white mt10 alert-photos">
+					<h5>留言历史</h5>
+					{volist name="order_info.message_data" id="message"}
+						{if condition='$message["message_type"] == 1'}
+						<div class="box-white mt10 user-reply">
+						{else /}
+						<div class="box-white mt10 seller-reply">
+						{/if}
+						<div class="message-author  fbold">
+							{if condition='$message["message_type"] == 1'}
+								Me:
+							{else /}
+								{$message.message_real_name}
+							{/if}
+						</div>
+						<div class="message-content clearfix pl10">
+							<p class="display-copy">{$message.message}</p>
+							<img src="{$message.file_real_url}" alt="" width="80px" class="">
+						</div>
+						<div class="mt10 clearfix message-time">
+							{:date('Y-m-d H:i:s', $message['create_on'])}
+						</div>
+							{if condition='$message["message_type"] != 1'}
+							<div class="mt10" style="text-align: center;">
+								<a href="javascript:void(0)" class="btn-product-release btn-orange translate_cn">翻译成中文</a>
+								<a href="javascript:void(0)" class="btn-product-release btn-orange translate_en">翻译成英文</a>
+							</div>
+							{/if}
+					</div>
+					{/volist}
+				</div>
+		</div>
+		<div class="mt10" style="text-align: center;">
+			<a href="JavaScript:;" class="btn-product-release btn-orange" onclick="Common.goBack(-1)">返回</a>
+		</div>
+	</div>
+
+</div>
+<div class="show-copy-pop hide"></div>
+<script>
+    var ajax_url = {$ajax_url|default=''};
+
+    /*实例化编辑器*/
+    KindEditor.ready(function(K) {
+        window.editor = K.create('#message',{
+            afterBlur: function () { this.sync();},
+            uploadJson : '/index/Uploads/fileUploadForOrder',
+            fileManagerJson : '/index/Uploads/fileUploadForOrder',
+            imgFile:'file',
+            allowFileManager : true
+        });
+    });
+    // tab切换控制
+	$('.detail-tab a').click(function () {
+		var class_flag = $(this).attr('data-id');
+		$('.detail-tab-list').hide();
+		$('.'+class_flag).show();
+        $('.detail-tab li').removeClass('curr');
+        $(this).parent().addClass('curr');
+    });
+    /** 倒计时功能 start **/
+    function handle_num(num){
+        if (num < 10){
+            num = "0"+num;
+        }
+        return num;
+    }
+    $(".djs-box").each(function(){
+        var that = this;
+        var j_that = $(this);
+        var time_value = $(this).attr("data-time");
+        setInterval(function () {
+            var day = parseInt(time_value / 60 / 60 / 24);
+            var hour = handle_num(parseInt(time_value / 60 / 60 % 24));
+            var minute = handle_num(parseInt(time_value / 60 % 60));
+            var seconds = handle_num(parseInt(time_value % 60));
+
+            var html = day+'天'+hour+'小时'+minute+'分钟'+seconds+'秒';
+            j_that.html(html);
+            if(time_value > 0){
+                time_value -= 1;
+            }
+        }, 1000);
+    });
+    /** 倒计时功能 end **/
+    layer.ready(function(){
+        layer.photos({
+            photos: '.alert-photos'
+            ,anim: 0 //0-6
+            // ,offset :['20%']
+            ,closeBtn:1
+        });
+    });
+    $(function(){
+    	Global.displayCopy();
+        var clipboard = new ClipboardJS('#btn-copy-address', {
+            text: function() {
+                //console.log($("#copy-textarea").val())
+                // var txt = $("#copy-textarea").val();
+                // return parser.parseFromString(txt, "text/html")
+               return $("#copy-textarea").val();
+            }
+        });
+
+        clipboard.on('success', function(e) {
+            layer.msg("复制成功");
+        });
+
+        clipboard.on('error', function(e) {
+            layer.msg("复制失败");
+        });
+
+        $("#jump_order").click(function () {
+			var order_number = $("input[name='order_number']").val();
+			window.location.href= $(this).attr('jump-url')+"/order_number/"+order_number;
+        })
+
+    })
+
+	$(function(){
+		Global.displayCopy();
+		var clipboards = new ClipboardJS('#btn-copy-sku', {
+			text: function() {
+				return $("#copy-textarea-sku").val();
+			}
+		});
+
+		clipboards.on('success', function(e) {
+			layer.msg("复制成功");
+		});
+
+		clipboards.on('error', function(e) {
+			layer.msg("复制失败");
+		});
+	})
+</script>

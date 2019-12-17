@@ -1,0 +1,38 @@
+.yg-text-edit-span {
+    position: absolute;
+    z-index: 80;
+    background-color: #fff;
+    input {
+        padding: 4px;
+        width: 30px;
+    }
+    textarea {
+        resize: none;
+        overflow: hidden;
+        line-height: 20px;
+        min-width: 46px;
+        padding: 0 2px;
+    }
+    a {
+        &.black {
+            color: @c_black_0;
+        }
+    }
+    * {
+        vertical-align: middle;
+    }
+}
+
+.g-layout-main {
+    .g-layout-container {
+        position: relative;
+        a.inline-edit-text{
+            display: block;
+        }
+        .inline-edit{
+            position: absolute;
+            top: 20px;
+            right: -10px;
+        }
+    }
+}

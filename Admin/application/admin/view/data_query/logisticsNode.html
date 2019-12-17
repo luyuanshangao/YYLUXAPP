@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8" />
+    <title>物流信息</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    {include file="layout/c_global_style" /}
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/logisticsdetail.css" type="text/css" />
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+
+<body id="Order_List" class="page-header-fixed  page-sidebar-fixed">
+<div class="page-content pt0 ml20 pl0">
+    <!--start  按钮功能区 -->
+    <!--  <div class="bg-color-gray0 area_btn0 ml0 mr0 border-gray">
+         {$menu_logo}
+     </div> -->
+    <!--end  按钮功能区 -->
+    <!-- 订单内容 begin -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                <div>
+                    <!--  <input type="hidden" id="class_url"  value="/ProductManagement/catalog_next_mongo"> -->
+                    <div class="tab-content mt25">
+                        <div class=" active d-element-bind btns-link" id="month6">
+                            <div class="search-btn-wrap">
+                                <form id="navbar" class="navbar-left" action="ProductImgList" method="post" role="search">
+                                    <ul class="c-h-ul search-ul">
+
+                                        <li class="w500">
+                                            <label class="c-h-ul-li-title">物流跟踪号：</label>
+                                            <textarea id="Logistics-tracking-number" class="pd5 fr" name="spu" rows="8" cols="60">{$spu}</textarea>
+                                        </li>
+                                        <li class="260">
+                                            <label class="c-h-ul-li-title w60"></label>
+                                            <a id="query-logistics" class="btn btn-gray" href="javascript:;">查 询</a>
+                                            <!--  <a class="btn btn-gray add-bind-brand-btn" href="javascript:void(0);">添 加</a> -->
+                                        </li>
+                                    </ul>
+                                </form>
+                                <script type="text/javascript">
+                                </script>
+                            </div>
+                            <!-- 订单内容 end -->
+                        </div>
+                    </div>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+        </div>
+    </div>
+
+    <div class="row order-logistics query-logistics-wrap">
+        <div class="col-md-12">
+            <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                <div id="logistics-List">
+                    <!-- <div class="tab-content">
+                        <div class="tab-pane active detail-box" id="month6">
+                            <div class="db-left">
+                                <div class="db-left-bottom js-logistic-tabs curr">
+                                    Brazil
+                                    <span>Destination country</span>
+                                </div>
+                                <div class="db-left-bottom js-logistic-tabs">
+                                    China
+                                    <span>Sending country</span>
+                                </div>
+                            </div>
+
+                            <div class="info-pb10 c-h-dl-label100 mt10 db-right">
+                               <ul class="layui-timeline">
+                                    {if condition="isset($package_trace_list['track'])"}
+                                        {volist name='package_trace_list.track.z2' id='val'}
+                                            <li class="layui-timeline-item">
+                                                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                                <div class="layui-timeline-content layui-text">
+                                                    <h3 class="layui-timeline-title">{$val["a"]}</h3>
+                                                    <p>
+                                                        {$val['z']}
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        {/volist}
+                                    {/if}
+                                     {if condition="isset($package_trace_list) && $package_trace_list == ''"}
+                                        尚未有信息
+                                     {/if}
+                                </ul>
+                                <ul class="layui-timeline hide">
+                                 {if condition="isset($package_trace_list['track'])"}
+                                    {volist name='package_trace_list.track.z1' id='val'}
+                                        <li class="layui-timeline-item">
+                                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                            <div class="layui-timeline-content layui-text">
+                                                <h3 class="layui-timeline-title">{$val["a"]}</h3>
+                                                <p>
+                                                    {$val['z']}
+                                                </p>
+                                            </div>
+                                        </li>
+                                    {/volist}
+                                 {/if}
+                                </ul>
+
+                            </div>
+                        </div>
+
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script src="/static/js/customer_service.js" type="text/javascript"></script>
+    <script src="/static/js/logisticsNode.js" type="text/javascript"></script>
+    <!-- END JAVASCRIPTS -->
+    <script type="text/javascript">
+    $(function(){
+        App.init();
+        customer_service.CustomerService();
+    });
+    </script>
+    <!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+
+</html>

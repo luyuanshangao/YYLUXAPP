@@ -1,0 +1,128 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/productMan.js" /}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+{load href="/static/js/module/setAffiliateClass.js" /}
+
+<style>
+    /** 分页 **/
+    .pagination  li {display: inline;padding: 0 2px;float: left;}
+    .pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+    .pagination .active span{color: red;}
+    .product-management .search-ul-layout input {
+        width: 130px;
+    }
+
+</style>
+
+<div class="main-box fl product-management">
+    <div class="box-white mt0" style="overflow: hidden;">
+        <h1 class="main-cont-title">{$title}</h1>
+        <form action="{:url('Orders/orderDownload')}" method="get" class="pb10" id="product-form">
+            <ul class="search-ul-layout mt10">
+                <li>
+                    <label>出单时间：
+                        <input type="text" name="create_on_start" class="text Wdate start-time" placeholder="开始时间" value="{:input('create_on_start')}" autocomplete="off"> -
+                        <input type="text" name="create_on_end" class="text Wdate end-time" placeholder="结束时间" value="{:input('create_on_end')}" autocomplete="off">
+                    </label>
+                </li>
+                <li>
+                    &nbsp;&nbsp;&nbsp;
+                    <label>发货状态：
+                        <select name="fulfillment_status">
+                            <option value="">请选择</option>
+                            {foreach name="FulfillmentStatus" item="vo"}
+                                <option value="{$vo['code']}" {if condition="input('fulfillment_status') eq $vo['code']"}selected="selected"{/if}>{$vo['name']}</option>
+                            {/foreach}
+                        </select>
+                    </label>
+                </li>
+                <li class="search-li">
+                    <a href="javascript:product_form_submit()" class="search-btn">搜索</a>
+                </li>
+                <li class="">
+                    <a href="javascript:;" class="search-btn export-excel-btn" style=" width: auto;" url-data="{:url('Orders/orderDownload',array('is_page'=>0))}">下载订单</a>
+                </li>
+            </ul>
+        </form>
+        <table class="main-base-table scroll mt20">
+            <tr class="tr-border">
+                <th>ROWNO</th>
+                <th>Shipping</th>
+                <th>Service</th>
+                <th>Track No.</th>
+                <th>Shipped Date</th>
+                <th>Name</th>
+                <th>Transaction ID</th>
+                <th>Address Line</th>
+                <th>Town/City</th>
+                <th>Zip/Postal Code</th>
+                <th>Tel</th>
+                <th>Country</th>
+                <th>SKU</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>OrderLine CostPrice(RMB)</th>
+                <th>FulfillmentStatus</th>
+            </tr>
+            {if condition="count($list) gt 0"}
+            {volist name="list" id="val" key="key}
+            <tr class="j-mouse-hover colorfbf">
+                <td>{$key+1}</td>
+                <td>SK POST</td>
+                <td>Tracking</td>
+                <td>{$val.tracking_number}</td>
+                <td>{if condition="$val.shipments_time>0"}{$val.shipments_time|date="Y-m-d H:i:s",###}{/if}</td>
+                <td>{$val.first_name} {$val.last_name}</td>
+                <td>{$val.order_number}</td>
+                <td>{$val.street1} {$val.street2}</td>
+                <td>{$val.city}</td>
+                <!--<td>{$val.state}</td>-->
+                <td>{$val.postal_code}</td>
+                <td>{$val.mobile}</td>
+                <td>{$val.country}</td>
+                <td>{$val.sku_num}</td>
+                <td>{$val.product_name}</td>
+                <td>{$val.product_nums}</td>
+                <td></td>
+                <td>{$FulfillmentStatusData[$val['fulfillment_status']]|default=''}</td>
+            </tr>
+            {/volist}
+            {else/}
+            <tr class="tr-zeroCenter">
+                <td height="270" colspan="11" class="no-result">没有找到符合条件的信息。 </td>
+            </tr>
+            {/if}
+        </table>
+        {notempty name="page"}
+        <div class="commonpage page-wrap mt20 fr">
+            {$page}
+        </div>
+        {/notempty}
+    </div>
+</div>
+
+<script>
+    // 搜索开始及结束时间
+    $(".start-time").click(function(){
+        WdatePicker({
+            el:this,
+            dateFmt:'yyyy-MM-dd HH:mm:ss'
+        });
+    });
+    $(".end-time").click(function(event) {
+        WdatePicker({
+            el:this,
+            minDate:$(".end-time").siblings('.start-time').val(),
+            //maxDate:getMaxDate(),
+            dateFmt:'yyyy-MM-dd HH:mm:ss'
+        });
+    });
+    //导出订单excel数据
+    $('.export-excel-btn').click(function () {
+        var param = $('#product-form').serialize();
+        var url = $(this).attr("url-data")+'?'+param;
+        console.log(url);
+        window.location.href = url;
+    });
+</script>

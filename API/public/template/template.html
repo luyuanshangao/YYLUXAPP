@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="{$page_title}" />
+    <meta name="keywords" content="cool gadgets,smart phone,smart device,watch, Bluetooth,apparel, outdoor,sport,lights&lighting,4G,cellphone,Android,IOS,car,accessory,discounts,sale,DX,DealExtreme,free shipping" />
+    <meta property="og:title" content="{$page_title}" />
+    <meta property="og:image" content="{$banner}" />
+    <meta property="og:description " content="{$page_title}" />
+    <title>{$page_title}</title>
+    <link rel="shortcut icon" href="//c.dx.com/albums/Public/favicon.ico" type="image/gif" />
+    <link rel="stylesheet" type="text/css" href="//c.dx.com/collection/201904/20190430/css2.0.css?1" />
+    <style>
+        #menu ul{
+            border-top: 1px solid #d0d0d0;
+        }
+        #menu ul li{
+            border-left: 1px solid #d0d0d0;
+            border-right: 1px solid #d0d0d0;
+            border-bottom: 1px solid #fff;
+            background: #fff;
+        }
+        #menu ul li:nth-last-child(2){
+            border-bottom: 1px solid #d0d0d0;
+        }
+        #menu ul li:hover span{
+            background: #ff9d00;
+            color: #fff;
+        }
+        #menu ul li.hover span{
+            background: #ff9d00;
+            color: #fff;
+        }
+        #menu ul span{
+            position: relative;
+            margin-left: 0;
+            display: block;
+            width: 150px;
+            height: auto;
+            line-height: 18px;
+            background: #fff;
+            color: #3f3f3f;
+        }
+        @media screen and (min-width: 1260px){
+            #menu {
+                margin-top: 104px;
+                padding-left: 1174px;
+            }
+            .position {
+                top: 50%;
+                -webkit-transform: translateY(-50%);
+                -moz-transform: translateY(-50%);
+                -ms-transform: translateY(-50%);
+                transform: translateY(-50%);
+            }
+        }
+        @media screen and (max-width: 1480px){
+            .position {
+                right: 20px;
+            }
+            #menu ul{
+                display: none;
+            }
+            #menu ul.position{
+                display: block;
+            }
+        }
+        @media screen and (max-width: 1260px){
+            .position {
+                top: 50%;
+                -webkit-transform: translateY(-50%);
+                -moz-transform: translateY(-50%);
+                transform: translateY(-50%);
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!--===============================header===============================-->
+<div id="header">
+    <div id="top">
+        <a href="https://www.dx.com" target="_blank">
+            <img src="//c.dx.com/Pattaya/publicImg/logo-dx.png" />
+        </a>
+        <div class="sharp">
+            <div class="addthis_sharing_toolbox">
+                <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                    <a class="addthis_button_facebook"></a><a class="addthis_button_twitter"></a><a class="addthis_button_linkedin">
+                </a><a class="addthis_button_google_plusone_share"></a><a class="addthis_button_compact">
+                </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--===============================bannerbox===============================-->
+{notempty name="bannerProductList"}
+<div class="bannerbox" style="background: #454a5d url({$topbg}) no-repeat center top;">
+    <ul>
+        <li>
+            <div class="top_title">
+                {notempty name="bannerT.MainTitle"}
+                <h2>{$bannerT.MainTitle}</h2>
+                {/notempty}
+
+                {notempty name="bannerT.SubTitle"}
+                <p>{$bannerT.SubTitle}</p>
+                {/notempty}
+            </div>
+
+            {notempty name="bannerProductList"}
+            {php}
+            $product1 = $bannerProductList[0];
+            $product2 = $bannerProductList[1];
+            $total = $product1['LowPrice'] + $product2['LowPrice'];
+            $totalPrice = explode('.',$total);
+            {/php}
+            <div class="top_des_row">
+                <div class="top_des">
+                    <div class="topPro">
+                        <a href="{$product1.LinkUrl}&{$ga_code}" target="_blank">
+                            <img src="{$product1.FirstProductImage}" alt="{$product1.Title}" title="{$product1.Title}" class="img"></a>
+                        <div class="description">
+                            <h2>
+                                <a href="{$product1.LinkUrl}&{$ga_code}" target="_blank" alt="{$product1.Title}" title="{$product1.Title}">
+                                    {$product1.Title}</a></h2>
+                            <p class="shop">
+                                <span class="red">{$currency_flag} {$product1.IntPrice}.<em>{$product1.FloatPrice}</em></span>
+                            </p>
+                        </div>
+                    </div>
+                    <span>+</span>
+                    <div class="topGift">
+                        <a href="{$product2.LinkUrl}&{$ga_code}" target="_blank">
+                            <img src="{$product2.FirstProductImage}" alt="{$product2.Title}" title="{$product2.Title}" class="img"></a>
+                        <div class="description">
+                            <h2>
+                                <a href="{$product2.LinkUrl}&{$ga_code}" target="_blank" alt="{$product2.Title}" title="{$product2.Title}">
+                                    {$product2.Title}</a></h2>
+                            <p class="shop">
+                                <span class="red">{$currency_flag} 00.<em>00</em></span><span class="gitfPrice">{$currency_flag} {$product2.IntPrice}.<em>{$product2.FloatPrice}</em></span>
+                            </p>
+                        </div>
+                    </div>
+                    <span>=</span>
+                    <div class="topSave">
+                        <div class="topTotal">
+                            <p>
+                                Total:{$currency_flag} {$totalPrice.0}.<em>{$totalPrice.1}</em></p>
+                            <p>
+                                You Save:<br/>{$currency_flag} {$product2.LowPrice}</p>
+                        </div>
+                        <div class="topPrice">
+                            <p>
+                                final price:<strong>{$currency_flag} {$product1.IntPrice}.<em>{$product1.FloatPrice}</em></strong></p>
+                            <p>
+                                <a href="{$product1.LinkUrl}&{$ga_code}" target="_blank">Take it Now >></a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/notempty}
+        </li>
+    </ul>
+</div>
+{/notempty}
+
+<!--===============================promation===============================-->
+<div class="promation_row">
+    <div id="container">
+        {notempty name="recommend_products"}
+        <ul id="promation" class="clearfix">
+            {volist name="recommend_products" id="item"}
+            <li class="clearfix"><a href="{$item.LinkUrl}&{$ga_code}" target="_blank">
+                <img src="{$item.FirstProductImage}" alt="{$item.Title}" title="{$item.Title}" class="img"></a>
+                <div id="discount1">
+                    {notempty name="item.Discount"}
+                    <p class="cut1">
+                        -{$currency_flag} <strong>{$item.OriginalLowPrice - $item.LowPrice}</strong></p>
+                    {/notempty}
+                </div>
+
+                {if condition="$item.isMvp == 1"}
+                <span class="prolist_mvp"></span>
+                {/if}
+
+                <div class="description">
+                    <h2>
+                        <a href="{$item.LinkUrl}&{$ga_code}" target="_blank" alt="{$item.Title}" title="{$item.Title}">
+                            {$item.Title}</a></h2>
+                    <p class="description_p">
+                    </p>
+                    <div class="shop">
+                        {notempty name="item.OriginalLowPrice"}
+                        <div class="listPrice">
+                            <font>
+                                <span class="red">{$currency_flag} {$item.OriginaIntPrice}.<em>{$item.OriginaFloatPrice}</em></span>
+                                <span class="red">{$currency_flag} {$item.OriginaIntPrice}.<em>{$item.OriginaFloatPrice}</em></span>
+                            </font>
+                        </div>
+                        {/notempty}
+                        <div class="currentPrice">
+                            <font><span class="red">{$currency_flag} {$item.IntPrice}.<em>{$item.FloatPrice}</em></span> <span class="red">
+                                    </span></font>
+                        </div>
+                        <a href="{$item.LinkUrl}&{$ga_code}" target="_blank"><i></i>BUY NOW</a>
+                    </div>
+                </div>
+            </li>
+            {/volist}
+        </ul>
+        {/notempty}
+    </div>
+</div>
+<!--===============================content===============================-->
+<div class="container_row">
+    <div id="content">
+        <!--===============================menu===============================-->
+        <div id="container">
+            <div class="pop">
+                <div id="menu">
+                    <ul class="clearfix">
+                        {php} $categoryIndex = 0;{/php}
+                        {volist name="products" id="category"}
+                        {php} $categoryIndex = $categoryIndex + 1;{/php}
+                        {if condition="$categoryIndex == 1"}
+                        <li class="hover ">
+                            {else /}
+                        <li>
+                            {/if}
+                            <a class="smooth otherproduct_{$categoryIndex}" href="#otherproduct_{$categoryIndex}"><span>{$key}</span></a>
+                        </li>
+                        {/volist}
+                        <li class="last"><a href="#top" class="top smooth"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--===================video area====================-->
+        <div class="video_area">
+        </div>
+        <!--===================product====================-->
+        <div id="container">
+            {php}$categoryIndex = 0;{/php}
+            {volist name="products" id="category"}
+            {php}$categoryIndex = $categoryIndex + 1;{/php}
+            <h2 class="title" id="otherproduct_{$categoryIndex}">{$key}</h2>
+            <ul class="product clearfix" id="prolist{$categoryIndex}">
+                {php}$topProIndex = 0;{/php}
+                {volist name="category" id="item"}
+                {php}$topProIndex = $topProIndex + 1;{/php}
+                {if condition="$topProIndex <= 3"}
+                <li><a href="{$item.LinkUrl}&{$ga_code}" target="_blank">
+                    <img src="{$item.FirstProductImage}" alt="{$item.Title}" title="{$item.Title}"></a>
+
+                    {notempty name="item.Discount"}
+                    <p class="cut">
+                        <strong>{$item.Discount}</strong>% OFF
+                    </p>
+                    {/notempty}
+
+                    <p class="title">
+                        <a href="{$item.LinkUrl}&{$ga_code}" target="_blank" alt="{$item.Title}" title="{$item.Title}">
+                            {$item.Title}</a>
+                    </p>
+                    <p class="btn">
+                        <strong class="yellow">{$currency_flag} {$item.IntPrice}.<em>{$item.FloatPrice}</em></strong>
+                        {notempty name="item.OriginalLowPrice"}
+                        <span class="listPrice">{$currency_flag} {$item.OriginaIntPrice}.<em>{$item.OriginaFloatPrice}</em></span>
+                        {/notempty}
+
+                        {if condition="$item.isMvp == 1"}
+                        <span class="prolist_mvp"></span>
+                        {/if}
+
+                        <br/>
+                        <br/>
+                        <a class="gray" href="{$item.LinkUrl}&{$ga_code}" target="_blank" alt="{$item.Title}"><i></i>BUY NOW</a>
+                    </p>
+                </li>
+                {else /}
+                {php}$topProIndex = $topProIndex - 1;{/php}
+                <li><a href="{$item.LinkUrl}&{$ga_code}" target="_blank">
+                    <img src="{$item.FirstProductImage}" alt="{$item.Title}" title="{$item.Title}"></a>
+                    <p class="title">
+                        <a href="{$item.LinkUrl}&{$ga_code}" target="_blank" alt="{$item.Title}" title="{$item.Title}">
+                            {$item.Title}</a></p>
+                    <p class="btn">
+                        <strong class="yellow">{$currency_flag} {$item.IntPrice}.<em>{$item.FloatPrice}</em></strong>
+                        {notempty name="item.OriginalLowPrice"}
+                        <span class="listPrice">{$currency_flag} {$item.OriginaIntPrice}.<em>{$item.OriginaFloatPrice}</em></span>
+                        {/notempty}
+                    <div class="shopBtn">
+                        <span><a class="gray" href="{$item.LinkUrl}&{$ga_code}" target="_blank" alt="{$item.Title}">BUY NOW</a></span>
+                        {notempty name="item.Discount"}
+                        <span class="cut"><strong>{$item.Discount}</strong>% OFF</span>
+                        {/notempty}
+                    </div>
+
+                    {if condition="$item.isMvp == 1"}
+                    <span class="prolist_mvp"></span>
+                    {/if}
+
+                    <br/>
+                    <br/>
+                    </p>
+                </li>
+                {/if}
+                {/volist}
+            </ul>
+            {/volist}
+        </div>
+
+        <!--=======================================brand======================================-->
+        <div id="container">
+
+        </div>
+    </div>
+</div>
+<!--container_row end-->
+</div>
+<!--content end-->
+<!--=============================== footer ===============================-->
+<div id="footer">
+    <div class="warp">
+        <div class="pay">
+            <img src="//c.dx.com/albums/Public/images/card01.png" />
+            <img src="//c.dx.com/albums/Public/images/card02.png" />
+            <img src="//c.dx.com/albums/Public/images/card03.png" />
+            <img src="//c.dx.com/albums/Public/images/card04.png" />
+            <img src="//c.dx.com/albums/Public/images/card05.png" />
+        </div>
+        <div class="sns">
+            Follow us: <a target="_blank" href="https://www.facebook.com/DealExtremeFans" class="f">
+            Facebook</a> <a target="_blank" href="https://twitter.com/dealextremefans" class="t">
+            Twitter</a> <a target="_blank" href="https://www.youtube.com/user/DealextremeTube"
+                           class="y">YouTube</a> <a target="_blank" href="https://blog.dealextreme.com" class="b">
+            Official Blog</a>
+        </div>
+        <p>
+            © 2006 - 2019 <a href="https://dx.com" target="_blank">DX.com</a> . All rights
+            reserved.
+        </p>
+        <p>
+            Note: Price and Availability shown on this page is for your reference only. The
+            actual price and availability information may differ on the website.
+        </p>
+    </div>
+</div>
+<script type="text/javascript" src="//c.dx.com/collection/public/style/js/jquery.js"></script>
+<script type="text/javascript" src="https://img.dxcdn.com/combo/global/v4.16.4/js/jquery/jquery.cookie.min.js"></script>
+<script src="https://c.dx.com/collection/201812/public/js/setCookie.js"></script>
+<script type="text/javascript" src="//c.dx.com/collection/201904/20190430/other.js"></script>
+<script type="text/javascript" src="//c.dx.com/albums/Public/track.js"></script>
+<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-54b8cadb7683efdd"
+        async></script>
+</body>
+</html>

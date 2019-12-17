@@ -1,0 +1,37 @@
+.msg-box(@border-color:#e4e4e4, @triangle-color:white, @bg-color:#fff, @cr-color:#c9c9c9) {
+  border-radius: 5px !important;
+  border: 1px solid @border-color;
+  width: 710px;
+  padding: 15px 25px;
+  margin-left: 35px;
+  position: relative;
+  background-color: @bg-color;
+
+  .triangle {
+    border: 6px dashed transparent;
+    border-right: 13px solid #B8B8B8;
+    position: absolute;
+    left: -20px;
+    top: 15px;
+    z-index: 0;
+    i {
+      border: 6px dashed transparent;
+      border-right: 13px solid @triangle-color;
+      position: absolute;
+      left: -5px;
+      top: -6px;
+      z-index: 1;
+    }
+  }
+  .cr {
+    width: 11px;
+    height: 11px;
+    display: inline-block;
+    border-radius: 5px;
+    background-color: @cr-color;
+    position: absolute;
+    left: -35px;
+    top: 15px;
+  }
+}
+

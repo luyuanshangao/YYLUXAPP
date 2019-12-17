@@ -1,0 +1,36 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addDataConfig" enctype="multipart/form-data">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>KEY：</label>
+                </dd>
+                <dd>
+                    <input name="key" value="{$list.key}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+           <!-- 该功能不支持父节点录入
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em></em>父节点：</label>
+                </dd>
+                <dd>
+					<input name="parentKey" value='{$list.parentKey}' class="form-control input-medium inline" type="text">
+					//TODO
+                </dd>
+                <dt></dt>
+            </dl>
+             -->
+             <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>备注说明：</label>
+                </dd>
+                <dd>
+                    <textarea name="remark" cols="37" rows="8">{$list.remark}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>

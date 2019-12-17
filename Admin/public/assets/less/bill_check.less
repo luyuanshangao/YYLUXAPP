@@ -1,0 +1,85 @@
+@import "base/bases.less";
+@import "tool/tools.less";
+// .col-md-1{width: 7%;}
+// .col-md-2{width: 10%;}
+/*start 发票查看详情页*/
+.form-horizontal .radio{padding-top:0;}//表单单选框
+.c-h-dl.dl-basic dt{width: 80px;margin-right: 5px}//dl dt的宽度修改，默认的是65px
+.c-h-dl.dl-basic dd{margin-left: 5px;}//重新定义dd 的margin-left,默认是68px
+//.w1200{width:100%}//表格的宽度设置
+@bill_height:80px;
+.enter_title{
+  position: relative;
+  height: 30px;
+  & span.enter_line{
+    height: 1px;
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 15px;
+    left:0;
+    border-bottom: 1px dotted @c_gray_1;
+  };
+  & strong{
+    width: auto;height: 30px;
+    line-height: 30px;
+    background:@body-bg;
+    display: block;
+    top: 0;
+    left: 0;
+  }
+}
+.bill-detail-hd{
+  margin: 0 auto;
+  height: 50px;
+  line-height: 50px;
+}
+.bill_detail_step{
+  height: @bill_height;
+  width:980px;
+  margin: 0 auto;
+  top:20px;
+  & span.line{
+    width: 780px;
+    margin: 0 50px;
+    border-bottom: 1px solid @c_gray_1;
+    display: block;
+    position: absolute;
+    top: 30px;
+    left: 0px;
+  };
+  & .step{
+    height: @bill_height;
+    & em{
+      display: block;
+    };
+    & i.gary{
+      display: block;
+      margin: 5px auto;
+      width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      -o-border-radius: 10px;
+      border-radius: 10px;
+      background:@c_gray_1 ;
+    }
+    &.curr i.gary{
+      background:@c_red_1;
+    }
+  };
+  & .step_2{
+    left: 200px;
+  };
+  & .step_3{
+    left: 400px;
+  };
+  & .step_4{
+    left: 600px;
+  };
+  & .step_5{
+    left: 800px;
+  };
+}
+/*end 发票查看详情页*/

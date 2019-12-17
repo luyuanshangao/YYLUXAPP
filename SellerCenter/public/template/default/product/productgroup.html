@@ -1,0 +1,86 @@
+{layout name="layout/main"/}
+{load href="/static/css/product.css" /}
+<!--{load href="/static/js/module/product.js" /}--><script type="text/javascript" src="/static/js/module/product.js?v={$static_version_number|default='20181219'}"></script>
+<div class="main-box fl product-management">
+    <div class="box-white mt0">
+        <h1 class="main-cont-title">产品分组</h1>
+        <a href="#addGroupSearch" class="js-btn-add-group btn-red mt20">+新建分组</a>
+        <table class="main-base-table mt20">
+            <tr>
+                <th class="w300 tleft">产品组</th>
+                <th class="w240 tleft">店铺中展开分组</th>
+                <th class="tleft">组内产品管理</th>
+                <th class="w100 tleft">操作</th>
+            </tr>
+            {if condition="$progroup neq ''"}
+                {foreach name="progroup" item="val"}
+            <tr>
+                <td colspan="4">
+                    <ul class="group-list">
+                        <li class="w300">
+                            <a href="javascript:void(0);" class="gray js-show-child-group mr5"><i class="iconfont icon-jiahao"></i></a> 
+                            <span class="js-group-name">{$val['group_name']}</span>
+                            <input type="text" class="js-group-name-text hide" data-id="{$val['group_id']}" value="{$val['group_name']}"/>
+                        </li>
+                        <li>
+                            <select>
+                                <option value="1" {if condition="$val['store_open'] eq 1"}selected="selected"{/if}>展开</option>
+                                <option value="2" {if condition="$val['store_open'] eq 2"}selected="selected"{/if}>不展开</option>
+                            </select>
+                        </li>
+                        <li>
+                            <a href="{:url('/index/Product/groupProduct',array('group_id'=>$val['group_id']))}">组内产品管理</a>
+                        </li>
+                        <li class='w100'>
+                            <a href="javascript:void(0);" class="js-group-editor orange f18">
+                                <i class="iconfont icon-bianji"></i></a> 
+                            <a href="javascript:void(0);" class="js-group-delete orange ml10 f18" data-id="{$val['group_id']}"><i class="iconfont icon-iconfontshanchu1"></i></a>
+                        </li>
+                    </ul>
+                    <div class="child-group-list-wrap hide">
+                        {foreach name="val['child']" item="v"}
+                         <ul  class="group-list child-group-list mt10"  name="child-{$val['group_id']}" >
+                            <li>
+                                <span class="js-group-name">{$v['group_name']}</span>
+                                <input type="text" class="js-group-name-text hide" data-id="{$v['group_id']}" value="{$v['group_name']}"/>
+                            </li>
+                            <li>&nbsp;</li>
+                            <li><a href="{:url('/index/Product/groupProduct',array('group_id'=>$v['group_id']))}">组内产品管理</a></li>
+                            <li class='w100'>
+                                <a href="javascript:void(0);" class="js-group-editor orange f18">
+                                    <i class="iconfont icon-bianji "></i></a> 
+                                <a href="javascript:void(0);" class="js-group-delete orange ml10 f18" data-id="{$v['group_id']}"><i class="iconfont icon-iconfontshanchu1"></i></a>
+                                
+                            </li>
+                        </ul>
+                        {/foreach}  
+                    </div>
+                     <a href="javascript:void(0);" class="orange js-btn-add-group show mt5">创建子分组</a>
+                    <div  class="add-group-search hide mt10">
+                        <input type="text" data-pid = "{$val['group_id']}" name="group_name" placeholder="请输入英文且组名不能重复" id="group_name" maxlength="30">
+                        <a id="addsubmit" href="javascript:void(0);" class="btn-orange js-btn-save-group ml10">保存</a>
+                        <a id="cancelsubmit" href="javascript:void(0);" class="btn-orange-light js-btn-cancel-group ml10">取消</a>
+                    </div>
+                </td>
+            </tr>
+            
+            {/foreach}
+            {else/}
+            <tr">
+                <td height="270" colspan="9" class="no-result">没有找到符合条件的信息。 </td>
+            </tr>
+            {/if}
+        </table>
+        <div id="addGroupSearch" class="add-group-search hide mt10">
+            <input type="text" name="group_name" placeholder="请输入英文且组名不能重复" id="group_name" maxlength="30">
+            <a id="addsubmit" href="javascript:void(0);" class="btn-orange js-btn-save-group ml10">保存</a>
+            <a id="cancelsubmit" href="javascript:void(0);" class="btn-orange-light js-btn-cancel-group ml10">取消</a>
+        </div>
+        <div class="commonpage page-wrap mt20"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        dxseller.product.productGroupPage();
+    });
+</script>

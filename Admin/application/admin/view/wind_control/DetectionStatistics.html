@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8" />
+    <title>3.1.10.1 风控检测统计</title>
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+</head>
+<body>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+    <!-- BEGIN SIDEBAR -->
+    <!--#include file="layout/sidebar.html"-->
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content pt0 ml20 pl0">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                    <div>
+                        <div class="tab-content mt25">
+                            <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                <div class="search-btn-wrap bborder-no">
+                                    <form id="navbar" class="navbar-left" action="orderAccuse" method="post">
+                                        <ul class="c-h-ul search-ul query-ul">
+                                            <li>
+                                                <label class="c-h-ul-li-title">AnalyzeType:</label>
+                                                <select name="type" class="form-control input-small inline">
+                                                    <option value="">Day</option>
+                                                    <option value="">Month</option>
+                                                </select>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">TxnType:</label>
+                                                <select name="list_type" class="form-control input-small inline">
+                                                    <option value="">EGP</option>
+                                                </select>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">SearchType:</label>
+                                                <select name="list_type" class="form-control input-small inline">
+                                                    <option value="">Txn数量</option>
+                                                </select>
+                                            </li>
+                                            <li class="w440">
+                                                <label class="c-h-ul-li-title" for="reservationtime">Time Duration</label>
+                                                <input type="text" name="startTime" id="reservationtime" class="form-control input-small startTime h29" value="{:input('startTime',$startTime)}" autocomplete="off" />
+                                                <span class="time-text">至</span>
+                                                <input type="text" name="endTime" id="canceltime" class="form-control input-small endTime h29" value="{:input('endTime',$endTime)}" autocomplete="off" />
+                                            </li>
+                                            <li class="w240">
+                                                <label class="c-h-ul-li-title w60"></label>
+                                                <a onclick="javascript:;" class="btn btn-gray" href="javascript:;">search</a>
+                                                <a onclick="javascript:;" class="btn btn-gray" href="javascript:;">导出</a>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                </div>
+                                <!-- start base table -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table-basic table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th class="fbold">RiskType</th>
+                                                    <th class="fbold">2019-02-01</th>
+                                                    <th class="fbold">2019-02-02</th>
+                                                    <th class="fbold">2019-02-03</th>
+                                                    <th class="fbold">2019-02-04</th>
+                                                    <th class="fbold">2019-02-05</th>
+                                                    <th class="fbold">2019-02-06</th>
+                                                    <th class="fbold">2019-02-07</th>
+                                                    <th class="fbold">2019-02-08</th>
+                                                    <th class="fbold">2019-02-09</th>
+                                                    <th class="fbold">2019-02-10</th>
+                                                    <th class="fbold">2019-02-11</th>
+                                                    <th class="fbold">2019-02-12</th>
+                                                    <th class="fbold">2019-02-13</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>EgpRisk</td>
+                                                    <td>48</td>
+                                                    <td>35</td>
+                                                    <td>75</td>
+                                                    <td>150</td>
+                                                    <td>41</td>
+                                                    <td>54</td>
+                                                    <td>63</td>
+                                                    <td>36</td>
+                                                    <td>43</td>
+                                                    <td>56</td>
+                                                    <td>36</td>
+                                                    <td>43</td>
+                                                    <td>56</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>EgpReject</td>
+                                                    <td>57</td>
+                                                    <td>30</td>
+                                                    <td>39</td>
+                                                    <td>36</td>
+                                                    <td>40</td>
+                                                    <td>48</td>
+                                                    <td>38</td>
+                                                    <td>32</td>
+                                                    <td>34</td>
+                                                    <td>30</td>
+                                                    <td>36</td>
+                                                    <td>43</td>
+                                                    <td>56</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- end base table -->
+                                <div class="row ml0 mr0 mt20">
+                                    <div id="DetectionStatistics" style="width: 100%;height: 500px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/scripts/custom/echarts.js"></script>
+    <script type="text/javascript" src="/js/DetectionStatistics.js"></script>
+</body>
+
+</html>

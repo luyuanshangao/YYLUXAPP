@@ -1,0 +1,12 @@
+{
+    "suggestions": [{
+        "value": "United Arab Emirates",
+        "data": "AE"
+    }, {
+        "value": "United Kingdom",
+        "data": "UK"
+    }, {
+        "value": "United States",
+        "data": "US"
+    }]
+}

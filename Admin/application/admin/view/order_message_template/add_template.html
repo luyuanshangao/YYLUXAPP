@@ -1,0 +1,109 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addUserForm" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{$data['id']}">
+            <dl class="c-h-dl-validator form-group clearfix template-type">
+                <dd class="v-title">
+                    <label><em>*</em>模板类型：</label>
+                </dd>
+                <dd>
+                    <select name="type" class="form-control input-small inline type">
+                        <option {if condition="$data['type'] eq 1"}selected="selected"{/if} value="1">普通模板</option>
+                        <option {if condition="$data['type'] eq 2"}selected="selected"{/if} value="2">自动回复模板</option>
+                    </select>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix status">
+                <dd class="v-title">
+                    <label><em>*</em>启用状态：</label>
+                </dd>
+                <dd>
+                    <select name="status" class="form-control input-small inline status">
+
+                        <option {if condition="$data['status'] eq 1"}selected="selected"{/if} value="1">启用</option>
+                        <option {if condition="$data['status'] eq 2"}selected="selected"{/if} value="2">未启用</option>
+                    </select>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl {if condition="isset($data['type']) && $data['type'] eq 2"}class="c-h-dl-validator form-group clearfix is-crash"{else}class="c-h-dl-validator form-group clearfix is-crash hide"{/if}>
+                <dd class="v-title">
+                    <label><em>*</em>是否设为紧急：</label>
+                </dd>
+                <dd>
+                    <select name="is_crash" class="form-control input-small inline is_crash">
+                        <option {if condition="$data['is_crash'] eq 1"}selected="selected"{/if} value="1">是</option>
+                        <option {if condition="$data['is_crash'] eq 2"}selected="selected"{/if} value="2">否</option>
+                    </select>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl {if condition="!isset($data['order_status']) || (isset($data['order_status']) && $data['order_status'] gt 0)"}class="c-h-dl-validator form-group clearfix order-status"{else}class="c-h-dl-validator form-group clearfix order-status hide"{/if}>
+                <dd class="v-title">
+                    <label><em>*</em>订单状态：</label>
+                </dd>
+                <dd>
+                    <select name="order_status" class="form-control input-small inline status">
+                        {foreach name="order_status_data" item="vo"}
+                            <option value="{$vo[0]}" {if condition="$data['order_status'] eq $vo[0]"}selected="selected"{/if}>{$vo[1]}</option>
+                        {/foreach}
+                    </select>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl {if condition="isset($data['type']) && $data['type'] eq 2"}class="c-h-dl-validator form-group clearfix number-reply"{else}class="c-h-dl-validator form-group clearfix number-reply hide"{/if}>
+            <dd class="v-title">
+                <label><em>*</em>自动回复条数：</label>
+            </dd>
+            <dd>
+                <input type="number" name="number_reply" value="{$data['number_reply']}" class="form-control">
+            </dd>
+            <dt>（当用户未回复数量达到此数量时会自动回复）</dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>备注说明：</label>
+                </dd>
+                <dd>
+                    <textarea name="remark" cols="59" rows="6" class="pd5">{$data['remark']}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+             <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>英文回复：</label>
+                </dd>
+                <dd>
+                    <textarea name="content_en" id="content_en" cols="59" rows="6" class="pd5">{$data['content_en']}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    /*实例化编辑器*/
+    KindEditor.ready(function(K) {
+        window.editor = K.create('#content_en',{
+            afterBlur: function () { this.sync();},
+            width:'450px',
+            minWidth:'450px',
+            height:'300px'
+        });
+    });
+    $(function () {
+        $("select[name='type']").change(function () {
+            var type = $(this).val();
+            if(type == 1){
+                $(".order-status").removeClass("hide");
+                $(".number-reply").addClass("hide");
+                $(".is-crash").addClass("hide");
+            }else {
+                $(".order-status").addClass("hide");
+                $(".number-reply").removeClass("hide");
+                $(".is-crash").removeClass("hide");
+            }
+        })
+    })
+</script>

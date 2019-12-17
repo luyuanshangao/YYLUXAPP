@@ -1,0 +1,38 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="saveCodeForm" action="{url('admin/Affiliate/saveBanner')}" enctype="multipart/form-data">
+            <input type="hidden" name="id"  value="{$content['_id']?$content['_id']:''}">
+
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>code：</label>
+                </dd>
+                <dd>
+                    <input name="affiliate_code" value="{$content['_id']}" class="form-control input-medium inline w400" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>备注：</label>
+                </dd>
+                <dd>
+                    <input name="affiliate_remark" value="{$content['Remark']}" class="form-control input-medium inline w400" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+             <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>html：</label>
+                </dd>
+                <dd>
+                    <textarea name="affiliate_html" cols="62" rows="15" value="{$content.Html}" class="pd5">{$content.Html}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/js/custom.js"></script>
+<script type="text/javascript">
+</script>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>DX_订单查看</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+    {load href="/static/css/productManagement.css" /}
+</head>
+
+            <div class="page-content pt0 ml0 pl0">
+                <!--start  按钮功能区 -->
+                <div class="bg-color-gray0 area_btn0">
+                    {$menu_logo}
+                </div>
+                <!--end  按钮功能区 -->
+                <!-- 订单内容 begin -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+
+                            <div>
+
+                                <div class="blank25"></div>
+                                <div class="tab-content">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-content-wrap none">
+                                            <form action="" class="search-form">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">属性名：</label>
+                                                        <input name="ygNumber" class="form-control input-small" type="text" value="{{ygNumber}}" />
+                                                    </li>
+
+                                                    <li class="w480">
+                                                        <label class="c-h-ul-li-title" for="reservationtime">下单时间：</label>
+                                                        <input type="text" name="reservation" id="reservationtime" class="form-control input-small" />
+                                                        <span class="time-text w100">至</span>
+                                                        <input type="text" name="reservation" id="canceltime" class="form-control input-small" />
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title" for="reservationtime"></label>
+                                                        <a class="btn btn-gray btn-search" href="javascript:;">查 询</a>
+                                                        <a class="standard-search-btn ml10 Qing" href="javascript:;">普通查询</a>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <div class="search-btn-wrap">
+                                            <form id="navbar" class="navbar-left" action="attribute" method="post" role="search">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">属性名查询：</label>
+                                                            <input name="title_cn" class="form-control input-small" type="text" value="{$attribute_val['title_cn']?$attribute_val['title_cn']:''}" />
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">属性类型：</label>
+                                                        <select ="powerset" name="type" class="input-xlarge w100" placeholder="数据类型" >
+                                                            <option value="">请选择</option>
+                                                            <option {$attribute_val['type']?$attribute_val['type'] == 1?'selected = "selected"':'':''}  value="1">单选类型</option>
+                                                            <option {$attribute_val['type']?$attribute_val['type'] == 2?'selected = "selected"':'':''} value="2" >多选类型</option>
+
+                                                        </select>
+                                                    </li>
+
+                                                    <li class="w260">
+                                                        <label class="c-h-ul-li-title w60"></label>
+                                                        <a onclick="javascript:document:navbar.submit();" class="btn btn-gray" href="javascript:;">查 询</a>
+                                                        <a class="btn btn-gray classadd" href="/ProductManagement/add_attribute.html">添 加</a>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                      
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-padding">
+                                                    <colgroup>
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                    </colgroup>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>属性名称</th>
+                                                        <th>属性类型</th>
+                                                        <th>属性选项</th>
+                                                        <th>是否显示</th>
+                                                        <th>序号</th>
+                                                        <th>添加时间</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {volist name="list_attribute" id="vo"}
+                                                        <tr>
+                                                            <td>{$vo.title_cn}({$vo.title_cn})</td>
+                                                            <td>{eq name="$vo.type" value="1"}单选类型{else/}多选类型{/eq}</td>
+                                                            <td>{$vo.attribute_string}</td>
+                                                            <td>{eq name="$vo.status" value="1"}开启{else/}关闭{/eq}</td>
+                                                            <td>{$vo.sort}</td>
+                                                            <td><?php echo date("Y-m-d H:i:s",$vo['addtime']) ?></td>
+
+                                                            <td>
+                                                               <a href="/ProductManagement/edit_attribute.html?attributeid={$vo.id}" class="Qing">修改</a>|
+                                                               <a href="javascript:void(0);" onclick="del_attribute({$vo.id})" class-id="{$vo.catalog_id}" del-id = "{$vo.id}" class="red Qing  del_attribute  attribute{$vo.id}">删除</a>
+                                                            </td>
+                                                        </tr>
+                                                        {/volist}
+                                                        
+                                                    </tbody>
+                                                </table>
+                                                <div class="blank10"></div>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="blank10"></div>
+                                        <div class="row row16 pd15">
+
+
+                                           
+
+                                            <div class="col-md-13">
+
+
+                                                <div class="dataTables_paginate paging_bootstrap fr">
+                                                {$page}
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 订单内容 end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+<script type="text/javascript">
+
+
+</script>
+
+    <!-- END CONTENT -->
+
+    <!-- END CONTAINER -->
+    <!-- BEGIN FOOTER -->
+    <!--#include file="layout/footer.html"-->
+
+    <!-- END FOOTER -->
+    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+    <!-- BEGIN CORE PLUGINS -->
+    <!--#include file="layout/c_corejs.html"-->
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <!--<script type="text/javascript" src="/assets/plugins/bootstrap-daterangepicker/moment.js"></script>-->
+    <!-- 日期插件 -->
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!--<script type="text/javascript" src="/assets/plugins/bootstrap-daterangepicker/daterangepicker-zh-cn.js"></script>-->
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <!-- <script src="/static/js/dx_cs_order.js"></script> -->
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <!-- <script>
+    $(function() {
+        App.init();
+    })
+    </script> -->
+    <!-- END JAVASCRIPTS -->
+
+
+</html>

@@ -1,0 +1,34 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addVatForm" enctype="multipart/form-data">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label class="w120"><em>*</em>国家简码：</label>
+                   <input name="" type="hidden" value="{$list._id}" />
+                </dd>
+                <dd>
+                    <input name="countryCode" value="{$list.countryCode}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label class="w120"><em>*</em>VAT费用计算公式：</label>
+                </dd>
+                <dd>
+					<input name="VatFormula" value='{$list.VatFormula}' class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+             <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label class="w120"><em>*</em>备注说明：</label>
+                </dd>
+                <dd>
+                    <textarea name="Remark" cols="35" rows="8" class="pd5">{$list.Remark}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>

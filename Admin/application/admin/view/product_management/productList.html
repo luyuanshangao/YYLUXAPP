@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>商品管理->商品管理->商城管理</title>
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+    {load href="/static/css/productManagement.css" /}
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+        <!-- BEGIN SIDEBAR -->
+        <!--#include file="layout/sidebar.html"-->
+        <!-- END SIDEBAR -->
+        <!-- BEGIN CONTENT -->
+            <div class="page-content pt0 ml20 pl0">
+                <!-- 订单内容 begin -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt20">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap">
+                                            <form id="navbar" class="navbar-left" action="{:url('ProductManagement/productList')}" method="post">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li>
+                                                        <label class="c-h-ul-li-title w80">SPU：</label>
+                                                        <textarea class="form-control fr"  placeholder='输入框只允许以",",";"或换行隔开'  name="spu" rows="3" cols="50">{:input('spu')}</textarea>
+                                                           <!-- <input name="spu" value="{:input('spu')}" class="form-control input-small" type="text" /> -->
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title w80">商品编码：</label>
+                                                        <textarea class="form-control fr" placeholder='输入框只允许以",",";"或换行隔开' name="Code" rows="3" cols="50">{:input('Code')}</textarea>
+                                                       <!--  <input name="Code" value="{:input('Code')}" class="form-control input-small" type="text" /> -->
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">产品标题：</label>
+                                                        <input name="Title" value="{$data.Title}" class="form-control input-small" type="text" />
+                                                    </li>
+
+                                                     <li>
+                                                        <label class="c-h-ul-li-title">品牌名称：</label>
+                                                        <input name="BrandName" value="{$data.BrandName}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">卖家名称：</label>
+                                                        <input name="UserName" value="{$data.UserName}" class="form-control input-small" type="text" />
+                                                    </li>
+ 													<li class="pb6">
+                                                        <label class="c-h-ul-li-title">产品状态：</label>
+                                                         <select name="ProductStatus" class="form-control input-small inline">
+                                                                 <option  value="">请选择</option>
+                                                              {volist name="ProductStatus" id="ve"}
+                                                                 <option {if condition="$ProductStatusDefault eq $ve[0]"} selected = "selected"{/if} value="{$ve[0]}">{$ve[1]}</option>
+                                                              {/volist}
+                                                          </select>
+                                                    </li>
+
+                                                    <li class="w440">
+                                                        <label class="c-h-ul-li-title" for="reservationtime">上架时间：</label>
+                                                        <input type="text" name="startTime" id="reservationtime" class="form-control input-small startTime" value="{:input('startTime')}" autocomplete="off"/>
+                                                        <span class="time-text w10">至</span>
+                                                        <input type="text" name="endTime" id="canceltime" class="form-control input-small endTime"  value="{:input('endTime')}" autocomplete="off"/>
+                                                    </li>
+                                                    <li class="w300">
+                                                        <label class="c-h-ul-li-title">价格范围：</label>
+                                                        <input type="text" name="lowPrice" id="lowPrice" class="form-control input-small w60" value="{:input('lowPrice')}" autocomplete="off"/>
+                                                        <span class="time-text">至</span>
+                                                        <input type="text" name="heightPrice" id="heightPrice" class="form-control input-small w60"  value="{:input('heightPrice')}" autocomplete="off"/>
+                                                    </li>
+
+                                                     <li class="w680">
+                                                          <label class="c-h-ul-li-title">产品类别：</label>
+                                                          {if condition="$parent_class  == ''"}
+                                                              <select name="first_level" id="first_level" class="form-control input-small inline mr10">
+                                                              <option value="">请选择</option>
+                                                              {volist name="classList" id="vo"}
+                                                                <option {if condition="$data.first_level eq $vo.id"} selected = "selected"{/if} value="{$vo.id}">{$vo.title_en}</option>
+                                                              {/volist}
+                                                             </select>
+                                                            {else /}
+                                                             {$parent_class}
+                                                          {/if}
+                                                              <a onclick="javascript:document:navbar.submit();" class="btn btn-gray ttop" href="javascript:;">查 询</a>
+                                                    </li>
+                                                    <li class="pl30">
+                                                        <input type="button" value="批量下架" class="btn btn-qing mr5" id="checkOKStatus">
+                                                        <!--<input type="button" value="批量不通过" class="btn" id="checkFail">-->
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <div id="enlarge_images"></div>
+                                        <!-- start base table -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-hover table-padding">
+                                                    <thead>
+                                                    <tr>
+                                                        <th><input type="checkbox" id="all"/></th>
+                                                        <th>SPU</th>
+                                                        <th>产品图片</th>
+                                                        <th>产品标题</th>
+                                                        <th>品牌名称</th>
+                                                        <th>产品售价($)</th>
+                                                        <th>商品信息(编码-售价-库存)</th>
+                                                        <th>SalesRank</th>
+                                                        <th>卖家名称</th>
+                                                        <th class="w200">类别</th>
+                                                        <th class="w100">状态</th>
+                                                        <th class="w100">上架时间</th>
+                                                        <th class="w160">操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody  id="list">
+                                                        {volist name="list" key = 'k' id="vo"}
+                                                            <tr>
+                                                                <td><input type="checkbox" class="single-checkbox" value='{$vo._id}' /></td>
+                                                                <td>{$vo._id}</td>
+                                                                <td id="demo{$k}">
+                                                                    <img width="25" height="25" src="{$dx_mall_img_url}{$vo['FirstProductImage']}" class="show-pic">
+                                                                </td>
+                                                                <td class="w300 word-break-all word-wrap-break">
+                                                                   <a href="{$mall_base_url}p/{$vo._id}" target="_blank" title="{$vo.Title}">
+                                                                      {$vo.Title}
+                                                                   </a>
+                                                                </td>
+                                                                <td>{$vo.BrandName}</td>
+                                                                <td>$ {$vo.LowPrice}--$ {$vo.HightPrice}</td>
+                                                                <td>
+                                                                    {volist name="$vo['Skus']" key = 'key' id="vk"}
+                                                                        {$vk.Code}-${$vk.SalesPrice}-{$vk.Inventory}<br>
+                                                                    {/volist}
+                                                                </td>
+                                                                <td>{$vo.SalesRank}</td>
+                                                                <td>{$vo.StoreName}</td>
+                                                                <td>
+                                                                 <?php $str = explode("-",$vo['CategoryPath']); ?>
+                                                                 {volist name="product_class" id="vi"}
+                                                                    {if condition="$vi.id == $str['0']"}
+                                                                       <?php $category1 = $vi['title_en'];  ?>
+                                                                    {elseif condition="$vi.id == $str['1']"/}
+                                                                       <?php $category2 = ' -> '.$vi['title_en'];  ?>
+                                                                    {elseif condition="$vi.id == $str['2']"/}
+                                                                       <?php $category3 = ' -> '.$vi['title_en'];  ?>
+                                                                    {elseif condition="$vi.id == $str['3']"/}
+                                                                       <?php $category4 = ' -> '.$vi['title_en'];  ?>
+                                                                    {/if}
+                                                                 {/volist}
+                                                                 {$category1.$category2.$category3.$category4}
+                                                                </td>
+                                                                <td>
+                                                                 {volist name="ProductStatus" id="ve"}
+                                                                    {if condition="$vo.ProductStatus == $ve['0']"}
+                                                                        {$ve['1']}
+                                                                    {/if}
+                                                                {/volist}
+                                                                </td>
+
+                                                                <td> {if condition="$vo.AddTime neq ''"}{$vo.AddTime|date="Y-m-d H:i:s",###}{/if} </td>
+                                                                <td class="operation-td">
+                                                                {volist name="ProductStatus" id="ve"}
+                                                                    {if condition="$vo.ProductStatus == $ve['0']"}
+                                                                        {if condition="$vo.ProductStatus == 1"}
+                                                                            <a href="javascript:void(0);" data-id="{$vo._id}" class="Qing Irregularities-btn">违规下架</a> |
+                                                                            <a href="javascript:void(0);"  data-id="{$vo._id}" class="Qing delet-btn">
+                                                                            <i class="glyphicon glyphicon-trash f16"></i>
+                                                                            </a>
+                                                                            {else /}
+                                                                                  {if condition="$vo.ProductStatus == 10"}
+                                                                                  <a href="javascript:void(0);" class="Qing red">{$ve['1']}</a>
+                                                                                  {else /}
+                                                                                  <a href="javascript:void(0);" class="Qing red">{$ve['1']}</a>
+                                                                                    <a href="javascript:void(0);" data-id="{$vo._id}" class="Qing delet-btn"> |
+                                                                                    <i class="glyphicon glyphicon-trash f16"></i>
+                                                                                    </a>
+                                                                                  {/if}
+                                                                        {/if}
+                                                                    {/if}
+                                                                {/volist}
+                                                                </td>
+                                                            </tr>
+                                                        {/volist}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row16 pd15">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                                {$page}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script src="/static/js/product.js" type="text/javascript"></script>
+    <script>
+        $(function(){
+            Product.productList();
+            Common.AllSelect($("#all"),$('.single-checkbox'));
+            //批量通过
+            $("#checkOKStatus").click(function(){
+                var valArr = new Array;
+                $("#list input[type=checkbox]:checked").each(function (i) {
+                    valArr[i] = $(this).val();
+                });
+                var vals = valArr.join(',');//转换为逗号隔开的字符串
+                if(vals != ''){
+                    batch_OK(vals);
+                }else{
+                    alert('请选择需要操作的数据');
+                }
+            });
+
+            function batch_OK(e){
+                var e = ""+e+"";
+                layer.msg('确定要批量下架么？', {
+                    time: 0 //不自动关闭
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index){
+                        layer.close(index);
+
+                        $.ajax({
+                            type:"POST",
+                            url:'/ProductManagement/ProductStatusList',
+                            data:{id:e},
+                            dataType:"json",
+                            cache:false,
+                            success:function(msg){
+                                if(msg.code == 200){
+                                    layer.msg(msg.result, {icon: 1});
+                                    setTimeout(function(){
+                                        window.location.reload()
+                                    },1500);
+                                }else{
+                                    layer.msg(msg.result, {icon: 2});
+                                }
+                            },
+                            error:function(error){}
+                        });
+                    }
+                });
+            }
+        });
+
+    </script>
+    <!-- END JAVASCRIPTS -->
+
+</body>
+</html>

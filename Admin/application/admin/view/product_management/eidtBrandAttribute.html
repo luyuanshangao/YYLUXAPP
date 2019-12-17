@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!-- 带搜索框的jQuery下拉框美化插件样式 -->
+<link href="/static/css/jquery.searchableSelect.css" rel="stylesheet" type="text/css">
+{load href="/static/css/productManagement.css" /}
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addUserForm" action="{url('admin/ProductManagement/add_brand')}" enctype="multipart/form-data">
+            <input type="hidden" name="id"  value="{$id}">
+
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title w100">
+                    <label><em>*</em>分类：</label>
+                </dd>
+                <dd>
+
+                     <div class="input-icon right">
+                        {if condition="!empty($select_class) neq ''"}
+                            {$select_class}
+                        {else /}
+                        <select name="first_level_mongo" id="first_level_mongo" class="form-control input-small inline">
+                            <option value="">请选择</option>
+                            {volist name="first_class" id="vo"}
+                            <option value="{$vo.id}">{$vo.title_en}</option>
+                            {/volist}
+                        </select>
+
+                        {/if}
+                    </div>
+                </dd>
+                <dt></dt>
+            </dl>
+            <div id="brand_select">
+                <dl class="c-h-dl-validator form-group clearfix">
+                    <dd class="v-title">
+                        <label><em>*</em>品牌名称：</label>
+                    </dd>
+                    <dd>
+                        <div class="select-brand-wrapper">
+                          <a href="javascript:void(0);" class="product_brand_btn w200 form-control" id="product_brand_btn">请选择</a>
+                          <div class="select-brand-wrapper-inner hide">
+                            <input type="text" class="brand_keyword f12" id="brand_keyword" placeholder="请输入关键词">
+                            <ul class="hide"></ul>
+                          </div>
+                          <!-- <select id="product_brand"   class="form-control input-small w200 hide"></select> -->
+                        </div>
+                    </dd>
+                    <dt></dt>
+                </dl>
+                {$list_data['brand']}
+            </div>
+            <div id="attribute_select">
+                <dl class="c-h-dl-validator form-group clearfix">
+                    <dd class="v-title">
+                        <label><em>*</em>属性名：</label>
+                    </dd>
+                    <dd>
+                      <div class="select-attr-wrapper">
+                        <a href="javascript:void(0);" class="product_attr_btn w200 form-control" id="product_attr_btn">请选择</a>
+                        <div class="select-attr-wrapper-inner hide">
+                          <input type="text" class="attr_keyword f12" id="attr_keyword" placeholder="请输入关键词">
+                          <ul class="hide"></ul>
+                        </div>
+                        <!-- <select id="attribute"  class="form-control input-small w200 hide"></select> -->
+                      </div>
+                    </dd>
+                    <dt></dt>
+                </dl>
+                {$list_data['attribute']}
+            </div>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>显示状态：</label>
+                </dd>
+                <dd class="mt5">
+
+                    {if condition="!empty($select_class) neq ''"}
+                        <input class="ml10 cursor-pointer" {if condition="$brand_attribute['status'] eq 1"} checked="checked" {/if} type="radio" value="1" name="status"><span class="relative-top2">启用</span><input class="ml10 cursor-pointer" type="radio"  {if condition="$brand_attribute['status'] eq 0"} checked="checked" {/if} value="0" name="status"><span class="relative-top2">禁用</span>
+
+                    {else /}
+                      <input class="ml10 cursor-pointer" checked="checked" type="radio" value="1" name="status"><span class="relative-top2">启用</span><input class="ml10 cursor-pointer" type="radio" value="0" name="status"><span class="relative-top2">禁用</span>
+                    {/if}
+                    </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>
+  <!-- 带搜索框的jQuery下拉框美化插件脚本 -->
+  <script src="/static/js/jquery.searchableSelect.js"></script>
+          <script type="text/javascript">
+            function delect_attribute(e){
+                $(".delete_attribute"+e).remove();
+            }
+
+        </script>
+        <script type="text/javascript">
+            $("#product_brand").change(function(){
+                   var max = 1;
+                   var value = $(this).val();
+                   var name  =$(this).find("option:selected").attr("dataName");
+                   if($(".delete"+value).is('.delete'+value)){
+                      return;
+                   }
+                   $(".brand_sort input").each(function() {
+                    //var id = parseInt($(this).attr("id"));
+                      var id = parseInt($(this).val());
+                      if (id > max) {
+                          max = id + 1;
+                      }else{
+                          max = max + 1;
+                      }
+                   });
+                   var html = 'add_activity_class('+value+')';
+                   var html_input = '<dl class="c-h-dl-validator form-group clearfix delete'+value+'"> <dd class="v-title"><label><em></em></label></dd><dd><div class="input-icon right"><input type="hidden"  name="brand['+value+'][id]"  value="'+value+'"><input value="'+name+'" readonly="readonly" name="brand['+value+'][name]" id="input-color-en" class="form-control input-medium fl w100" type="text"> 排序：<div style="" class="input-icon right inline-block inline_block brand_sort"><input value="'+max+'" name="brand['+value+'][sort]" class="form-control input-val-1 w100" type="text"></div></div></dd><a class="btn-top5-del eliminate'+value+'" onclick="delect_brand(\''+value+'\')" href="javascript:;">删除</a></dd><dt></dt></dl>'
+                   $("#brand_select").append(html_input);
+            })
+
+            function delect_brand(e){
+                $(".delete"+e).remove();
+            }
+            
+        </script>
+<script type="text/javascript" src="/js/custom.js"></script>

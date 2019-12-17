@@ -1,0 +1,79 @@
+{include file="layout/c_global_style" /}
+{include file="layout/c_style" /}
+{load href="/static/css/advertisement.css" /}
+{include file="layout/c_corejs" /}
+<div class="page-container pd10">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                <div>
+                    <div class="tab-content">
+                        <div class="tab-pane active d-element-bind btns-link" id="month6">
+                            <div class="search-btn-wrap">
+                                <form id="navbar" class="navbar-left" action="attribute" method="post" role="search">
+                                    <ul class="c-h-ul search-ul query-ul">
+                                        <li>
+                                            <label class="c-h-ul-li-title">站点：</label>
+                                            <select name="type" class="input-xlarge" placeholder="数据类型" >
+                                            <option value="">请选择</option>
+
+                                            </select>
+                                        </li>
+                                        <li class="w260">
+                                            <label class="c-h-ul-li-title w60"></label>
+                                            <a  class="btn btn-gray" href="javascript:;">查 询</a>
+                                            <a class="btn btn-gray classadd" href="">添 加</a>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table-basic table-padding table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>标识ID</th>
+                                                <th>站点</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                    <a href="" class="Qing">
+                                                        <i class="glyphicon glyphicon-edit f16"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row row16 pd15">
+                                <div class="col-md-16">
+                                    <div class="dataTables_paginate paging_bootstrap fr">
+                                        {$page}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+//页面层
+// layer.open({
+//     type: 1,
+//     title:'ti',
+//     //skin: 'layui-layer-rim', //加上边框
+//     area: ['420px', '240px'], //宽高
+//     content: 'html内容'
+// });
+
+</script>

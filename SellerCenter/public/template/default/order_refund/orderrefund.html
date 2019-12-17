@@ -1,0 +1,171 @@
+{layout name="layout/main"/}
+{load href="/static/css/allOrder.css" /}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+{load href="/static/js/module/allOrder.js" /}
+{load href="/static/js/global.js" /}
+{load href="/static/js/module/OrderRefund.js" /}
+{load href="/static/js/plugin/webuploader/webuploader.js" /}
+<style>
+	.sales_attr_box img{width: 25px; height: 25px;}
+</style>
+	<div class="main-box fl">
+		<!--<div class="waring">
+			<div class="fb f14">
+				<span>order statu:</span>
+				<span>//TODO</span>
+			</div>
+		</div>-->
+		<div class="box-white">
+			<h3 class="pb10 bborder">订单详情</h3>
+			<div class="pt20 pb10 bb-gray">
+				<span class="fb">收货地址:</span>
+				<span class="pl10">
+					{$order_info.shipping_data.first_name|default=''}
+					{$order_info.shipping_data.last_name|default=''},
+					{$order_info.shipping_data.phone_number|default=''},
+					{$order_info.shipping_data.country|default=''},
+					{$order_info.shipping_data.state|default=''},
+					{$order_info.shipping_data.city|default=''},
+					{$order_info.shipping_data.street1|default=''},
+					{$order_info.shipping_data.street2|default=''}
+					<!--xxx,86-1356256984,guangdong shenzhen nanshang xili,0000--></span>
+			</div>
+			<div class="pt10 pb10 bb-gray">
+				<span class="fb">卖家信息</span>
+				<div class="clearfix mt10">
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">名称:</dt>
+						<dd>{$order_info.customer_name|default=''}</dd>
+					</dl>
+					<!--<dl class="dl-layout fl w300">
+						<dt class="w150 tright">Real name:</dt>
+						<dd>wang XXX</dd>
+					</dl>-->
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">城市:</dt>
+						<dd>{$order_info.shipping_address.city|default=''}</dd>
+					</dl>
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">联系电话:</dt>
+						<dd>{$order_info.shipping_address.phone_number|default=''}</dd>
+					</dl>
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">邮箱:</dt>
+						<dd>{$order_info.shipping_address.email|default=''}</dd>
+					</dl>
+				</div>
+			</div>
+
+			<div class="pt10 bb-gray pb10">
+				<span class="fb">订单信息:</span>
+				<div class="clearfix mt10">
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">订单编号:</dt>
+						<dd id="order" data-id="{$order_info.order_id}" data-store-id="{$order_info.store_id}" data-store-name="{$order_info.store_name}" data-transaction-id="{$order_info.transaction_id}" data-customer-id="{$order_info.customer_id}" data-customer-name="{$order_info.customer_name}">{$order_info.order_number|default=''}</dd>
+					</dl>
+					<dl class="dl-layout fl w300">
+						<dt class="w150 tright">创建订单时间:</dt>
+						<dd>{notempty name='order_info.create_on'}{:date('Y-m-d H:i:s', $order_info['create_on'])}{else/}-{/notempty}</dd>
+					</dl>
+				</div>
+				<table class="table-gray mt10">
+					<tr>
+						<!--<th>
+							<label for="allCheckbox"><input type="checkbox" id="allCheckbox" class="mr5">All select</label>
+						</th>-->
+						<th>
+							<label for="allCheckbox"><input type="checkbox" id="allCheckbox" class="mr5">全部选中</label>
+						</th>
+						<th>属性</th>
+						<th>商品编码</th>
+						<!--<th>Service</th>-->
+						<th>价格</th>
+						<th>数量</th>
+						<th>折扣</th>
+						<th>总价</th>
+					</tr>
+					{volist name='order_info.item_data' id='val'}
+					<tr>
+						<!--<td>
+							<label for="timeCheckbox1"><input type="checkbox" id="timeCheckbox1" class="time-checkbox mr5"></label>
+						</td>-->
+						<td>
+							<label for="timeCheckbox{$val.item_id}" CLASS="fl"><input type="checkbox" name="orderitem.checkbox" id="timeCheckbox{$val.item_id}" class="time-checkbox mr5" value="" data-product-id="{$val.product_id}" data-sku-id="{$val.sku_id}" data-sku-num="{$val.sku_num}" data-product-name="{$val.product_name}" data-product-img="{$val.product_img}" data-product-attr-ids="{$val.product_attr_ids|default='0'}" data-product-attr-desc='{$val.product_attr_desc|default=""}' data-product-nums="{$val.product_nums}" data-product-price="{$val.product_price}"></label>
+							<div class="fl w50 ml10">
+								<img src="{$product_images_url_config}{$val.product_img|default=''}" alt="img" width="50px" height="50px" alt="">
+							</div>
+							<div class="fl w200 ml10">
+								<a href="#">{$val.product_name|default=''}</a>
+							</div>
+						</td>
+						<td>{$val.sku_num|default=''}</td>
+						<td class="gray sales_attr_box">
+							<!--<span>Color:</span>
+							<span>Black M 8005</span>-->
+							{$val.product_attr_desc|default=''}
+						</td>
+						<!--<td>cancel</td>-->
+						<!--<td></td>-->
+						<td>{$order_info['currency_code_str']}{$val.captured_price|default=''}</td>
+						<td>{$val.product_nums|default=''}</td>
+						<td>Save {$val.discount_total|default=''}</td>
+						<td>
+							<p>{$order_info['currency_code_str']}{php}echo round($val['captured_price']*$val['product_nums'],2){/php}</p>
+							<p>(express {$order_info['currency_code_str']}{$val.shipping_fee|default=''})</p>
+						</td>
+					</tr>
+					{/volist}
+				</table>
+				<div class="tright mt20 f14">
+					订单总价:
+					<b class="red">{$order_info['currency_code_str']}{$order_info.captured_amount|default=''}</b>
+				</div>
+			</div>
+
+			<div class="pt10 pb10">
+				<dl class="dl-layout w500 fl" id="edit-price">
+					<dt class="w100 tright ">退款金额:</dt>
+					<dd>
+						<input type="number" name="captured_refunded_fee" max="{$order_info.captured_amount|default=0}" min="0" value="{$order_info.captured_amount|default=0}" class="w100">
+					</dd>
+					<div class="err red hide captured-refunded-fee-err">不能大于总价或小于0</div>
+				</dl>
+				<dl class="dl-layout w500">
+					<dt class="w100 tright pt50">描述:</dt>
+					<dd>
+						<textarea rows="6" cols="30" class="pd10 describe"></textarea>
+						<div class="err red hide describe-err">必填</div>
+					</dd>
+				</dl>
+				<dl class="dl-layout">
+					<dd class="w700">
+						<a href="javascript:void(0);" class="btn-orange saleafter-submit-btn">提交</a>
+						<!--<a href="javascript:void(0);" class="btn-default ml20">Cancellation of arbitration</a>-->
+					</dd>
+				</dl>
+			</div>
+		</div>
+		<!-- <div class="box-white mt10">
+			<a href="/OrderAfterSaleApply/index.html" class="back-to-list">Back</a>
+		</div> -->
+	</div>
+</div>
+<div class="dialog-box success hide afterSaleApply-dialog">
+	<div class="dialog-bg"></div>
+	<div class="dialog-cont">
+		<div class="colse gray">
+			<i class="iconfontmy icon-icon_wrong f14"></i>
+		</div>
+		<div class="cont tcenter pt10 f14">
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var upload_url = '/OrderAfterSaleApply/uploadImgs';
+	var ajax_url = {$ajax_url|default=""};
+	var photopath = '{$product_images_url_config}';
+</script>
+</body>
+</html>

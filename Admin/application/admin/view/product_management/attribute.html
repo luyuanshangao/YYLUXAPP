@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>DX_属性设置</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <!--#include file="layout/c_global_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+    {load href="/static/css/productManagement.css" /}
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="only-body-page-content">
+
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container">
+        <!-- BEGIN CONTENT -->
+        <div class="page-content-wrapper">
+            <div class="page-content pt0">
+                <div class="bg-color-gray0 area_btn0 border-gray bborder-no ml0 mr0">
+                    {$menu_logo}
+                </div>
+                <!--end  按钮功能区 -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap bborder-no">
+                                            <form id="navbar" class="navbar-left" action="attribute" method="post" role="search">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">属性名查询：</label>
+                                                            <input name="title_cn" class="form-control input-small" type="text" value="{$attribute_val['title_cn']?$attribute_val['title_cn']:''}" />
+                                                    </li>
+                                                    <li class="w260">
+                                                        <label class="c-h-ul-li-title w60"></label>
+                                                        <a onclick="javascript:document:navbar.submit();" class="btn btn-gray" href="javascript:;">查 询</a>
+                                                        <a class="btn btn-gray classadd" href="/ProductManagement/add_attribute.html">添 加</a>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12 pb10">
+                                                <table class="table-basic table-padding table-hover">
+                                                    <colgroup>
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                        <col width="">
+                                                    </colgroup>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>属性ID</th>
+                                                        <th>属性中文(英文)名称</th>
+                                                        <th class="w600">属性值</th>
+                                                        <th>是否自定义属性</th>
+                                                        <th>是否自定义属性图片</th>
+                                                        <th>是否默认颜色选项</th>
+                                                        <th>显示类型</th>
+                                                        <th>输入方式</th>
+                                                        <th class="w60">状态</th>
+                                                        <th class="w100">添加时间</th>
+                                                        <th class="w60">操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {volist name="list_attribute" id="vo"}
+                                                        <tr>
+                                                            <td>{$vo._id}</td>
+                                                            <td>{$vo.title_cn}({$vo.title_en})</td>
+                                                            <td class="tleft word-break-all">{$vo.attribute_string}</td>
+                                                            <td>{eq name="$vo.customized_name" value="1"}是{else/}否{/eq}</td>
+                                                            <td>{eq name="$vo.customized_pic" value="1"}是{else/}否{/eq}</td>
+                                                            <td>{eq name="$vo.is_color" value="1"}是{else/}否{/eq}</td>
+                                                            <td>{$vo.show_type}</td>
+                                                            <td>{$vo.input_type}</td>
+                                                            <td>{eq name="$vo.status" value="1"}启用{else/}已删除{/eq}</td>
+                                                            <td>{$vo['add_time'|date="Y-m-d H:i:s",###]}</td>
+                                                            <td>
+                                                               <a href="/ProductManagement/edit_attribute.html?attributeid={$vo._id}" class="Qing">
+                                                                    <i class="glyphicon glyphicon-edit f16"></i>
+
+                                                               </a>|
+                                                               <a href="javascript:void(0);" onclick="del_attribute({$vo._id})"  class="red Qing  del_attribute  attribute{$vo._id}">
+                                                                   <i class="glyphicon glyphicon-trash f16"></i>
+                                                               </a>
+                                                            </td>
+                                                        </tr>
+                                                        {/volist}
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row16 pd15 mt10">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                            {$page}
+                                            </div>
+                                            <script type="text/javascript">
+                                                 function status_id(id,e){
+                                                       $.get("/ProductManagement/attribute_status/id/"+id+"/status/"+e, function(result){
+                                                        if (result.code == 200) {
+                                                            layer.msg(result.result, {icon: 1});
+                                                            setTimeout(function(){window.location.reload();},1500);
+                                                        }else{
+                                                            layer.msg(result.result, {icon: 2});
+                                                        }
+
+                                                           // console.log(result.code);
+                                                    });
+                                                 }
+                                            </script>
+                                        </div>
+                                        <!-- 订单内容 end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/assets/plugins/DatePicker/WdatePicker.js"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!--<script type="text/javascript" src="/assets/plugins/bootstrap-daterangepicker/daterangepicker-zh-cn.js"></script>-->
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+
+
+</body>
+</html>

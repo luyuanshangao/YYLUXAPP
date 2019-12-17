@@ -1,0 +1,115 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/productMan.js" /}
+{load href="/static/js/module/activity.js" /}
+<style>
+    .main-base-table tr{border: 0 solid #e8e8e8;border-bottom: 0 solid #e8e8e8 !important;}
+    .main-base-table{border-top: 1px solid #e8e8e8 !important;}
+    .main-base-table tr td {padding: 0 !important;padding-top: 5px !important;}
+    .pull-right{float: right;}
+    .btn-product-release{padding: 3px 10px;}
+    .product-management{margin-top: -20px;}
+</style>
+
+<div class="main-box fl product-management">
+    <div class="box-white box-white-m0">
+        <h1 class="main-cont-title">活动详情页</h1>
+        <div class="panel">
+            <h1 class="main-cont-title">{$activity_info.activity_title|default="-"}</h1>
+            <div class="content mt20 js-chose-table">
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                        活动名称：
+                    </dt>
+                    <dd>
+                        {$activity_info.activity_title|default="-"}
+                        <div class="err-tip mt10"></div>
+                    </dd>
+                </dl>
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                        活动类型：
+                    </dt>
+                    <dd>
+                        {$activity_info.type_str|default="-"}
+                        <div class="err-tip mt10"></div>
+                    </dd>
+                </dl>
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                        活动范围：
+                    </dt>
+                    <dd>
+                        {$activity_info.range_str|default="-"}
+                        <div class="err-tip mt10"></div>
+                    </dd>
+                </dl>
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                        活动范围详情：
+                    </dt>
+                    <dd>
+                        {if condition="$activity_info['range'] == 1"}
+                            全部产品
+                        {/if}
+                        {if condition="$activity_info['range'] == 2"}
+                            <div>以下分类：</div>
+                            {volist name="activity_info['className']" id="class"}
+                                <div>{$class.classname}</div>
+                            {/volist}
+                        {/if}
+                        <div class="err-tip mt10"></div>
+                    </dd>
+                </dl>
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                        活动状态：
+                    </dt>
+                    <dd>
+                        {$activity_info.status_str|default="-"}
+                        <div class="err-tip mt10"></div>
+                    </dd>
+                </dl>
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                        活动报名时间：
+                    </dt>
+                    <dd>
+                        {:date('Y-m-d H:i:s', $activity_info['registration_start_time'])}
+                        ~
+                        {:date('Y-m-d H:i:s', $activity_info['registration_end_time'])}
+                        <div class="err-tip mt10"></div>
+                    </dd>
+                </dl>
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                        活动时间：
+                    </dt>
+                    <dd>
+                        {:date('Y-m-d H:i:s', $activity_info['activity_start_time'])}
+                        ~
+                        {:date('Y-m-d H:i:s', $activity_info['activity_end_time'])}
+                        <div class="err-tip mt10"></div>
+                    </dd>
+                </dl>
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                        活动描述：
+                    </dt>
+                    <dd>
+                        {$activity_info.description|default="-"}
+                        <div class="err-tip mt10"></div>
+                    </dd>
+                </dl>
+                <dl class="dl-layout">
+                    <dt class="w120 tright">
+                    </dt>
+                    <dd>
+                        <a href="JavaScript:;" class="btn-product-release btn-orange" onclick="Common.goBack(-1)">返回</a>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addUserForm" action="" enctype="multipart/form-data">
+            <input type="hidden" name="id"  value="{$id}">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>类型：</label>
+                </dd>
+                <dd>
+                     <select name="type"  class="form-control input-small inline">
+                       <option value="">请选择</option>
+                         <option {if condition="!empty($list['type']) && $list['type'] == 2"} selected = "selected" {/if}value="2">黑名单</option>
+                         <option {if condition="!empty($list['type']) && $list['type'] == 1"} selected = "selected" {/if}value="1">白名单</option>
+                     </select>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>特殊地址：</label>
+                </dd>
+                <dd>
+                    <input name="value" id="street" value="{$list['street']?$list['street']:''}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>City：</label>
+                </dd>
+                <dd>
+                    <input name="city" id="city" value="{$list['city']?$list['city']:''}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+             <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>是否启用：</label>
+                </dd>
+                <dd>
+                    {if condition="empty($list['status']) || $list['status'] ==1 "}
+                       <input name="status" checked="checked" type="radio" value="1" />启用
+                       <input name="status" type="radio" value="2" />不启用
+                    {elseif condition="$list['status'] == 2"/}
+                       <input name="status" type="radio" value="1" />启用
+                       <input name="status"  checked="checked" type="radio" value="2" />不启用
+                    {/if}
+
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>
+<!-- <script type="text/javascript" src="/js/custom.js"></script> -->
+<script type="text/javascript">
+</script>

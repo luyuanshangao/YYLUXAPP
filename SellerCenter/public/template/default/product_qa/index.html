@@ -1,0 +1,103 @@
+{layout name="layout/main"/}
+{load href="/static/css/allOrder.css" /}
+<style>
+	/* 分页CSS start */
+	.pagination  li {display: inline;padding: 0 2px;float: left;}
+	.pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+	.pagination .active span{color: red;}
+	/* 分页CSS end */
+</style>
+
+<div class="main-box fl product-management order">
+	<div class="box-white mt0 list" style="overflow: hidden;">
+
+		<h1 class="main-cont-title order-title">产品Q&A</h1>
+
+		<div class="search-bar box-white">
+			<form action="{:url('ProductQa/index')}" method="get" id="order_search_form">
+				<ul>
+					<li class="mb5 mt5">
+						<label>关键词：<input type="text" name="search_content" placeholder="关键词" value="{:input('search_content')}"></label>
+						<a href="javascript:$('#order_search_form').submit();" class="search btn-orange">查询</a>
+					</li>
+				</ul>
+			</form>
+		</div>
+
+		<table class="main-base-table mt20 ">
+			<tr class="tr-border">
+				<th colspan="" class="table-title w50">序号</th>
+				<th class="w300">商品</th>
+				<th class="">咨询内容</th>
+			</tr>
+
+			{notempty name='list.data'}
+				{volist name='list.data' id='val'}
+				<tr>
+					<td style="vertical-align: middle;">{$val.question_id}</td>
+					<td width="332" style="vertical-align: middle;">
+						<div class="thum-wrap">
+							<a href="{:config('mall_url_config')}p/{$val.product_id}">
+								<img src="{$product_images_url_config}{$val.product_img}" width="50" height="50" data-img="{$product_images_url_config}{$val.product_img}">
+							</a>
+						</div>
+						<div class="desc-wrap">
+							<h3 class="title">
+								<a href="{:config('mall_url_config')}p/{$val.product_id}" title="{$val.product_name}">{$val.product_name}</a>
+							</h3>
+							<p>销售属性：{$val.product_attr_desc}</p>
+						</div>
+					</td>
+					<td>
+						<div>[{$val.name}]：{$val.description}（{:date('Y-m-d H:i:s', $val['addtime'])}）</div>
+						{if condition='$val["is_answer"] == 1'}
+							{volist name='val.answer_data' id='aval'}
+								<div class="mt10">
+									{$aval.description}
+									[{:date('Y-m-d H:i:s', $aval['addtime'])}]
+								</div>
+							{/volist}
+						{else /}
+							<div class="mt10">
+								<textarea name="description_{$val.question_id}" id="" cols="40" rows="4" class="pt10 pl10 pb10 pr10"></textarea>
+							</div>
+							<div class="mt10"><a href="javascript:;" data-id="{$val.question_id}" pro-id="{$val.product_id}" class="search btn-orange reply-btn">回复</a></div>
+						{/if}
+					</td>
+				</tr>
+				{/volist}
+			{else/}
+				<tr>
+					<td colspan="3">无相关数据</td>
+				</tr>
+			{/notempty}
+
+		</table>
+
+		<div class="page-wrap clearfix mg10">
+			{$list.Page}
+		</div>
+
+	</div>
+</div>
+<script>
+    var ajax_url = {$ajax_url|default='""'};
+    $('.reply-btn').click(function () {
+		var question_id = $(this).attr('data-id'),
+            description = $('textarea[name="description_'+question_id+'"]').val(),
+			param = {question_id:question_id, description:description, product_id:$(this).attr('pro-id')};
+		if (Common.isEmpty(description)){
+		    alert('请输入回复内容');
+		    return false;
+		}
+		Common.ajax('post', ajax_url.async_replyQuestion, param, function (data) {
+			if (data['code'] == '0'){
+                alert('回复成功');
+                window.location.reload();
+			}else{
+			    alert(data['msg']);
+			}
+        });
+    });
+
+</script>

@@ -1,0 +1,16 @@
+<div class="sidebar-box">
+    <div class="sidebar-menu-box">
+        <ul class="sidebar-menu">
+            {volist name="menu_info" id="menu"}
+                {if condition="$menu['parent_menu']['flag'] == $top_menu_flag"} <!--获取对应的子级菜单-->
+                    {volist name="menu.child_menu" id="c_menu"}
+                        <li  class="first-category"><span>{$c_menu.parent_two_menu.name}</span></li>
+                        {volist name="c_menu.child_menu" id="t_menu"}
+                            <li {if condition="$t_menu['flag'] == $child_menu"}class="curr"{/if}><a href="{$t_menu.url}">{$t_menu.name}</a></li>
+                        {/volist}
+                    {/volist}
+                {/if}
+            {/volist}
+        </ul>
+    </div>
+</div>

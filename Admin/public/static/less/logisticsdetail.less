@@ -1,0 +1,127 @@
+.cleafix {
+    clear: both;
+}
+.order-logistics{
+	margin: 50px auto 0;
+	max-width: 1200px;
+	.detail-box{
+		.db-left {
+		    float: left;
+		    width: 300px;
+		    .db-left-top, .db-left-bottom {
+		    	cursor: pointer;
+			    height: 45px;
+			    border: 1px solid #e8e8e8;
+			    margin-top: 5px;
+			    padding: 10px;
+			    line-height: 50px;
+			    position: relative;
+			    width: 80%;
+			    span {
+				    position: absolute;
+				    right: 5px;
+				    top: -10px;
+				    font-size: 10px;
+				}
+			}
+			.db-left-top {
+			    border-left: 3px #e62e04 solid;
+			}
+			.db-left-bottom {
+			    border-left: 3px #564c14 solid;
+			}
+		}
+		.db-right {
+		    float: left;
+		    width: 700px;
+		    border: 0px red solid;
+		    .layui-timeline {
+			    padding-left: 5px;
+			}
+			.layui-timeline-item {
+			    position: relative;
+			    padding-bottom: 20px;
+			    &:before {
+				    content: '';
+				    position: absolute;
+				    left: 5px;
+				    top: 0;
+				    z-index: 0;
+				    width: 1px;
+				    height: 100%;
+				    background-color: #e6e6e6;
+				}
+			    &:first-child:before {
+				    display: block;
+				}
+			}
+			.layui-icon {
+			    font-family: layui-icon!important;
+			    font-size: 16px;
+			    font-style: normal;
+			    -webkit-font-smoothing: antialiased;
+			    -moz-osx-font-smoothing: grayscale;
+			}
+			.layui-timeline-axis {
+			    position: absolute;
+			    left: -5px;
+			    top: 0;
+			    z-index: 10;
+			    width: 20px;
+			    height: 20px;
+			    line-height: 20px;
+			    background-color: #fff;
+			    color: #5FB878;
+			    border-radius: 50%;
+			    text-align: center;
+			    cursor: pointer;
+			}
+			.layui-text {
+			    line-height: 22px;
+			    font-size: 14px;
+			    color: #666;
+			    h1, h2, h3 {
+				    font-weight: 500;
+				    color: #666;
+				}
+				h3 {
+				    font-size: 18px;
+				}
+			}
+			.layui-timeline-content {
+			    padding-left: 25px;
+			}
+			.layui-timeline-title {
+			    position: relative;
+			    margin-bottom: 10px;
+			}
+		}
+	} 
+	.main-base-table tr {
+	    border: 1px solid #e8e8e8;
+	    td{
+	        vertical-align: top;
+	    }
+	}
+}
+.curr {
+    border-left: 3px #e62e04 solid !important;
+}
+
+#logistics-List{ 
+	.layui-timeline{
+		position: relative;
+		height: 70px;
+		overflow: hidden;
+		li{
+			cursor: pointer;
+		}
+		.view-more{
+			display: block;
+			margin-bottom: 4px;
+		}
+	}
+}
+.query-logistics-wrap{
+	margin: 0 0 0 20px;
+}

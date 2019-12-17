@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>运营管理--EIP报表--sku选品报表</title>
+    {include file="layout/c_style" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    {include file="layout/c_style" /} {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <!-- select2自动补全下拉框样式 -->
+</head>
+
+<body>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+    <!-- BEGIN SIDEBAR -->
+    <!--#include file="layout/sidebar.html"-->
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content pt0 ml20 pl0">
+        <!-- 订单内容 begin -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                    <div>
+                        <div class="tab-content mt25">
+                            <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                <div class="search-btn-wrap">
+                                    <form class="search-form" action="skuSelection" method="post">
+                                        <input type="hidden" id="countryHidden" name="country" value="{:input('country')}"/>
+                                        <ul class="c-h-ul search-ul query-ul">
+                                            <li class="w460">
+                                                <label class="c-h-ul-li-title">销售起止时间：</label>
+                                                <input type="text" id="saleStartTime" name="saleStartTime" value="{:input('saleStartTime')}" class="data-time form-control input-small" />
+                                                <span class="time-text">至</span>
+                                                <input type="text" id="saleEndTime" name="saleEndTime" value="{:input('saleEndTime')}" class="data-time form-control input-small" />
+                                            </li>
+                                            <li class="w460">
+                                                <label class="c-h-ul-li-title">上架起止时间：</label>
+                                                <input type="text" id="shelfStartTime" name="shelfStartTime" value="{:input('shelfStartTime')}"  class="data-time form-control input-small" />
+                                                <span class="time-text">至</span>
+                                                <input type="text" id="shelfEndTime" name="shelfEndTime" value="{:input('shelfEndTime')}" class="data-time form-control input-small" />
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">一级品类：</label>
+                                                <select id="oneCategory" name="oneCategory" class="form-control input-small">
+                                                    <option value="">一级品类</option>
+                                                    {foreach name="class_list" item="vo"}
+                                                    <option value="{$vo['id']}" {if condition="input('oneCategory') eq $vo['id']"}selected="selected"{/if}>{$vo['title_en']}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">二级品类：</label>
+                                                <select id="twoCategory" name="twoCategory" class="form-control input-small">
+                                                    <option value="">二级品类</option>
+                                                    {notempty name=":input('oneCategory')"}
+                                                        {foreach name="second_category_data" item="vo"}
+                                                            <option {if condition="input('twoCategory') eq $vo['id']"}selected="selected"{/if} value="{$vo['id']}">{$vo['title_en']}</option>
+                                                        {/foreach}
+                                                    {/notempty}
+                                                </select>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">三级品类：</label>
+                                                <select id="threeCategory" name="threeCategory" class="form-control input-small">
+                                                    <option value="">三级品类</option>
+                                                    {notempty name=":input('twoCategory')"}
+                                                        {foreach name="third_category_data" item="vo"}
+                                                            <option {if condition="input('threeCategory') eq $vo['id']"}selected="selected"{/if} value="{$vo['id']}">{$vo['title_en']}</option>
+                                                        {/foreach}
+                                                    {/notempty}
+                                                </select>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">产品关键字：</label>
+                                                <input id="productKeyWord" name="productKeyWord" class="form-control input-small" value="{:input('productKeyWord')}"/>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">国家：</label>
+                                                <select id="country" class="bs-select input-small"  multiple>
+                                                    {volist name="country_data" id="country"}
+                                                    <option value="{$country['Code']}">{$country['Name']}</option>
+                                                    {/volist}
+                                                </select>
+                                            </li>
+                                            <li class="w460">
+                                                <label class="c-h-ul-li-title">折扣（0.0-1.0）：</label>
+                                                <input id="MinDiscount" name="MinDiscount" class="form-control input-small form-control input-small" value="{:input('MinDiscount')}"/><span class="time-text">-</span><input id="MaxDiscount" name="MaxDiscount" class="form-control input-small" value="{:input('MaxDiscount')}"/>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">销售排名：</label>
+                                                <input id="saleRank" name="saleRank" class="form-control input-small" value="{:input('saleRank')}"/>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">评价得分：</label>
+                                                <input id="reviewRating" name="reviewRating" class="form-control input-small" value="{:input('reviewRating')}"/>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">评价次数：</label>
+                                                <input id="reviewTotal" name="reviewTotal" class="form-control input-small" value="{:input('reviewTotal')}"/>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">最小售价：</label>
+                                                <input id="minSalesPrice" name="minSalesPrice" class="form-control input-small" value="{:input('minSalesPrice')}"/>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">最大售价：</label>
+                                                <input id="maxSalesPrice" name="maxSalesPrice" class="form-control input-small" value="{:input('maxSalesPrice')}"/>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">最小订单量：</label>
+                                                <input id="minOrderTotal" name="minOrderTotal" class="form-control input-small" value="{:input('minOrderTotal')}"/>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">最大订单量：</label>
+                                                <input id="maxOrderTotal" name="maxOrderTotal" class="form-control input-small" value="{:input('maxOrderTotal')}"/>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">最小销售额：</label>
+                                                <input id="minSalesTotal" name="minSalesTotal" class="form-control input-small" value="{:input('minSalesTotal')}"/>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">最大销售额：</label>
+                                                <input id="maxSalesTotal" name="maxSalesTotal" class="form-control input-small" value="{:input('maxSalesTotal')}"/>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">排序方式：</label>
+                                                <select id="rankType" name="rankType" class="form-control input-small">
+                                                    <option {if condition="input('rankType') eq 1"}selected="selected"{/if} value="1">销量</option>
+                                                    <option {if condition="input('rankType') eq 2"}selected="selected"{/if} value="2">销售额</option>
+                                                    <option {if condition="input('rankType') eq 3"}selected="selected"{/if} value="3">订单量</option>
+                                                    <option {if condition="input('rankType') eq 4"}selected="selected"{/if} value="4">折扣</option>
+                                                </select>
+                                            </li>
+                                            <li>
+                                                <label class="c-h-ul-li-title">mvp：</label>
+                                                <select id="mvp" name="mvp" class="form-control input-small">
+                                                    <option value="">ALL</option>
+                                                    <option value="1" {if condition="input('mvp') eq 1"}selected="selected"{/if}>是</option>
+                                                </select>
+                                            </li>
+                                            <li>
+                                                <input type="hidden" name="is_export" id="is_export" value="0">
+                                                <label class="c-h-ul-li-title"></label>
+                                                <a class="btn btn-gray btn-search" id="btn-search" href="javascript:;">查 询</a>
+                                            </li>
+                                            <li>
+                                                <a class="btn btn-gray export-btn" id="export-btn" href="javascript:;">导 出</a>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                </div>
+                                <!-- start base table -->
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table-basic table-hover table-padding mt20">
+                                            <thead>
+                                                <tr>
+                                                    <th>国家</th>
+                                                    <th>SKU</th>
+                                                    <th>产品名称</th>
+                                                    <th>一级品类</th>
+                                                    <th>二级品类</th>
+                                                    <th>三级品类</th>
+                                                    <th>上架日期</th>
+                                                    <th>售价</th>
+                                                    <th>折扣</th>
+                                                    <th>产品评分</th>
+                                                    <th>评分次数</th>
+                                                    <th>国家订单量</th>
+                                                    <th>国家销售量</th>
+                                                    <th>国家销售额</th>
+                                                    <th>MVP</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {if condition="empty($error_msg)"}
+                                                {foreach name="eip_report_data" key="key" item="vo"}
+                                                    {foreach name="vo" item="v" key="k"}
+                                                        <tr>
+                                                            {if condition="$k eq 0"}
+                                                                <td rowspan="{:count($vo)}">{$vo[0]['country']}</td>
+                                                            {/if}
+                                                            <td>{$v['sku_num']}</td>
+                                                            <td>{$v['product_name']}</td>
+                                                            <td>{$v['first_category_name']}</td>
+                                                            <td>{$v['second_category_name']}</td>
+                                                            <td>{$v['third_category_name']}</td>
+                                                            <td>{$v['shelf_time']}</td>
+                                                            <td>${$v['sales_price']}</td>
+                                                            <td>{$v['discount']}</td>
+                                                            <td>{$v['review_rating']}</td>
+                                                            <td>{$v['review_total']}</td>
+                                                            <td>{$v['order_total']}</td>
+                                                            <td>{$v['sales_volume']}</td>
+                                                            <td>{$v['sales_total']}</td>
+                                                            <td>{$v['is_mvp']}</td>
+                                                        </tr>
+                                                    {/foreach}
+                                                {/foreach}
+                                            {else/}
+                                            <tr>
+                                                <td colspan="13"><b>{$error_msg}</b></td>
+                                            </tr>
+                                            {/if}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- end base table -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="refundDialog" class="pd10" style="display:none;">
+        <dl class="c-h-dl-validator form-group clearfix">
+            <dd class="v-title">
+                <label>
+                    <em>*</em>金额：</label>
+            </dd>
+            <dd>
+                <input name="amount" id="" value="" class="form-control input-medium inline" type="number">
+                <p class="error-tip red pt5 pb10"></p>
+            </dd>
+            <dt></dt>
+        </dl>
+        <dl class="c-h-dl-validator form-group clearfix">
+            <dd class="v-title">
+                <label>
+                    <em>*</em>原因：</label>
+            </dd>
+            <dd>
+                <textarea id="refundDialogReason" name="reason" cols="34" rows="10" class="form-control input-medium inline"></textarea>
+                <p class="error-tip red pt5 pb10"></p>
+            </dd>
+            <dt></dt>
+        </dl>
+    </div>
+    <script src="/static/js/eipReport.js" type="text/javascript"></script>
+    <!-- END JAVASCRIPTS -->
+    <script>
+        $(function () {
+            EipReport.skuSelection();
+        });
+    </script>
+</body>
+
+</html>
+<script>
+</script>

@@ -1,0 +1,48 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="saveForm" action="{url('/Article/saveCate')}" enctype="multipart/form-data">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>上级类别：</label>
+                </dd>
+                <dd>
+                <ul class="c-h-ul search-ul query-ul">
+                   <li>
+                       {$cate_all}
+                    </li>
+                </ul>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>类别中文名称：</label>
+                </dd>
+                <dd class="pb10">
+                    <input class="w240" type="text" name="cate_name_cn" value="{$cate_data['cate_name_cn']}">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>类别英文名称：</label>
+                </dd>
+                <dd class="pb10">
+                    <input class="w240" type="text" name="cate_name_en" value="{$cate_data['cate_name_en']}">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>排序：</label>
+                </dd>
+                <dd class="pb10">
+                    <input class="w60 mt5" name="sort" type="number" max="255" min="0" value="{$cate_data['sort']|default='255'}">
+                </dd>
+                <dt></dt>
+            </dl>
+            <input type="hidden" name="cate_id" value="{$cate_data['cate_id']}">
+        </form>
+    </div>
+</div>
+</script>

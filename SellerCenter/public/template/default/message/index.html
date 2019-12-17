@@ -1,0 +1,217 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/message.js" /}
+<style>
+	/*分页CSS*/
+	.pagination  li {display: inline;padding: 0 2px;float: left;}
+	.pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+	.pagination .active span{color: red;}
+	.main-base-table tr td{padding: 5px;}
+</style>
+<div class="main-box fl message">
+    <div class="box-white mt0" style="overflow: auto;">
+        <h1 class="main-cont-title">留言</h1>
+        <div class="box-white">
+			<ul class="main-cont-tabs" style="border: 0 solid #e8e8e8;">
+				<li {if condition="$tab_type == 1"}class="curr"{/if}><a href="{:url('Message/index', ['tab_type'=>1])}">购物留言</a></li>
+				<li {if condition="$tab_type == 2"}class="curr"{/if}><a href="{:url('Message/index', ['tab_type'=>2])}">Price Match</a></li>
+				<li {if condition="$tab_type == 3"}class="curr"{/if}><a href="{:url('Message/index', ['tab_type'=>3])}">Report Error</a></li>
+			</ul>
+		</div>
+		{if condition="$tab_type == 1"}
+        <div class="mt10">
+			<table class="main-base-table">
+	            <tr>
+	                <th>用户</th>
+					<th>图片</th>
+					<th width="350">描述</th>
+	                <th>创建时间</th>
+	            </tr>
+				{empty name='data.data'}
+	            <tr>
+	                <td colspan="4" class="no-result">暂时无消息</td>
+	            </tr>
+				{/empty}
+				{volist name='data.data' id='val'}
+	            <tr class="j-mouse-hover">
+	                <td class="padimg">
+	                    {$val.name|default=''}
+	                </td>
+	                <td class="padpro">
+						<img src="{$cdn_base_url_config}{$val.product_img}" alt="" height="50" width="50">
+	                </td>								
+	                <td>
+	                    {$val.description|default=''}
+	                </td>
+	                <td>
+						{:date('Y-m-d H:i:s', $val['addtime'])}
+					</td>
+	            </tr>
+				{/volist}
+           </table>
+		</div>
+		{notempty name='data.page'}
+		<div class="page-wrap clearfix mt20">
+			{$data.page|default=''}
+		</div>
+		{/notempty}
+		{/if}
+
+		{if condition="$tab_type == 2"}
+		<!--<form action="" method="post" class="pb20">
+           	<div class="box-white">
+				<ul class="search-ul-layout">
+					<li>
+						<label class="search-label-title">类型:</label>
+						<select name="status">
+							<option value="">全部</option>
+							<option value="1">未读</option>
+							<option value="2">已读</option>
+						</select>
+					</li>
+					<li>
+						<label class="search-label-title">	状态:</label>
+						<select name="status">
+							<option value="">全部</option>
+							<option value="1">未标记</option>
+							<option value="2">已标记</option>
+						</select>
+					</li>
+					<li class="search-li">
+						<a href="javascript:void(0);" class="search-btn">搜 索</a>
+					</li>
+				</ul>
+			</div>
+        </form>-->
+		<div class="mt10">
+			<table class="main-base-table">
+				<tr>
+					<th>用户ID</th>
+					<th>产品ID</th>
+					<th width="150">原因</th>
+					<th>类型</th>
+					<th>状态</th>
+					<th width="100">附件</th>
+
+					<th>创建时间</th>
+				</tr>
+				{empty name='data.data'}
+				<tr>
+					<td colspan="6" class="no-result">暂时无消息</td>
+				</tr>
+				{/empty}
+				{volist name='data.data' id='val'}
+				<tr class="j-mouse-hover">
+					<td class="padimg">
+						{$val.customer_id|default=''}
+					</td>
+					<td class="padimg">
+						{$val.SPU|default=''}
+					</td>
+					<td class="padimg">
+						{$val.reason|default=''}
+					</td>
+					<td class="padimg">
+						{$val.report_type_data.name|default=''}
+					</td>
+					<td class="padimg">
+						{$val.report_status_data.name|default=''}
+					</td>
+					<td class="padpro">
+						{volist name='val.enclosure' id='sv'}
+							<img src="{$cdn_base_url_config}{$sv}" alt="" height="50" width="50">
+						{/volist}
+					</td>
+					<td>
+						{:date('Y-m-d H:i:s', $val['add_time'])}
+					</td>
+				</tr>
+				{/volist}
+			</table>
+		</div>
+		{notempty name='data.page'}
+		<div class="page-wrap clearfix mt20">
+			{$data.page|default=''}
+		</div>
+		{/notempty}
+		{/if}
+
+
+		{if condition="$tab_type == 3"}
+
+		<!--<form action="" method="post" class="pb20">
+           	<div class="box-white">
+				<ul class="search-ul-layout">
+					<li>
+						<label class="search-label-title">类型:</label>
+						<select name="status">
+							<option value="">全部</option>
+							<option value="1">未读</option>
+							<option value="2">已读</option>
+						</select>
+					</li>
+					<li>
+						<label class="search-label-title">	状态:</label>
+						<select name="status">
+							<option value="">全部</option>
+							<option value="1">未标记</option>
+							<option value="2">已标记</option>
+						</select>
+					</li>
+					<li class="search-li">
+						<a href="javascript:void(0);" class="search-btn">搜 索</a>
+					</li>
+				</ul>
+			</div>
+        </form>-->
+		<div class="mt10">
+			<table class="main-base-table">
+				<tr>
+					<th>用户ID</th>
+					<th width="250">原因</th>
+					<th>类型</th>
+					<th>状态</th>
+					<th width="100">附件</th>
+
+					<th>创建时间</th>
+				</tr>
+				{empty name='data.data'}
+				<tr>
+					<td colspan="6" class="no-result">暂时无消息</td>
+				</tr>
+				{/empty}
+				{volist name='data.data' id='val'}
+				<tr class="j-mouse-hover">
+					<td class="padimg">
+						{$val.customer_id|default=''}
+					</td>
+					<td class="padimg">
+						{$val.reason|default=''}
+					</td>
+					<td class="padimg">
+						{$val.report_type_data.name|default=''}
+					</td>
+					<td class="padimg">
+						{$val.report_status_data.name|default=''}
+					</td>
+					<td class="padpro">
+						{volist name='val.enclosure' id='sv'}
+						<img src="{$cdn_base_url_config}{$sv}" alt="" height="50" width="50">
+						{/volist}
+					</td>
+					<td>
+						{:date('Y-m-d H:i:s', $val['add_time'])}
+					</td>
+				</tr>
+				{/volist}
+			</table>
+		</div>
+		{notempty name='data.Page'}
+		<div class="page-wrap clearfix mt20 fr">
+			{$data.Page|default=''}
+		</div>
+		{/notempty}
+		{/if}
+
+    </div>
+</div>

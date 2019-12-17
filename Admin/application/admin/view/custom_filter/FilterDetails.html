@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>查看详细条件</title>
+    {include file="layout/c_style" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/customFilter.css" type="text/css" />
+
+</head>
+
+<body>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+    <!-- BEGIN SIDEBAR -->
+    <!--#include file="layout/sidebar.html"-->
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content pt0 pl0 ml20">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                    <div>
+                        <div class="tab-content mt25">
+                            <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                <!-- start base table -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="fbold">筛选主题：{$list["TopicName"]?$list["TopicName"]:''}</div>
+                                        <table id="tb1" border="0" cellpadding="2" cellspacing="6" width="900" class="filter-details-table">
+                                            <tbody>
+                                                <tr>
+                                                    <th width="120"></th>
+                                                    <td width="780"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th valign="top">用户类型</th>
+                                                    <td>订阅用户</td>
+                                                </tr>
+                                                <tr>
+                                                    <th valign="top">下单时间</th>
+                                                    <td>{if condition="$list.order_create_start_time neq ''"}{$list.order_create_start_time|date="Y-m-d H:i:s",###}{/if} - {if condition="$list.order_create_end_time neq ''"}{$list.order_create_end_time|date="Y-m-d H:i:s",###}{/if}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th valign="top">订单国家/地区</th>
+                                                    <td style="word-break:break-all">{$list.national?$list.national:''}</td>
+                                                </tr>
+                                                 <tr>
+                                                    <th valign="top">注册订单国家/地区</th>
+                                                    <td style="word-break:break-all">{$list.register_countrys?$list.register_countrys:''}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th valign="top">订阅的分类</th>
+                                                    <td>{$list.class_id?$list.class_id:''}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th valign="top">订单金额</th>
+                                                    <td>{$list.order_amount_of_start?$list.order_amount_of_start:''}-{$list.order_amount_of_end?$list.order_amount_of_end:''}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th valign="top">购买次数</th>
+                                                    <td>{$list.orders?$list.orders:''}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th valign="top">支付方式</th>
+                                                    <td>{$list.order_pay_mode?$list.order_pay_mode:''}</td>
+                                                </tr>
+                                               <!--  <tr>
+                                                    <th valign="top">会员等级</th>
+                                                    <td></td>
+                                                </tr> -->
+                                                <tr>
+                                                    <th valign="top">是否注册</th>
+                                                    <td>{if condition="$list.IsRegister eq 1"}不限制{elseif condition="$list.IsRegister eq 2"/}是{/if} </td>
+                                                </tr>
+                                                <tr>
+                                                    <th valign="top">注册时间</th>
+                                                    <td>{if condition="$list.reg_start_time neq ''"}{$list.reg_start_time|date="Y-m-d H:i:s",###}{/if} - {if condition="$list.reg_end_time neq ''"}{$list.reg_end_time|date="Y-m-d H:i:s",###}{/if}</td>
+                                                </tr>
+                                               <!--  <tr>
+                                                    <th valign="top">是否登录</th>
+                                                    <td>{if condition="$list.IsRegister eq 1"}不限制{elseif condition="$list.IsRegister eq 2"/}有订单{elseif condition="$list.IsRegister eq 2"/}无订单{/if}</td>
+                                                </tr> -->
+                                                <tr>
+                                                    <th valign="top">是否订单查询</th>
+                                                    <td>{if condition="$list.rdorder eq 1"}不限制{elseif condition="$list.rdorder eq 2"/}有订单{elseif condition="$list.rdorder eq 3"/}无订单{/if}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th valign="top">登录时间</th>
+                                                    <td>{if condition="$list.login_start_time neq ''"}{$list.login_start_time|date="Y-m-d H:i:s",###}{/if} - {if condition="$list.login_end_time neq ''"}{$list.login_end_time|date="Y-m-d H:i:s",###}{/if}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/static/js/RoleUser.js"></script>
+</body>
+</html>

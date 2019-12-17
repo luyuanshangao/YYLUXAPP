@@ -1,0 +1,118 @@
+{layout name="layout/main"/}
+{load href="/static/css/addAffiliate.css" /}
+
+
+<div class="main-box fl addAffiliate">
+    <div class="box-white box-white-m0">
+        <h1 class="main-cont-title">加入联盟营销计划</h1>
+        <div class="panel">
+            <div class="content addAffiliate-instructions pb20">
+                <h3 class="mb10">您加入联盟营销后：</h3>
+                <p>1.您正在销售的所有产品将加入联盟营销计划，将使用“默认佣金比例”。</p>
+                <p>2.您只需为联盟网站为您带来的订单支付联盟佣金。<a href="">详细链接联盟营销计划。</a></p>
+            </div>
+            <div class="content mt20 addAffiliate-default-commission-rate">
+                <h3>请设置您的默认佣金比例：<input type="number" class="js-commission-rate" value="{$model.data.commission}">%
+                 {$statusHtml}
+                 <span class="required-err-tips red hide">请输入佣金比例</span></h3>
+                <p class="mt5 err-tips">允许范围：3.0% - 5.0%,佣金比例只能是0.5的倍数，例如：3.5或5</p>
+                <a href="javascript:void(0);" class="addAffiliate-btn mt20">加入联盟计划</a>
+                <div class="add-mask hide"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="dialog-box">
+    <div class="dialog-bg"></div>
+    <div class="dialog-cont">
+        <div class="close-dialog clearfix"><i class="iconfont icon-cha"></i></div>
+        <p></p>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        var statusText = $(".status-text").html(); //审核状态
+        if(statusText == "" || statusText == null || statusText == "undefined"){
+            $(".status-text-wrap").addClass("hide");
+        }else{
+            $(".status-text-wrap").removeClass("hide");
+        }
+    });
+    
+    function commissionRate(){
+        var $commission = $(".js-commission-rate"),
+            default_commission = $commission.val(),
+            requiredErrTips = $(".required-err-tips"),
+            errTips = $(".err-tips"),
+            type = false,
+            html = '请输入佣金比例';
+
+        default_commission = parseFloat(default_commission);
+        $commission.val(default_commission.toFixed(1));
+        $commission.val($commission.val().replace(/[^\d.]/g,''));
+        if(!default_commission){
+            requiredErrTips.html(html).removeClass("hide");
+            errTips.removeClass("red");
+            type = false;
+        }else{
+            requiredErrTips.html('').addClass("hide");
+            type = true;
+        }
+        if((default_commission >= 3) && (default_commission <= 5)){
+            if(default_commission % 0.5 === 0){
+                errTips.removeClass("red");
+                type = true;
+            }else{
+                errTips.addClass("red");
+                type = false;
+            }
+        }else{
+            errTips.addClass("red");
+            type = false;
+        }
+        return type;
+    }
+
+    //离开文本框
+    $(".js-commission-rate").blur(function(){
+        commissionRate();
+    });
+
+    //加入联盟计划按钮
+    $(".addAffiliate-btn").click(function(event){
+        event.preventDefault();
+        var commissionType = commissionRate(),
+            _this = $(this);
+        _this.addClass("disabled");   
+        $(".add-mask").removeClass("hide");   
+        
+        if(commissionType){
+            var default_commission = ($(".js-commission-rate").val())/100,
+                requiredErrTips = $(".required-err-tips");
+                // requiredErrTips.html('').addClass('hide red');
+
+            Common.ajax('post', './addaffiliate', {'default_commission':default_commission}, function (data) {
+                $(".dialog-cont").removeClass("red green");
+
+                if(data.code === 200){
+                    $(".dialog-cont p").html(data.msg).addClass("green");
+                }else if(data.code === 1002){
+                    $(".dialog-cont p").html(data.msg).addClass("red");
+                }else if(data.code === 1003){
+                    $(".dialog-cont p").html(data.msg).addClass("red");
+                }else{
+                    $(".dialog-cont p").html("加入失败！").addClass("red");
+                }
+                $(".dialog-box").show();
+            });
+        }
+    })
+
+    $(".close-dialog").click(function() {
+        $(".addAffiliate-btn").removeClass("disabled");
+        $(".add-mask").addClass("hide");
+        $(".dialog-box").hide();
+    });
+</script>

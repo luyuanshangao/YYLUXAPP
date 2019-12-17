@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8" />
+    <title>风控--高风险国家管理</title>
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+    {load href="/static/css/productManagement.css" /}
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+        <!-- BEGIN SIDEBAR -->
+        <!--#include file="layout/sidebar.html"-->
+        <!-- END SIDEBAR -->
+        <!-- BEGIN CONTENT -->
+            <div class="page-content pt0 ml20 pl0">
+                <!-- 订单内容 begin -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt25">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap bborder-no">
+                                            <form id="navbar" class="navbar-left" action="" method="post">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">国家编码：</label>
+                                                        <input name="country_code" value="{:input('country_code')}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">国家名称：</label>
+                                                        <input name="country_name" value="{:input('country_name')}" class="form-control input-small" type="text" />
+                                                    </li>
+                                                    <li>
+                                                            <label class="c-h-ul-li-title">风险级别：</label>
+                                                            <select name="risk_level"  class="form-control input-small inline">
+                                                               <option value="">全部</option>
+                                                                {foreach name="WindControlType['RiskLevel']" item="vo" key="key"}
+                                                               <option value="{$key}" {if condition="input('risk_level') eq $key"}selected="selected"{/if}>{$vo}</option>
+                                                                {/foreach}
+                                                            </select>
+                                                    </li>
+                                                    <li>
+                                                            <label class="c-h-ul-li-title">是否启用：</label>
+                                                            <select name="status" class="form-control input-small inline">
+                                                               <option value="">全部</option>
+                                                               <option value="1" {if condition="input('status') eq 1"}selected="selected"{/if}>是</option>
+                                                                <option value="2" {if condition="input('status') eq 2"}selected="selected"{/if}>否</option>
+                                                            </select>
+                                                    </li>
+                                                    <li class="w240">
+                                                        <label class="c-h-ul-li-title w60"></label>
+                                                        <a onclick="javascript:document:navbar.submit();"
+                                                        class="btn btn-gray" href="javascript:;">查 询</a>
+                                                        <a onclick="javascript:;" class="btn btn-gray add-special-country-list" href="javascript:;">新增</a>
+                                                    </li>
+                                                    <input type="hidden" name="page" value="1">
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <div id="enlarge_images" ></div>
+                                        <!-- start base table -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-hover table-padding">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>国家编码</th>
+                                                        <th>国家名称</th>
+                                                        <th>风险级别</th>
+                                                        <th>是否启用</th>
+                                                        <th>创建人</th>
+                                                        <th>创建时间</th>
+                                                        <th class="w100">操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {volist name="list" key = 'k' id="vo"}
+                                                            <tr>
+                                                                <td>{$vo.id?$vo.id:''}</td>
+                                                                <td>{$vo.country_code?$vo.country_code:''}</td>
+                                                                <td>{$vo.country_name?$vo.country_name:''}</td>
+                                                                <td>
+                                                                 {if condition="!empty($WindControlType['RiskLevel'][$vo['risk_level']])"}
+                                                                    {$WindControlType['RiskLevel'][$vo['risk_level']]}
+                                                                 {/if}
+                                                                </td>
+                                                                <td>
+                                                                 {if condition="!empty($WindControlType['status'][$vo['status']])"}
+                                                                    {$WindControlType['status'][$vo['status']]}
+                                                                 {/if}
+                                                                </td>
+                                                                <td>{$vo.operator?$vo.operator:''}</td>
+                                                                <td>{$vo.add_time_date?$vo.add_time_date:''}</td>
+                                                                <td>
+                                                                   <a class="light-blue-2 add-special-country-list"  data-id = "{$vo.id}" href="javascript:;">编辑</a>
+                                                                </td>
+                                                            </tr>
+                                                        {/volist}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row16 pd15 mt10">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                                {$page?$page:''}
+                                            </div>
+                                        </div>
+                                        <!-- 订单内容 end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="show-copy-pop hide"></div>
+     <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+     <script type="text/javascript" src="/js/custom.js"></script>
+     <script src="/static/js/system.js" type="text/javascript"></script>
+    <!-- END JAVASCRIPTS -->
+    <script>
+        $(function(){
+            System.SpecialList();
+        });
+    </script>
+
+</body>
+</html>
+<script>
+
+</script>

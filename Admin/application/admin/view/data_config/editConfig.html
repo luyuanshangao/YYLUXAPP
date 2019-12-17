@@ -1,0 +1,42 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addUserForm" enctype="multipart/form-data">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    KEY：
+                </dd>
+                <dd class="v-title">
+                    {$KEY}
+                    <input type="hidden" name="id" value="{$id}">                   
+                </dd>
+                <dt> 
+                  <a href="#"  onclick="public_delete('{$id}','/DataConfig/deleteSonDomAll')" class="Qing">移除全部SPU</a>
+                </dt>
+            </dl>           
+             <dl class="c-h-dl-validator form-group clearfix">
+              <div class="row">
+                  <div class="col-md-12">
+                        <table class="table-basic table-padding">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>SPU</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {volist name="list" id="vo"}
+                                                            <tr>
+                                                                <td>{$vo}</td>
+                                                                <td>                                                                   
+                                                                   <a href="#"  onclick="public_delete('{$id}','/DataConfig/deleteSonDom/spu/{$vo}')" class="Qing">删除</a>
+                                                                </td>
+                                                            </tr>
+                                                        {/volist}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                             </div>
+            </dl>
+        </form>
+    </div>
+</div>

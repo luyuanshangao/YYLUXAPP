@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>模板</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END THEME STYLES -->
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/static/css/edm_system.css" type="text/css" />
+</head>
+
+<body>
+    <div class="row ml10 mr10 mt20 pd10">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="search-btn-wrap bborder-no pb15">
+                    <form class="navbar-left" action="" method="">
+                        <div class="w600">
+                            <div class="col-lg-6">
+                                <a class="btn btn-gray mr5" href="/activity/saveTemplate">新增</a>
+                                <a class="btn btn-gray mr5 js-del-template" href="javascript:;">删除</a>
+                                <a class="btn btn-gray mr5 js-enable-template" href="javascript:;">启用</a>
+                                <a class="btn btn-gray mr5 js-disable-template" href="javascript:;">禁用</a>
+                            </div>
+                            <div class="col-lg-6 pl0 pr0">
+                                <div class="input-group">
+                                    <input type="text" class="form-control h29" placeholder="名称" name="name" value="{$params.title}">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary h29 search-btn js-search-template" type="button">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table-basic table-padding table-hover edm-list">
+                    <thead>
+                        <tr>
+                            <th class="tcenter" width="50">
+                                <input type="checkbox" class="select-All js-select-All">
+                            </th>
+                            <th class="tleft" width="50">操作</th>
+                            <th class="tleft" width="80">ID</th>
+                            <th class="tleft">名称</th>
+                            <th class="tleft">模板类型</th>
+                            <th class="tleft" width="80">语言</th>
+                            <th class="tleft" width="100">缩略图</th>
+                            <th class="tleft" width="50">排序</th>
+                            <th class="tleft" width="80">状态</th>
+                            <th class="tleft" width="180">创建时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="list" id="val"}
+                        <tr>
+                            <td class="tcenter">
+                                <input value="{$val.id}" type="checkbox" class="single-checkbox js-single-checkbox">
+                            </td>
+                            <td>
+                                <a href="/activity/saveTemplate?id={$val.id}" class="mr5">更改</a>
+                            </td>
+                            <td>{$val.id}</td>
+                            <td>{$val.Title}</td>
+                            <td>{$template_type[$val.TemplateType]|default='-'}</td>
+                            <td>{$lang_data[$val.LangCode]|default='-'}</td>
+                            <td>
+                                <?php
+                                    $url = '';
+                                    if(strstr($val['PreviewImage'],'http://') !== false || strstr($val['PreviewImage'],'https://') !== false){
+                                        $url = $val['PreviewImage'];
+                                    }else{
+                                        $url = $img_url . str_replace('\\','/',$val['PreviewImage']);
+                                    }
+                                    echo '<img class="view-img" src="'.$url.'" alt="" width="50">';
+                                ?>
+                            </td>
+                            <td>{$val.Sort}</td>
+                            <td>
+                                {if condition="$val.Enabled == 1"}
+                                <i class="glyphicon glyphicon-ok green f14"></i>
+                                {else /}
+                                <i class="glyphicon glyphicon-ban-circle gray f14"></i>
+                                {/if}
+                            </td>
+                            <td>{$val.CreateTime|default='-'}</td>
+                        </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row row-no-mlr mt20 clearfix mb20">
+            <div class="dataTables_paginate paging_bootstrap fr">
+                {$list->render()}
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/edmSystem.js"></script>
+    <script>
+        $(function () {
+            EdmSystem.templateIndex();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/message.js" /}
+
+<div class="main-box fl message">
+    <div class="box-white mt0">
+        <h1 class="main-cont-title">系统消息</h1>
+        <div class="box-white">
+			<ul class="main-cont-tabs">
+				<li class="curr"><a href="#">购物留言</a></li>
+				<li><a href="#">Price Match</a></li>
+				<li><a href="#">Report Error</a></li>
+			</ul>
+		</div>
+        <form action="" method="post" class="pb20">
+           	<div class="box-white">
+				<ul class="search-ul-layout">
+					<li>
+						<label class="search-label-title">主题:</label>
+						<input class="input-text" type="text" name="title" />
+					</li>
+					<li>
+						<label class="search-label-title">是否阅读:</label>
+						<select name="status">
+							<option value="">全部</option>
+							<option value="1">未读</option>
+							<option value="2">已读</option>
+						</select>
+					</li>
+					<li>
+						<label class="search-label-title">是否标记:</label>
+						<select name="status">
+							<option value="">全部</option>
+							<option value="1">未标记</option>
+							<option value="2">已标记</option>
+						</select>
+					</li>	
+					<li>
+						<label class="search-label-title">发送时间:</label>
+						<select name="time">
+							<option value="1">最近1个月</option>
+							<option value="2">最近2个月</option>
+							<option value="3" selected="selected">最近3个月</option>
+							<option value="6">最近6个月</option>
+							<option value="9">最近9个月</option>
+							<option value="12">最近12个月</option>
+						</select>
+					</li>					
+					<li class="search-li">
+						<a href="javascript:void(0);" class="search-btn">搜 索</a>
+					</li>
+				</ul>
+			</div>
+        </form>
+        <div class="box-white">
+			<table class="main-base-table">
+	            <tr>
+	                <th><input name="checkAllMessage" value="" type="checkbox"></th>
+	                <th>状态</th>
+	                <th>标记</th>
+	                <th>类型</th>
+	                <th>主题</th>
+	                <th>发送时间</th>
+	            </tr>
+	            <tr>
+	                <td colspan="6" class="pl30">
+	            		<a href="javascript:void(0);" class="mr10 inb-setup">设置<i class="inb-narr"></i></a>
+	            		<div class="inb-setuplist">
+							<div class="inb-setreadcon">
+								<a href="javascript:void(0)" class="inb-setread"><span></span>设置为已读</a>
+								<a href="javascript:void(0)" class="inb-setunread"><span></span>设置为未读</a>
+								<a href="javascript:void(0)" class="inb-setmarked"><span></span>设置标记</a>
+								<a href="javascript:void(0)" class="inb-setdel"><span></span>取消标记</a>
+							</div>
+						</div>
+	            		<a href="javascript:void(0);" class="inb-del">删除</a>
+					</td>
+	            </tr>
+	            <tr>
+	                <td colspan="6" class="no-result">暂时无消息</td>
+	            </tr>
+	            <tr class="j-mouse-hover">
+	                <td>
+						<input class="j-check-group-id" name="prodAuditForm.itemcodeChecked" type="checkbox">
+	                </td>
+	                <td class="padimg">
+	                    状态
+	                </td>
+	                <td class="padpro">
+	                mark
+	                </td>								
+	                <td>
+	                    SYSTEM 
+	                </td>
+	                <td>
+						You've successfully created a DHgate account. We Welcome You!
+	                 </td>
+					<td>2018-03-10 18:04:15</td>
+	            </tr>   
+	            <tr class="j-mouse-hover">
+	                <td>
+						<input class="j-check-group-id" name="prodAuditForm.itemcodeChecked" type="checkbox">
+	                </td>
+	                <td class="padimg">
+	                    状态
+	                </td>
+	                <td class="padpro">
+	                mark
+	                </td>								
+	                <td>
+	                    SYSTEM 
+	                </td>
+	                <td>
+						You've successfully created a DHgate account. We Welcome You!
+	                 </td>
+					<td>2018-03-10 18:04:15</td>
+	            </tr>                    
+           </table>
+		</div>
+		<div class="page-wrap clearfix mt20">
+			<div class="page-range fl">
+				<span class="page-number">1</span>/<span class="page-count">2</span>
+				<span class="ml10">跳转至第几</span>
+				<input class="page-put ml5" type="text"> 页
+				<a href="" class="page-go ml5">确定</a>
+			</div>
+			<ul class="page mt5 fr">
+                <li><span class="pre"></span></li>
+                <li><span class="curr" href="#">1</span></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#" class="next"></a></li>
+            </ul>
+		</div>
+    </div>
+</div>

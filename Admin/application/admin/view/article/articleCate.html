@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+	<title>文章分类</title>
+	<link rel="stylesheet" href="/tree/css/jquery.treeview.css" />
+	<link href="/assets/css/style-bby.css" rel="stylesheet" type="text/css" />
+	<link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+	<!-- select2自动补全下拉框样式 -->
+	<link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+	{include file="layout/c_style" /}
+	{include file="layout/c_corejs" /}
+	<!--<link rel="stylesheet" href="/tree/css/screen.css" />-->
+	<!--<script type="text/javascript" src="/js/custom.js"></script>-->
+	<script src="/tree/js/jquery.cookie.js"></script>
+	<script src="/tree/js/jquery.treeview.js"></script>
+	<script type="text/javascript" src="/tree/js/demo.js"></script>
+	<script type="text/javascript" src="/layer/layer/layer.js"></script>
+	<script type="text/javascript" src="/static/js/article.js"></script>
+	</head>
+	<body>
+
+	<div class="page-content pt0 pl0 ml20 h1000">
+		<!--start  按钮功能区 -->
+		<div class="bg-color-gray0 area_btn0 ml0 mr0 border-gray">
+			{$menu_logo}
+		</div>
+		<!--end  按钮功能区 -->
+		<!-- 订单内容 begin -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+					<div>
+						<div class="tab-content mt25">
+							<div class="tab-pane active d-element-bind btns-link" id="month6">
+								<div class="search-content-wrap hide">
+
+								</div>
+								<div class="search-btn-wrap pb15">
+									<a  onclick="save_public('{:url('/Article/saveCate')}')" class="btn btn-gray ml20" href="javascript:;">新增第一级</a>
+								</div>
+
+								<!-- start base table -->
+								<div class="row">
+									<div class="col-md-12">
+
+										<div class="blank10"></div>
+									</div>
+								</div>
+								<!-- end base table -->
+								<div class="row row16 pd15 mt10">
+
+
+
+									<div class="col-md-13">
+
+										<ul id="browser" class="filetree mg20">
+											{volist name="class_data" id="vo"}
+											<li  class="closed">
+												<div  onclick="classid({$vo.cate_id})" class="hitarea closed-hitarea expandable-hitarea"></div>
+												<span  onclick="classid({$vo.cate_id})" data-id ="{$vo.cate_id}"  title-cn ="{$vo.cate_name_cn}" title-en = "{$vo.cate_name_en}" parent-id = "0" sort = "{$vo.sort}"  class="folder classid{$vo.cate_id}">{$vo.cate_id}{$vo.cate_name_cn}[{$vo.cate_name_en}]</span>
+												<input name="sort" class="form-inline w50 ml10" value="{$vo.sort}" type="text">
+												<b onclick="save_public('{:url('/Article/saveCate',array('type'=>'edit','cate_id'=>$vo.cate_id))}')" class="pd2 btn btn-orange" href="javascript:;">修改</b>
+												<b  onclick="save_public('{:url('/Article/saveCate',array('type'=>'add','cate_id'=>$vo.cate_id))}')"  class="pd2 btn btn-qing"  href="javascript:;">新增</b>
+												<b  onclick="delArticleCate({$vo.cate_id})"  class="pd2 btn btn-orange"  href="javascript:;">删除</b>
+												<ul class="shuoge class{$vo.cate_id}">
+
+												</ul>
+											</li>
+											{/volist}
+										</ul>
+										<div class="success_data"></div>
+									</div>
+								</div>
+								<!-- 订单内容 end -->
+							</div>
+						</div>
+					</div>
+					<!-- /.navbar-collapse -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body></html>
+

@@ -1,0 +1,94 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addUserForm" action="index.html">
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>登陆账号：</label>
+                </dd>
+                <dd>
+                    <input name="account" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>用户姓名：</label>
+                </dd>
+                <dd>
+                    <input name="name" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>密码：</label>
+                </dd>
+                <dd>
+                    <input name="password" class="form-control input-medium inline" type="password">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>确认密码：</label>
+                </dd>
+                <dd>
+                    <input name="okpassword" class="form-control input-medium inline" type="password">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>邮箱地址：</label>
+                </dd>
+                <dd>
+                    <input name="email" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>手机号码：</label>
+                </dd>
+                <dd>
+                    <input name="telephone" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>备注：</label>
+                </dd>
+                <dd>
+                    <textarea id="message-cont" name="sendCont" class="form-control input-xlarge" maxLength="100" rows="3" aria-invalid="false"></textarea>
+                    <div class="Gray tright">
+                        ( 限<span class="Red">100</span>字 )
+                    </div>
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>角色权限：</label>
+                </dd>
+                <dd>
+                    <select id="powerset" name="rol-powe" class="input-xlarge" placeholder="分配角色权限" multiple="multiple">
+                        <option value="1">权限一</option>
+                        <option value="2">权限二</option>
+                        <option value="3" selected>权限三</option>
+                        <option value="4">权限四</option>
+                        <option value="5">权限五</option>
+                        <option value="6">权限六</option>
+                        <option value="7" selected>权限七</option>
+                        <option value="8">权限八</option>
+                        <option value="9">权限九</option>
+                        <option value="10">权限十</option>
+                        <option value="11">权限二</option>
+                        <option value="12">权限十二</option>
+                    </select>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>

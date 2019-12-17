@@ -1,0 +1,64 @@
+<div class="modal-body f12_i">
+    <div class="info-pb10 c-h-dl-label100">
+        <form id="addUserForm" action="{url('admin/ProductManagement/add_brand')}" enctype="multipart/form-data">
+            <input type="hidden" name="id"  value="{$content['BrandId']?$content['BrandId']:''}">
+
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>品牌名称：</label>
+                </dd>
+                <dd>
+                    <input name="brand_name" id="brand_name" value="{$content['BrandName']}" class="form-control input-medium inline" type="text">
+                </dd>
+                <dt></dt>
+            </dl>
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>品牌图标：</label>
+                </dd>
+                <dd>
+                    <input type="file" id="chooseImage" name="file">
+                </dd>
+                <dt></dt>
+            </dl>
+
+            <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label>预览图：</label>
+                </dd>
+                <dd>
+                   {if condition="$content['Brand_Icon_Url'] neq ''"}
+                     <a href="{$dx_mall_img_url_brand}{$content['Brand_Icon_Url']}" target="_blank">
+                         <img width="90" id="cropedBigImg" alt="{$content['BrandName']}"
+                                      src="{$dx_mall_img_url_brand}{$content['Brand_Icon_Url']}" />
+                     </a>
+                    {else /}
+                      <img width="90" class="none" id="cropedBigImg" value='custom' alt="" data-address='' />
+                   {/if}
+                </dd>
+                <dt></dt>
+            </dl>
+             <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>排序：</label>
+                </dd>
+                <dd>
+                    <input name="sort" class="form-control input-medium inline" type="text" value="{$content.Sort}">
+                </dd>
+                <dt></dt>
+            </dl>
+             <dl class="c-h-dl-validator form-group clearfix">
+                <dd class="v-title">
+                    <label><em>*</em>品牌介绍：</label>
+                </dd>
+                <dd>
+                    <textarea name="introduction" cols="37" rows="8" value="{$content.Introduction}">{$content.Introduction}</textarea>
+                </dd>
+                <dt></dt>
+            </dl>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/js/custom.js"></script>
+<script type="text/javascript">
+</script>

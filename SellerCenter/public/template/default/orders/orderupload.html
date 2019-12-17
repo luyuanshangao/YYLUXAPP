@@ -1,0 +1,56 @@
+{layout name="layout/main"/}
+{load href="/static/css/productMan.css" /}
+{load href="/static/js/module/productMan.js" /}
+{load href="/static/js/plugin/My97DatePicker/WdatePicker.js" /}
+{load href="/static/js/module/orderUpload.js" /}
+
+<style>
+    /** 分页 **/
+    .pagination  li {display: inline;padding: 0 2px;float: left;}
+    .pagination  li a, .pagination  li span{display: block;padding: 0 13px;height: 30px;line-height: 30px;text-align: center;border: 1px solid #ccc;}
+    .pagination .active span{color: red;}
+    .product-management .search-ul-layout input {
+        width: 130px;
+    }
+
+</style>
+
+<div class="main-box fl product-management">
+    <div class="box-white mt0" style="overflow: hidden;">
+        <h1 class="main-cont-title">{$title}</h1>
+            <ul class="search-ul-layout mt10">
+                <li>
+                    <label>
+                        当前所属仓：{$login_user_name}
+                    </label>
+                </li>
+            </ul>
+        <table class="main-base-table mt20">
+            <tr>
+                <td class="w80 ">说明</td>
+                <td>
+                    1.每行代表一条发货数据，用回车换成<br/>
+                    2.每条数据格式（中间用<span class="red">;</span>号隔开）  订单号;996;物流商ID;Tracking No;发货时间;SKU:数量(多个SKU以','分隔)<br/>
+                    例如：16040100104897033001<span class="red">;</span>996<span class="red">;</span>RD123456789lL<span class="red">;</span>2016-04-01 12:51;9160000:4,91600001:1<br/>
+                    3.此功能为批量导入发货数据，请填写正确的数据格式！
+                </td>
+            </tr>
+            <tr>
+                <td>发货订单： <span class="red">* </span></td>
+                <td>
+                    <textarea rows="10" cols="120" class="ship_order_data" name="ship_order_data"></textarea>
+                </td>
+            </tr>
+        </table>
+            <div class="tcenter pt10">
+                <input type="button" class="upload-button search-btn" data-url="{:url('Orders/orderUpload')}" value="导入">
+            </div>
+        </form>
+        <div class="upload-msg">
+
+        </div>
+    </div>
+</div>
+
+<script>
+</script>

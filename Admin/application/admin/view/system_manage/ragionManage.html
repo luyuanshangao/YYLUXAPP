@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="utf-8" />
+    <title>国家区域配置->系统管理->平台管理</title>
+    {include file="layout/c_style" /}
+    {include file="layout/c_corejs" /}
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <!--#include file="layout/c_style.html"-->
+
+    <!-- END THEME STYLES -->
+    <link type="text/css" rel="stylesheet" href="/assets/plugins/DatePicker/skin/WdatePicker.css" />
+    <!-- select2自动补全下拉框样式 -->
+    <link rel="stylesheet" href="/assets/css/order.css" type="text/css" />
+
+</head>
+<body>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+    <!-- BEGIN CONTAINER -->
+        <!-- BEGIN SIDEBAR -->
+        <!--#include file="layout/sidebar.html"-->
+        <!-- END SIDEBAR -->
+        <!-- BEGIN CONTENT -->
+            <div class="page-content pt0 ml20 pl0">
+                <!-- 订单内容 begin -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tabbable-custom tabbable-custom-bby tabs-below" role="navigation">
+                            <div>
+                                <div class="tab-content mt25">
+                                    <div class="tab-pane active d-element-bind btns-link" id="month6">
+                                        <div class="search-btn-wrap bborder-no">
+                                            <form id="navbar" class="navbar-left" action="index" method="post">
+                                                <ul class="c-h-ul search-ul query-ul">
+                                                    <li>
+                                                        <label class="c-h-ul-li-title">区域名称：</label>
+                                                            <select name="AreaID" class="input-xlarge w100 h29 bborder">
+                                                            <option value="">--请选择--</option>
+                                                            {volist name="continent" id="vo"}
+                                                               <option {$areaID== $vo[0]?'selected = "selected"':''} value="{$vo[0]}">{$vo[1]}</option>
+                                                            {/volist}
+                                                           
+                                                        </select>
+                                                    </li>
+                                                    <li class="w300">
+                                                        <label class="c-h-ul-li-title w130">国家简码：</label>
+                                                        <input name="Code" value='{$Code}' class="form-control input-small" type="text" />
+                                                    </li>
+                                                    <li class="w360">
+                                                        <label class="c-h-ul-li-title w150">国家全称(支持模糊搜索)：</label>
+                                                        <input name="CodeOrName" value='{$codeOrName}' class="form-control input-small" type="text" />
+                                                    </li>
+                                                    <li class="w260">
+                                                        <label class="c-h-ul-li-title w60"></label>
+                                                        <a class="btn btn-gray quick-btn" href="javascript:;">查 询</a>
+                                                        <a href="javascript:void(0);" class="btn btn-gray import-btn">导入 </a>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                        <!-- start base table -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table-basic table-padding">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>国家(地区)名称</th>
+                                                        <th>国家(地区)简码</th>
+                                                        <th>区域名称</th>
+                                                        <th>区域ID</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {volist name="list" id="vo"}
+                                                            <tr>
+                                                                <td>{$vo._id}</td>
+                                                                <td>{$vo.Name}</td>
+                                                                <td><?php if(!is_numeric($vo['Code'])) echo $vo['Code'];  ?></td>
+                                                                <td>{$vo.AreaName}</td>
+                                                                <td>{$vo.AreaID}</td>
+                                                            </tr>
+                                                        {/volist}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- end base table -->
+                                        <div class="row row16 pd15 mt10">
+                                            <div class="dataTables_paginate paging_bootstrap fr">
+                                                <!-- 本页不分页 -->
+                                            </div>
+                                        </div>
+                                        <!-- 订单内容 end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <script src="/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script src="/static/js/system.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+    $(function() {
+        System.ragionManage();
+    })
+    </script>
+    <!-- END JAVASCRIPTS -->
+
+</body>
+</html>
